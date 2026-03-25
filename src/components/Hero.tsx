@@ -73,6 +73,35 @@ export default function Hero() {
         >
           Portfolio · 2026
         </p>
+
+        {/* Watch button */}
+        <div
+          className="mt-8"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.9s ease 0.7s, transform 0.9s ease 0.7s",
+          }}
+        >
+          <a
+            href="/video"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm text-white/70 hover:text-white transition-all duration-300 group"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255,255,255,0.1)",
+            }}
+          >
+            <span
+              className="flex items-center justify-center w-6 h-6 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors"
+            >
+              <svg className="w-3 h-3 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            觀看影片
+          </a>
+        </div>
       </div>
 
       {/* Scroll indicator */}
