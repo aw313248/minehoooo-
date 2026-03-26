@@ -108,7 +108,7 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
   id: string; aspectRatio?: string; children: React.ReactNode;
 }) {
   const [active, setActive] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   return (
     <div className="relative overflow-hidden"
