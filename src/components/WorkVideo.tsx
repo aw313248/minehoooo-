@@ -51,27 +51,6 @@ const allReels = [
   { code: "C35vYmTSML-", tier: 4, label: "T4", year: "2023" },
 ];
 
-const tierColors: Record<number, string> = {
-  1: "linear-gradient(160deg,#1a0d2e 0%,#0d0618 100%)",
-  2: "linear-gradient(160deg,#0d1a2e 0%,#060e18 100%)",
-  3: "linear-gradient(160deg,#0a1e1a 0%,#050f0c 100%)",
-  4: "linear-gradient(160deg,#1a100a 0%,#0d0804 100%)",
-};
-
-const tierAccents: Record<number, string> = {
-  1: "rgba(160,80,255,0.5)",
-  2: "rgba(60,140,255,0.5)",
-  3: "rgba(60,200,160,0.5)",
-  4: "rgba(220,120,60,0.5)",
-};
-
-const tierLabels: Record<number, string> = {
-  1: "近期高表現",
-  2: "精選推薦",
-  3: "創意實驗",
-  4: "早期作品",
-};
-
 /* ─── Ripple ─── */
 function useRipple() {
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
@@ -121,57 +100,6 @@ function MvCard({ v, active, onClick }: { v: typeof featuredVideos[0]; active: b
   );
 }
 
-/* ─── IG Reel filmstrip card ─── */
-function IgFilmCard({ reel }: { reel: typeof allReels[0] }) {
-  const url = `https://www.instagram.com/reel/${reel.code}/`;
-  return (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="group shrink-0 block"
-      style={{ width: 110 }}>
-      <div className="relative overflow-hidden mb-2" style={{
-        aspectRatio: "9/16", borderRadius: 3,
-        background: tierColors[reel.tier],
-        border: "1px solid rgba(255,255,255,0.06)",
-      }}>
-        {/* Accent glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 80% 60% at 50% 80%, ${tierAccents[reel.tier]} 0%, transparent 70%)`,
-        }} />
-        {/* Grid lines */}
-        <div className="absolute inset-0 pointer-events-none opacity-10" style={{
-          backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.15) 0px, transparent 1px, transparent 30px)",
-        }} />
-        {/* IG icon */}
-        <div className="absolute top-2.5 right-2.5">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-            <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-            <circle cx="12" cy="12" r="4" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/>
-            <circle cx="17.5" cy="6.5" r="1.2" fill="rgba(255,255,255,0.5)"/>
-          </svg>
-        </div>
-        {/* Tier badge */}
-        <div className="absolute top-2.5 left-2.5">
-          <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-            style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)", color: "rgba(255,255,255,0.5)" }}>
-            {reel.label}
-          </span>
-        </div>
-        {/* Year */}
-        <div className="absolute bottom-2.5 left-2.5">
-          <span className="font-mono-label text-[7px]" style={{ color: "rgba(255,255,255,0.3)" }}>{reel.year}</span>
-        </div>
-        {/* Hover */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(2px)" }}>
-          <span className="font-mono-label text-[8px] tracking-widest" style={{ color: "rgba(255,255,255,0.8)" }}>↗ IG</span>
-        </div>
-      </div>
-      <p className="font-mono-label text-[7px] text-center" style={{ color: "var(--text-3)" }}>
-        {tierLabels[reel.tier]}
-      </p>
-    </a>
-  );
-}
-
 /* ─── Main ─── */
 export default function WorkVideo() {
   const [activeIdx, setActiveIdx]       = useState(0);
@@ -193,7 +121,7 @@ export default function WorkVideo() {
           <div>
             <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-2"
               style={{ color: "var(--text-3)", opacity: hIn ? 1 : 0, transition: "opacity .8s ease" }}>
-              02 — 影片
+              03 — 影片
             </span>
             <h2 className="font-display leading-none" style={{ fontSize: "clamp(3.5rem,9vw,11rem)", color: "var(--text)" }}>
               <WordReveal text="Video" inView={hIn} baseDelay={0.08} stagger={0.06} />
@@ -316,41 +244,87 @@ export default function WorkVideo() {
           </div>
         </div>
 
-        {/* Instagram Reels filmstrip */}
-        <div ref={igRef} className="px-8 md:px-14 py-7">
-          <div className="flex items-center justify-between mb-5">
-            <p className="font-mono-label text-[9px] tracking-[0.3em]"
-              style={{ color: "var(--text-3)", opacity: igIn ? 1 : 0, transition: "opacity .6s ease" }}>
-              INSTAGRAM REELS · @minehoooo
-            </p>
-            <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
-              className="font-mono-label text-[8px] tracking-wider transition-colors"
-              style={{ color: "var(--text-3)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}>
-              VIEW ALL ↗
-            </a>
-          </div>
+        {/* Instagram Reels — large editorial CTA block */}
+        <div ref={igRef}>
+          <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+            className="group block relative overflow-hidden border-t"
+            style={{ borderColor: "var(--border)" }}>
 
-          {/* Horizontal filmstrip */}
-          <div className="flex gap-2.5 overflow-x-auto pb-3" style={{ scrollbarWidth: "none" }}>
-            {allReels.map((r, i) => (
-              <div key={r.code}
-                style={{ opacity: igIn ? 1 : 0, transform: igIn ? "translateY(0)" : "translateY(16px)", transition: `opacity .5s ease ${i * .04}s, transform .5s ease ${i * .04}s` }}>
-                <IgFilmCard reel={r} />
-              </div>
-            ))}
-          </div>
+            {/* Background grid lines — editorial feel */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px)",
+              backgroundSize: "25% 100%",
+            }} />
 
-          {/* Tier legend */}
-          <div className="flex gap-5 mt-4">
-            {Object.entries(tierLabels).map(([tier, label]) => (
-              <div key={tier} className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-sm" style={{ background: tierColors[Number(tier)] }} />
-                <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>T{tier} · {label}</span>
+            {/* Ambient glow on hover */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
+              background: "radial-gradient(ellipse 60% 80% at 50% 50%, rgba(120,60,220,0.07) 0%, transparent 70%)",
+            }} />
+
+            <div className="relative px-8 md:px-14 py-12 md:py-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+
+              {/* Left — big typography */}
+              <div style={{
+                opacity: igIn ? 1 : 0,
+                transform: igIn ? "translateY(0)" : "translateY(40px)",
+                transition: "opacity .9s ease, transform .9s cubic-bezier(.16,1,.3,1)",
+              }}>
+                <p className="font-mono-label text-[9px] tracking-[0.35em] mb-4" style={{ color: "var(--text-3)" }}>
+                  INSTAGRAM REELS · @minehoooo
+                </p>
+                <h3 className="font-display leading-[0.88] mb-3" style={{
+                  fontSize: "clamp(4rem,11vw,13rem)",
+                  color: "var(--text)",
+                  letterSpacing: "0.01em",
+                }}>
+                  REELS
+                </h3>
+                <p className="font-mono-label text-[10px] tracking-[0.25em]" style={{ color: "var(--text-3)" }}>
+                  {allReels.length} SHORT FILMS · IG @minehoooo
+                </p>
               </div>
-            ))}
-          </div>
+
+              {/* Right — CTA + decorative count */}
+              <div className="flex flex-col items-start md:items-end gap-5" style={{
+                opacity: igIn ? 1 : 0,
+                transform: igIn ? "translateY(0)" : "translateY(40px)",
+                transition: "opacity .9s ease .15s, transform .9s cubic-bezier(.16,1,.3,1) .15s",
+              }}>
+                {/* Decorative vertical filmstrip marks */}
+                <div className="hidden md:flex flex-col gap-1">
+                  {allReels.map((r) => (
+                    <div key={r.code} style={{
+                      width: 28,
+                      height: 3,
+                      borderRadius: 1.5,
+                      background: `rgba(${r.tier === 1 ? "160,80,255" : r.tier === 2 ? "60,140,255" : r.tier === 3 ? "60,200,160" : "220,120,60"},${r.tier === 1 ? "0.5" : "0.3"})`,
+                      alignSelf: "flex-end",
+                    }} />
+                  ))}
+                </div>
+
+                {/* Arrow CTA */}
+                <div className="flex items-center gap-4">
+                  <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>
+                    VIEW ON INSTAGRAM
+                  </span>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-400 group-hover:scale-110 group-hover:bg-white/10"
+                    style={{ border: "1px solid rgba(255,255,255,0.2)" }}>
+                    <span style={{ color: "var(--text)", fontSize: 16 }}>↗</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom rule */}
+            <div className="absolute bottom-0 left-8 md:left-14 right-8 md:right-14 h-px"
+              style={{
+                background: "linear-gradient(to right, rgba(255,255,255,0.12), transparent)",
+                transform: igIn ? "scaleX(1)" : "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 1s cubic-bezier(.16,1,.3,1) .4s",
+              }} />
+          </a>
         </div>
       </div>
     </section>

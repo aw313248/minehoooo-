@@ -41,7 +41,7 @@ export default function WorkAIGC() {
           <div>
             <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-2"
               style={{ color: "var(--text-3)", opacity: hIn ? 1 : 0, transition: "opacity .8s ease" }}>
-              03 — AIGC 創作
+              04 — AIGC 創作
             </span>
             <h2 className="font-display leading-none" style={{ fontSize: "clamp(3rem,8vw,10rem)", color: "var(--text)" }}>
               <WordReveal text="AIGC" inView={hIn} baseDelay={0.05} stagger={0.07} />

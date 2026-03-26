@@ -90,7 +90,7 @@ export default function WorkPhotography() {
           <div>
             <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-5"
               style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
-              01 — 攝影
+              02 — 攝影
             </span>
             <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(3.5rem,8vw,9rem)", color: "var(--text)" }}>
               <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />

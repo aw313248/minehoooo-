@@ -4,10 +4,10 @@ import { useState, useEffect, useRef, useCallback, Children } from "react";
 
 const LABELS = [
   "HERO",
+  "ABOUT",
   "PHOTOGRAPHY",
   "VIDEO",
   "AIGC",
-  "ABOUT",
   "CONTACT",
 ];
 

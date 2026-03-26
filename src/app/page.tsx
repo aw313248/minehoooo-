@@ -16,10 +16,10 @@ export default function Home() {
       {/* Full-page 3D rotation scroll */}
       <PageScroll>
         <Hero />
+        <About />
         <WorkPhotography />
         <WorkVideo />
         <WorkAIGC />
-        <About />
         <Contact />
       </PageScroll>
     </>

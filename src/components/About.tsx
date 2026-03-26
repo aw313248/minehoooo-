@@ -47,6 +47,7 @@ export default function About() {
   const { ref: leftRef,  inView: leftIn  } = useInView(0.07, true);
   const { ref: bioRef,   inView: bioIn   } = useInView(0.05, true);
   const { ref: skillRef, inView: skillIn } = useInView(0.05, true);
+  const { ref: skRowRef, inView: skRowIn } = useInView(0.05, true);
 
   return (
     <section id="about" style={{ background: "var(--bg-dark)" }}>
@@ -54,15 +55,15 @@ export default function About() {
       <div className="border-t border-b px-6 md:px-10 py-3 flex items-center justify-between"
         style={{ borderColor: "var(--border)" }}>
         <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
-          ABOUT / 關於我
+          01 — ABOUT / 關於我
         </span>
         <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
           MINEH4O
         </span>
       </div>
 
-      {/* Top: identity + bio */}
-      <div className="grid md:grid-cols-[1fr_1.7fr] border-b" style={{ borderColor: "var(--border)" }}>
+      {/* Top: identity (left) + large photo (right) */}
+      <div className="grid md:grid-cols-[1.1fr_0.9fr] border-b" style={{ borderColor: "var(--border)" }}>
 
         {/* Left: identity */}
         <div ref={leftRef} className="border-r p-8 md:p-14 flex flex-col gap-8"
@@ -72,15 +73,6 @@ export default function About() {
             transform: leftIn ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
             transition: "opacity 1s ease, transform 1s cubic-bezier(0.16,1,0.3,1)",
           }}>
-          {/* Profile photo — full frame, no crop */}
-          <div className="mb-6 relative overflow-hidden"
-            style={{ width: 160, height: 200, borderRadius: 4, border: "1px solid rgba(255,255,255,0.1)" }}>
-            <Image src="/profile.png" alt="minehoooo — Oscar Lai" fill
-              className="object-contain" style={{ objectPosition: "center top" }} />
-            {/* Frosted glass bottom gradient */}
-            <div className="absolute bottom-0 left-0 right-0 h-8"
-              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.4), transparent)", backdropFilter: "blur(2px)" }} />
-          </div>
 
           <div>
             <h2 className="font-display leading-none" style={{ fontSize: "clamp(3.5rem, 7vw, 8rem)", color: "var(--text)" }}>
@@ -111,65 +103,96 @@ export default function About() {
             ))}
           </div>
 
-          <div className="border-t pt-6 space-y-1.5" style={{ borderColor: "var(--border)" }}>
+          <div className="border-t pt-6 space-y-2" style={{ borderColor: "var(--border)" }}>
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
-              AWARDS / 獎項
+              SELECTED CREDITS / 部分合作
             </p>
             {[
-              "「紅箱子」入圍 2023 放視大賞",
-              "《光與景三部曲》獲獎 + 流量",
-              "《記住你要快樂》獲獎 + 流量",
-              "傳播藝術系 27th 系學會副會長",
+              { text: "Kolli — MV Director · DP", accent: true },
+              { text: "曾任多位知名音樂人 MV 攝影師" },
+              { text: "藝人商業攝影 · 形象拍攝" },
+              { text: "「紅箱子」入圍 2023 放視大賞" },
+              { text: "《光與景三部曲》《記住你要快樂》獲獎" },
+              { text: "傳播藝術系 27th 系學會副會長" },
             ].map((item) => (
-              <p key={item} className="font-mono-label text-[9px] leading-relaxed" style={{ color: "var(--text-3)" }}>
-                — {item}
+              <p key={item.text} className="font-mono-label text-[9px] leading-relaxed"
+                style={{ color: item.accent ? "var(--text-2)" : "var(--text-3)" }}>
+                — {item.text}
               </p>
             ))}
           </div>
         </div>
 
-        {/* Right: bio */}
-        <div ref={bioRef} className="p-8 md:p-14 flex flex-col gap-10">
-          {/* Chinese */}
-          <div>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
-              ZH / 中文介紹
+        {/* Right: large profile photo */}
+        <div ref={bioRef} className="relative overflow-hidden"
+          style={{
+            minHeight: "60vh",
+            opacity: bioIn ? 1 : 0,
+            transform: bioIn ? "scale(1)" : "scale(1.03)",
+            transition: "opacity 1.1s ease .1s, transform 1.4s cubic-bezier(.16,1,.3,1) .1s",
+          }}>
+          <Image
+            src="/profile.png"
+            alt="minehoooo — Oscar Lai"
+            fill
+            className="object-cover"
+            style={{ objectPosition: "center top" }}
+          />
+          {/* Subtle left fade to blend with border */}
+          <div className="absolute inset-y-0 left-0 w-12 pointer-events-none"
+            style={{ background: "linear-gradient(to right, var(--bg-dark), transparent)" }} />
+          {/* Bottom fade */}
+          <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
+            style={{ background: "linear-gradient(to top, var(--bg-dark), transparent)" }} />
+          {/* Name tag at bottom */}
+          <div className="absolute bottom-6 left-6">
+            <p className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.4)" }}>
+              MINEH4O · @minehoooo
             </p>
-            <div className="space-y-4 max-w-lg">
-              {bioCn.map((line, i) => (
-                <AnimLine key={i} delay={i * 0.1} inView={bioIn}>
-                  <p className="text-[15px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
-                </AnimLine>
-              ))}
-            </div>
           </div>
+        </div>
+      </div>
 
-          {/* English */}
-          <div className="border-t pt-8" style={{ borderColor: "var(--border)" }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
-              EN / ENGLISH
-            </p>
-            <div className="space-y-3 max-w-lg">
-              {bioEn.map((line, i) => (
-                <AnimLine key={i} delay={0.3 + i * 0.1} inView={bioIn}>
-                  <p className="text-[13px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
-                </AnimLine>
-              ))}
-            </div>
+      {/* Bio — full width below */}
+      <div ref={skillRef} className="grid md:grid-cols-2 border-b" style={{ borderColor: "var(--border)" }}>
+        {/* Chinese */}
+        <div className="border-r p-8 md:p-12" style={{ borderColor: "var(--border)" }}>
+          <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
+            ZH / 中文介紹
+          </p>
+          <div className="space-y-4">
+            {bioCn.map((line, i) => (
+              <AnimLine key={i} delay={i * 0.08} inView={skillIn}>
+                <p className="text-[14px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
+              </AnimLine>
+            ))}
+          </div>
+        </div>
+        {/* English */}
+        <div className="p-8 md:p-12">
+          <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
+            EN / ENGLISH
+          </p>
+          <div className="space-y-3">
+            {bioEn.map((line, i) => (
+              <AnimLine key={i} delay={0.1 + i * 0.08} inView={skillIn}>
+                <p className="text-[13px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
+              </AnimLine>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Skills row */}
-      <div ref={skillRef} className="grid md:grid-cols-4 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={skRowRef} className="grid md:grid-cols-4 border-b" style={{ borderColor: "var(--border)" }}>
         {skills.map((skill, i) => (
           <div
             key={skill.en}
             className="border-r last:border-r-0 p-6 md:p-8"
             style={{
               borderColor: "var(--border)",
-              opacity: skillIn ? 1 : 0,
-              transform: skillIn ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
+              opacity: skRowIn ? 1 : 0,
+              transform: skRowIn ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
               transition: `opacity 0.7s ease ${i * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s`,
             }}
           >
