@@ -34,11 +34,11 @@ export default function IntroScreen() {
   };
 
   useEffect(() => {
-    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("intro-v1")) {
+    if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("intro-v2")) {
       setPhase("done");
       return;
     }
-    if (typeof sessionStorage !== "undefined") sessionStorage.setItem("intro-v1", "1");
+    if (typeof sessionStorage !== "undefined") sessionStorage.setItem("intro-v2", "1");
 
     const idx = Math.floor(Math.random() * QUOTES.length);
     setQuoteIdx(idx);
@@ -53,7 +53,7 @@ export default function IntroScreen() {
     ];
     timers.current = t;
     return () => t.forEach(clearTimeout);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   if (phase === "done") return null;
 
