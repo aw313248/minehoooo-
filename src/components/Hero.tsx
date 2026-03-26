@@ -33,13 +33,16 @@ function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [quoteIdx, setQuoteIdx] = useState(0);
   const q = QUOTES[quoteIdx];
 
   useEffect(() => {
     setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
     const t = setTimeout(() => setLoaded(true), 180);
-    return () => clearTimeout(t);
+    const onPageChange = (e: Event) => setIsActive((e as CustomEvent<number>).detail === 0);
+    window.addEventListener("pagechange", onPageChange);
+    return () => { clearTimeout(t); window.removeEventListener("pagechange", onPageChange); };
   }, []);
 
   return (
@@ -86,20 +89,16 @@ export default function Hero() {
       </div>
 
       {/* ── Cinematic corner brackets ── */}
-      {/* Top-left */}
-      <CornerBracket pos="tl" delay={0.4} loaded={loaded} />
-      {/* Top-right */}
-      <CornerBracket pos="tr" delay={0.5} loaded={loaded} />
-      {/* Bottom-left */}
-      <CornerBracket pos="bl" delay={0.6} loaded={loaded} />
-      {/* Bottom-right */}
-      <CornerBracket pos="br" delay={0.7} loaded={loaded} />
+      <CornerBracket pos="tl" delay={0.4} loaded={loaded && isActive} />
+      <CornerBracket pos="tr" delay={0.5} loaded={loaded && isActive} />
+      <CornerBracket pos="bl" delay={0.6} loaded={loaded && isActive} />
+      <CornerBracket pos="br" delay={0.7} loaded={loaded && isActive} />
 
       {/* ── REC indicator (top right) ── */}
       <div className="absolute hidden md:flex items-center gap-2 pointer-events-none"
         style={{
           top: "2rem", right: "2.5rem", zIndex: 10,
-          opacity: loaded ? 1 : 0, transition: "opacity 1.2s ease 2.2s",
+          opacity: loaded && isActive ? 1 : 0, transition: "opacity 1.2s ease 2.2s",
         }}>
         <div style={{
           width: 6, height: 6, borderRadius: "50%",
