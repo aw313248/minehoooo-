@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
-import { WordReveal } from "@/components/WordReveal";
 
 const bioCn = [
   "我叫明宏，英文名 Oscar，高中以前，我還說不清楚這個名字對我有什麼意義",

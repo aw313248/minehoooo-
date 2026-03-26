@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 interface VideoPlayerProps {
@@ -41,7 +42,7 @@ export default function VideoPlayer({ videoId }: VideoPlayerProps) {
           transition: "opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s",
         }}
       >
-        <a
+        <Link
           href="/"
           className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-sm group"
         >
@@ -55,7 +56,7 @@ export default function VideoPlayer({ videoId }: VideoPlayerProps) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
           返回
-        </a>
+        </Link>
       </div>
 
       {/* Content */}

@@ -77,8 +77,10 @@ const eventVideos = [
 ];
 
 const ytShorts = [
-  { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
-  { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",         tags: ["#器材", "#DJI"]   },
+  { id: "pFvDTEf9fh0",  title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
+  { id: "43uhkGuAitU",  title: "DJI Osmo 360 開箱",         tags: ["#器材", "#DJI"]   },
+  { id: "EoJmdg8SxsI",  title: "Short Film",                tags: ["#短片"]            },
+  { id: "5Y5u1Mtbmmo",  title: "Short Film",                tags: ["#短片"]            },
 ];
 
 const allReels = [

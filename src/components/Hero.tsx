@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CharReveal, WordReveal } from "@/components/WordReveal";
+import { CharReveal } from "@/components/WordReveal";
 
 const V_LABELS     = ["Visual Production", "Creative Direction", "AIGC Creation"];
 const TAGLINE      = ["Director", "·", "DP", "·", "Screenplay", "·", "Photography"];

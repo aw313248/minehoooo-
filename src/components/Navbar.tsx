@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const navLinks = [
@@ -28,9 +29,9 @@ export default function Navbar() {
       }}
     >
       <nav className="flex items-center justify-between px-6 md:px-10 py-4">
-        <a href="/" className="font-display text-lg text-[#f5f5f7] tracking-widest">
+        <Link href="/" className="font-display text-lg text-[#f5f5f7] tracking-widest">
           MINEH4O
-        </a>
+        </Link>
 
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-10">
