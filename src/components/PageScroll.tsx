@@ -15,40 +15,80 @@ interface Props {
   children: React.ReactNode;
 }
 
-function getStyle(offset: number): React.CSSProperties {
+// Each page index gets a different entrance style
+// 0=rotateX  1=rise+scale  2=blur+fade  3=rotateX  4=rise+scale  5=blur+fade ...
+function getStyle(offset: number, absIndex: number): React.CSSProperties {
+  const variant = absIndex % 3;
+
   const base: React.CSSProperties = {
     position: "absolute",
     inset: 0,
     overflowY: "auto",
     overflowX: "hidden",
-    transition: "transform 0.92s cubic-bezier(0.16,1,0.3,1), opacity 0.92s cubic-bezier(0.16,1,0.3,1)",
-    transformOrigin: "50% 100%",
-    willChange: "transform, opacity",
+    willChange: "transform, opacity, filter",
     backfaceVisibility: "hidden",
     WebkitBackfaceVisibility: "hidden",
   };
 
+  // ── Active page ──
   if (offset === 0) return {
     ...base,
-    transform: "perspective(1400px) rotateX(0deg) translateY(0%) scale(1)",
+    transform: "none",
     opacity: 1,
+    filter: "blur(0px)",
     zIndex: 20,
     pointerEvents: "auto",
+    transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.88s cubic-bezier(0.16,1,0.3,1), filter 0.88s ease",
+    transformOrigin: "50% 100%",
   };
+
+  // ── Pages that have been visited (above current) — uniform fold-back ──
   if (offset < 0) return {
     ...base,
-    transform: "perspective(1400px) rotateX(-18deg) translateY(-6%) scale(0.86)",
+    transform: "perspective(1400px) rotateX(-18deg) translateY(-7%) scale(0.85)",
     opacity: 0,
+    filter: "blur(0px)",
     zIndex: 10,
     pointerEvents: "none",
+    transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.72s ease, filter 0.72s ease",
+    transformOrigin: "50% 100%",
   };
-  // offset > 0
+
+  // ── Pages waiting below — vary by index ──
+  if (variant === 0) {
+    // Rotate-X perspective flip (cinematic)
+    return {
+      ...base,
+      transform: `perspective(1400px) rotateX(12deg) translateY(${offset * 100}%) scale(0.94)`,
+      opacity: offset === 1 ? 0.04 : 0,
+      filter: "blur(0px)",
+      zIndex: Math.max(15 - offset, 1),
+      pointerEvents: "none",
+      transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease",
+      transformOrigin: "50% 100%",
+    };
+  }
+  if (variant === 1) {
+    // Pure vertical rise + scale (clean, no perspective)
+    return {
+      ...base,
+      transform: `translateY(${offset * 100}%) scale(0.96)`,
+      opacity: 0,
+      filter: "blur(0px)",
+      zIndex: Math.max(15 - offset, 1),
+      pointerEvents: "none",
+      transition: "transform 0.92s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease",
+    };
+  }
+  // variant === 2: blur + scale reveal
   return {
     ...base,
-    transform: `perspective(1400px) rotateX(10deg) translateY(${offset * 100}%) scale(0.94)`,
-    opacity: offset === 1 ? 0.05 : 0,
+    transform: `translateY(${offset * 100}%) scale(0.88)`,
+    opacity: 0,
+    filter: offset === 1 ? "blur(12px)" : "blur(4px)",
     zIndex: Math.max(15 - offset, 1),
     pointerEvents: "none",
+    transition: "transform 0.92s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease, filter 0.9s ease",
   };
 }
 
@@ -139,7 +179,7 @@ export default function PageScroll({ children }: Props) {
         <div
           key={i}
           ref={el => { refs.current[i] = el; }}
-          style={getStyle(i - page)}
+          style={getStyle(i - page, i)}
         >
           {child}
         </div>

@@ -108,11 +108,11 @@ export default function About() {
               SELECTED CREDITS / 部分合作
             </p>
             {[
-              { text: "Kolli — MV Director · DP", accent: true },
-              { text: "曾任多位知名音樂人 MV 攝影師" },
-              { text: "藝人商業攝影 · 形象拍攝" },
+              { text: "陳芳語 Kimberley Chen — MV COLOR",  accent: true },
+              { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP", accent: true },
+              { text: "Kolli — MV DIR · DP",              accent: true },
+              { text: "多位知名音樂人 MV 攝影 · 調色" },
               { text: "「紅箱子」入圍 2023 放視大賞" },
-              { text: "《光與景三部曲》《記住你要快樂》獲獎" },
               { text: "傳播藝術系 27th 系學會副會長" },
             ].map((item) => (
               <p key={item.text} className="font-mono-label text-[9px] leading-relaxed"

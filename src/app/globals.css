@@ -43,6 +43,11 @@ body {
   display: none;
 }
 
+/* ── Custom cursor on mouse devices ── */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+}
+
 /* ── GRAIN TEXTURE ── */
 /* Two layers: fine grain + coarse grain  */
 body::after {
