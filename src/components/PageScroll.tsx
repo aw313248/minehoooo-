@@ -143,10 +143,10 @@ export default function PageScroll({ children }: Props) {
 
       if (e.deltaY > 0 && atBottom) {
         e.preventDefault();
-        if (!transitioning && now - last > 700) { last = now; navigate(1); }
+        if (!transitioning && now - last > 950) { last = now; navigate(1); }
       } else if (e.deltaY < 0 && atTop) {
         e.preventDefault();
-        if (!transitioning && now - last > 700) { last = now; navigate(-1); }
+        if (!transitioning && now - last > 950) { last = now; navigate(-1); }
       }
     };
 
@@ -238,7 +238,8 @@ export default function PageScroll({ children }: Props) {
                 setPage(i);
               }
             }}
-            title={lbl}
+            aria-label={`Go to ${lbl}`}
+            aria-current={i === page ? "page" : undefined}
             style={{
               display: "flex", alignItems: "center", gap: 6, background: "none", border: "none",
               cursor: "pointer", padding: "2px 0",
