@@ -112,9 +112,9 @@ export default function About() {
                 transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
               {q.lines.map((line, i) => (
                 <p key={i} style={{
-                  fontFamily: "var(--font-bebas), sans-serif",
-                  fontSize: "clamp(0.9rem, 1.8vw, 1.3rem)", color: "rgba(255,255,255,0.88)",
-                  letterSpacing: "0.06em", lineHeight: 1.25, marginBottom: i < q.lines.length - 1 ? 2 : 0,
+                  fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+                  fontSize: "0.88rem", fontWeight: 300, color: "rgba(255,255,255,0.82)",
+                  letterSpacing: "0.02em", lineHeight: 1.7, marginBottom: i < q.lines.length - 1 ? 2 : 0,
                   opacity: coverHover ? 1 : 0, transform: coverHover ? "translateY(0)" : "translateY(6px)",
                   transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
                 }}>{line}</p>
@@ -213,9 +213,9 @@ export default function About() {
               }}>
                 {q.lines.map((line, i) => (
                   <p key={i} style={{
-                    fontFamily: "var(--font-bebas), sans-serif",
-                    fontSize: "clamp(0.85rem, 1.5vw, 1.15rem)", color: "rgba(255,255,255,0.88)",
-                    letterSpacing: "0.06em", lineHeight: 1.25, marginBottom: i < q.lines.length - 1 ? 2 : 0,
+                    fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+                    fontSize: "0.82rem", fontWeight: 300, color: "rgba(255,255,255,0.82)",
+                    letterSpacing: "0.02em", lineHeight: 1.7, marginBottom: i < q.lines.length - 1 ? 2 : 0,
                     opacity: panelHover ? 1 : 0, transform: panelHover ? "translateY(0)" : "translateY(4px)",
                     transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
                   }}>{line}</p>
@@ -331,7 +331,7 @@ export default function About() {
             <div className="space-y-4 max-w-lg">
               {bioCn.map((line, i) => (
                 <AnimLine key={i} delay={i * 0.09} inView={bioIn}>
-                  <p className="text-[14px] md:text-[15px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
+                  <p className="text-[15px] md:text-[16px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
                 </AnimLine>
               ))}
             </div>
@@ -345,7 +345,7 @@ export default function About() {
             <div className="space-y-3 max-w-lg">
               {bioEn.map((line, i) => (
                 <AnimLine key={i} delay={0.15 + i * 0.07} inView={bioIn}>
-                  <p className="text-[13px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
+                  <p className="text-[14px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
                 </AnimLine>
               ))}
             </div>

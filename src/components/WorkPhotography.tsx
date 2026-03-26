@@ -61,15 +61,19 @@ function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (src: str
 }
 
 export default function WorkPhotography() {
-  const [activeId, setActiveId]   = useState(photoCategories[0].id);
+  const [activeId, setActiveId]   = useState(() => {
+    const idx = Math.floor(Math.random() * photoCategories.length);
+    return photoCategories[idx].id;
+  });
   const [heroIdx, setHeroIdx]     = useState(0);
   const [lightbox, setLightbox]   = useState<string | null>(null);
   const { ref, inView }           = useInView(0.05);
   const cat = photoCategories.find(c => c.id === activeId)!;
 
-  // Auto-cycle hero image every 4 s
+  // Auto-cycle hero image every 4 s, starting from a random frame
   useEffect(() => {
-    setHeroIdx(0);
+    const startIdx = Math.floor(Math.random() * Math.min(cat.files.length, 6));
+    setHeroIdx(startIdx);
     const t = setInterval(() => setHeroIdx(i => (i + 1) % Math.min(cat.files.length, 6)), 4000);
     return () => clearInterval(t);
   }, [activeId, cat.files.length]);
@@ -80,11 +84,11 @@ export default function WorkPhotography() {
     <>
       {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
 
-      <section className="h-screen flex flex-col md:flex-row overflow-hidden" style={{ background: "#000" }}>
+      <section style={{ background: "#000", minHeight: "100vh" }} className="md:h-screen md:overflow-hidden md:flex md:flex-row">
 
-        {/* ── PHOTO (mobile: top 62%, desktop: right flex-1) ── */}
+        {/* ── PHOTO (desktop: right flex-1 | mobile: top portion) ── */}
         <div className="relative overflow-hidden cursor-pointer order-first md:order-last md:flex-1"
-          style={{ flex: "0 0 62%", minHeight: 0 }}
+          style={{ height: "62vw", minHeight: 180 }}
           onClick={() => setLightbox(heroSrc)}>
 
           {/* Hero image (crossfade cycle) */}
@@ -133,9 +137,9 @@ export default function WorkPhotography() {
           </div>
         </div>
 
-        {/* ── CONTROLS (mobile: bottom 38%, desktop: left 38%) ── */}
-        <div ref={ref} className="relative z-10 flex flex-col md:justify-between md:w-[38%] shrink-0 border-r md:p-12 overflow-y-auto"
-          style={{ flex: "0 0 38%", borderColor: "var(--border)", background: "rgba(0,0,0,0.75)", backdropFilter: "blur(24px)" }}>
+        {/* ── CONTROLS (desktop: left 38% sticky | mobile: below photo, full scroll) ── */}
+        <div ref={ref} className="relative z-10 flex flex-col md:justify-between md:w-[38%] shrink-0 border-r md:p-12 md:overflow-y-auto"
+          style={{ borderColor: "var(--border)", background: "rgba(0,0,0,0.75)", backdropFilter: "blur(24px)" }}>
 
           {/* ── Desktop title ── */}
           <div className="hidden md:block">
@@ -180,16 +184,19 @@ export default function WorkPhotography() {
             ))}
           </div>
 
-          {/* ── Mobile: compact thumbnail strip ── */}
-          <div className="md:hidden px-4 pb-3 flex-1 flex flex-col justify-end">
-            <div className="flex gap-1.5 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-              {cat.files.slice(0, 8).map((f) => {
+          {/* ── Mobile: full photo grid (all photos, scrollable) ── */}
+          <div className="md:hidden px-3 pb-8 pt-2">
+            <p className="font-mono-label text-[8px] tracking-[0.3em] mb-3 px-1" style={{ color: "var(--text-3)" }}>
+              {cat.files.length} PHOTOS — TAP TO ENLARGE
+            </p>
+            <div className="grid grid-cols-2 gap-1">
+              {cat.files.map((f) => {
                 const src = encode(cat.id, f);
                 return (
-                  <div key={f} className="shrink-0 overflow-hidden cursor-pointer"
-                    style={{ width: 52, height: 52, borderRadius: 2 }}
+                  <div key={f} className="relative overflow-hidden cursor-pointer"
+                    style={{ aspectRatio: "4/3", borderRadius: 2 }}
                     onClick={() => setLightbox(src)}>
-                    <Image src={src} alt={f} fill className="object-cover" />
+                    <Image src={src} alt={f} fill className="object-cover transition-transform duration-500 active:scale-95" />
                   </div>
                 );
               })}

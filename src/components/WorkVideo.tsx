@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
-import { WordReveal } from "@/components/WordReveal";
 import { AnimLine } from "@/components/AnimLine";
 
 /* ─── Data ─── */
@@ -180,169 +179,168 @@ function SectionLabel({ label }: { label: string }) {
 }
 
 /* ─── Ripple ─── */
-function useRipple() {
-  const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
-  const trigger = (e: React.MouseEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const id = Date.now();
-    setRipples(p => [...p, { x: e.clientX - r.left, y: e.clientY - r.top, id }]);
-    setTimeout(() => setRipples(p => p.filter(x => x.id !== id)), 700);
-  };
-  return { ripples, trigger };
-}
-
-/* ─── Featured MV selector card ─── */
-function MvCard({ v, active, onClick }: { v: typeof featuredMVs[0]; active: boolean; onClick: () => void }) {
-  return (
-    <button onClick={onClick} className="text-left w-full group" style={{ opacity: active ? 1 : 0.4, transition: "opacity .4s" }}>
-      <div className="relative overflow-hidden mb-2.5" style={{ aspectRatio: "16/9", borderRadius: 3, background: "#050505" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
-        <div className="absolute inset-0" style={{ background: active ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.55)", transition: "background .4s" }} />
-        <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">
-          {v.tags.map(t => (
-            <span key={t} className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-              style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.7)" }}>
-              {t}
-            </span>
-          ))}
-        </div>
-        {active && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.2)" }}>
-              <svg className="w-3.5 h-3.5 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-            </div>
-          </div>
-        )}
-      </div>
-      <p className="font-mono-label text-[8px] tracking-[0.25em] mb-0.5" style={{ color: "var(--text-3)" }}>{v.subEn}</p>
-      <p className="text-[13px] font-medium leading-tight" style={{ color: "var(--text)" }}>{v.title}</p>
-      {v.artist && <p className="font-mono-label text-[9px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist}</p>}
-      <div className="mt-1.5"><RoleTag text={v.role} /></div>
-    </button>
-  );
-}
-
 /* ─── Main ─── */
 export default function WorkVideo() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [playing, setPlaying]     = useState(false);
-  const { ripples: pr, trigger: pt } = useRipple();
+  const [heroLoaded, setHeroLoaded] = useState(false);
 
-  const { ref: hRef,  inView: hIn  } = useInView(0.05);
-  const { ref: pRef,  inView: pIn  } = useInView(0.04);
+  const { ref: pRef,  inView: pIn  } = useInView(0.02);
   const { ref: wRef,  inView: wIn  } = useInView(0.02);
   const { ref: evRef, inView: evIn } = useInView(0.02);
   const { ref: sRef,  inView: sIn  } = useInView(0.04);
   const { ref: igRef, inView: igIn } = useInView(0.04);
+
+  useEffect(() => {
+    const t = setTimeout(() => setHeroLoaded(true), 150);
+    return () => clearTimeout(t);
+  }, []);
 
   const active = featuredMVs[activeIdx];
 
   return (
     <section style={{ background: "#000", minHeight: "100vh" }}>
 
-      {/* ── HEADER — sticky ── */}
-      <div ref={hRef} className="border-b px-8 md:px-14 pt-20 pb-5"
-        style={{
-          borderColor: "var(--border)",
-          position: "sticky", top: 0, zIndex: 10,
-          background: "rgba(0,0,0,0.9)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-        }}>
-        <div className="flex items-end justify-between">
-          <div>
-            <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-2"
-              style={{ color: "var(--text-3)", opacity: hIn ? 1 : 0, transition: "opacity .8s ease" }}>
-              03 — 影片
-            </span>
-            <h2 className="font-display leading-none" style={{ fontSize: "clamp(3.5rem,9vw,11rem)", color: "var(--text)" }}>
-              <WordReveal text="Video" inView={hIn} baseDelay={0.08} stagger={0.06} />
-            </h2>
+      {/* ── CINEMATIC HERO — fullscreen featured MV ── */}
+      <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+
+        {/* Background: muted autoplay when not in full-play mode */}
+        {!playing && (
+          <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
+              style={{ width: "100%", height: "100%", border: "none" }}
+              allow="autoplay; encrypted-media"
+              title={`${active.title} background`}
+            />
           </div>
-          <p className="font-mono-label text-[9px] text-right hidden md:block pb-2" style={{ color: "var(--text-3)" }}>
-            Music Video · Short Film<br />Commercial · IG Reels
-          </p>
-        </div>
-      </div>
+        )}
 
-      {/* ── 01 · FEATURED — selector + big player ── */}
-      <div ref={pRef} className="grid md:grid-cols-[1fr_2.4fr] border-b"
-        style={{ minHeight: "90vh", borderColor: "var(--border)" }}>
+        {/* Full-screen player overlay (with sound) */}
+        {playing && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 15 }}>
+            <iframe className="w-full h-full"
+              src={`https://www.youtube.com/embed/${active.id}?autoplay=1&rel=0&modestbranding=1&color=white`}
+              title={active.title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen style={{ border: "none" }}
+            />
+          </div>
+        )}
 
-        {/* Left: selector */}
-        <div className="border-r p-6 md:p-8 flex flex-col gap-5"
-          style={{
-            borderColor: "var(--border)",
-            opacity: pIn ? 1 : 0,
-            transform: pIn ? "translateY(0)" : "translateY(32px)",
-            transition: "opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1)",
-          }}>
-          <SectionLabel label="MUSIC VIDEO / 音樂錄影帶" />
-          {featuredMVs.map((v, i) => (
-            <MvCard key={v.id} v={v} active={activeIdx === i}
-              onClick={() => { setActiveIdx(i); setPlaying(false); }} />
-          ))}
-        </div>
+        {/* Gradient overlays — cinematic */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+          background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.35) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+          background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 60%)" }} />
 
-        {/* Right: player */}
-        <div className="relative p-6 md:p-10 flex flex-col justify-center"
-          style={{ opacity: pIn ? 1 : 0, transition: "opacity .8s ease .15s" }}>
-          <div className="relative w-full overflow-hidden"
-            style={{ aspectRatio: "16/9", borderRadius: 4, background: "#050505" }}
-            onClick={e => { pt(e); setPlaying(true); }}>
-            {pr.map(r => (
-              <span key={r.id} style={{
-                position: "absolute", left: r.x - 60, top: r.y - 60,
-                width: 120, height: 120, borderRadius: "50%",
-                background: "rgba(255,255,255,0.12)",
-                animation: "ripple .7s ease-out forwards", pointerEvents: "none",
-              }} />
+        {/* Top: section label + MV switcher */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
+          padding: "2.2rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%)",
+          opacity: heroLoaded ? 1 : 0,
+          transition: "opacity .6s ease",
+        }}>
+          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "rgba(255,255,255,0.38)" }}>
+            03 — VIDEO
+          </span>
+          <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
+            {featuredMVs.map((v, i) => (
+              <button key={v.id} onClick={() => { setActiveIdx(i); setPlaying(false); }}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 0" }}>
+                <span className="font-mono-label" style={{
+                  fontSize: 8, letterSpacing: "0.28em",
+                  color: i === activeIdx ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
+                  borderBottom: i === activeIdx ? "1px solid rgba(255,255,255,0.45)" : "1px solid transparent",
+                  paddingBottom: 3, transition: "color .3s, border-color .3s",
+                }}>
+                  {String(i + 1).padStart(2, "0")} {i === activeIdx ? `· ${v.subEn.split("·")[0].trim()}` : ""}
+                </span>
+              </button>
             ))}
-            {!playing ? (
-              <div className="absolute inset-0 group cursor-pointer">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`} alt={active.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-                  onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }} />
-                <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.22)" }} />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                    style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.2)" }}>
-                    <svg className="w-6 h-6 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                  </div>
-                </div>
-                <div className="absolute bottom-4 left-4">
-                  <p className="font-mono-label text-[9px] tracking-widest" style={{ color: "rgba(255,255,255,0.45)" }}>CLICK TO PLAY</p>
-                </div>
-              </div>
-            ) : (
-              <iframe className="absolute inset-0 w-full h-full"
-                src={`https://www.youtube.com/embed/${active.id}?autoplay=1&rel=0&modestbranding=1&color=white`}
-                title={active.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen />
+          </div>
+        </div>
+
+        {/* Bottom left: title block */}
+        {!playing && (
+          <div style={{ position: "absolute", bottom: "3.5rem", left: "3rem", right: "3rem", zIndex: 10 }}>
+            {/* Role / category row */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 10, marginBottom: 14,
+              opacity: heroLoaded ? 1 : 0,
+              transform: heroLoaded ? "translateX(0)" : "translateX(-20px)",
+              transition: "opacity .7s ease .1s, transform .7s cubic-bezier(.16,1,.3,1) .1s",
+            }}>
+              <RoleTag text={active.role} />
+              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)" }}>
+                {active.subEn.toUpperCase()}
+              </span>
+            </div>
+
+            {/* Title — large Bebas */}
+            <h2 className="font-display leading-none" style={{
+              fontSize: "clamp(3.2rem, 10vw, 13rem)",
+              color: "var(--text)", letterSpacing: "0.01em",
+              opacity: heroLoaded ? 1 : 0,
+              transform: heroLoaded ? "translateX(0)" : "translateX(-28px)",
+              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .18s, transform .9s cubic-bezier(.16,1,.3,1) .18s",
+            }}>
+              {active.title}
+            </h2>
+
+            {/* Director */}
+            {active.artist && (
+              <p className="font-mono-label" style={{
+                fontSize: 10, letterSpacing: "0.18em", marginTop: 14,
+                color: "rgba(255,255,255,0.45)",
+                opacity: heroLoaded ? 1 : 0,
+                transform: heroLoaded ? "translateX(0)" : "translateX(-16px)",
+                transition: "opacity .7s ease .32s, transform .7s cubic-bezier(.16,1,.3,1) .32s",
+              }}>
+                Directed by <span style={{ color: "rgba(255,255,255,0.72)" }}>{active.artist}</span>
+              </p>
             )}
           </div>
-          <div className="mt-4 flex items-center justify-between">
-            <div>
-              <p className="text-[16px] font-medium" style={{ color: "var(--text)" }}>{active.title}</p>
-              <p className="font-mono-label text-[9px] mt-0.5" style={{ color: "var(--text-3)" }}>{active.subZh}</p>
-            </div>
-            <div className="flex items-center gap-3">
-              <RoleTag text={active.role} />
-              {playing && (
-                <button onClick={e => { e.stopPropagation(); setPlaying(false); }}
-                  className="font-mono-label text-[8px] tracking-widest px-3 py-1.5"
-                  style={{ color: "var(--text-3)", border: "1px solid rgba(255,255,255,0.12)" }}>
-                  STOP
-                </button>
-              )}
-            </div>
+        )}
+
+        {/* Bottom right: play / stop */}
+        <div style={{ position: "absolute", bottom: "3.5rem", right: "3rem", zIndex: 10,
+          opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
+          {!playing ? (
+            <button onClick={() => setPlaying(true)}
+              className="group flex items-center gap-2.5"
+              style={{
+                background: "rgba(255,255,255,0.07)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid rgba(255,255,255,0.15)", padding: "10px 20px", cursor: "pointer",
+                transition: "background .3s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)"; }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
+              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
+              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>↗</span>
+            </button>
+          ) : (
+            <button onClick={() => setPlaying(false)}
+              className="font-mono-label"
+              style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text-3)",
+                border: "1px solid rgba(255,255,255,0.12)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
+              ✕ STOP
+            </button>
+          )}
+        </div>
+
+        {/* Scroll hint */}
+        <div style={{
+          position: "absolute", bottom: "3.5rem", left: "50%", transform: "translateX(-50%)",
+          zIndex: 10, opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .7s",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
+        }}>
+          <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
+          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.25)" }}>SCROLL</span>
         </div>
       </div>
 
@@ -351,7 +349,7 @@ export default function WorkVideo() {
 
         {/* Light & Scene Trilogy */}
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease" }}>
-          <SectionLabel label="LIGHT & SCENE TRILOGY / 光與景三部曲 — 陳卓 Jon Chen · 獲獎系列" />
+          <SectionLabel label="LIGHT & SCENE TRILOGY — Jon Chen · Award Series" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-0">
             {trilogy.map((v, i) => (
               <AnimLine key={v.id} delay={0.08 + i * 0.1} inView={wIn}>
@@ -363,7 +361,7 @@ export default function WorkVideo() {
 
         {/* Color Grade */}
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease .1s" }}>
-          <SectionLabel label="COLOR GRADE / 調色作品" />
+          <SectionLabel label="COLOR GRADE" />
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {colorCredits.map((v, i) => (
               <AnimLine key={v.id} delay={0.1 + i * 0.07} inView={wIn}>
@@ -387,7 +385,7 @@ export default function WorkVideo() {
                       onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${shortFilm.id}/hqdefault.jpg`; }} />
                     <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.2)" }} />
                     <div className="absolute top-2 left-2">
-                      <span className="font-mono-label text-[6px] tracking-widest px-2 py-1"
+                      <span className="font-mono-label text-[9px] tracking-wider px-3 py-1.5"
                         style={{ background: "rgba(255,220,80,0.15)", border: "1px solid rgba(255,220,80,0.3)", color: "rgba(255,220,80,0.9)", backdropFilter: "blur(8px)" }}>
                         ★ {shortFilm.award}
                       </span>
@@ -415,7 +413,7 @@ export default function WorkVideo() {
       {/* ── 03 · EVENT & COMMERCIAL ── */}
       <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .8s ease" }}>
-          <SectionLabel label="EVENT & COMMERCIAL / 活動 · 商業" />
+          <SectionLabel label="EVENT & COMMERCIAL" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {eventVideos.map((v, i) => (
               <AnimLine key={v.id} delay={0.06 + i * 0.06} inView={evIn}>
@@ -488,7 +486,7 @@ export default function WorkVideo() {
                   </div>
                 </div>
                 <p className="font-mono-label text-[10px] tracking-[0.2em]" style={{ color: "var(--text-2)" }}>
-                  還有更多作品在這裡，持續更新中
+                  More work lives here — updated continuously
                 </p>
                 <p className="font-mono-label text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--text-3)" }}>
                   The work never stops — follow along

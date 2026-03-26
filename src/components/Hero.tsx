@@ -90,11 +90,12 @@ export default function Hero() {
               transform: quoteHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
             {q.lines.map((line, i) => (
               <p key={i} style={{
-                fontFamily: "var(--font-bebas), sans-serif",
-                fontSize: "clamp(1rem, 2vw, 1.4rem)",
-                color: "rgba(255,255,255,0.88)",
-                letterSpacing: "0.06em",
-                lineHeight: 1.25,
+                fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+                fontSize: "0.88rem",
+                fontWeight: 300,
+                color: "rgba(255,255,255,0.82)",
+                letterSpacing: "0.02em",
+                lineHeight: 1.7,
                 marginBottom: i < q.lines.length - 1 ? 2 : 0,
                 opacity: quoteHover ? 1 : 0,
                 transform: quoteHover ? "translateY(0)" : "translateY(6px)",

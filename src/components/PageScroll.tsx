@@ -242,6 +242,18 @@ export default function PageScroll({ children }: Props) {
         ))}
       </div>
 
+      {/* ── Frosted glass transition flash ── */}
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 25, pointerEvents: "none",
+        opacity: transitioning ? 1 : 0,
+        backdropFilter: transitioning ? "blur(14px) brightness(0.75)" : "blur(0px) brightness(1)",
+        WebkitBackdropFilter: transitioning ? "blur(14px) brightness(0.75)" : "blur(0px) brightness(1)",
+        background: transitioning ? "rgba(5,5,8,0.38)" : "rgba(0,0,0,0)",
+        transition: transitioning
+          ? "opacity 0.12s ease, backdrop-filter 0.2s ease, background 0.2s ease"
+          : "opacity 0.55s ease 0.38s, backdrop-filter 0.55s ease 0.38s, background 0.55s ease 0.38s",
+      }} />
+
       {/* ── Progress bar (top) ── */}
       <div style={{
         position: "fixed", top: 0, left: 0, zIndex: 99,
