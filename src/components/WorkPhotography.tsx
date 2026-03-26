@@ -67,11 +67,6 @@ export default function WorkPhotography() {
   const { ref, inView }           = useInView(0.05);
   const cat = photoCategories.find(c => c.id === activeId)!;
 
-  // Auto-cycle hero image every 4 s, starting from a random frame
-  useEffect(() => {
-    setActiveId(photoCategories[Math.floor(Math.random() * photoCategories.length)].id);
-  }, []);
-
   useEffect(() => {
     const startIdx = Math.floor(Math.random() * Math.min(cat.files.length, 6));
     setHeroIdx(startIdx);
@@ -94,7 +89,6 @@ export default function WorkPhotography() {
 
           {/* Hero image (crossfade cycle) */}
           <Image
-            key={heroSrc}
             src={heroSrc}
             alt={cat.en}
             fill

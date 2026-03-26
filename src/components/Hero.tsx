@@ -5,11 +5,6 @@ import { CharReveal } from "@/components/WordReveal";
 
 const V_LABELS     = ["Visual Production", "Creative Direction", "AIGC Creation"];
 const TAGLINE      = ["Director", "·", "DP", "·", "Screenplay", "·", "Photography"];
-const CATEGORIES   = [
-  { en: "Photography", zh: "攝影" },
-  { en: "Video",       zh: "影片" },
-  { en: "AIGC",        zh: "AIGC 創作" },
-];
 
 const QUOTES = [
   { lines: ["人一定是", "在作品之前"], attr: null },
@@ -191,63 +186,73 @@ export default function Hero() {
           TAIWAN · TAICHUNG
         </p>
 
-        {/* Quote — static ambient, no box */}
-        <div style={{
-          marginTop: 28,
-          paddingLeft: 14,
-          borderLeft: "1px solid rgba(255,255,255,0.1)",
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 1.2s ease 2s",
-        }}>
-          {q.lines.map((line, i) => (
-            <p key={i} style={{
-              fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-              fontSize: "0.75rem",
-              fontWeight: 300,
-              color: "rgba(255,255,255,0.28)",
-              letterSpacing: "0.03em",
-              lineHeight: 1.8,
-            }}>{line}</p>
-          ))}
-          {q.attr && (
-            <p style={{
-              fontFamily: "var(--font-space-mono), monospace",
-              fontSize: "0.5rem",
-              letterSpacing: "0.22em",
-              color: "rgba(255,255,255,0.15)",
-              marginTop: 6,
-            }}>{q.attr}</p>
-          )}
-        </div>
       </div>
 
-      {/* Bottom strip — frosted glass */}
-      <div className="border-t px-6 md:px-28 py-4 flex items-center gap-8 flex-wrap"
+      {/* Bottom strip — quote + IG DM */}
+      <div className="border-t px-6 md:px-28 py-4 flex items-center justify-between gap-6"
         style={{
-          borderColor: "rgba(255,255,255,0.12)",
+          borderColor: "rgba(255,255,255,0.08)",
           background: "rgba(0,0,0,0.55)",
           backdropFilter: "blur(40px)",
           WebkitBackdropFilter: "blur(40px)",
           opacity: loaded ? 1 : 0,
           transition: "opacity 1s ease 1.6s",
         }}>
-        {CATEGORIES.map(cat => (
-          <a key={cat.en} href="#work" className="group flex items-center gap-2">
-            <span className="font-mono-label text-[10px] tracking-[0.22em] transition-colors duration-300"
-              style={{ color: "var(--text-3)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}>
-              {cat.en} / {cat.zh}
-            </span>
-          </a>
-        ))}
 
-        <div className="ml-auto hidden md:flex items-center gap-3" style={{ color: "var(--text-3)" }}>
-          <span className="font-mono-label text-[9px] tracking-widest" style={{ animation: "pulse-slow 2.5s ease infinite" }}>
-            SCROLL
-          </span>
-          <div className="w-8 h-px" style={{ background: "var(--text-3)" }} />
+        {/* Quote — left */}
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-col">
+            {q.lines.map((line, i) => (
+              <span key={i} style={{
+                fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+                fontSize: "0.65rem",
+                fontWeight: 300,
+                color: "rgba(255,255,255,0.3)",
+                letterSpacing: "0.04em",
+                lineHeight: 1.75,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}>{line}</span>
+            ))}
+            {q.attr && (
+              <span style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: "0.48rem",
+                letterSpacing: "0.2em",
+                color: "rgba(255,255,255,0.14)",
+                marginTop: 3,
+              }}>{q.attr}</span>
+            )}
+          </div>
         </div>
+
+        {/* IG DM — right */}
+        <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+          className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
+          style={{
+            background: "rgba(255,255,255,0.055)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            padding: "7px 16px",
+            color: "rgba(255,255,255,0.5)",
+            transition: "all .3s ease",
+          }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLAnchorElement;
+            el.style.background = "rgba(255,255,255,0.1)";
+            el.style.borderColor = "rgba(255,255,255,0.22)";
+            el.style.color = "rgba(255,255,255,0.85)";
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLAnchorElement;
+            el.style.background = "rgba(255,255,255,0.055)";
+            el.style.borderColor = "rgba(255,255,255,0.1)";
+            el.style.color = "rgba(255,255,255,0.5)";
+          }}>
+          DM @minehoooo ↗
+        </a>
       </div>
 
       {/* Frosted bottom gradient — half-glass fade into the strip */}
