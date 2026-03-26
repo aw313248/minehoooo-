@@ -185,6 +185,24 @@ export default function PageScroll({ children }: Props) {
     return () => window.removeEventListener("keydown", onKey);
   }, [navigate]);
 
+  // Broadcast current page to Navbar (and any other listeners)
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("pagechange", { detail: page }));
+  }, [page]);
+
+  // Listen for Navbar navigation requests
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const idx = (e as CustomEvent<number>).detail;
+      if (idx < 0 || idx >= total || transitioning) return;
+      setTrans(true);
+      setTimeout(() => setTrans(false), 950);
+      setPage(idx);
+    };
+    window.addEventListener("navto", handler);
+    return () => window.removeEventListener("navto", handler);
+  }, [total, transitioning]);
+
   // Reset inner scroll when switching pages
   useEffect(() => {
     const cur = refs.current[page];
