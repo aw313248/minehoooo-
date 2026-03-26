@@ -38,7 +38,6 @@ function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
-  const [quoteHover, setQuoteHover] = useState(false);
   const [quoteIdx, setQuoteIdx] = useState(0);
   const q = QUOTES[quoteIdx];
 
@@ -150,61 +149,12 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* MINEH4O — character reveal + quote tooltip */}
-        <div className="relative inline-block"
-          onMouseEnter={() => setQuoteHover(true)}
-          onMouseLeave={() => setQuoteHover(false)}>
+        {/* MINEH4O — character reveal */}
+        <div className="relative inline-block">
           <h1 className="font-display leading-none select-none mt-3"
             style={{ fontSize: "clamp(6.5rem, 23vw, 30rem)", color: "var(--text)", cursor: "default" }}>
             <CharReveal text="MINEH4O" inView={loaded} baseDelay={0.12} stagger={0.048} />
           </h1>
-
-          {/* Quote tooltip */}
-          <div style={{
-            position: "absolute",
-            bottom: "calc(100% + 12px)",
-            left: 0,
-            pointerEvents: "none",
-            opacity: quoteHover ? 1 : 0,
-            transform: quoteHover ? "translateY(0) scale(1)" : "translateY(6px) scale(0.98)",
-            transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
-            background: "rgba(0,0,0,0.72)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            padding: "14px 20px",
-            maxWidth: 320,
-            zIndex: 50,
-          }}>
-            <div style={{ height: 1, background: "rgba(255,255,255,0.1)", marginBottom: 12, transformOrigin: "left",
-              transform: quoteHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
-            {q.lines.map((line, i) => (
-              <p key={i} style={{
-                fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                fontSize: "0.88rem",
-                fontWeight: 300,
-                color: "rgba(255,255,255,0.82)",
-                letterSpacing: "0.02em",
-                lineHeight: 1.7,
-                marginBottom: i < q.lines.length - 1 ? 2 : 0,
-                opacity: quoteHover ? 1 : 0,
-                transform: quoteHover ? "translateY(0)" : "translateY(6px)",
-                transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
-              }}>{line}</p>
-            ))}
-            {q.attr && (
-              <p style={{
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "0.5rem", letterSpacing: "0.25em",
-                color: "rgba(255,255,255,0.3)",
-                marginTop: 10,
-                opacity: quoteHover ? 1 : 0,
-                transition: "opacity 0.4s ease 0.3s",
-              }}>{q.attr}</p>
-            )}
-            <div style={{ height: 1, background: "rgba(255,255,255,0.06)", marginTop: 12, transformOrigin: "right",
-              transform: quoteHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s" }} />
-          </div>
         </div>
 
         {/* Tagline — glass pills */}
@@ -240,6 +190,35 @@ export default function Hero() {
           style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: "opacity .8s ease 1.4s" }}>
           TAIWAN · TAICHUNG
         </p>
+
+        {/* Quote — static ambient, no box */}
+        <div style={{
+          marginTop: 28,
+          paddingLeft: 14,
+          borderLeft: "1px solid rgba(255,255,255,0.1)",
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 1.2s ease 2s",
+        }}>
+          {q.lines.map((line, i) => (
+            <p key={i} style={{
+              fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+              fontSize: "0.75rem",
+              fontWeight: 300,
+              color: "rgba(255,255,255,0.28)",
+              letterSpacing: "0.03em",
+              lineHeight: 1.8,
+            }}>{line}</p>
+          ))}
+          {q.attr && (
+            <p style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.5rem",
+              letterSpacing: "0.22em",
+              color: "rgba(255,255,255,0.15)",
+              marginTop: 6,
+            }}>{q.attr}</p>
+          )}
+        </div>
       </div>
 
       {/* Bottom strip — frosted glass */}
