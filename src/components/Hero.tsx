@@ -49,7 +49,7 @@ export default function Hero() {
     <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
 
       {/* ── Ambient floating orbs ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div style={{
           position: "absolute", top: "8%", right: "18%",
           width: 700, height: 700, borderRadius: "50%",
@@ -74,7 +74,7 @@ export default function Hero() {
       </div>
 
       {/* ── Large "2026" background watermark ── */}
-      <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden" aria-hidden="true">
         <span className="font-display select-none"
           style={{
             fontSize: "clamp(20rem, 68vw, 96rem)",
@@ -95,7 +95,7 @@ export default function Hero() {
       <CornerBracket pos="br" delay={0.7} loaded={loaded && isActive} />
 
       {/* ── REC indicator (top right) ── */}
-      <div className="absolute hidden md:flex items-center gap-2 pointer-events-none"
+      <div aria-hidden="true" className="absolute hidden md:flex items-center gap-2 pointer-events-none"
         style={{
           top: "2rem", right: "2.5rem", zIndex: 10,
           opacity: loaded && isActive ? 1 : 0, transition: "opacity 1.2s ease 2.2s",
@@ -120,7 +120,7 @@ export default function Hero() {
       }} />
 
       {/* Vertical labels — left gutter */}
-      <div className="absolute left-6 md:left-10 top-0 bottom-0 hidden md:flex flex-col justify-around py-32 pointer-events-none z-10">
+      <div aria-hidden="true" className="absolute left-6 md:left-10 top-0 bottom-0 hidden md:flex flex-col justify-around py-32 pointer-events-none z-10">
         {V_LABELS.map((label, i) => (
           <span key={label} className="v-text font-mono-label text-[9px] tracking-[0.28em]"
             style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: `opacity 1.2s ease ${0.7 + i * 0.25}s` }}>
@@ -255,7 +255,7 @@ export default function Hero() {
       </div>
 
       {/* Frosted bottom gradient — half-glass fade into the strip */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none"
+      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 pointer-events-none"
         style={{
           height: "45%",
           background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)",

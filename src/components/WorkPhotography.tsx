@@ -11,24 +11,65 @@ function encode(folder: string, file: string) {
 }
 
 /* ── Lightbox ── */
-function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
+function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }: {
+  src: string; onClose: () => void;
+  onPrev: () => void; onNext: () => void;
+  hasPrev: boolean; hasNext: boolean;
+  idx: number; total: number;
+}) {
   useEffect(() => {
-    const fn = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const fn = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft"  && hasPrev) onPrev();
+      if (e.key === "ArrowRight" && hasNext) onNext();
+    };
     window.addEventListener("keydown", fn);
     return () => window.removeEventListener("keydown", fn);
-  }, [onClose]);
+  }, [onClose, onPrev, onNext, hasPrev, hasNext]);
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center"
       style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(24px)" }}
       onClick={onClose}>
-      <div className="relative" onClick={e => e.stopPropagation()}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt="" className="max-w-[90vw] max-h-[88vh] object-contain" style={{ borderRadius: 2 }} />
-        <button onClick={onClose}
-          className="absolute top-3 right-3 font-mono-label text-[9px] tracking-widest px-3 py-1.5"
-          style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)" }}>
-          ESC ✕
+      <div className="relative flex items-center gap-4" onClick={e => e.stopPropagation()}>
+
+        {/* Prev arrow */}
+        <button onClick={onPrev} aria-label="Previous photo"
+          className="hidden md:flex items-center justify-center"
+          style={{
+            width: 36, height: 36, background: "rgba(255,255,255,0.07)",
+            border: "1px solid rgba(255,255,255,0.12)", cursor: hasPrev ? "pointer" : "default",
+            opacity: hasPrev ? 1 : 0.2, transition: "opacity .2s",
+          }}>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>←</span>
+        </button>
+
+        {/* Image */}
+        <div className="relative">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 2 }} />
+          {/* Counter */}
+          <span className="absolute bottom-3 left-3 font-mono-label text-[8px] tracking-[0.2em]"
+            style={{ color: "rgba(255,255,255,0.4)" }}>
+            {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+          {/* Close */}
+          <button onClick={onClose} aria-label="Close lightbox"
+            className="absolute top-3 right-3 font-mono-label text-[9px] tracking-widest px-3 py-1.5"
+            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)" }}>
+            ESC ✕
+          </button>
+        </div>
+
+        {/* Next arrow */}
+        <button onClick={onNext} aria-label="Next photo"
+          className="hidden md:flex items-center justify-center"
+          style={{
+            width: 36, height: 36, background: "rgba(255,255,255,0.07)",
+            border: "1px solid rgba(255,255,255,0.12)", cursor: hasNext ? "pointer" : "default",
+            opacity: hasNext ? 1 : 0.2, transition: "opacity .2s",
+          }}>
+          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>→</span>
         </button>
       </div>
     </div>
@@ -36,26 +77,31 @@ function Lightbox({ src, onClose }: { src: string; onClose: () => void }) {
 }
 
 /* ── Strip of small thumbnails at the bottom ── */
-function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (src: string) => void }) {
+function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (idx: number) => void }) {
   const thumbs = cat.files.slice(0, 12);
   return (
-    <div className="flex gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
-      {thumbs.map((f) => {
-        const src = encode(cat.id, f);
-        return (
-          <div key={f} className="shrink-0 overflow-hidden cursor-pointer group relative"
-            style={{ width: 64, height: 64, borderRadius: 2 }}
-            onClick={() => onSelect(src)}>
-            <Image src={src} alt={f} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+    <div className="relative">
+      <div className="flex gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
+        {thumbs.map((f, i) => {
+          const src = encode(cat.id, f);
+          return (
+            <div key={f} className="shrink-0 overflow-hidden cursor-pointer group relative"
+              style={{ width: 64, height: 64, borderRadius: 2 }}
+              onClick={() => onSelect(i)}>
+              <Image src={src} alt={f} fill loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-110" />
+            </div>
+          );
+        })}
+        {cat.files.length > 12 && (
+          <div className="shrink-0 flex items-center justify-center"
+            style={{ width: 64, height: 64, background: "rgba(255,255,255,0.04)", borderRadius: 2, border: "1px solid rgba(255,255,255,0.07)" }}>
+            <span className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>+{cat.files.length - 12}</span>
           </div>
-        );
-      })}
-      {cat.files.length > 12 && (
-        <div className="shrink-0 flex items-center justify-center"
-          style={{ width: 64, height: 64, background: "rgba(255,255,255,0.04)", borderRadius: 2, border: "1px solid rgba(255,255,255,0.07)" }}>
-          <span className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>+{cat.files.length - 12}</span>
-        </div>
-      )}
+        )}
+      </div>
+      {/* Right-edge fade hint — shows strip is scrollable */}
+      <div aria-hidden="true" className="absolute right-0 top-0 bottom-1 w-10 pointer-events-none"
+        style={{ background: "linear-gradient(to right, transparent, rgba(0,0,0,0.9))" }} />
     </div>
   );
 }
@@ -63,9 +109,10 @@ function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (src: str
 export default function WorkPhotography() {
   const [activeId, setActiveId]   = useState(photoCategories[0].id);
   const [heroIdx, setHeroIdx]     = useState(0);
-  const [lightbox, setLightbox]   = useState<string | null>(null);
+  const [lightbox, setLightbox]   = useState<{ idx: number } | null>(null);
   const { ref, inView }           = useInView(0.05);
   const cat = photoCategories.find(c => c.id === activeId)!;
+  const encodedFiles = cat.files.map(f => encode(cat.id, f));
 
   useEffect(() => {
     const startIdx = Math.floor(Math.random() * Math.min(cat.files.length, 6));
@@ -78,14 +125,25 @@ export default function WorkPhotography() {
 
   return (
     <>
-      {lightbox && <Lightbox src={lightbox} onClose={() => setLightbox(null)} />}
+      {lightbox && (
+        <Lightbox
+          src={encodedFiles[lightbox.idx]}
+          idx={lightbox.idx}
+          total={encodedFiles.length}
+          hasPrev={lightbox.idx > 0}
+          hasNext={lightbox.idx < encodedFiles.length - 1}
+          onClose={() => setLightbox(null)}
+          onPrev={() => setLightbox(l => l && l.idx > 0 ? { idx: l.idx - 1 } : l)}
+          onNext={() => setLightbox(l => l && l.idx < encodedFiles.length - 1 ? { idx: l.idx + 1 } : l)}
+        />
+      )}
 
       <section style={{ background: "#000", minHeight: "100vh" }} className="md:h-screen md:overflow-hidden md:flex md:flex-row">
 
         {/* ── PHOTO (desktop: right flex-1 | mobile: top portion) ── */}
         <div className="relative overflow-hidden cursor-pointer order-first md:order-last md:flex-1"
           style={{ height: "62vw", minHeight: 180 }}
-          onClick={() => setLightbox(heroSrc)}>
+          onClick={() => setLightbox({ idx: heroIdx })}>
 
           {/* Hero image (crossfade cycle) */}
           <Image
@@ -190,8 +248,8 @@ export default function WorkPhotography() {
                 return (
                   <div key={f} className="relative overflow-hidden cursor-pointer"
                     style={{ aspectRatio: "4/3", borderRadius: 2 }}
-                    onClick={() => setLightbox(src)}>
-                    <Image src={src} alt={f} fill className="object-cover transition-transform duration-500 active:scale-95" />
+                    onClick={() => setLightbox({ idx: cat.files.indexOf(f) })}>
+                    <Image src={src} alt={f} fill loading="lazy" className="object-cover transition-transform duration-500 active:scale-95" />
                   </div>
                 );
               })}
@@ -229,7 +287,7 @@ export default function WorkPhotography() {
           {/* ── Desktop: thumbnail strip ── */}
           <div className="hidden md:block">
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>GALLERY</p>
-            <PhotoStrip cat={cat} onSelect={src => setLightbox(src)} />
+            <PhotoStrip cat={cat} onSelect={idx => setLightbox({ idx })} />
             <p className="font-mono-label text-[8px] mt-3" style={{ color: "var(--text-3)" }}>
               Click thumbnail to enlarge · ESC to close
             </p>
