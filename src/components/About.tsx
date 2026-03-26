@@ -443,6 +443,40 @@ export default function About() {
               ))}
             </div>
           </div>
+
+          {/* Credits — flows naturally after bio */}
+          <div ref={expRef} className="border-t pt-10" style={{ borderColor: "var(--border)" }}>
+            <div style={{ opacity: expIn ? 1 : 0, transition: "opacity .7s ease", marginBottom: 28 }}>
+              <p className="font-mono-label text-[9px] tracking-[0.38em]" style={{ color: "var(--text-3)" }}>
+                SELECTED CREDITS & EXPERIENCE
+              </p>
+            </div>
+            <div className="max-w-lg">
+              {credits.map((credit, i) => (
+                <div key={credit.text} style={{
+                  display: "flex", gap: 20, padding: "16px 0",
+                  borderBottom: "1px solid var(--border)",
+                  opacity: expIn ? 1 : 0,
+                  transform: expIn ? "translateX(0)" : "translateX(-24px)",
+                  transition: `opacity .65s ease ${i * 0.08}s, transform .65s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
+                }}>
+                  <span className="font-mono-label text-[9px] tracking-widest shrink-0 pt-0.5"
+                    style={{ color: "var(--text-3)", width: 28 }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-[14px] md:text-[15px] leading-snug flex-1"
+                    style={{ color: credit.highlight ? "var(--text)" : "var(--text-2)" }}>
+                    {credit.text}
+                  </p>
+                  {credit.highlight && (
+                    <div style={{ flexShrink: 0, paddingTop: 6 }}>
+                      <div style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,0.35)" }} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -453,48 +487,6 @@ export default function About() {
         {skills.map((skill, i) => (
           <SkillCard key={skill.en} skill={skill} index={i} inView={skIn} />
         ))}
-      </div>
-
-      {/* ═══════════════════════════════════════
-          SELECTED CREDITS & EXPERIENCE
-      ═══════════════════════════════════════ */}
-      <div ref={expRef} className="border-t px-8 md:px-14 py-10 md:py-14" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: expIn ? 1 : 0, transition: "opacity .7s ease", marginBottom: 36 }}>
-          <p className="font-mono-label text-[9px] tracking-[0.38em]" style={{ color: "var(--text-3)" }}>
-            SELECTED CREDITS & EXPERIENCE
-          </p>
-        </div>
-        <div>
-          {credits.map((credit, i) => (
-            <div key={credit.text} style={{
-              display: "flex", gap: 20, padding: "18px 0",
-              borderBottom: "1px solid var(--border)",
-              opacity: expIn ? 1 : 0,
-              transform: expIn ? "translateX(0)" : "translateX(-28px)",
-              transition: `opacity .65s ease ${i * 0.08}s, transform .65s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
-            }}>
-              <div style={{ width: 32, paddingTop: 2, flexShrink: 0 }}>
-                <span className="font-mono-label text-[9px] tracking-widest" style={{ color: "var(--text-3)" }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <p className="text-[14px] md:text-[15px] leading-snug"
-                  style={{ color: credit.highlight ? "var(--text)" : "var(--text-2)" }}>
-                  {credit.text}
-                </p>
-              </div>
-              {credit.highlight && (
-                <div style={{ flexShrink: 0, paddingTop: 3 }}>
-                  <div style={{
-                    width: 4, height: 4, borderRadius: "50%",
-                    background: "rgba(255,255,255,0.35)",
-                  }} />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Domain bar */}
