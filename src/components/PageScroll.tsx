@@ -15,8 +15,8 @@ interface Props {
   children: React.ReactNode;
 }
 
-// Each page index gets a different entrance style
-// 0=rotateX  1=rise+scale  2=blur+fade  3=rotateX  4=rise+scale  5=blur+fade ...
+// Each page pair gets a distinct cinematic transition style
+// variant = nextPage % 3  →  0=rotateX-flip  1=clip-wipe  2=scale-blur
 function getStyle(offset: number, absIndex: number): React.CSSProperties {
   const variant = absIndex % 3;
 
@@ -25,70 +25,86 @@ function getStyle(offset: number, absIndex: number): React.CSSProperties {
     inset: 0,
     overflowY: "auto",
     overflowX: "hidden",
-    willChange: "transform, opacity, filter",
+    willChange: "transform, opacity, filter, clip-path",
     backfaceVisibility: "hidden",
     WebkitBackfaceVisibility: "hidden",
   };
 
-  // ── Active page ──
+  // ── Active page — resting state ──
   if (offset === 0) return {
     ...base,
     transform: "none",
     opacity: 1,
     filter: "blur(0px)",
+    clipPath: "none",
     zIndex: 20,
     pointerEvents: "auto",
-    transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.88s cubic-bezier(0.16,1,0.3,1), filter 0.88s ease",
-    transformOrigin: "50% 100%",
+    transition:
+      variant === 1
+        ? "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.6s ease"
+        : "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease, filter 0.9s ease",
+    transformOrigin: "50% 0%",
   };
 
-  // ── Pages that have been visited (above current) — uniform fold-back ──
-  if (offset < 0) return {
-    ...base,
-    transform: "perspective(1400px) rotateX(-18deg) translateY(-7%) scale(0.85)",
-    opacity: 0,
-    filter: "blur(0px)",
-    zIndex: 10,
-    pointerEvents: "none",
-    transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.72s ease, filter 0.72s ease",
-    transformOrigin: "50% 100%",
-  };
-
-  // ── Pages waiting below — vary by index ──
-  if (variant === 0) {
-    // Rotate-X perspective flip (cinematic)
+  // ── Visited pages (above) — each variant exits differently ──
+  if (offset < 0) {
+    if (variant === 0) return {
+      ...base,
+      transform: "perspective(1600px) rotateX(-22deg) translateY(-6%) scale(0.82)",
+      opacity: 0, filter: "blur(0px)",
+      zIndex: 10, pointerEvents: "none",
+      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease",
+      transformOrigin: "50% 100%",
+    };
+    if (variant === 1) return {
+      ...base,
+      clipPath: "inset(0% 0% 100% 0%)",
+      opacity: 0, filter: "blur(0px)",
+      zIndex: 10, pointerEvents: "none",
+      transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease",
+    };
+    // variant 2
     return {
       ...base,
-      transform: `perspective(1400px) rotateX(12deg) translateY(${offset * 100}%) scale(0.94)`,
-      opacity: offset === 1 ? 0.04 : 0,
+      transform: "scale(0.78) translateY(-5%)",
+      opacity: 0, filter: "blur(16px)",
+      zIndex: 10, pointerEvents: "none",
+      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.65s ease, filter 0.65s ease",
+    };
+  }
+
+  // ── Pages waiting below — varied entrances ──
+  if (variant === 0) {
+    // Cinematic rotateX perspective fold (dramatic)
+    return {
+      ...base,
+      transform: `perspective(1600px) rotateX(14deg) translateY(${offset * 100}%) scale(0.92)`,
+      opacity: offset === 1 ? 0.05 : 0,
       filter: "blur(0px)",
-      zIndex: Math.max(15 - offset, 1),
-      pointerEvents: "none",
-      transition: "transform 0.88s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease",
-      transformOrigin: "50% 100%",
+      zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
+      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease",
+      transformOrigin: "50% 0%",
     };
   }
   if (variant === 1) {
-    // Pure vertical rise + scale (clean, no perspective)
+    // Clip-path wipe from bottom (curtain reveal)
     return {
       ...base,
-      transform: `translateY(${offset * 100}%) scale(0.96)`,
-      opacity: 0,
+      clipPath: offset === 1 ? "inset(100% 0% 0% 0%)" : "inset(100% 0% 0% 0%)",
+      opacity: offset === 1 ? 1 : 0,
       filter: "blur(0px)",
-      zIndex: Math.max(15 - offset, 1),
-      pointerEvents: "none",
-      transition: "transform 0.92s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease",
+      zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
+      transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.3s ease",
     };
   }
-  // variant === 2: blur + scale reveal
+  // variant 2: blur + scale zoom
   return {
     ...base,
-    transform: `translateY(${offset * 100}%) scale(0.88)`,
+    transform: `translateY(${offset * 100}%) scale(0.82)`,
     opacity: 0,
-    filter: offset === 1 ? "blur(12px)" : "blur(4px)",
-    zIndex: Math.max(15 - offset, 1),
-    pointerEvents: "none",
-    transition: "transform 0.92s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease, filter 0.9s ease",
+    filter: offset === 1 ? "blur(24px)" : "blur(8px)",
+    zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
+    transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.95s ease, filter 0.95s ease",
   };
 }
 

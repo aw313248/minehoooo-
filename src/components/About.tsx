@@ -1,8 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useRef } from "react";
 import { useInView } from "@/hooks/useInView";
 import { AnimLine } from "@/components/AnimLine";
+
+const QUOTES = [
+  { lines: ["人一定是", "在作品之前"], attr: null },
+  { lines: ["莽撞的開始，拙劣的完成", "好過心懷完美", "不開始行動"], attr: null },
+  { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
+];
 
 const bioCn = [
   "我叫明宏，英文名 Oscar，高中以前，我還說不清楚這個名字對我有什麼意義",
@@ -43,6 +50,10 @@ export default function About() {
   const { ref: bioRef,  inView: bioIn  } = useInView(0.05, true);
   const { ref: skRef,   inView: skIn   } = useInView(0.05, true);
   const { ref: leftRef, inView: leftIn } = useInView(0.05, true);
+  const [coverHover, setCoverHover] = useState(false);
+  const [panelHover, setPanelHover] = useState(false);
+  const quoteIdx = useRef(Math.floor(Math.random() * QUOTES.length));
+  const q = QUOTES[quoteIdx.current];
 
   return (
     <section id="about" style={{ background: "var(--bg-dark)" }}>
@@ -80,10 +91,43 @@ export default function About() {
         {/* Bottom: name block */}
         <div className="absolute bottom-0 left-0 right-0 px-8 md:px-14 pb-10 md:pb-14"
           style={{ animation: "fadeSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
-          <h1 className="font-display leading-none mb-3"
-            style={{ fontSize: "clamp(5rem,20vw,24rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-            OSCAR
-          </h1>
+          <div className="relative inline-block"
+            onMouseEnter={() => setCoverHover(true)}
+            onMouseLeave={() => setCoverHover(false)}>
+            <h1 className="font-display leading-none mb-3"
+              style={{ fontSize: "clamp(5rem,20vw,24rem)", color: "var(--text)", letterSpacing: "0.01em", cursor: "default" }}>
+              OSCAR
+            </h1>
+            {/* Quote tooltip */}
+            <div style={{
+              position: "absolute", bottom: "calc(100% + 8px)", left: 0,
+              pointerEvents: "none",
+              opacity: coverHover ? 1 : 0,
+              transform: coverHover ? "translateY(0) scale(1)" : "translateY(6px) scale(0.98)",
+              transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
+              background: "rgba(0,0,0,0.72)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px", maxWidth: 300, zIndex: 50,
+            }}>
+              <div style={{ height: 1, background: "rgba(255,255,255,0.1)", marginBottom: 12, transformOrigin: "left",
+                transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
+              {q.lines.map((line, i) => (
+                <p key={i} style={{
+                  fontFamily: "var(--font-bebas), sans-serif",
+                  fontSize: "clamp(0.9rem, 1.8vw, 1.3rem)", color: "rgba(255,255,255,0.88)",
+                  letterSpacing: "0.06em", lineHeight: 1.25, marginBottom: i < q.lines.length - 1 ? 2 : 0,
+                  opacity: coverHover ? 1 : 0, transform: coverHover ? "translateY(0)" : "translateY(6px)",
+                  transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
+                }}>{line}</p>
+              ))}
+              {q.attr && (
+                <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: "0.5rem",
+                  letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)", marginTop: 10,
+                  opacity: coverHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
+              )}
+              <div style={{ height: 1, background: "rgba(255,255,255,0.06)", marginTop: 12, transformOrigin: "right",
+                transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s" }} />
+            </div>
+          </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
             <div>
               <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.65)" }}>
@@ -151,9 +195,38 @@ export default function About() {
 
           {/* Name (compact) */}
           <div>
-            <h2 className="font-display leading-none mb-1.5" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", color: "var(--text)" }}>
-              OSCAR
-            </h2>
+            <div className="relative inline-block"
+              onMouseEnter={() => setPanelHover(true)}
+              onMouseLeave={() => setPanelHover(false)}>
+              <h2 className="font-display leading-none mb-1.5" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", color: "var(--text)", cursor: "default" }}>
+                OSCAR
+              </h2>
+              {/* Quote tooltip */}
+              <div style={{
+                position: "absolute", top: "calc(100% + 8px)", left: 0,
+                pointerEvents: "none",
+                opacity: panelHover ? 1 : 0,
+                transform: panelHover ? "translateY(0) scale(1)" : "translateY(-4px) scale(0.98)",
+                transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
+                background: "rgba(0,0,0,0.82)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(255,255,255,0.1)", padding: "12px 16px", maxWidth: 240, zIndex: 50,
+              }}>
+                {q.lines.map((line, i) => (
+                  <p key={i} style={{
+                    fontFamily: "var(--font-bebas), sans-serif",
+                    fontSize: "clamp(0.85rem, 1.5vw, 1.15rem)", color: "rgba(255,255,255,0.88)",
+                    letterSpacing: "0.06em", lineHeight: 1.25, marginBottom: i < q.lines.length - 1 ? 2 : 0,
+                    opacity: panelHover ? 1 : 0, transform: panelHover ? "translateY(0)" : "translateY(4px)",
+                    transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
+                  }}>{line}</p>
+                ))}
+                {q.attr && (
+                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: "0.45rem",
+                    letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)", marginTop: 8,
+                    opacity: panelHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
+                )}
+              </div>
+            </div>
             <p className="font-mono-label text-[10px] tracking-[0.2em]" style={{ color: "var(--text-2)" }}>
               賴明宏 Lie Ming-Hong
             </p>
