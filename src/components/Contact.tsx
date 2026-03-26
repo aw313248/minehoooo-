@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { WordReveal } from "@/components/WordReveal";
+import { AnimLine } from "@/components/AnimLine";
 
 const socials = [
   { label: "Instagram", href: "https://instagram.com/minehoooo" },
@@ -37,12 +38,16 @@ export default function Contact() {
             <h2 className="font-display leading-tight mb-8" style={{ fontSize: "clamp(3rem, 8vw, 9rem)", color: "var(--text)" }}>
               <WordReveal text="Let's Work Together" inView={inView} baseDelay={0.1} stagger={0.05} />
             </h2>
-            <p className="text-[15px] leading-relaxed max-w-xs" style={{ color: "var(--text-2)" }}>
-              有合作提案或任何問題，歡迎聯繫
-            </p>
-            <p className="text-[13px] mt-1" style={{ color: "var(--text-3)" }}>
-              Open for collaboration and inquiries
-            </p>
+            <AnimLine delay={0.2} inView={inView}>
+              <p className="text-[15px] leading-relaxed max-w-xs" style={{ color: "var(--text-2)" }}>
+                有合作提案或任何問題，歡迎聯繫
+              </p>
+            </AnimLine>
+            <AnimLine delay={0.3} inView={inView}>
+              <p className="text-[13px] mt-1" style={{ color: "var(--text-3)" }}>
+                Open for collaboration and inquiries
+              </p>
+            </AnimLine>
           </div>
           <div>
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-4" style={{ color: "var(--text-3)" }}>

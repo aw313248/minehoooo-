@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
+import { AnimLine } from "@/components/AnimLine";
 
 const bioCn = [
   "我叫明宏，英文名 Oscar，高中以前，我還說不清楚這個名字對我有什麼意義",
@@ -29,27 +30,14 @@ const skills = [
 ];
 
 const credits = [
-  { text: "陳芳語 Kimberley Chen — MV COLOR",      highlight: true  },
-  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP", highlight: true  },
-  { text: "Kolli — MV DIR · DP",                   highlight: true  },
-  { text: "多位知名音樂人 MV 攝影 · 調色",          highlight: false },
-  { text: "「紅箱子」入圍 2023 放視大賞",            highlight: false },
-  { text: "傳播藝術系 27th 系學會副會長",            highlight: false },
+  { text: "古林睿煬 — 2024 CPBL MVP · 日職北海道火腿鬥士", highlight: true  },
+  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP",          highlight: true  },
+  { text: "Kolli — MV DIR · DP",                            highlight: true  },
+  { text: "多位知名音樂人 MV 攝影 · 調色",                  highlight: false },
+  { text: "「紅箱子」入圍 2023 放視大賞",                   highlight: false },
+  { text: "傳播藝術系 27th 系學會副會長",                   highlight: false },
 ];
 
-function AnimLine({ children, delay, inView }: { children: React.ReactNode; delay: number; inView: boolean }) {
-  return (
-    <div style={{ overflow: "hidden", paddingBottom: 2 }}>
-      <div style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(32px)",
-        transition: `opacity 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
-      }}>
-        {children}
-      </div>
-    </div>
-  );
-}
 
 export default function About() {
   const { ref: bioRef,  inView: bioIn  } = useInView(0.05, true);

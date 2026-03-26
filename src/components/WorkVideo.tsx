@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { WordReveal } from "@/components/WordReveal";
+import { AnimLine } from "@/components/AnimLine";
 
 /* ─── Data ─── */
 
@@ -27,22 +28,6 @@ const featuredMVs = [
   },
 ];
 
-const prestigeMVs = [
-  {
-    id: "W7E5bJ1Cmuo",
-    title: "我們的愛 Our Love",
-    artist: "陳芳語 Kimberley Chen",
-    role: "COLOR",
-    label: "SKRpresents · 陶山音樂",
-  },
-  {
-    id: "mQ0KWgkGHlw",
-    title: "侵愛的 Toxic Love",
-    artist: "陳芳語 Kimberley Chen",
-    role: "COLOR",
-    label: "SKRpresents · 陶山音樂",
-  },
-];
 
 const trilogy = [
   { id: "erQ9lR_rNik", title: "流明 Lumen",      ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
@@ -191,7 +176,6 @@ export default function WorkVideo() {
 
   const { ref: hRef,  inView: hIn  } = useInView(0.05);
   const { ref: pRef,  inView: pIn  } = useInView(0.04);
-  const { ref: p2Ref, inView: p2In } = useInView(0.04);
   const { ref: tRef,  inView: tIn  } = useInView(0.04);
   const { ref: cRef,  inView: cIn  } = useInView(0.04);
   const { ref: sfRef, inView: sfIn } = useInView(0.04);
@@ -295,49 +279,7 @@ export default function WorkVideo() {
           </div>
         </div>
 
-        {/* ── 02 · 陳芳語 Kimberley Chen ── */}
-        <div ref={p2Ref} className="border-b px-8 md:px-14 py-8"
-          style={{
-            borderColor: "var(--border)",
-            opacity: p2In ? 1 : 0,
-            transform: p2In ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1)",
-          }}>
-          <SectionLabel label="FEATURED ARTIST / 合作藝人" />
-          <div className="grid md:grid-cols-2 gap-4">
-            {prestigeMVs.map(v => (
-              <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`}
-                target="_blank" rel="noopener noreferrer" className="group block">
-                <div className="relative overflow-hidden mb-3"
-                  style={{ aspectRatio: "16/9", borderRadius: 3, background: "#050505" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
-                  <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.25)", transition: "background .4s" }} />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center"
-                      style={{ background: "rgba(255,255,255,0.1)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.25)" }}>
-                      <svg className="w-4 h-4 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                    </div>
-                  </div>
-                  {/* Role tag */}
-                  <div className="absolute bottom-3 left-3">
-                    <span className="font-mono-label text-[7px] tracking-widest px-2 py-0.5"
-                      style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.7)" }}>
-                      {v.role}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-[13px] font-medium" style={{ color: "var(--text)" }}>{v.title}</p>
-                <p className="font-mono-label text-[9px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist}</p>
-                <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.label}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* ── 03 · 光與景三部曲 ── */}
+        {/* ── 02 · 光與景三部曲 ── */}
         <div ref={tRef} className="border-b px-8 md:px-14 py-8"
           style={{ borderColor: "var(--border)" }}>
           <div style={{ opacity: tIn ? 1 : 0, transform: tIn ? "translateY(0)" : "translateY(24px)", transition: "opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1)" }}>
@@ -397,10 +339,9 @@ export default function WorkVideo() {
             <SectionLabel label="COLOR GRADE / 調色作品" />
             <div className="space-y-3">
               {colorCredits.map((v, i) => (
-                <div key={v.id}
-                  style={{ opacity: cIn ? 1 : 0, transform: cIn ? "translateY(0)" : "translateY(16px)", transition: `opacity .6s ease ${i * .07}s, transform .6s ease ${i * .07}s` }}>
+                <AnimLine key={v.id} delay={0.1 + i * 0.08} inView={cIn}>
                   <ThumbLink id={v.id} title={v.title} role={v.role} sub={v.artist} />
-                </div>
+                </AnimLine>
               ))}
             </div>
           </div>
@@ -443,7 +384,7 @@ export default function WorkVideo() {
           <SectionLabel label="EVENT & COMMERCIAL / 活動 · 商業" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {eventVideos.map((v, i) => (
-              <div key={v.id} style={{ opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(16px)", transition: `opacity .6s ease ${i * .06}s, transform .6s ease ${i * .06}s` }}>
+              <AnimLine key={v.id} delay={0.08 + i * 0.06} inView={evIn}>
                 <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer" className="group block">
                   <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "16/9", borderRadius: 3, background: "#050505" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -461,7 +402,7 @@ export default function WorkVideo() {
                   <p className="text-[10px] font-medium leading-tight" style={{ color: "var(--text)" }}>{v.title}</p>
                   <p className="font-mono-label text-[7px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.role}</p>
                 </a>
-              </div>
+              </AnimLine>
             ))}
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { WordReveal } from "@/components/WordReveal";
+import { AnimLine } from "@/components/AnimLine";
 
 const VIDEO_ID = "u5WaOT1m670";
 
@@ -130,14 +131,17 @@ export default function WorkAIGC() {
             }}>
             <div className="space-y-7">
               {details.map((d, i) => (
-                <div key={d.label}
-                  style={{ opacity: vIn ? 1 : 0, transform: vIn ? "translateY(0)" : "translateY(20px)", transition: `opacity .7s ease ${.2 + i * .1}s, transform .7s ease ${.2 + i * .1}s` }}>
-                  <p className="font-mono-label text-[9px] tracking-[0.3em] mb-2" style={{ color: "var(--text-3)" }}>
-                    {d.label}
-                  </p>
-                  <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-2)" }}>
-                    {d.value}
-                  </p>
+                <div key={d.label}>
+                  <AnimLine delay={0.15 + i * 0.12} inView={vIn}>
+                    <p className="font-mono-label text-[9px] tracking-[0.3em] mb-2" style={{ color: "var(--text-3)" }}>
+                      {d.label}
+                    </p>
+                  </AnimLine>
+                  <AnimLine delay={0.22 + i * 0.12} inView={vIn}>
+                    <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+                      {d.value}
+                    </p>
+                  </AnimLine>
                 </div>
               ))}
             </div>
