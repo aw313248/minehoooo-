@@ -78,8 +78,7 @@ export default function WorkAIGC() {
       {/* Body */}
       <div>
         <div ref={vRef} className="grid md:grid-cols-[1.6fr_1fr] border-b"
-          style={{ minHeight: "85vh" }}
-          style={{ borderColor: "var(--border)" }}>
+          style={{ minHeight: "85vh", borderColor: "var(--border)" }}>
 
           {/* Left: featured video */}
           <div className="relative border-r p-8 md:p-12 flex flex-col justify-center"
