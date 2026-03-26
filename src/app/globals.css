@@ -1,26 +1,102 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:        #000000;
+  --bg-dark:   #0a0a0b;
+  --bg-card:   #141416;
+  --bg-raised: #1c1c1e;
+  --text:      #f5f5f7;
+  --text-2:    #a1a1a6;
+  --text-3:    #6e6e73;
+  --border:    rgba(255,255,255,0.08);
+  --border-2:  rgba(255,255,255,0.14);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  /* prevent iOS bounce that fights with PageScroll */
+  overflow: hidden;
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), system-ui, -apple-system,
+    "PingFang TC", "Noto Sans TC", sans-serif;
+  height: 100%;
+  overflow: hidden;
+  /* smooth fonts on retina */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── MOBILE: ensure sections fit properly ── */
+@media (max-width: 767px) {
+  .font-display { letter-spacing: 0.01em; }
+}
+
+/* ── Hide scrollbar but keep scroll ── */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── GRAIN TEXTURE ── */
+/* Two layers: fine grain + coarse grain  */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n2)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.06;
+  pointer-events: none;
+  z-index: 9998;
+  mix-blend-mode: screen;
+}
+
+/* ── FONT UTILITIES ── */
+.font-display    { font-family: var(--font-bebas), sans-serif; letter-spacing: 0.02em; }
+.font-mono-label { font-family: var(--font-space-mono), monospace; }
+
+/* ── VERTICAL TEXT ── */
+.v-text { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+
+/* ── KEYFRAMES ── */
+@keyframes focusIn {
+  from { filter: blur(20px); opacity: 0; transform: scale(1.015); }
+  to   { filter: blur(0px);  opacity: 1; transform: scale(1); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(48px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes charReveal {
+  from { opacity: 0; transform: translateY(60%) skewY(4deg); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0)   skewY(0deg); filter: blur(0); }
+}
+@keyframes ripple {
+  from { transform: scale(0);   opacity: 0.45; }
+  to   { transform: scale(3.5); opacity: 0; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94) translateY(20px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
 }

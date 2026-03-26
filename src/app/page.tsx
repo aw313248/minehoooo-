@@ -1,22 +1,27 @@
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
+import Navbar         from "@/components/Navbar";
+import PageScroll     from "@/components/PageScroll";
+import Hero           from "@/components/Hero";
+import WorkPhotography from "@/components/WorkPhotography";
+import WorkVideo      from "@/components/WorkVideo";
+import WorkAIGC       from "@/components/WorkAIGC";
+import About          from "@/components/About";
+import Contact        from "@/components/Contact";
 
 export default function Home() {
   return (
     <>
+      {/* Navbar floats above everything */}
       <Navbar />
-      <main>
+
+      {/* Full-page 3D rotation scroll */}
+      <PageScroll>
         <Hero />
+        <WorkPhotography />
+        <WorkVideo />
+        <WorkAIGC />
         <About />
-        <Projects />
         <Contact />
-      </main>
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-600 text-sm">
-        © {new Date().getFullYear()} My Portfolio. All rights reserved.
-      </footer>
+      </PageScroll>
     </>
   );
 }

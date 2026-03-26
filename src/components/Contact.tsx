@@ -1,87 +1,126 @@
 "use client";
 
 import { useState } from "react";
+import { useInView } from "@/hooks/useInView";
+import { WordReveal } from "@/components/WordReveal";
+
+const socials = [
+  { label: "Instagram", href: "https://instagram.com/minehoooo" },
+  { label: "Behance",   href: "#" },
+  { label: "LinkedIn",  href: "#" },
+];
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: 串接實際的表單服務（如 Resend、Formspree 等）
-    setSent(true);
-  };
+  const { ref, inView } = useInView(0.07);
 
   return (
-    <section id="contact" className="py-24 px-6">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-indigo-400 text-sm font-medium tracking-widest uppercase mb-3">
-            Contact
-          </p>
-          <h2 className="text-4xl font-bold text-white mb-4">聯絡我</h2>
-          <p className="text-gray-400">
-            有合作想法或任何問題，歡迎透過以下方式聯繫我。
-          </p>
+    <section id="contact" style={{ background: "var(--bg)" }}>
+      <div className="border-t border-b px-6 md:px-10 py-3 flex items-center justify-between"
+        style={{ borderColor: "var(--border)" }}>
+        <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
+          CONTACT / 聯絡
+        </span>
+      </div>
+
+      <div ref={ref} className="grid md:grid-cols-2">
+        {/* Left */}
+        <div className="border-r p-8 md:p-16 flex flex-col justify-between min-h-[55vh]"
+          style={{
+            borderColor: "var(--border)",
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
+            transition: "opacity 1s ease, transform 1s cubic-bezier(0.16,1,0.3,1)",
+          }}>
+          <div>
+            <h2 className="font-display leading-tight mb-8" style={{ fontSize: "clamp(3rem, 8vw, 9rem)", color: "var(--text)" }}>
+              <WordReveal text="Let's Work Together" inView={inView} baseDelay={0.1} stagger={0.05} />
+            </h2>
+            <p className="text-[15px] leading-relaxed max-w-xs" style={{ color: "var(--text-2)" }}>
+              有合作提案或任何問題，歡迎聯繫
+            </p>
+            <p className="text-[13px] mt-1" style={{ color: "var(--text-3)" }}>
+              Open for collaboration and inquiries
+            </p>
+          </div>
+          <div>
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-4" style={{ color: "var(--text-3)" }}>
+              SOCIAL / 社群
+            </p>
+            <div className="flex gap-8">
+              {socials.map(s => (
+                <a key={s.label} href={s.href}
+                  className="font-mono-label text-[10px] tracking-wider transition-colors"
+                  style={{ color: "var(--text-3)" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}>
+                  {s.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {sent ? (
-          <div className="text-center py-16">
-            <div className="text-5xl mb-4">✅</div>
-            <h3 className="text-xl font-semibold text-white mb-2">訊息已送出！</h3>
-            <p className="text-gray-400">我會盡快回覆你，謝謝！</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid sm:grid-cols-2 gap-5">
+        {/* Right: form */}
+        <div className="p-8 md:p-16"
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
+            transition: "opacity 1s ease 0.15s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.15s",
+          }}>
+          {sent ? (
+            <div className="h-full flex flex-col justify-center">
+              <p className="font-mono-label text-[9px] tracking-[0.3em] mb-4" style={{ color: "var(--text-3)" }}>
+                MESSAGE SENT / 訊息已送出
+              </p>
+              <h3 className="text-xl font-medium mb-2" style={{ color: "var(--text)" }}>謝謝你的來信</h3>
+              <p className="text-[13px]" style={{ color: "var(--text-3)" }}>
+                I&apos;ll get back to you soon · 我會盡快回覆
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="space-y-8">
+              {[
+                { label: "NAME / 姓名", key: "name",  type: "text",  ph: "Your name" },
+                { label: "EMAIL",       key: "email", type: "email", ph: "your@email.com" },
+              ].map(({ label, key, type, ph }) => (
+                <div key={key}>
+                  <label className="font-mono-label text-[9px] tracking-[0.3em] block mb-3" style={{ color: "var(--text-3)" }}>
+                    {label}
+                  </label>
+                  <input type={type} required placeholder={ph}
+                    value={form[key as keyof typeof form]}
+                    onChange={e => setForm({ ...form, [key]: e.target.value })}
+                    className="w-full bg-transparent border-b py-2 text-[14px] focus:outline-none transition-colors"
+                    style={{ borderColor: "rgba(255,255,255,0.12)", color: "var(--text)" }}
+                    onFocus={e   => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
+                    onBlur={e    => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
+                  />
+                </div>
+              ))}
               <div>
-                <label className="block text-sm text-gray-400 mb-2">姓名</label>
-                <input
-                  type="text"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="你的名字"
-                  className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors"
+                <label className="font-mono-label text-[9px] tracking-[0.3em] block mb-3" style={{ color: "var(--text-3)" }}>
+                  MESSAGE / 訊息
+                </label>
+                <textarea required rows={4} placeholder="Tell me about your project"
+                  value={form.message}
+                  onChange={e => setForm({ ...form, message: e.target.value })}
+                  className="w-full bg-transparent border-b py-2 text-[14px] focus:outline-none transition-colors resize-none"
+                  style={{ borderColor: "rgba(255,255,255,0.12)", color: "var(--text)" }}
+                  onFocus={e  => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
+                  onBlur={e   => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
                 />
               </div>
-              <div>
-                <label className="block text-sm text-gray-400 mb-2">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="your@email.com"
-                  className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">訊息</label>
-              <textarea
-                required
-                rows={5}
-                value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                placeholder="告訴我你的想法..."
-                className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-medium transition-colors"
-            >
-              送出訊息
-            </button>
-          </form>
-        )}
-
-        {/* Social links */}
-        <div className="flex justify-center gap-6 mt-12 text-gray-500 text-sm">
-          <a href="#" className="hover:text-white transition-colors">GitHub</a>
-          <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-          <a href="#" className="hover:text-white transition-colors">Twitter</a>
+              <button type="submit"
+                className="font-mono-label text-[10px] tracking-[0.25em] border px-7 py-3.5 transition-all duration-300"
+                style={{ color: "var(--text)", borderColor: "rgba(255,255,255,0.18)" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
+                SEND MESSAGE →
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </section>

@@ -1,127 +1,115 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { CharReveal, WordReveal } from "@/components/WordReveal";
+
+const V_LABELS     = ["Visual Production", "Creative Direction", "AIGC Creation"];
+const TAGLINE      = ["Director", "·", "DP", "·", "Screenplay", "·", "Photography"];
+const CATEGORIES   = [
+  { en: "Photography", zh: "攝影" },
+  { en: "Video",       zh: "影片" },
+  { en: "AIGC",        zh: "AIGC 創作" },
+];
 
 export default function Hero() {
-  const [visible, setVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 100);
+    const t = setTimeout(() => setLoaded(true), 180);
     return () => clearTimeout(t);
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
-      {/* Subtle noise texture overlay */}
-      <div className="absolute inset-0 opacity-[0.03] bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PC9maWx0ZXI+PHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbHRlcj0idXJsKCNhKSIgb3BhY2l0eT0iMSIvPjwvc3ZnPg==')] bg-repeat" />
+    <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
 
-      {/* Glow behind text */}
-      <div
-        className="absolute w-[600px] h-[300px] rounded-full blur-[120px] bg-white/5 transition-opacity duration-1000"
-        style={{ opacity: visible ? 1 : 0 }}
-      />
+      {/* Frosted ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse 80% 50% at 55% 50%, rgba(255,255,255,0.028) 0%, transparent 70%)",
+      }} />
+
+      {/* Vertical labels — left gutter */}
+      <div className="absolute left-6 md:left-10 top-0 bottom-0 hidden md:flex flex-col justify-around py-32 pointer-events-none z-10">
+        {V_LABELS.map((label, i) => (
+          <span key={label} className="v-text font-mono-label text-[9px] tracking-[0.28em]"
+            style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: `opacity 1.2s ease ${0.7 + i * 0.25}s` }}>
+            {label}
+          </span>
+        ))}
+      </div>
 
       {/* Main content */}
-      <div className="relative z-10 text-center select-none">
-        {/* boom image */}
-        <div
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "scale(1) rotate(0deg)" : "scale(0.4) rotate(-15deg)",
-            transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
-          className="flex justify-center mb-6"
-        >
-          <div
-            style={{
-              animation: visible ? "float 3s ease-in-out infinite" : "none",
-            }}
-          >
-            <Image
-              src="/boom.png"
-              alt="boom"
-              width={200}
-              height={200}
-              className="object-contain drop-shadow-[0_0_40px_rgba(255,255,255,0.15)]"
-              priority
-            />
-          </div>
+      <div className="flex-1 flex flex-col justify-center pl-6 md:pl-28 pr-6 md:pr-12" style={{ paddingTop: "80px" }}>
+
+        {/* Handle */}
+        <div style={{
+          opacity: loaded ? 1 : 0,
+          transform: loaded ? "translateY(0)" : "translateY(10px)",
+          transition: "opacity .7s ease .05s, transform .7s ease .05s",
+        }}>
+          <span className="font-mono-label text-[10px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
+            @minehoooo
+          </span>
         </div>
 
-        {/* 小鳥 */}
-        <h1
-          className="font-black text-white leading-none tracking-tight"
-          style={{
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(40px)",
-            transition: "opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s",
-          }}
-        >
-          小鳥
+        {/* MINEH4O — character reveal */}
+        <h1 className="font-display leading-none select-none mt-3"
+          style={{ fontSize: "clamp(6.5rem, 23vw, 30rem)", color: "var(--text)" }}>
+          <CharReveal text="MINEH4O" inView={loaded} baseDelay={0.12} stagger={0.048} />
         </h1>
 
-        {/* Subtitle */}
-        <p
-          className="text-gray-500 text-sm md:text-base tracking-[0.4em] uppercase mt-4"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s",
-          }}
-        >
-          Portfolio · 2026
-        </p>
-
-        {/* Watch button */}
-        <div
-          className="mt-8"
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.9s ease 0.7s, transform 0.9s ease 0.7s",
-          }}
-        >
-          <a
-            href="/video"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-sm text-white/70 hover:text-white transition-all duration-300 group"
-            style={{
-              background: "rgba(255,255,255,0.06)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255,255,255,0.1)",
-            }}
-          >
-            <span
-              className="flex items-center justify-center w-6 h-6 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors"
-            >
-              <svg className="w-3 h-3 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
+        {/* Tagline */}
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          {TAGLINE.map((word, i) => (
+            <span key={i} className="font-mono-label text-[11px] tracking-[0.28em]"
+              style={{
+                color: word === "·" ? "var(--text-3)" : "var(--text-2)",
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "translateY(0)" : "translateY(12px)",
+                transition: `opacity .6s ease ${0.9 + i * 0.07}s, transform .6s ease ${0.9 + i * 0.07}s`,
+              }}>
+              {word}
             </span>
-            觀看影片
+          ))}
+        </div>
+
+        {/* Location */}
+        <p className="font-mono-label text-[9px] tracking-[0.35em] mt-3"
+          style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: "opacity .8s ease 1.4s" }}>
+          TAIWAN · TAICHUNG
+        </p>
+      </div>
+
+      {/* Bottom strip — frosted glass */}
+      <div className="border-t px-6 md:px-28 py-4 flex items-center gap-8 flex-wrap"
+        style={{
+          borderColor: "var(--border)",
+          background:  "rgba(255,255,255,0.03)",
+          backdropFilter: "blur(12px)",
+          opacity: loaded ? 1 : 0,
+          transition: "opacity 1s ease 1.6s",
+        }}>
+        {CATEGORIES.map(cat => (
+          <a key={cat.en} href="#work" className="group flex items-center gap-2">
+            <span className="font-mono-label text-[10px] tracking-[0.22em] transition-colors duration-300"
+              style={{ color: "var(--text-3)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}>
+              {cat.en} / {cat.zh}
+            </span>
           </a>
+        ))}
+
+        <div className="ml-auto hidden md:flex items-center gap-3" style={{ color: "var(--text-3)" }}>
+          <span className="font-mono-label text-[9px] tracking-widest" style={{ animation: "pulse-slow 2.5s ease infinite" }}>
+            SCROLL
+          </span>
+          <div className="w-8 h-px" style={{ background: "var(--text-3)" }} />
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-700"
-        style={{
-          opacity: visible ? 1 : 0,
-          transition: "opacity 1s ease 1s",
-        }}
-      >
-        <span className="text-xs tracking-widest">SCROLL</span>
-        <div className="w-0.5 h-8 bg-gradient-to-b from-gray-700 to-transparent" />
-      </div>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-12px); }
-        }
-      `}</style>
+      {/* Frosted bottom gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{ background: "linear-gradient(to top, rgba(0,0,0,0.4), transparent)", backdropFilter: "blur(2px)" }} />
     </section>
   );
 }

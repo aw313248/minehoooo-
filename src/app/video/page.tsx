@@ -1,10 +1,5 @@
-import VideoPlayer from "@/components/VideoPlayer";
-
-export const metadata = {
-  title: "Watch · Portfolio",
-  description: "精選影片",
-};
+import { redirect } from "next/navigation";
 
 export default function VideoPage() {
-  return <VideoPlayer videoId="ZbaSBFVP-Tg" />;
+  redirect("/");
 }
