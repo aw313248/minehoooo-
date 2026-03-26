@@ -1,133 +1,202 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
-import { WordReveal } from "@/components/WordReveal";
-import { AnimLine } from "@/components/AnimLine";
 
-const socials = [
-  { label: "Instagram", href: "https://instagram.com/minehoooo" },
-  { label: "Behance",   href: "#" },
-  { label: "LinkedIn",  href: "#" },
+const IG_ACCOUNTS = [
+  { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · MV · Reels" },
+  { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Photography · ARW" },
+  { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
 ];
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sent, setSent] = useState(false);
-  const { ref, inView } = useInView(0.07);
+  const { ref, inView } = useInView(0.06);
+  const [year, setYear] = useState("2026");
+
+  useEffect(() => {
+    setYear(String(new Date().getFullYear()));
+  }, []);
 
   return (
-    <section id="contact" style={{ background: "var(--bg)" }}>
-      <div className="border-t border-b px-6 md:px-10 py-3 flex items-center justify-between"
-        style={{ borderColor: "var(--border)" }}>
-        <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
-          CONTACT / 聯絡
+    <section id="contact" style={{ background: "#000", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+
+      {/* ── Top label ── */}
+      <div className="border-b px-8 md:px-14 py-3 flex items-center justify-between"
+        style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+        <span className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "rgba(255,255,255,0.3)" }}>
+          06 — CONTACT
+        </span>
+        <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+          minehoooo.xyz
         </span>
       </div>
 
-      <div ref={ref} className="grid md:grid-cols-2">
-        {/* Left */}
-        <div className="border-r p-8 md:p-16 flex flex-col justify-between min-h-[55vh]"
-          style={{
-            borderColor: "var(--border)",
+      {/* ── Main CTA ── */}
+      <div ref={ref} className="flex-1 flex flex-col justify-center px-8 md:px-14 py-16 md:py-24 relative overflow-hidden">
+
+        {/* Watermark */}
+        <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+          <span className="font-display select-none"
+            style={{
+              fontSize: "clamp(12rem, 40vw, 56rem)",
+              color: "rgba(255,255,255,0.014)",
+              letterSpacing: "0.02em",
+              lineHeight: 1,
+              paddingRight: "3%",
+              userSelect: "none",
+            }}>
+            DM
+          </span>
+        </div>
+
+        {/* Ambient glow */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: "radial-gradient(ellipse 60% 50% at 40% 55%, rgba(80,80,160,0.06) 0%, transparent 70%)",
+        }} />
+
+        {/* Content */}
+        <div className="relative z-10 max-w-3xl">
+
+          {/* Label */}
+          <p className="font-mono-label text-[9px] tracking-[0.38em] mb-8"
+            style={{
+              color: "rgba(255,255,255,0.3)",
+              opacity: inView ? 1 : 0,
+              transition: "opacity .7s ease",
+            }}>
+            有合作提案 · 歡迎聯繫
+          </p>
+
+          {/* Heading */}
+          <h2 className="font-display leading-none mb-6"
+            style={{
+              fontSize: "clamp(3.5rem, 12vw, 14rem)",
+              color: "var(--text)",
+              letterSpacing: "0.01em",
+              opacity: inView ? 1 : 0,
+              transform: inView ? "translateY(0)" : "translateY(40px)",
+              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .08s, transform .9s cubic-bezier(.16,1,.3,1) .08s",
+            }}>
+            LET&apos;S WORK
+          </h2>
+
+          <p className="font-mono-label text-[11px] md:text-[13px] tracking-[0.18em] mb-12 max-w-md leading-relaxed"
+            style={{
+              color: "rgba(255,255,255,0.35)",
+              opacity: inView ? 1 : 0,
+              transition: "opacity .8s ease .2s",
+            }}>
+            Music video · Commercial · Photography · AIGC<br />
+            Open for all creative collaborations
+          </p>
+
+          {/* Primary CTA — IG DM */}
+          <div style={{
             opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
-            transition: "opacity 1s ease, transform 1s cubic-bezier(0.16,1,0.3,1)",
+            transform: inView ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity .8s ease .3s, transform .8s cubic-bezier(.16,1,.3,1) .3s",
           }}>
-          <div>
-            <h2 className="font-display leading-tight mb-8" style={{ fontSize: "clamp(3rem, 8vw, 9rem)", color: "var(--text)" }}>
-              <WordReveal text="Let's Work Together" inView={inView} baseDelay={0.1} stagger={0.05} />
-            </h2>
-            <AnimLine delay={0.2} inView={inView}>
-              <p className="text-[15px] leading-relaxed max-w-xs" style={{ color: "var(--text-2)" }}>
-                有合作提案或任何問題，歡迎聯繫
-              </p>
-            </AnimLine>
-            <AnimLine delay={0.3} inView={inView}>
-              <p className="text-[13px] mt-1" style={{ color: "var(--text-3)" }}>
-                Open for collaboration and inquiries
-              </p>
-            </AnimLine>
-          </div>
-          <div>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-4" style={{ color: "var(--text-3)" }}>
-              SOCIAL / 社群
-            </p>
-            <div className="flex gap-8">
-              {socials.map(s => (
-                <a key={s.label} href={s.href}
-                  className="font-mono-label text-[10px] tracking-wider transition-colors"
-                  style={{ color: "var(--text-3)" }}
-                  onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
-                  onMouseLeave={e => (e.currentTarget.style.color = "var(--text-3)")}>
-                  {s.label}
-                </a>
-              ))}
-            </div>
+            <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+              className="group inline-flex items-center gap-4"
+              style={{
+                background: "rgba(255,255,255,0.06)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                padding: "14px 28px",
+                transition: "all .35s ease",
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "rgba(255,255,255,0.11)";
+                el.style.borderColor = "rgba(255,255,255,0.25)";
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = "rgba(255,255,255,0.06)";
+                el.style.borderColor = "rgba(255,255,255,0.12)";
+              }}>
+              {/* IG icon */}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.7)" stroke="none" />
+              </svg>
+              <div className="flex flex-col">
+                <span className="font-mono-label text-[10px] tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                  SEND A DM
+                </span>
+                <span className="font-mono-label text-[13px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.85)" }}>
+                  @minehoooo
+                </span>
+              </div>
+              <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 18, marginLeft: 4 }}>↗</span>
+            </a>
           </div>
         </div>
 
-        {/* Right: form */}
-        <div className="p-8 md:p-16"
+        {/* IG account list — bottom right */}
+        <div className="hidden md:flex flex-col items-end gap-3 absolute bottom-16 right-14"
           style={{
             opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
-            transition: "opacity 1s ease 0.15s, transform 1s cubic-bezier(0.16,1,0.3,1) 0.15s",
+            transition: "opacity .8s ease .5s",
           }}>
-          {sent ? (
-            <div className="h-full flex flex-col justify-center">
-              <p className="font-mono-label text-[9px] tracking-[0.3em] mb-4" style={{ color: "var(--text-3)" }}>
-                MESSAGE SENT / 訊息已送出
-              </p>
-              <h3 className="text-xl font-medium mb-2" style={{ color: "var(--text)" }}>謝謝你的來信</h3>
-              <p className="text-[13px]" style={{ color: "var(--text-3)" }}>
-                I&apos;ll get back to you soon · 我會盡快回覆
-              </p>
-            </div>
-          ) : (
-            <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="space-y-8">
-              {[
-                { label: "NAME / 姓名", key: "name",  type: "text",  ph: "Your name" },
-                { label: "EMAIL",       key: "email", type: "email", ph: "your@email.com" },
-              ].map(({ label, key, type, ph }) => (
-                <div key={key}>
-                  <label className="font-mono-label text-[9px] tracking-[0.3em] block mb-3" style={{ color: "var(--text-3)" }}>
-                    {label}
-                  </label>
-                  <input type={type} required placeholder={ph}
-                    value={form[key as keyof typeof form]}
-                    onChange={e => setForm({ ...form, [key]: e.target.value })}
-                    className="w-full bg-transparent border-b py-2 text-[14px] focus:outline-none transition-colors"
-                    style={{ borderColor: "rgba(255,255,255,0.12)", color: "var(--text)" }}
-                    onFocus={e   => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
-                    onBlur={e    => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
-                  />
-                </div>
-              ))}
-              <div>
-                <label className="font-mono-label text-[9px] tracking-[0.3em] block mb-3" style={{ color: "var(--text-3)" }}>
-                  MESSAGE / 訊息
-                </label>
-                <textarea required rows={4} placeholder="Tell me about your project"
-                  value={form.message}
-                  onChange={e => setForm({ ...form, message: e.target.value })}
-                  className="w-full bg-transparent border-b py-2 text-[14px] focus:outline-none transition-colors resize-none"
-                  style={{ borderColor: "rgba(255,255,255,0.12)", color: "var(--text)" }}
-                  onFocus={e  => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
-                  onBlur={e   => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
-                />
-              </div>
-              <button type="submit"
-                className="font-mono-label text-[10px] tracking-[0.25em] border px-7 py-3.5 transition-all duration-300"
-                style={{ color: "var(--text)", borderColor: "rgba(255,255,255,0.18)" }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}>
-                SEND MESSAGE →
-              </button>
-            </form>
-          )}
+          <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+            FOLLOW ALONG
+          </p>
+          {IG_ACCOUNTS.map(acc => (
+            <a key={acc.handle} href={acc.href} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-4 group">
+              <span className="font-mono-label text-[8px] tracking-[0.18em]"
+                style={{ color: "rgba(255,255,255,0.2)" }}>
+                {acc.desc}
+              </span>
+              <span className="font-mono-label text-[10px] tracking-[0.14em] transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.4)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}>
+                {acc.handle}
+              </span>
+            </a>
+          ))}
         </div>
       </div>
+
+      {/* ── Mobile IG list ── */}
+      <div className="md:hidden px-8 pb-10 flex flex-col gap-3 border-t"
+        style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+        <p className="font-mono-label text-[8px] tracking-[0.3em] pt-6 mb-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+          FOLLOW ALONG
+        </p>
+        {IG_ACCOUNTS.map(acc => (
+          <a key={acc.handle} href={acc.href} target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-between">
+            <span className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.5)" }}>
+              {acc.handle}
+            </span>
+            <span className="font-mono-label text-[8px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+              {acc.desc}
+            </span>
+          </a>
+        ))}
+      </div>
+
+      {/* ── Footer strip ── */}
+      <div className="border-t px-8 md:px-14 py-4 flex items-center justify-between flex-wrap gap-3"
+        style={{ borderColor: "rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.01)" }}>
+        <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+          © {year} MINEH4O · 賴明宏 Oscar Lai
+        </span>
+        <div className="flex items-center gap-6">
+          <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.14)" }}>
+            Taiwan · Taichung
+          </span>
+          <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.14)" }}>
+            Director · DP · Visual Producer
+          </span>
+        </div>
+      </div>
+
     </section>
   );
 }
