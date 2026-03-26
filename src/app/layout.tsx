@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Space_Mono, Bebas_Neue } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import CustomCursor from "@/components/CustomCursor";
 import IntroScreen from "@/components/IntroScreen";
@@ -118,6 +119,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-TW" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://www.youtube.com" />
+        <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="dns-prefetch" href="https://img.youtube.com" />
+      </head>
       <body
         className={`${geistSans.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased`}
       >
@@ -129,6 +135,7 @@ export default function RootLayout({
         <IntroScreen />
         <CustomCursor />
         {children}
+        <Analytics />
       </body>
     </html>
   );

@@ -198,6 +198,7 @@ function HScrollStrip({ items, inView }: {
           <HoverPreview id={v.id}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
+              loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)" }} />
@@ -338,6 +339,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
       <HoverPreview id={id}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={title}
+          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }} />
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.15)", transition: "background .4s" }} />
@@ -394,9 +396,13 @@ export default function WorkVideo() {
   const { ref: sRef,  inView: sIn  } = useInView(0.04);
   const { ref: igRef, inView: igIn } = useInView(0.04);
 
+  const [iframeReady, setIframeReady] = useState(false);
+
   useEffect(() => {
     const t = setTimeout(() => setHeroLoaded(true), 150);
-    return () => clearTimeout(t);
+    // Delay iframe mount so page content renders first
+    const t2 = setTimeout(() => setIframeReady(true), 900);
+    return () => { clearTimeout(t); clearTimeout(t2); };
   }, []);
 
   const active = featuredMVs[activeIdx];
@@ -422,8 +428,8 @@ export default function WorkVideo() {
               }}
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
             />
-            {/* Autoplay iframe — desktop only, overlays the thumbnail */}
-            {!isMobile && (
+            {/* Autoplay iframe — desktop only, delayed mount */}
+            {!isMobile && iframeReady && (
               <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
                 <iframe
                   src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
