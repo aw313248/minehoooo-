@@ -9,6 +9,7 @@ import Contact         from "@/components/Contact";
 import MobileNav       from "@/components/MobileNav";
 import PageTitle       from "@/components/PageTitle";
 import AudioPlayer     from "@/components/AudioPlayer";
+import AutoPlay        from "@/components/AutoPlay";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
       </PageScroll>
       <MobileNav />
       <AudioPlayer />
+      <AutoPlay />
     </>
   );
 }
