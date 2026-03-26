@@ -185,8 +185,8 @@ export default function PageScroll({ children }: Props) {
         </div>
       ))}
 
-      {/* ── Page indicator (right side) ── */}
-      <div style={{
+      {/* ── Page indicator ── */}
+      <div className="page-nav" style={{
         position: "fixed", right: 20, top: "50%", transform: "translateY(-50%)",
         zIndex: 100, display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end",
       }}>
@@ -206,8 +206,7 @@ export default function PageScroll({ children }: Props) {
               cursor: "pointer", padding: "2px 0",
             }}
           >
-            {/* Label (only current) */}
-            <span style={{
+            <span className="page-nav-label" style={{
               fontFamily: "var(--font-space-mono), monospace",
               fontSize: 8, letterSpacing: "0.2em",
               color: i === page ? "rgba(255,255,255,0.7)" : "transparent",
@@ -216,8 +215,7 @@ export default function PageScroll({ children }: Props) {
             }}>
               {lbl}
             </span>
-            {/* Dot */}
-            <div style={{
+            <div className={i === page ? "page-nav-dot-active" : "page-nav-dot"} style={{
               width:  i === page ? 18 : 4,
               height: 4,
               borderRadius: 2,

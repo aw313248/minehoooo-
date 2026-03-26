@@ -82,66 +82,9 @@ export default function WorkPhotography() {
 
       <section className="h-screen flex flex-col md:flex-row overflow-hidden" style={{ background: "#000" }}>
 
-        {/* ── LEFT PANEL ── info + category switcher */}
-        <div ref={ref} className="relative z-10 flex flex-col justify-between md:w-[38%] shrink-0 p-8 md:p-12 border-r overflow-y-auto"
-          style={{ borderColor: "var(--border)", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(24px)" }}>
-
-          {/* Title */}
-          <div>
-            <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-5"
-              style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
-              02 — 攝影
-            </span>
-            <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(3.5rem,8vw,9rem)", color: "var(--text)" }}>
-              <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />
-            </h2>
-            <p className="font-mono-label text-[9px] tracking-wider mb-8" style={{ color: "var(--text-3)" }}>
-              {cat.files.length} works · {photoCategories.length} categories
-            </p>
-
-            {/* Category buttons */}
-            <div className="space-y-1 mb-8">
-              {photoCategories.map((c, i) => (
-                <button key={c.id} onClick={() => setActiveId(c.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 transition-all duration-300 text-left"
-                  style={{
-                    background:    c.id === activeId ? "rgba(255,255,255,0.07)" : "transparent",
-                    backdropFilter: c.id === activeId ? "blur(8px)" : "none",
-                    borderLeft:    c.id === activeId ? "2px solid rgba(255,255,255,0.5)" : "2px solid transparent",
-                    opacity: inView ? 1 : 0,
-                    transition: `opacity .6s ease ${.1 + i * .08}s, background .3s, border-color .3s`,
-                  }}>
-                  <div>
-                    <p className="text-[13px] font-medium" style={{ color: c.id === activeId ? "var(--text)" : "var(--text-2)" }}>
-                      {c.en}
-                    </p>
-                    <p className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>{c.zh}</p>
-                  </div>
-                  <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Active category desc */}
-            <p className="font-mono-label text-[9px] leading-relaxed mb-6" style={{ color: "var(--text-3)" }}>
-              {cat.desc}
-            </p>
-          </div>
-
-          {/* Thumbnail strip */}
-          <div>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
-              GALLERY
-            </p>
-            <PhotoStrip cat={cat} onSelect={src => setLightbox(src)} />
-            <p className="font-mono-label text-[8px] mt-3" style={{ color: "var(--text-3)" }}>
-              Click thumbnail to enlarge · ESC to close
-            </p>
-          </div>
-        </div>
-
-        {/* ── RIGHT PANEL ── full-bleed hero photo */}
-        <div className="relative flex-1 cursor-pointer overflow-hidden"
+        {/* ── PHOTO (mobile: top 62%, desktop: right flex-1) ── */}
+        <div className="relative overflow-hidden cursor-pointer order-first md:order-last md:flex-1"
+          style={{ flex: "0 0 62%", minHeight: 0 }}
           onClick={() => setLightbox(heroSrc)}>
 
           {/* Hero image (crossfade cycle) */}
@@ -181,12 +124,113 @@ export default function WorkPhotography() {
             ))}
           </div>
 
-          {/* View label */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          {/* View label — desktop hover only */}
+          <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <span className="font-mono-label text-[11px] tracking-[0.3em]"
               style={{ color: "rgba(255,255,255,0.8)", textShadow: "0 0 20px rgba(0,0,0,0.8)" }}>
               VIEW FULL
             </span>
+          </div>
+        </div>
+
+        {/* ── CONTROLS (mobile: bottom 38%, desktop: left 38%) ── */}
+        <div ref={ref} className="relative z-10 flex flex-col md:justify-between md:w-[38%] shrink-0 border-r md:p-12 overflow-y-auto"
+          style={{ flex: "0 0 38%", borderColor: "var(--border)", background: "rgba(0,0,0,0.75)", backdropFilter: "blur(24px)" }}>
+
+          {/* ── Desktop title ── */}
+          <div className="hidden md:block">
+            <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-5"
+              style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
+              02 — 攝影
+            </span>
+            <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(3.5rem,8vw,9rem)", color: "var(--text)" }}>
+              <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />
+            </h2>
+            <p className="font-mono-label text-[9px] tracking-wider mb-8" style={{ color: "var(--text-3)" }}>
+              {cat.files.length} works · {photoCategories.length} categories
+            </p>
+          </div>
+
+          {/* ── Mobile: section label (tiny) ── */}
+          <div className="md:hidden px-4 pt-3 pb-1 flex items-center justify-between">
+            <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>
+              02 — PHOTOGRAPHY
+            </span>
+            <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>
+              {cat.files.length} works
+            </span>
+          </div>
+
+          {/* ── Mobile: horizontal pill categories ── */}
+          <div className="md:hidden flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: "none" }}>
+            {photoCategories.map((c) => (
+              <button key={c.id} onClick={() => setActiveId(c.id)}
+                className="shrink-0 px-3 py-1.5 transition-all duration-300"
+                style={{
+                  background: c.id === activeId ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(8px)",
+                  border: c.id === activeId ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 2,
+                }}>
+                <span className="font-mono-label text-[9px] tracking-wider whitespace-nowrap"
+                  style={{ color: c.id === activeId ? "var(--text)" : "var(--text-3)" }}>
+                  {c.en}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          {/* ── Mobile: compact thumbnail strip ── */}
+          <div className="md:hidden px-4 pb-3 flex-1 flex flex-col justify-end">
+            <div className="flex gap-1.5 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+              {cat.files.slice(0, 8).map((f) => {
+                const src = encode(cat.id, f);
+                return (
+                  <div key={f} className="shrink-0 overflow-hidden cursor-pointer"
+                    style={{ width: 52, height: 52, borderRadius: 2 }}
+                    onClick={() => setLightbox(src)}>
+                    <Image src={src} alt={f} fill className="object-cover" />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ── Desktop: vertical category list ── */}
+          <div className="hidden md:block">
+            <div className="space-y-1 mb-8">
+              {photoCategories.map((c, i) => (
+                <button key={c.id} onClick={() => setActiveId(c.id)}
+                  className="w-full flex items-center justify-between px-4 py-3 transition-all duration-300 text-left"
+                  style={{
+                    background:     c.id === activeId ? "rgba(255,255,255,0.07)" : "transparent",
+                    backdropFilter: c.id === activeId ? "blur(8px)" : "none",
+                    borderLeft:     c.id === activeId ? "2px solid rgba(255,255,255,0.5)" : "2px solid transparent",
+                    opacity: inView ? 1 : 0,
+                    transition: `opacity .6s ease ${.1 + i * .08}s, background .3s, border-color .3s`,
+                  }}>
+                  <div>
+                    <p className="text-[13px] font-medium" style={{ color: c.id === activeId ? "var(--text)" : "var(--text-2)" }}>
+                      {c.en}
+                    </p>
+                    <p className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>{c.zh}</p>
+                  </div>
+                  <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
+                </button>
+              ))}
+            </div>
+            <p className="font-mono-label text-[9px] leading-relaxed mb-6" style={{ color: "var(--text-3)" }}>
+              {cat.desc}
+            </p>
+          </div>
+
+          {/* ── Desktop: thumbnail strip ── */}
+          <div className="hidden md:block">
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>GALLERY</p>
+            <PhotoStrip cat={cat} onSelect={src => setLightbox(src)} />
+            <p className="font-mono-label text-[8px] mt-3" style={{ color: "var(--text-3)" }}>
+              Click thumbnail to enlarge · ESC to close
+            </p>
           </div>
         </div>
       </section>

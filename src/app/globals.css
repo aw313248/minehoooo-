@@ -17,6 +17,7 @@ html {
   /* prevent iOS bounce that fights with PageScroll */
   overflow: hidden;
   height: 100%;
+  height: 100dvh; /* iOS Safari dynamic viewport */
 }
 
 body {
@@ -25,14 +26,31 @@ body {
   font-family: var(--font-geist-sans), system-ui, -apple-system,
     "PingFang TC", "Noto Sans TC", sans-serif;
   height: 100%;
+  height: 100dvh;
   overflow: hidden;
   /* smooth fonts on retina */
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── MOBILE: ensure sections fit properly ── */
+/* ── MOBILE overrides ── */
 @media (max-width: 767px) {
   .font-display { letter-spacing: 0.01em; }
+
+  /* PageScroll navigation: move to bottom-center on mobile */
+  .page-nav {
+    top: auto !important;
+    bottom: 18px !important;
+    right: 50% !important;
+    transform: translateX(50%) !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+    align-items: center !important;
+  }
+  /* Hide text labels, keep dots only */
+  .page-nav-label { display: none !important; }
+  /* Dot sizing on mobile */
+  .page-nav-dot-active { width: 14px !important; height: 3px !important; }
+  .page-nav-dot        { width: 3px  !important; height: 3px !important; }
 }
 
 /* ── Hide scrollbar but keep scroll ── */
