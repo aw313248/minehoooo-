@@ -453,21 +453,7 @@ export default function About() {
             <div className="space-y-4 max-w-lg">
               {bioCn.map((line, i) => (
                 <AnimLine key={i} delay={i * 0.09} inView={bioIn}>
-                  <p className="text-[15px] md:text-[16px] leading-loose" style={{ color: "var(--text-2)" }}>
-                    {i === 0 ? (
-                      <>
-                        <span style={{
-                          float: "left", fontSize: "3.4em", lineHeight: 0.82,
-                          marginRight: "0.08em", marginBottom: "0.04em",
-                          fontFamily: "var(--font-bebas), sans-serif",
-                          color: "var(--text)", letterSpacing: 0,
-                        }}>
-                          {line[0]}
-                        </span>
-                        {line.slice(1)}
-                      </>
-                    ) : line}
-                  </p>
+                  <p className="text-[15px] md:text-[16px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
                 </AnimLine>
               ))}
             </div>
