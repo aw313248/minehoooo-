@@ -22,18 +22,27 @@ const bioEn = [
 ];
 
 const skills = [
-  { en: "Visual Design",          zh: "視覺設計",    tools: "Photoshop · Illustrator" },
-  { en: "AIGC Creation",          zh: "AIGC 創作",   tools: "Midjourney · ComfyUI · Stable Diffusion" },
-  { en: "Video Post-Production",  zh: "影片後製",    tools: "DaVinci Resolve · Premiere Pro" },
-  { en: "Photography",            zh: "攝影",        tools: "Commercial · Event · Wedding · Motion" },
+  { en: "Visual Design",         zh: "視覺設計",   tools: "Photoshop · Illustrator" },
+  { en: "AIGC Creation",         zh: "AIGC 創作",  tools: "Midjourney · ComfyUI · Stable Diffusion" },
+  { en: "Video Post-Production", zh: "影片後製",   tools: "DaVinci Resolve · Premiere Pro" },
+  { en: "Photography",           zh: "攝影",       tools: "Commercial · Event · Wedding · Motion" },
+];
+
+const credits = [
+  { text: "陳芳語 Kimberley Chen — MV COLOR",      highlight: true  },
+  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP", highlight: true  },
+  { text: "Kolli — MV DIR · DP",                   highlight: true  },
+  { text: "多位知名音樂人 MV 攝影 · 調色",          highlight: false },
+  { text: "「紅箱子」入圍 2023 放視大賞",            highlight: false },
+  { text: "傳播藝術系 27th 系學會副會長",            highlight: false },
 ];
 
 function AnimLine({ children, delay, inView }: { children: React.ReactNode; delay: number; inView: boolean }) {
   return (
-    <div style={{ overflow: "hidden", paddingBottom: "2px" }}>
+    <div style={{ overflow: "hidden", paddingBottom: 2 }}>
       <div style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? "translateY(0)" : "translateY(36px)",
+        transform: inView ? "translateY(0)" : "translateY(32px)",
         transition: `opacity 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform 0.85s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
       }}>
         {children}
@@ -43,54 +52,132 @@ function AnimLine({ children, delay, inView }: { children: React.ReactNode; dela
 }
 
 export default function About() {
-  const { ref: leftRef,  inView: leftIn  } = useInView(0.07, true);
-  const { ref: bioRef,   inView: bioIn   } = useInView(0.05, true);
-  const { ref: skillRef, inView: skillIn } = useInView(0.05, true);
-  const { ref: skRowRef, inView: skRowIn } = useInView(0.05, true);
+  const { ref: bioRef,  inView: bioIn  } = useInView(0.05, true);
+  const { ref: skRef,   inView: skIn   } = useInView(0.05, true);
+  const { ref: leftRef, inView: leftIn } = useInView(0.05, true);
 
   return (
     <section id="about" style={{ background: "var(--bg-dark)" }}>
-      {/* Section header */}
-      <div className="border-t border-b px-6 md:px-10 py-3 flex items-center justify-between"
-        style={{ borderColor: "var(--border)" }}>
-        <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
-          01 — ABOUT / 關於我
-        </span>
-        <span className="font-mono-label text-[9px] tracking-[0.32em]" style={{ color: "var(--text-3)" }}>
-          MINEH4O
-        </span>
+
+      {/* ═══════════════════════════════════════
+          COVER — full viewport, photo + name
+      ═══════════════════════════════════════ */}
+      <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+        {/* Background photo */}
+        <Image
+          src="/profile.png"
+          alt="Oscar Lai — minehoooo"
+          fill
+          priority
+          className="object-cover"
+          style={{ objectPosition: "center top" }}
+        />
+
+        {/* Gradient overlay — strong at bottom so text reads */}
+        <div className="absolute inset-0" style={{
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.45) 50%, rgba(10,10,11,0.97) 100%)",
+        }} />
+        {/* Side vignette */}
+        <div className="absolute inset-0" style={{
+          background: "linear-gradient(to right, rgba(0,0,0,0.35) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)",
+        }} />
+
+        {/* Top label */}
+        <div className="absolute px-8 md:px-14" style={{ top: "5.5rem" }}>
+          <p className="font-mono-label text-[9px] tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+            01 — ABOUT · MINEH4O
+          </p>
+        </div>
+
+        {/* Bottom: name block */}
+        <div className="absolute bottom-0 left-0 right-0 px-8 md:px-14 pb-10 md:pb-14"
+          style={{ animation: "fadeSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
+          <h1 className="font-display leading-none mb-3"
+            style={{ fontSize: "clamp(5rem,20vw,24rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+            OSCAR
+          </h1>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
+            <div>
+              <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.65)" }}>
+                賴明宏 Lie Ming-Hong
+              </p>
+              <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>
+                Director · DP · Screenplay · Photography
+              </p>
+            </div>
+            <div className="flex gap-3 md:gap-4">
+              <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+                className="font-mono-label text-[8px] tracking-[0.25em]"
+                style={{ color: "rgba(255,255,255,0.4)" }}>
+                @minehoooo
+              </a>
+              <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+                className="font-mono-label text-[8px] tracking-[0.25em]"
+                style={{ color: "rgba(255,255,255,0.4)" }}>
+                @minehoooo.arw
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator — right side */}
+        <div className="absolute hidden md:flex flex-col items-center gap-2"
+          style={{ bottom: "2.5rem", right: "3.5rem" }}>
+          <span className="font-mono-label text-[7px] tracking-[0.35em]"
+            style={{ color: "rgba(255,255,255,0.3)", writingMode: "vertical-rl" }}>
+            SCROLL
+          </span>
+          <div style={{ width: 1, height: 48, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "rgba(255,255,255,0.7)",
+              animation: "slideDown 1.6s ease-in-out infinite",
+            }} />
+          </div>
+        </div>
       </div>
 
-      {/* Top: identity (left) + large photo (right) */}
-      <div className="grid md:grid-cols-[1.1fr_0.9fr] border-b" style={{ borderColor: "var(--border)" }}>
+      {/* ═══════════════════════════════════════
+          CONTENT — sticky left + scrolling right
+      ═══════════════════════════════════════ */}
+      <div className="flex flex-col md:flex-row border-t" style={{ borderColor: "var(--border)" }}>
 
-        {/* Left: identity */}
-        <div ref={leftRef} className="border-r p-8 md:p-14 flex flex-col gap-8"
+        {/* Left: sticky identity panel (desktop only) */}
+        <div ref={leftRef} className="hidden md:flex flex-col gap-8"
           style={{
-            borderColor: "var(--border)",
+            width: "38%",
+            flexShrink: 0,
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            padding: "4rem 3.5rem",
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(28px)",
+            WebkitBackdropFilter: "blur(28px)",
+            borderRight: "1px solid var(--border)",
             opacity: leftIn ? 1 : 0,
-            transform: leftIn ? "translateY(0) scale(1)" : "translateY(48px) scale(0.97)",
+            transform: leftIn ? "translateX(0)" : "translateX(-24px)",
             transition: "opacity 1s ease, transform 1s cubic-bezier(0.16,1,0.3,1)",
+            overflowY: "auto",
           }}>
 
+          {/* Name (compact) */}
           <div>
-            <h2 className="font-display leading-none" style={{ fontSize: "clamp(3.5rem, 7vw, 8rem)", color: "var(--text)" }}>
+            <h2 className="font-display leading-none mb-1.5" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", color: "var(--text)" }}>
               OSCAR
             </h2>
-            <p className="font-mono-label text-[11px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-2)" }}>
+            <p className="font-mono-label text-[10px] tracking-[0.2em]" style={{ color: "var(--text-2)" }}>
               賴明宏 Lie Ming-Hong
-            </p>
-            <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "var(--text-3)" }}>
-              @minehoooo
             </p>
           </div>
 
+          {/* Details */}
           <div className="space-y-5">
             {[
               { label: "ROLE / 職稱",       value: "Director · DP · Screenplay\n導演 · 攝影師 · 編劇" },
               { label: "EDUCATION / 學歷",  value: "朝陽科技大學\n傳播藝術系 · 電影組" },
               { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
-            ].map((item) => (
+            ].map(item => (
               <div key={item.label}>
                 <p className="font-mono-label text-[9px] tracking-[0.3em] mb-1.5" style={{ color: "var(--text-3)" }}>
                   {item.label}
@@ -102,99 +189,121 @@ export default function About() {
             ))}
           </div>
 
+          {/* Credits */}
           <div className="border-t pt-6 space-y-2" style={{ borderColor: "var(--border)" }}>
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
               SELECTED CREDITS / 部分合作
             </p>
-            {[
-              { text: "陳芳語 Kimberley Chen — MV COLOR",  accent: true },
-              { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP", accent: true },
-              { text: "Kolli — MV DIR · DP",              accent: true },
-              { text: "多位知名音樂人 MV 攝影 · 調色" },
-              { text: "「紅箱子」入圍 2023 放視大賞" },
-              { text: "傳播藝術系 27th 系學會副會長" },
-            ].map((item) => (
-              <p key={item.text} className="font-mono-label text-[9px] leading-relaxed"
-                style={{ color: item.accent ? "var(--text-2)" : "var(--text-3)" }}>
-                — {item.text}
+            {credits.map(c => (
+              <p key={c.text} className="font-mono-label text-[9px] leading-relaxed"
+                style={{ color: c.highlight ? "var(--text-2)" : "var(--text-3)" }}>
+                — {c.text}
               </p>
             ))}
           </div>
-        </div>
 
-        {/* Right: large profile photo */}
-        <div ref={bioRef} className="relative overflow-hidden"
-          style={{
-            minHeight: "60vh",
-            opacity: bioIn ? 1 : 0,
-            transform: bioIn ? "scale(1)" : "scale(1.03)",
-            transition: "opacity 1.1s ease .1s, transform 1.4s cubic-bezier(.16,1,.3,1) .1s",
-          }}>
-          <Image
-            src="/profile.png"
-            alt="minehoooo — Oscar Lai"
-            fill
-            className="object-cover"
-            style={{ objectPosition: "center top" }}
-          />
-          {/* Subtle left fade to blend with border */}
-          <div className="absolute inset-y-0 left-0 w-12 pointer-events-none"
-            style={{ background: "linear-gradient(to right, var(--bg-dark), transparent)" }} />
-          {/* Bottom fade */}
-          <div className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
-            style={{ background: "linear-gradient(to top, var(--bg-dark), transparent)" }} />
-          {/* Name tag at bottom */}
-          <div className="absolute bottom-6 left-6">
-            <p className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.4)" }}>
-              MINEH4O · @minehoooo
+          {/* Social */}
+          <div className="border-t pt-5 space-y-1.5" style={{ borderColor: "var(--border)" }}>
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
+              FOLLOW / 追蹤
             </p>
+            {[
+              { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · Reels" },
+              { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Photography" },
+              { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
+            ].map(s => (
+              <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-between group">
+                <span className="font-mono-label text-[9px] tracking-[0.12em] group-hover:text-white transition-colors"
+                  style={{ color: "var(--text-2)" }}>
+                  {s.handle}
+                </span>
+                <span className="font-mono-label text-[7px]" style={{ color: "var(--text-3)" }}>{s.desc}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: scrollable bio */}
+        <div className="flex-1 px-8 md:px-14 py-10 md:py-16 flex flex-col gap-12">
+
+          {/* Mobile identity block */}
+          <div className="md:hidden space-y-5 border-b pb-8" style={{ borderColor: "var(--border)" }}>
+            <div className="space-y-4">
+              {[
+                { label: "ROLE / 職稱",       value: "Director · DP · Screenplay" },
+                { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系 · 電影組" },
+                { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
+              ].map(item => (
+                <div key={item.label}>
+                  <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "var(--text-3)" }}>{item.label}</p>
+                  <p className="font-mono-label text-[10px]" style={{ color: "var(--text-2)" }}>{item.value}</p>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-1.5">
+              <p className="font-mono-label text-[8px] tracking-[0.3em] mb-2" style={{ color: "var(--text-3)" }}>SELECTED CREDITS</p>
+              {credits.map(c => (
+                <p key={c.text} className="font-mono-label text-[8px]"
+                  style={{ color: c.highlight ? "var(--text-2)" : "var(--text-3)" }}>— {c.text}</p>
+              ))}
+            </div>
+            <div className="flex gap-4 flex-wrap">
+              {[
+                { handle: "@minehoooo",     href: "https://instagram.com/minehoooo" },
+                { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw" },
+                { handle: "@mlpon6",        href: "https://instagram.com/mlpon6" },
+              ].map(s => (
+                <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"
+                  className="font-mono-label text-[9px] tracking-[0.15em]" style={{ color: "var(--text-3)" }}>
+                  {s.handle}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Bio ZH */}
+          <div ref={bioRef}>
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
+              ZH / 中文介紹
+            </p>
+            <div className="space-y-4 max-w-lg">
+              {bioCn.map((line, i) => (
+                <AnimLine key={i} delay={i * 0.09} inView={bioIn}>
+                  <p className="text-[14px] md:text-[15px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
+                </AnimLine>
+              ))}
+            </div>
+          </div>
+
+          {/* Bio EN */}
+          <div className="border-t pt-10" style={{ borderColor: "var(--border)" }}>
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
+              EN / ENGLISH
+            </p>
+            <div className="space-y-3 max-w-lg">
+              {bioEn.map((line, i) => (
+                <AnimLine key={i} delay={0.15 + i * 0.07} inView={bioIn}>
+                  <p className="text-[13px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
+                </AnimLine>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bio — full width below */}
-      <div ref={skillRef} className="grid md:grid-cols-2 border-b" style={{ borderColor: "var(--border)" }}>
-        {/* Chinese */}
-        <div className="border-r p-8 md:p-12" style={{ borderColor: "var(--border)" }}>
-          <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
-            ZH / 中文介紹
-          </p>
-          <div className="space-y-4">
-            {bioCn.map((line, i) => (
-              <AnimLine key={i} delay={i * 0.08} inView={skillIn}>
-                <p className="text-[14px] leading-loose" style={{ color: "var(--text-2)" }}>{line}</p>
-              </AnimLine>
-            ))}
-          </div>
-        </div>
-        {/* English */}
-        <div className="p-8 md:p-12">
-          <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
-            EN / ENGLISH
-          </p>
-          <div className="space-y-3">
-            {bioEn.map((line, i) => (
-              <AnimLine key={i} delay={0.1 + i * 0.08} inView={skillIn}>
-                <p className="text-[13px] leading-loose" style={{ color: "var(--text-3)" }}>{line}</p>
-              </AnimLine>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Skills row */}
-      <div ref={skRowRef} className="grid md:grid-cols-4 border-b" style={{ borderColor: "var(--border)" }}>
+      {/* ═══════════════════════════════════════
+          SKILLS
+      ═══════════════════════════════════════ */}
+      <div ref={skRef} className="grid md:grid-cols-4 border-t border-b" style={{ borderColor: "var(--border)" }}>
         {skills.map((skill, i) => (
-          <div
-            key={skill.en}
-            className="border-r last:border-r-0 p-6 md:p-8"
+          <div key={skill.en} className="border-r last:border-r-0 p-6 md:p-8"
             style={{
               borderColor: "var(--border)",
-              opacity: skRowIn ? 1 : 0,
-              transform: skRowIn ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
+              opacity: skIn ? 1 : 0,
+              transform: skIn ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
               transition: `opacity 0.7s ease ${i * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s`,
-            }}
-          >
+            }}>
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
               {String(i + 1).padStart(2, "0")}
             </p>
