@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
-import { AnimLine } from "@/components/AnimLine";
+
 
 /* ─── Data ─── */
 
@@ -24,6 +24,15 @@ const featuredMVs = [
     subZh: "MV 創作 · AI 製作 50%",
     role: "DIR · DP · AI 50%",
     tags: ["MUSIC VIDEO", "AI HYBRID"],
+  },
+  {
+    id: "erQ9lR_rNik",
+    title: "流明 LUMEN",
+    artist: "陳卓 Jon Chen",
+    subEn: "Music Video · Trilogy Ⅰ",
+    subZh: "音樂錄影帶 · 三部曲 Ⅰ",
+    role: "DIR · DP",
+    tags: ["MUSIC VIDEO", "TRILOGY"],
   },
 ];
 
@@ -128,52 +137,70 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
   );
 }
 
-/* ─── Video Card — used for all non-featured videos ─── */
-function VideoCard({ id, title, artist, role, cat, ep }: {
-  id: string; title: string; artist?: string;
-  role: string; cat?: string; ep?: string;
-}) {
-  return (
-    <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group block">
-      <HoverPreview id={id}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }} />
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.18)", transition: "background .4s" }} />
-        {/* Category badge */}
-        {cat && (
-          <div className="absolute top-2 left-2">
-            <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-              style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.6)" }}>
-              {ep ? `${cat} ${ep}` : cat}
-            </span>
-          </div>
-        )}
-        {/* Hover play indicator */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="flex items-center gap-1.5 px-3 py-1.5"
-            style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.15)" }}>
-            <svg className="w-3 h-3" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-            <span className="font-mono-label text-[7px] tracking-widest" style={{ color: "rgba(255,255,255,0.85)" }}>PREVIEW</span>
-          </div>
-        </div>
-      </HoverPreview>
-      <div className="pt-2.5 pb-1">
-        <p className="text-[12px] font-medium leading-snug" style={{ color: "var(--text)" }}>{title}</p>
-        {artist && <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{artist}</p>}
-        <div className="mt-1.5"><RoleTag text={role} /></div>
-      </div>
-    </a>
-  );
-}
-
 /* ─── Section divider ─── */
 function SectionLabel({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 mb-5 mt-8 first:mt-0">
       <p className="font-mono-label text-[9px] tracking-[0.3em] shrink-0" style={{ color: "var(--text-3)" }}>{label}</p>
       <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+    </div>
+  );
+}
+
+/* ─── Horizontal scroll strip ─── */
+function HScrollStrip({ items, inView }: {
+  items: { id: string; title: string; artist?: string; role: string; cat?: string; ep?: string; award?: string }[];
+  inView: boolean;
+}) {
+  return (
+    <div className="flex gap-3 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
+      {items.map((v, i) => (
+        <a key={v.id}
+          href={`https://www.youtube.com/watch?v=${v.id}`}
+          target="_blank" rel="noopener noreferrer"
+          className="group shrink-0 block"
+          style={{
+            width: 300,
+            opacity: inView ? 1 : 0,
+            transform: inView ? "translateX(0)" : "translateX(28px)",
+            transition: `opacity .6s ease ${i * .08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * .08}s`,
+          }}>
+          <HoverPreview id={v.id}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)" }} />
+            {v.cat && (
+              <div className="absolute top-2 left-2">
+                <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
+                  style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.6)" }}>
+                  {v.ep ? `${v.cat} ${v.ep}` : v.cat}
+                </span>
+              </div>
+            )}
+            {v.award && (
+              <div className="absolute top-2 left-2">
+                <span className="font-mono-label text-[7px] tracking-wider px-2 py-0.5"
+                  style={{ background: "rgba(255,220,80,0.15)", border: "1px solid rgba(255,220,80,0.3)", color: "rgba(255,220,80,0.9)", backdropFilter: "blur(8px)" }}>
+                  ★ {v.award}
+                </span>
+              </div>
+            )}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.18)" }}>
+                <svg className="w-4 h-4 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+              </div>
+            </div>
+          </HoverPreview>
+          <div className="pt-2.5 pb-1">
+            <p className="text-[12px] font-medium leading-snug" style={{ color: "var(--text)" }}>{v.title}</p>
+            {v.artist && <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist}</p>}
+            <div className="mt-1.5"><RoleTag text={v.role} /></div>
+          </div>
+        </a>
+      ))}
     </div>
   );
 }
@@ -344,83 +371,47 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 02 · ALL WORKS — unified clean grid ── */}
-      <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+      {/* ── 02 · MORE WORKS — horizontal scroll strips ── */}
+      <div ref={wRef} className="py-8 border-b" style={{ borderColor: "var(--border)" }}>
 
         {/* Light & Scene Trilogy */}
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease" }}>
-          <SectionLabel label="LIGHT & SCENE TRILOGY — Jon Chen · Award Series" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-0">
-            {trilogy.map((v, i) => (
-              <AnimLine key={v.id} delay={0.08 + i * 0.1} inView={wIn}>
-                <VideoCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={`${v.cat} ${v.ep}`} />
-              </AnimLine>
-            ))}
-          </div>
+        <div className="px-8 md:px-14" style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease" }}>
+          <SectionLabel label="LIGHT & SCENE TRILOGY — Jon Chen" />
+        </div>
+        <div className="pl-8 md:pl-14">
+          <HScrollStrip
+            items={trilogy.map(v => ({ ...v, cat: `${v.cat} ${v.ep}` }))}
+            inView={wIn}
+          />
         </div>
 
         {/* Color Grade */}
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease .1s" }}>
+        <div className="px-8 md:px-14" style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease .1s" }}>
           <SectionLabel label="COLOR GRADE" />
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {colorCredits.map((v, i) => (
-              <AnimLine key={v.id} delay={0.1 + i * 0.07} inView={wIn}>
-                <VideoCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
-              </AnimLine>
-            ))}
-          </div>
+        </div>
+        <div className="pl-8 md:pl-14">
+          <HScrollStrip items={colorCredits} inView={wIn} />
         </div>
 
         {/* Short Film */}
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease .15s" }}>
-          <SectionLabel label="SHORT FILM / 劇情短片" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <AnimLine delay={0.1} inView={wIn}>
-              <div>
-                <a href={`https://www.youtube.com/watch?v=${shortFilm.id}`} target="_blank" rel="noopener noreferrer" className="group block">
-                  <HoverPreview id={shortFilm.id}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`https://img.youtube.com/vi/${shortFilm.id}/maxresdefault.jpg`} alt={shortFilm.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                      onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${shortFilm.id}/hqdefault.jpg`; }} />
-                    <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.2)" }} />
-                    <div className="absolute top-2 left-2">
-                      <span className="font-mono-label text-[9px] tracking-wider px-3 py-1.5"
-                        style={{ background: "rgba(255,220,80,0.15)", border: "1px solid rgba(255,220,80,0.3)", color: "rgba(255,220,80,0.9)", backdropFilter: "blur(8px)" }}>
-                        ★ {shortFilm.award}
-                      </span>
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="flex items-center gap-1.5 px-3 py-1.5"
-                        style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", border: "1px solid rgba(255,255,255,0.15)" }}>
-                        <svg className="w-3 h-3" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                        <span className="font-mono-label text-[7px] tracking-widest" style={{ color: "rgba(255,255,255,0.85)" }}>PREVIEW</span>
-                      </div>
-                    </div>
-                  </HoverPreview>
-                  <div className="pt-2.5">
-                    <p className="text-[12px] font-medium" style={{ color: "var(--text)" }}>{shortFilm.title}</p>
-                    <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{shortFilm.artist}</p>
-                    <div className="mt-1.5"><RoleTag text={shortFilm.role} /></div>
-                  </div>
-                </a>
-              </div>
-            </AnimLine>
-          </div>
+        <div className="px-8 md:px-14" style={{ opacity: wIn ? 1 : 0, transition: "opacity .8s ease .15s" }}>
+          <SectionLabel label="SHORT FILM" />
+        </div>
+        <div className="pl-8 md:pl-14">
+          <HScrollStrip
+            items={[{ id: shortFilm.id, title: shortFilm.title, artist: shortFilm.artist, role: shortFilm.role, award: shortFilm.award }]}
+            inView={wIn}
+          />
         </div>
       </div>
 
       {/* ── 03 · EVENT & COMMERCIAL ── */}
-      <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .8s ease" }}>
+      <div ref={evRef} className="py-8 border-b" style={{ borderColor: "var(--border)" }}>
+        <div className="px-8 md:px-14" style={{ opacity: evIn ? 1 : 0, transition: "opacity .8s ease" }}>
           <SectionLabel label="EVENT & COMMERCIAL" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {eventVideos.map((v, i) => (
-              <AnimLine key={v.id} delay={0.06 + i * 0.06} inView={evIn}>
-                <VideoCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </AnimLine>
-            ))}
-          </div>
+        </div>
+        <div className="pl-8 md:pl-14">
+          <HScrollStrip items={eventVideos} inView={evIn} />
         </div>
       </div>
 

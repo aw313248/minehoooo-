@@ -15,10 +15,10 @@ interface Props {
   children: React.ReactNode;
 }
 
-// Each page pair gets a distinct cinematic transition style
-// variant = nextPage % 3  →  0=rotateX-flip  1=clip-wipe  2=scale-blur
+// 6 unique per-page transitions — no translateY, pure in-place animations
+// v = absIndex % 6  →  0=scale-dissolve  1=curtain-wipe  2=blur-skew  3=perspective-fold  4=split-reveal  5=iris-open
 function getStyle(offset: number, absIndex: number): React.CSSProperties {
-  const variant = absIndex % 3;
+  const v = absIndex % 6;
 
   const base: React.CSSProperties = {
     position: "absolute",
@@ -30,82 +30,86 @@ function getStyle(offset: number, absIndex: number): React.CSSProperties {
     WebkitBackfaceVisibility: "hidden",
   };
 
-  // ── Active page — resting state ──
-  if (offset === 0) return {
-    ...base,
-    transform: "none",
-    opacity: 1,
-    filter: "blur(0px)",
-    clipPath: "none",
-    zIndex: 20,
-    pointerEvents: "auto",
-    transition:
-      variant === 1
-        ? "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.6s ease"
-        : "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease, filter 0.9s ease",
-    transformOrigin: "50% 0%",
-  };
+  // Pages not adjacent — fully hidden
+  if (Math.abs(offset) > 1) {
+    return { ...base, opacity: 0, zIndex: 1, pointerEvents: "none" };
+  }
 
-  // ── Visited pages (above) — each variant exits differently ──
+  // ── Active page ──
+  if (offset === 0) {
+    const clipActive = v === 1 ? "inset(0% 0% 0% 0%)" : v === 4 ? "inset(0% 0% 0% 0%)" : v === 5 ? "circle(140% at 50% 50%)" : "none";
+    const txActive   = v === 3 ? "0.95s cubic-bezier(0.16,1,0.3,1)" : "0.95s cubic-bezier(0.16,1,0.3,1)";
+    return {
+      ...base,
+      transform: "none", opacity: 1, filter: "blur(0px)", clipPath: clipActive,
+      zIndex: 20, pointerEvents: "auto",
+      transformOrigin: v === 3 ? "50% 0%" : "50% 50%",
+      transition:
+        v === 1 ? `clip-path 0.92s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease` :
+        v === 4 ? `clip-path 0.9s cubic-bezier(0.76,0,0.24,1)` :
+        v === 5 ? `clip-path 0.9s cubic-bezier(0.34,1.56,0.64,1)` :
+        v === 2 ? `transform ${txActive}, opacity 0.88s ease, filter 0.88s ease` :
+                  `transform ${txActive}, opacity 0.95s ease`,
+    };
+  }
+
+  // ── Exited (offset = −1) — each page exits with its own style ──
   if (offset < 0) {
-    if (variant === 0) return {
-      ...base,
-      transform: "perspective(1600px) rotateX(-22deg) translateY(-6%) scale(0.82)",
-      opacity: 0, filter: "blur(0px)",
-      zIndex: 10, pointerEvents: "none",
-      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.6s ease",
-      transformOrigin: "50% 100%",
-    };
-    if (variant === 1) return {
-      ...base,
-      clipPath: "inset(0% 0% 100% 0%)",
-      opacity: 0, filter: "blur(0px)",
-      zIndex: 10, pointerEvents: "none",
-      transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease",
-    };
-    // variant 2
-    return {
-      ...base,
-      transform: "scale(0.78) translateY(-5%)",
-      opacity: 0, filter: "blur(16px)",
-      zIndex: 10, pointerEvents: "none",
-      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.65s ease, filter 0.65s ease",
-    };
+    switch (v) {
+      case 0: // Scale dissolve — shrinks away
+        return { ...base, transform: "scale(0.88)", opacity: 0,
+          zIndex: 10, pointerEvents: "none", transformOrigin: "50% 50%",
+          transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.75s ease" };
+      case 1: // Curtain wipe — page collapses upward
+        return { ...base, clipPath: "inset(0% 0% 100% 0%)", opacity: 0,
+          zIndex: 10, pointerEvents: "none",
+          transition: "clip-path 0.92s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease" };
+      case 2: // Blur + skew — twists and dissolves
+        return { ...base, transform: "scale(0.94) rotateZ(-1.8deg)", opacity: 0, filter: "blur(16px)",
+          zIndex: 10, pointerEvents: "none",
+          transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.65s ease, filter 0.65s ease" };
+      case 3: // Perspective fold — folds back like a book page
+        return { ...base, transform: "perspective(1400px) rotateX(-16deg) scale(0.9)", opacity: 0,
+          zIndex: 10, pointerEvents: "none", transformOrigin: "50% 100%",
+          transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease" };
+      case 4: // Split reveal — collapses to center vertical line
+        return { ...base, clipPath: "inset(0% 50% 0% 50%)", opacity: 0,
+          zIndex: 10, pointerEvents: "none",
+          transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease 0.1s" };
+      default: // Iris close — circle collapses to center point
+        return { ...base, clipPath: "circle(0% at 50% 50%)", opacity: 0,
+          zIndex: 10, pointerEvents: "none",
+          transition: "clip-path 0.88s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease 0.18s" };
+    }
   }
 
-  // ── Pages waiting below — varied entrances ──
-  if (variant === 0) {
-    // Cinematic rotateX perspective fold (dramatic)
-    return {
-      ...base,
-      transform: `perspective(1600px) rotateX(14deg) translateY(${offset * 100}%) scale(0.92)`,
-      opacity: offset === 1 ? 0.05 : 0,
-      filter: "blur(0px)",
-      zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
-      transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease",
-      transformOrigin: "50% 0%",
-    };
+  // ── Waiting (offset = 1) — ready to enter ──
+  switch (v) {
+    case 0: // Scale up from slight zoom-in
+      return { ...base, transform: "scale(1.08)", opacity: 0,
+        zIndex: 15, pointerEvents: "none", transformOrigin: "50% 50%",
+        transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.95s ease" };
+    case 1: // Curtain — starts fully clipped from top
+      return { ...base, clipPath: "inset(100% 0% 0% 0%)", opacity: 1,
+        zIndex: 15, pointerEvents: "none",
+        transition: "clip-path 0.92s cubic-bezier(0.76,0,0.24,1)" };
+    case 2: // Blur + opposite skew
+      return { ...base, transform: "scale(1.05) rotateZ(1.8deg)", opacity: 0, filter: "blur(16px)",
+        zIndex: 15, pointerEvents: "none",
+        transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease, filter 0.88s ease" };
+    case 3: // Perspective unfold — tilted forward, then flattens
+      return { ...base, transform: "perspective(1400px) rotateX(10deg) scale(0.95)", opacity: 0,
+        zIndex: 15, pointerEvents: "none", transformOrigin: "50% 0%",
+        transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease" };
+    case 4: // Split — starts as vertical center line, expands outward
+      return { ...base, clipPath: "inset(0% 50% 0% 50%)", opacity: 1,
+        zIndex: 15, pointerEvents: "none",
+        transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1)" };
+    default: // Iris open — expands from center point
+      return { ...base, clipPath: "circle(0% at 50% 50%)", opacity: 1,
+        zIndex: 15, pointerEvents: "none",
+        transition: "clip-path 0.88s cubic-bezier(0.34,1.56,0.64,1)" };
   }
-  if (variant === 1) {
-    // Clip-path wipe from bottom (curtain reveal)
-    return {
-      ...base,
-      clipPath: offset === 1 ? "inset(100% 0% 0% 0%)" : "inset(100% 0% 0% 0%)",
-      opacity: offset === 1 ? 1 : 0,
-      filter: "blur(0px)",
-      zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
-      transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.3s ease",
-    };
-  }
-  // variant 2: blur + scale zoom
-  return {
-    ...base,
-    transform: `translateY(${offset * 100}%) scale(0.82)`,
-    opacity: 0,
-    filter: offset === 1 ? "blur(24px)" : "blur(8px)",
-    zIndex: Math.max(15 - offset, 1), pointerEvents: "none",
-    transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.95s ease, filter 0.95s ease",
-  };
 }
 
 export default function PageScroll({ children }: Props) {
@@ -241,18 +245,6 @@ export default function PageScroll({ children }: Props) {
           </button>
         ))}
       </div>
-
-      {/* ── Frosted glass transition flash ── */}
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 25, pointerEvents: "none",
-        opacity: transitioning ? 1 : 0,
-        backdropFilter: transitioning ? "blur(14px) brightness(0.75)" : "blur(0px) brightness(1)",
-        WebkitBackdropFilter: transitioning ? "blur(14px) brightness(0.75)" : "blur(0px) brightness(1)",
-        background: transitioning ? "rgba(5,5,8,0.38)" : "rgba(0,0,0,0)",
-        transition: transitioning
-          ? "opacity 0.12s ease, backdrop-filter 0.2s ease, background 0.2s ease"
-          : "opacity 0.55s ease 0.38s, backdrop-filter 0.55s ease 0.38s, background 0.55s ease 0.38s",
-      }} />
 
       {/* ── Progress bar (top) ── */}
       <div style={{
