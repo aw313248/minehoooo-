@@ -154,14 +154,18 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
 /* ─── Category header ─── */
 function CatHeader({ num, label, count, note }: { num: string; label: string; count?: number; note?: string }) {
   return (
-    <div className="flex items-end justify-between mb-6 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-      <div className="flex items-baseline gap-5">
-        <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>{num}</span>
-        <span className="font-display leading-none" style={{ fontSize: "clamp(1.1rem, 2.6vw, 2rem)", color: "var(--text)", letterSpacing: "0.01em" }}>{label}</span>
-      </div>
-      <div className="hidden md:flex flex-col items-end gap-0.5">
-        {count !== undefined && <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{count} WORKS</span>}
-        {note && <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>{note}</span>}
+    <div className="mb-8">
+      {/* Gradient rule */}
+      <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.22), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 14 }} />
+      <div className="flex items-end justify-between">
+        <div className="flex items-baseline gap-4">
+          <span className="font-display leading-none" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "rgba(255,255,255,0.07)", letterSpacing: "0.02em" }}>{num}</span>
+          <span className="font-display leading-none" style={{ fontSize: "clamp(1.2rem, 2.8vw, 2.2rem)", color: "var(--text)", letterSpacing: "0.01em" }}>{label}</span>
+        </div>
+        <div className="hidden md:flex flex-col items-end gap-0.5">
+          {count !== undefined && <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{count} WORKS</span>}
+          {note && <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>{note}</span>}
+        </div>
       </div>
     </div>
   );

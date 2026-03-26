@@ -99,15 +99,21 @@ export default function AudioPlayer() {
         <button onClick={toggle} aria-label={playing ? "Pause music" : "Play music"} style={btnStyle}>
         {playing ? (
           <span className="flex items-end gap-[2.5px]" style={{ height: 12 }}>
-            {[1, 1.6, 0.7, 1.3, 0.9].map((h, i) => (
+            {([
+              { h: 0.85, dur: 0.52, delay: 0.00 },
+              { h: 1.60, dur: 0.38, delay: 0.11 },
+              { h: 0.55, dur: 0.61, delay: 0.05 },
+              { h: 1.30, dur: 0.44, delay: 0.18 },
+              { h: 0.95, dur: 0.33, delay: 0.09 },
+            ]).map(({ h, dur, delay }, i) => (
               <span key={i} style={{
                 display:    "block",
                 width:      2,
-                height:     `${h * 6}px`,
+                height:     `${h * 7}px`,
                 background: "rgba(255,255,255,0.7)",
                 borderRadius: 1,
-                animation:  `bar-bounce ${0.7 + i * 0.13}s ease-in-out infinite alternate`,
-                animationDelay: `${i * 0.1}s`,
+                animation:  `bar-bounce ${dur}s ease-in-out infinite alternate`,
+                animationDelay: `${delay}s`,
               }} />
             ))}
           </span>

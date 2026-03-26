@@ -52,7 +52,8 @@ export default function MobileNav() {
               width: i === page ? 14 : 4,
               height: 4,
               borderRadius: 2,
-              background: i === page ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.2)",
+              background: i === page ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.2)",
+              boxShadow: i === page ? "0 0 8px rgba(255,255,255,0.45), 0 0 2px rgba(255,255,255,0.6)" : "none",
               transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
             }} />
           </button>

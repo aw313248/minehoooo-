@@ -73,13 +73,16 @@ export default function Navbar() {
                     onMouseLeave={e => !active && (e.currentTarget.style.color = "#6e6e73")}>
                     {l.label}
                   </span>
-                  {/* Active dot */}
+                  {/* Active bar */}
                   <div style={{
                     width: active ? 16 : 0,
                     height: 1.5,
                     borderRadius: 1,
-                    background: "rgba(255,255,255,0.7)",
-                    transition: "width 0.4s cubic-bezier(0.16,1,0.3,1)",
+                    background: active
+                      ? "linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.3))"
+                      : "transparent",
+                    boxShadow: active ? "0 0 6px rgba(255,255,255,0.35)" : "none",
+                    transition: "width 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease",
                   }} />
                 </button>
               </li>

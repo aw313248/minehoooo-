@@ -212,6 +212,10 @@ export default function Hero() {
                 whiteSpace: "nowrap",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
+                display: "block",
+                opacity: loaded ? 1 : 0,
+                transform: loaded ? "translateY(0)" : "translateY(6px)",
+                transition: `opacity .55s ease ${1.75 + i * 0.14}s, transform .55s ease ${1.75 + i * 0.14}s`,
               }}>{line}</span>
             ))}
             {q.attr && (

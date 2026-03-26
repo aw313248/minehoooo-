@@ -17,6 +17,8 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
   hasPrev: boolean; hasNext: boolean;
   idx: number; total: number;
 }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const id = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(id); }, []);
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -29,19 +31,36 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center"
-      style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(24px)" }}
+      style={{
+        background: `rgba(0,0,0,${mounted ? 0.92 : 0})`,
+        backdropFilter: mounted ? "blur(24px)" : "blur(0px)",
+        transition: "background .35s ease, backdrop-filter .35s ease",
+      }}
       onClick={onClose}>
-      <div className="relative flex items-center gap-4" onClick={e => e.stopPropagation()}>
+      <div className="relative flex items-center gap-4"
+        style={{
+          opacity: mounted ? 1 : 0,
+          transform: mounted ? "scale(1)" : "scale(0.94)",
+          transition: "opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1)",
+        }}
+        onClick={e => e.stopPropagation()}>
 
-        {/* Prev arrow */}
+        {/* Prev chevron */}
         <button onClick={onPrev} aria-label="Previous photo"
           className="hidden md:flex items-center justify-center"
           style={{
-            width: 36, height: 36, background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.12)", cursor: hasPrev ? "pointer" : "default",
-            opacity: hasPrev ? 1 : 0.2, transition: "opacity .2s",
-          }}>
-          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>←</span>
+            width: 40, height: 40,
+            background: "rgba(255,255,255,0.05)",
+            borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.1)",
+            cursor: hasPrev ? "pointer" : "default",
+            opacity: hasPrev ? 1 : 0.18,
+            transition: "opacity .2s, background .2s",
+          }}
+          onMouseEnter={e => hasPrev && (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="7 1 1 7 7 13" />
+          </svg>
         </button>
 
         {/* Image */}
@@ -56,20 +75,27 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           {/* Close */}
           <button onClick={onClose} aria-label="Close lightbox"
             className="absolute top-3 right-3 font-mono-label text-[9px] tracking-widest px-3 py-1.5"
-            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.12)" }}>
+            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)", borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.12)" }}>
             ESC ✕
           </button>
         </div>
 
-        {/* Next arrow */}
+        {/* Next chevron */}
         <button onClick={onNext} aria-label="Next photo"
           className="hidden md:flex items-center justify-center"
           style={{
-            width: 36, height: 36, background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.12)", cursor: hasNext ? "pointer" : "default",
-            opacity: hasNext ? 1 : 0.2, transition: "opacity .2s",
-          }}>
-          <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 16 }}>→</span>
+            width: 40, height: 40,
+            background: "rgba(255,255,255,0.05)",
+            borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.1)",
+            cursor: hasNext ? "pointer" : "default",
+            opacity: hasNext ? 1 : 0.18,
+            transition: "opacity .2s, background .2s",
+          }}
+          onMouseEnter={e => hasNext && (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="1 1 7 7 1 13" />
+          </svg>
         </button>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
+import { CharReveal } from "@/components/WordReveal";
 
 const IG_ACCOUNTS = [
   { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · MV · Reels" },
@@ -69,15 +70,8 @@ export default function Contact() {
 
           {/* Heading */}
           <h2 className="font-display leading-none mb-6"
-            style={{
-              fontSize: "clamp(3.5rem, 12vw, 14rem)",
-              color: "var(--text)",
-              letterSpacing: "0.01em",
-              opacity: inView ? 1 : 0,
-              transform: inView ? "translateY(0)" : "translateY(40px)",
-              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .08s, transform .9s cubic-bezier(.16,1,.3,1) .08s",
-            }}>
-            LET&apos;S WORK
+            style={{ fontSize: "clamp(3.5rem, 12vw, 14rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+            <CharReveal text="LET'S WORK" inView={inView} baseDelay={0.1} stagger={0.042} />
           </h2>
 
           <p className="font-mono-label text-[11px] md:text-[13px] tracking-[0.18em] mb-12 max-w-md leading-relaxed"
