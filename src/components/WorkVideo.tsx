@@ -129,7 +129,7 @@ function MvCard({ v, active, onClick }: { v: typeof featuredMVs[0]; active: bool
       <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "var(--text-3)" }}>{v.subEn}</p>
       <p className="text-[13px] font-medium leading-tight" style={{ color: "var(--text)" }}>{v.title}</p>
       {v.artist && <p className="font-mono-label text-[9px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist}</p>}
-      <p className="font-mono-label text-[8px] mt-1" style={{ color: "var(--text-3)" }}>{v.role}</p>
+      <div className="mt-1.5"><RoleTag text={v.role} /></div>
     </button>
   );
 }
@@ -151,7 +151,7 @@ function ThumbLink({ id, title, role, sub }: { id: string; title: string; role: 
       <div className="min-w-0">
         <p className="text-[11px] font-medium leading-tight truncate" style={{ color: "var(--text)" }}>{title}</p>
         {sub && <p className="font-mono-label text-[8px] mt-0.5 truncate" style={{ color: "var(--text-3)" }}>{sub}</p>}
-        <p className="font-mono-label text-[7px] mt-0.5" style={{ color: "var(--text-3)" }}>{role}</p>
+        <div className="mt-1"><RoleTag text={role} /></div>
       </div>
     </a>
   );
@@ -164,6 +164,21 @@ function SectionLabel({ label }: { label: string }) {
       <p className="font-mono-label text-[9px] tracking-[0.3em] shrink-0" style={{ color: "var(--text-3)" }}>{label}</p>
       <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
     </div>
+  );
+}
+
+/* ─── Role badge ─── */
+function RoleTag({ text }: { text: string }) {
+  return (
+    <span style={{
+      fontFamily: "var(--font-space-mono), monospace",
+      fontSize: 7, letterSpacing: "0.2em",
+      color: "rgba(255,255,255,0.65)",
+      background: "rgba(255,255,255,0.06)",
+      border: "1px solid rgba(255,255,255,0.18)",
+      padding: "2px 6px", borderRadius: 1,
+      display: "inline-block",
+    }}>{text}</span>
   );
 }
 
@@ -186,11 +201,17 @@ export default function WorkVideo() {
   const active = featuredMVs[activeIdx];
 
   return (
-    <section className="h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
+    <section style={{ background: "#000", minHeight: "100vh" }}>
 
-      {/* ── HEADER ── */}
-      <div ref={hRef} className="border-b px-8 md:px-14 pt-20 pb-5 shrink-0"
-        style={{ borderColor: "var(--border)" }}>
+      {/* ── HEADER — sticky ── */}
+      <div ref={hRef} className="border-b px-8 md:px-14 pt-20 pb-5"
+        style={{
+          borderColor: "var(--border)",
+          position: "sticky", top: 0, zIndex: 10,
+          background: "rgba(0,0,0,0.88)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+        }}>
         <div className="flex items-end justify-between">
           <div>
             <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-2"
@@ -207,11 +228,12 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── SCROLLABLE BODY ── */}
-      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: "none" }}>
+      {/* ── BODY ── */}
+      <div>
 
         {/* ── 01 · Featured MVs ── */}
-        <div ref={pRef} className="grid md:grid-cols-[1fr_1.8fr] border-b min-h-[50vh]"
+        <div ref={pRef} className="grid md:grid-cols-[1fr_1.8fr] border-b"
+          style={{ minHeight: "90vh" }}
           style={{ borderColor: "var(--border)" }}>
 
           <div className="border-r p-6 md:p-10 flex flex-col gap-4"
@@ -323,7 +345,8 @@ export default function WorkVideo() {
                     )}
                   </div>
                   <p className="text-[12px] font-medium" style={{ color: "var(--text)" }}>{v.title}</p>
-                  <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist} · {v.role}</p>
+                  <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.artist}</p>
+                  <div className="mt-1"><RoleTag text={v.role} /></div>
                 </div>
               ))}
             </div>
@@ -373,7 +396,7 @@ export default function WorkVideo() {
                 </div>
               </div>
               <p className="text-[14px] font-medium" style={{ color: "var(--text)" }}>{shortFilm.title}</p>
-              <p className="font-mono-label text-[8px] mt-1" style={{ color: "var(--text-3)" }}>{shortFilm.role}</p>
+              <div className="mt-1.5"><RoleTag text={shortFilm.role} /></div>
             </a>
           </div>
         </div>
@@ -400,7 +423,7 @@ export default function WorkVideo() {
                     </div>
                   </div>
                   <p className="text-[10px] font-medium leading-tight" style={{ color: "var(--text)" }}>{v.title}</p>
-                  <p className="font-mono-label text-[7px] mt-0.5" style={{ color: "var(--text-3)" }}>{v.role}</p>
+                  <div className="mt-1"><RoleTag text={v.role} /></div>
                 </a>
               </AnimLine>
             ))}

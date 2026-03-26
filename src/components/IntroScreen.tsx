@@ -6,63 +6,60 @@ const QUOTES = [
   {
     lines: ["人一定是", "在作品之前"],
     attr: null,
-    duration: 3200,
+    duration: 3400,
   },
   {
     lines: ["莽撞的開始，拙劣的完成", "好過心懷完美", "不開始行動"],
     attr: null,
-    duration: 4000,
+    duration: 4400,
   },
   {
     lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"],
     attr: "— 大谷翔平",
-    duration: 4200,
+    duration: 4600,
   },
 ];
 
 export default function IntroScreen() {
-  const [phase, setPhase]     = useState<"idle" | "in" | "hold" | "out" | "done">("idle");
+  const [phase, setPhase] = useState<"idle" | "open" | "in" | "hold" | "out" | "done">("idle");
   const [quoteIdx, setQuoteIdx] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const quote = QUOTES[quoteIdx];
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const q = QUOTES[quoteIdx];
 
   const dismiss = () => {
-    if (phase === "done" || phase === "out") return;
-    timerRef.current.forEach(clearTimeout);
+    if (phase === "out" || phase === "done") return;
+    timers.current.forEach(clearTimeout);
     setPhase("out");
-    const t = setTimeout(() => setPhase("done"), 900);
-    timerRef.current.push(t);
+    timers.current.push(setTimeout(() => setPhase("done"), 750));
   };
 
   useEffect(() => {
-    // Only show once per browser session
     if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("intro-v1")) {
       setPhase("done");
       return;
     }
-    if (typeof sessionStorage !== "undefined") {
-      sessionStorage.setItem("intro-v1", "1");
-    }
+    if (typeof sessionStorage !== "undefined") sessionStorage.setItem("intro-v1", "1");
 
     const idx = Math.floor(Math.random() * QUOTES.length);
     setQuoteIdx(idx);
-
     const dur = QUOTES[idx].duration;
 
-    const t1 = setTimeout(() => setPhase("in"),   80);
-    const t2 = setTimeout(() => setPhase("hold"),  dur - 900);
-    const t3 = setTimeout(() => setPhase("out"),   dur);
-    const t4 = setTimeout(() => setPhase("done"),  dur + 900);
-    timerRef.current = [t1, t2, t3, t4];
-
-    return () => timerRef.current.forEach(clearTimeout);
+    const t = [
+      setTimeout(() => setPhase("open"), 40),
+      setTimeout(() => setPhase("in"),   700),
+      setTimeout(() => setPhase("hold"), dur - 750),
+      setTimeout(() => setPhase("out"),  dur),
+      setTimeout(() => setPhase("done"), dur + 750),
+    ];
+    timers.current = t;
+    return () => t.forEach(clearTimeout);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (phase === "done") return null;
 
-  const isIn   = phase === "in" || phase === "hold";
+  const isOpen = phase === "open" || phase === "in" || phase === "hold";
+  const isIn   = phase === "in"   || phase === "hold";
   const isOut  = phase === "out";
-  const totalDur = quote.duration;
 
   return (
     <div
@@ -73,56 +70,87 @@ export default function IntroScreen() {
         zIndex: 9999999,
         background: "#000",
         display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        /* Letterbox cinematic reveal — collapses to horizontal sliver, then expands */
+        clipPath: isOpen ? "inset(0% 0% 0% 0%)" : "inset(49% 0% 49% 0%)",
         opacity: isOut ? 0 : 1,
-        transform: isOut ? "translateY(-14px) scale(0.99)" : "translateY(0) scale(1)",
-        transition: isOut ? "opacity 0.88s ease, transform 0.88s cubic-bezier(0.16,1,0.3,1)" : "none",
+        transform: isOut ? "scale(1.018)" : "scale(1)",
+        transition: isOut
+          ? "opacity 0.7s ease, transform 0.7s ease"
+          : isOpen
+          ? "clip-path 0.65s cubic-bezier(0.16,1,0.3,1)"
+          : "none",
         userSelect: "none",
         overflow: "hidden",
       }}
     >
-      {/* Grain overlay */}
+      {/* ── Grain texture ── */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
-        backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-        backgroundSize: "160px 160px", opacity: 0.09, mixBlendMode: "screen",
+        backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+        backgroundSize: "160px 160px",
+        opacity: 0.14,
+        mixBlendMode: "screen",
       }} />
 
-      {/* Top-left brand */}
+      {/* ── Top bar: brand + counter ── */}
       <div style={{
-        position: "absolute", top: "2rem", left: "2.5rem",
+        position: "absolute", top: "2.5rem",
+        left: "2.5rem", right: "2.5rem",
+        display: "flex", justifyContent: "space-between", alignItems: "center",
         opacity: isIn ? 1 : 0,
         transition: "opacity 0.8s ease 0.1s",
       }}>
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 8, letterSpacing: "0.5em", color: "rgba(255,255,255,0.25)",
+          fontSize: 8, letterSpacing: "0.5em",
+          color: "rgba(255,255,255,0.28)",
         }}>
           MINEH4O
         </p>
+        <p style={{
+          fontFamily: "var(--font-space-mono), monospace",
+          fontSize: 8, letterSpacing: "0.25em",
+          color: "rgba(255,255,255,0.18)",
+        }}>
+          {String(quoteIdx + 1).padStart(2, "0")} · {String(QUOTES.length).padStart(2, "0")}
+        </p>
       </div>
 
-      {/* Quote block */}
+      {/* ── Quote block ── */}
       <div style={{
         textAlign: "center",
-        padding: "0 2rem",
-        maxWidth: 700,
+        maxWidth: 540,
         width: "100%",
+        padding: "0 2.5rem",
       }}>
-        {quote.lines.map((line, i) => (
-          <div key={i} style={{ overflow: "hidden", marginBottom: "0.3rem" }}>
+
+        {/* Top rule — expands left-to-right */}
+        <div style={{
+          height: 1,
+          background: "rgba(255,255,255,0.1)",
+          transformOrigin: "left",
+          transform: isIn ? "scaleX(1)" : "scaleX(0)",
+          transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.05s",
+          marginBottom: "2rem",
+        }} />
+
+        {/* Quote lines */}
+        {q.lines.map((line, i) => (
+          <div key={i} style={{ overflow: "hidden", marginBottom: i < q.lines.length - 1 ? "0.35rem" : 0 }}>
             <p style={{
               fontFamily: "var(--font-bebas), sans-serif",
-              fontSize: "clamp(2.5rem, 8vw, 8rem)",
-              color: "rgba(255,255,255,0.92)",
-              letterSpacing: "0.025em",
-              lineHeight: 1,
+              fontSize: "clamp(1.8rem, 4.5vw, 3.6rem)",
+              color: "rgba(255,255,255,0.9)",
+              letterSpacing: "0.05em",
+              lineHeight: 1.1,
               opacity: isIn ? 1 : 0,
-              transform: isIn ? "translateY(0) skewY(0deg)" : "translateY(50%) skewY(3deg)",
-              filter: isIn ? "blur(0px)" : "blur(6px)",
-              transition: `opacity 0.85s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.22}s, transform 0.85s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.22}s, filter 0.85s ease ${0.1 + i * 0.22}s`,
+              transform: isIn ? "translateY(0) skewY(0deg)" : "translateY(60%) skewY(3deg)",
+              filter: isIn ? "blur(0px)" : "blur(5px)",
+              transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.16}s,
+                           transform 0.8s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.16}s,
+                           filter 0.7s ease ${0.1 + i * 0.16}s`,
             }}>
               {line}
             </p>
@@ -130,53 +158,72 @@ export default function IntroScreen() {
         ))}
 
         {/* Attribution */}
-        {quote.attr && (
-          <p style={{
-            fontFamily: "var(--font-space-mono), monospace",
-            fontSize: "0.6rem",
-            letterSpacing: "0.35em",
-            color: "rgba(255,255,255,0.28)",
-            marginTop: "1.5rem",
-            opacity: isIn ? 1 : 0,
-            transition: `opacity 0.9s ease ${0.1 + quote.lines.length * 0.22 + 0.3}s`,
-          }}>
-            {quote.attr}
-          </p>
+        {q.attr && (
+          <div style={{ overflow: "hidden", marginTop: "1.4rem" }}>
+            <p style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.58rem",
+              letterSpacing: "0.3em",
+              color: "rgba(255,255,255,0.28)",
+              opacity: isIn ? 1 : 0,
+              transform: isIn ? "translateY(0)" : "translateY(100%)",
+              transition: `opacity 0.8s ease ${0.1 + q.lines.length * 0.16 + 0.22}s,
+                           transform 0.8s ease ${0.1 + q.lines.length * 0.16 + 0.22}s`,
+            }}>
+              {q.attr}
+            </p>
+          </div>
         )}
-      </div>
 
-      {/* Thin horizontal separator line */}
-      <div style={{
-        position: "absolute",
-        bottom: "4rem",
-        left: "2.5rem",
-        right: "2.5rem",
-        height: 1,
-        background: "rgba(255,255,255,0.06)",
-        overflow: "hidden",
-      }}>
-        {/* Progress */}
+        {/* Bottom rule */}
         <div style={{
-          position: "absolute", inset: 0,
-          background: "rgba(255,255,255,0.3)",
-          transformOrigin: "left",
+          height: 1,
+          background: "rgba(255,255,255,0.07)",
+          transformOrigin: "right",
           transform: isIn ? "scaleX(1)" : "scaleX(0)",
-          transition: isIn ? `transform ${totalDur}ms linear` : "none",
+          transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s",
+          marginTop: "2rem",
         }} />
       </div>
 
-      {/* Skip hint */}
+      {/* ── Bottom: progress + skip ── */}
       <div style={{
-        position: "absolute", bottom: "1.5rem", right: "2.5rem",
-        opacity: isIn ? 1 : 0,
-        transition: "opacity 0.8s ease 0.6s",
+        position: "absolute",
+        bottom: "2.5rem",
+        left: "2.5rem",
+        right: "2.5rem",
       }}>
-        <p style={{
-          fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 7, letterSpacing: "0.4em", color: "rgba(255,255,255,0.18)",
+        {/* Progress bar */}
+        <div style={{
+          height: 1,
+          background: "rgba(255,255,255,0.05)",
+          overflow: "hidden",
+          marginBottom: "0.75rem",
         }}>
-          TAP TO SKIP
-        </p>
+          <div style={{
+            height: "100%",
+            background: "rgba(255,255,255,0.35)",
+            transformOrigin: "left",
+            transform: isIn ? "scaleX(1)" : "scaleX(0)",
+            transition: isIn ? `transform ${q.duration}ms linear` : "none",
+          }} />
+        </div>
+
+        {/* Skip hint */}
+        <div style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          opacity: isIn ? 1 : 0,
+          transition: "opacity 0.8s ease 0.55s",
+        }}>
+          <p style={{
+            fontFamily: "var(--font-space-mono), monospace",
+            fontSize: 7, letterSpacing: "0.38em",
+            color: "rgba(255,255,255,0.18)",
+          }}>
+            CLICK TO SKIP
+          </p>
+        </div>
       </div>
     </div>
   );
