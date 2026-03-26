@@ -96,6 +96,7 @@ export default function About() {
   const { ref: bioRef,  inView: bioIn  } = useInView(0.05, true);
   const { ref: skRef,   inView: skIn   } = useInView(0.05, true);
   const { ref: leftRef, inView: leftIn } = useInView(0.05, true);
+  const { ref: expRef,  inView: expIn  } = useInView(0.05, true);
   const [coverHover, setCoverHover] = useState(false);
   const [panelHover, setPanelHover] = useState(false);
   const [quoteIdx, setQuoteIdx] = useState(0);
@@ -394,6 +395,27 @@ export default function About() {
             </div>
           </div>
 
+          {/* Mobile photo banner — before bio */}
+          <div className="md:hidden -mx-8 relative overflow-hidden mb-2" style={{ height: "52vw" }}>
+            <Image src="/profile.png" alt="Oscar" fill className="object-cover" style={{ objectPosition: "center 15%" }} />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to bottom, rgba(10,10,11,0.1) 0%, rgba(10,10,11,0.96) 100%)",
+            }} />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to right, rgba(10,10,11,0.5) 0%, transparent 60%)",
+            }} />
+            <div style={{ position: "absolute", bottom: "1.2rem", left: "2rem", right: "2rem" }}>
+              <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                DIRECTOR · DP · SCREENPLAY
+              </p>
+              <p className="font-display leading-none" style={{ fontSize: "clamp(2rem, 8vw, 3.5rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
+                OSCAR LAI
+              </p>
+            </div>
+          </div>
+
           {/* Bio ZH */}
           <div ref={bioRef}>
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
@@ -431,6 +453,48 @@ export default function About() {
         {skills.map((skill, i) => (
           <SkillCard key={skill.en} skill={skill} index={i} inView={skIn} />
         ))}
+      </div>
+
+      {/* ═══════════════════════════════════════
+          SELECTED CREDITS & EXPERIENCE
+      ═══════════════════════════════════════ */}
+      <div ref={expRef} className="border-t px-8 md:px-14 py-10 md:py-14" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: expIn ? 1 : 0, transition: "opacity .7s ease", marginBottom: 36 }}>
+          <p className="font-mono-label text-[9px] tracking-[0.38em]" style={{ color: "var(--text-3)" }}>
+            SELECTED CREDITS & EXPERIENCE
+          </p>
+        </div>
+        <div>
+          {credits.map((credit, i) => (
+            <div key={credit.text} style={{
+              display: "flex", gap: 20, padding: "18px 0",
+              borderBottom: "1px solid var(--border)",
+              opacity: expIn ? 1 : 0,
+              transform: expIn ? "translateX(0)" : "translateX(-28px)",
+              transition: `opacity .65s ease ${i * 0.08}s, transform .65s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
+            }}>
+              <div style={{ width: 32, paddingTop: 2, flexShrink: 0 }}>
+                <span className="font-mono-label text-[9px] tracking-widest" style={{ color: "var(--text-3)" }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
+              <div style={{ flex: 1 }}>
+                <p className="text-[14px] md:text-[15px] leading-snug"
+                  style={{ color: credit.highlight ? "var(--text)" : "var(--text-2)" }}>
+                  {credit.text}
+                </p>
+              </div>
+              {credit.highlight && (
+                <div style={{ flexShrink: 0, paddingTop: 3 }}>
+                  <div style={{
+                    width: 4, height: 4, borderRadius: "50%",
+                    background: "rgba(255,255,255,0.35)",
+                  }} />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Domain bar */}
