@@ -61,16 +61,17 @@ function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (src: str
 }
 
 export default function WorkPhotography() {
-  const [activeId, setActiveId]   = useState(() => {
-    const idx = Math.floor(Math.random() * photoCategories.length);
-    return photoCategories[idx].id;
-  });
+  const [activeId, setActiveId]   = useState(photoCategories[0].id);
   const [heroIdx, setHeroIdx]     = useState(0);
   const [lightbox, setLightbox]   = useState<string | null>(null);
   const { ref, inView }           = useInView(0.05);
   const cat = photoCategories.find(c => c.id === activeId)!;
 
   // Auto-cycle hero image every 4 s, starting from a random frame
+  useEffect(() => {
+    setActiveId(photoCategories[Math.floor(Math.random() * photoCategories.length)].id);
+  }, []);
+
   useEffect(() => {
     const startIdx = Math.floor(Math.random() * Math.min(cat.files.length, 6));
     setHeroIdx(startIdx);
