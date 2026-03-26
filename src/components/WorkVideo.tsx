@@ -688,7 +688,7 @@ export default function WorkVideo() {
 
       {/* ── 05 · IG Reels CTA ── */}
       <div ref={igRef}>
-        <a href="https://www.instagram.com/minehoooo.arw/" target="_blank" rel="noopener noreferrer"
+        <a href="https://www.instagram.com/minehoooo/" target="_blank" rel="noopener noreferrer"
           className="group block relative overflow-hidden border-t"
           style={{ borderColor: "var(--border)" }}>
 
@@ -703,7 +703,7 @@ export default function WorkVideo() {
           <div className="relative px-8 md:px-14 pt-14 pb-10 flex flex-col gap-6">
             <div style={{ opacity: igIn ? 1 : 0, transition: "opacity .8s ease" }}>
               <p className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
-                INSTAGRAM · @minehoooo.arw
+                INSTAGRAM · @minehoooo
               </p>
             </div>
 
