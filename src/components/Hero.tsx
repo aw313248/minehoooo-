@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { CharReveal } from "@/components/WordReveal";
 
 const V_LABELS     = ["Visual Production", "Creative Direction", "AIGC Creation"];
@@ -39,10 +39,11 @@ function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [quoteHover, setQuoteHover] = useState(false);
-  const quoteIdx = useRef(Math.floor(Math.random() * QUOTES.length));
-  const q = QUOTES[quoteIdx.current];
+  const [quoteIdx, setQuoteIdx] = useState(0);
+  const q = QUOTES[quoteIdx];
 
   useEffect(() => {
+    setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
     const t = setTimeout(() => setLoaded(true), 180);
     return () => clearTimeout(t);
   }, []);

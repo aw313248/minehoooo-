@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
 import { AnimLine } from "@/components/AnimLine";
 
@@ -98,8 +98,12 @@ export default function About() {
   const { ref: leftRef, inView: leftIn } = useInView(0.05, true);
   const [coverHover, setCoverHover] = useState(false);
   const [panelHover, setPanelHover] = useState(false);
-  const quoteIdx = useRef(Math.floor(Math.random() * QUOTES.length));
-  const q = QUOTES[quoteIdx.current];
+  const [quoteIdx, setQuoteIdx] = useState(0);
+  const q = QUOTES[quoteIdx];
+
+  useEffect(() => {
+    setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
+  }, []);
 
   return (
     <section id="about" style={{ background: "var(--bg-dark)" }}>
