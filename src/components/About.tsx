@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useInView } from "@/hooks/useInView";
 import { AnimLine } from "@/components/AnimLine";
 
@@ -100,14 +100,43 @@ export default function About() {
   const [coverHover, setCoverHover] = useState(false);
   const [panelHover, setPanelHover] = useState(false);
   const [quoteIdx, setQuoteIdx] = useState(0);
+  const [scrollPct, setScrollPct] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
   const q = QUOTES[quoteIdx];
 
   useEffect(() => {
     setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
   }, []);
 
+  // Scroll progress — listens to the PageScroll container that wraps this section
+  const onScroll = useCallback(() => {
+    const el = sectionRef.current?.closest("[style*='overflow-y']") as HTMLElement | null;
+    if (!el) return;
+    const pct = el.scrollTop / (el.scrollHeight - el.clientHeight);
+    setScrollPct(Math.min(1, Math.max(0, pct)));
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current?.closest("[style*='overflow-y']") as HTMLElement | null;
+    if (!el) return;
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [onScroll]);
+
   return (
-    <section id="about" style={{ background: "var(--bg-dark)" }}>
+    <section ref={sectionRef} id="about" style={{ background: "var(--bg-dark)", position: "relative" }}>
+
+      {/* ── Scroll progress bar — left edge ── */}
+      <div className="hidden md:block" style={{
+        position: "fixed", left: 0, top: 0, bottom: 0, width: 2, zIndex: 40, pointerEvents: "none",
+      }}>
+        <div style={{
+          position: "absolute", top: 0, left: 0, width: "100%",
+          height: `${scrollPct * 100}%`,
+          background: "rgba(255,255,255,0.18)",
+          transition: "height 0.1s linear",
+        }} />
+      </div>
 
       {/* ═══════════════════════════════════════
           COVER — full viewport, photo + name

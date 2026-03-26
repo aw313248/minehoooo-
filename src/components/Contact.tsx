@@ -90,6 +90,25 @@ export default function Contact() {
             Open for all creative collaborations
           </p>
 
+          {/* Email */}
+          <div style={{
+            opacity: inView ? 1 : 0,
+            transition: "opacity .8s ease .26s",
+            marginBottom: "1.2rem",
+          }}>
+            <a href="mailto:minehoooo@gmail.com"
+              className="inline-flex items-center gap-2 font-mono-label text-[10px] tracking-[0.18em]"
+              style={{ color: "rgba(255,255,255,0.35)", transition: "color .3s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}>
+              <svg width="12" height="10" viewBox="0 0 24 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="16" rx="2"/>
+                <polyline points="2,2 12,11 22,2"/>
+              </svg>
+              minehoooo@gmail.com
+            </a>
+          </div>
+
           {/* Primary CTA — IG DM */}
           <div style={{
             opacity: inView ? 1 : 0,

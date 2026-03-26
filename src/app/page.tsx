@@ -1,19 +1,19 @@
-import Navbar         from "@/components/Navbar";
-import PageScroll     from "@/components/PageScroll";
-import Hero           from "@/components/Hero";
+import Navbar          from "@/components/Navbar";
+import PageScroll      from "@/components/PageScroll";
+import Hero            from "@/components/Hero";
 import WorkPhotography from "@/components/WorkPhotography";
-import WorkVideo      from "@/components/WorkVideo";
-import WorkAIGC       from "@/components/WorkAIGC";
-import About          from "@/components/About";
-import Contact        from "@/components/Contact";
+import WorkVideo       from "@/components/WorkVideo";
+import WorkAIGC        from "@/components/WorkAIGC";
+import About           from "@/components/About";
+import Contact         from "@/components/Contact";
+import MobileNav       from "@/components/MobileNav";
+import PageTitle       from "@/components/PageTitle";
 
 export default function Home() {
   return (
     <>
-      {/* Navbar floats above everything */}
       <Navbar />
-
-      {/* Full-page 3D rotation scroll */}
+      <PageTitle />
       <PageScroll>
         <Hero />
         <About />
@@ -22,6 +22,7 @@ export default function Home() {
         <WorkAIGC />
         <Contact />
       </PageScroll>
+      <MobileNav />
     </>
   );
 }

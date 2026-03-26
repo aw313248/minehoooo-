@@ -30,12 +30,18 @@ const details = [
 export default function WorkAIGC() {
   const [playing, setPlaying] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const { ref: vRef, inView: vIn } = useInView(0.04);
   const { ref: moreRef, inView: moreIn } = useInView(0.04);
 
   useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 150);
-    return () => clearTimeout(t);
+    setIsMobile(window.innerWidth < 768);
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    const t1 = setTimeout(() => setHeroLoaded(true), 150);
+    const t2 = setTimeout(() => setIframeReady(true), 900);
+    return () => { clearTimeout(t1); clearTimeout(t2); window.removeEventListener("resize", onResize); };
   }, []);
 
   return (
@@ -44,16 +50,27 @@ export default function WorkAIGC() {
       {/* ── CINEMATIC HERO — fullscreen AIGC featured ── */}
       <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
 
-        {/* Background: muted autoplay */}
+        {/* Background: thumbnail always, iframe on desktop after delay */}
         {!playing && (
-          <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
-            <iframe
-              src={`https://www.youtube.com/embed/${MAIN_VIDEO}?autoplay=1&mute=1&controls=0&loop=1&playlist=${MAIN_VIDEO}&rel=0&modestbranding=1&playsinline=1&start=3`}
-              style={{ width: "100%", height: "100%", border: "none" }}
-              allow="autoplay; encrypted-media"
-              title="AIGC background"
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://img.youtube.com/vi/${MAIN_VIDEO}/maxresdefault.jpg`}
+              alt="AIGC background"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none", filter: "brightness(0.5)" }}
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${MAIN_VIDEO}/hqdefault.jpg`; }}
             />
-          </div>
+            {!isMobile && iframeReady && (
+              <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${MAIN_VIDEO}?autoplay=1&mute=1&controls=0&loop=1&playlist=${MAIN_VIDEO}&rel=0&modestbranding=1&playsinline=1&start=3`}
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                  allow="autoplay; encrypted-media"
+                  title="AIGC background"
+                />
+              </div>
+            )}
+          </>
         )}
 
         {/* Full player when playing */}
@@ -230,6 +247,7 @@ export default function WorkAIGC() {
                     style={{ aspectRatio: "16/9", borderRadius: 3, background: "#050505" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
+                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                       onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
                     <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(80,0,160,0.25) 0%, rgba(0,0,0,0.3) 100%)" }} />
