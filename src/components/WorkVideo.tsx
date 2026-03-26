@@ -243,18 +243,23 @@ function SeriesPanel({ video, index, inView }: {
 }) {
   const [preview, setPreview] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  useEffect(() => {
+    setIsTouch(window.innerWidth < 768);
+  }, []);
 
   return (
     <a href={`https://www.youtube.com/watch?v=${video.id}`}
       target="_blank" rel="noopener noreferrer"
       className="group block relative overflow-hidden border-b"
       style={{ height: "clamp(240px, 52vh, 480px)", borderColor: "var(--border)" }}
-      onMouseEnter={() => { setHovered(true); timer.current = setTimeout(() => setPreview(true), 600); }}
+      onMouseEnter={() => { if (!isTouch) { setHovered(true); timer.current = setTimeout(() => setPreview(true), 600); } }}
       onMouseLeave={() => { setHovered(false); clearTimeout(timer.current); setPreview(false); }}>
 
       {/* Background */}
-      {preview ? (
+      {preview && !isTouch ? (
         <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
           <iframe src={`https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${video.id}&start=4`}
             style={{ width: "100%", height: "100%", border: "none" }} allow="autoplay; encrypted-media" />
@@ -372,6 +377,14 @@ export default function WorkVideo() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [playing, setPlaying]     = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
+  const [isMobile, setIsMobile]   = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const onResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   const { ref: pRef,  inView: pIn  } = useInView(0.02);
   const { ref: trRef, inView: trIn } = useInView(0.02);
@@ -394,16 +407,33 @@ export default function WorkVideo() {
       {/* ── CINEMATIC HERO — fullscreen featured MV ── */}
       <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
 
-        {/* Background: muted autoplay when not in full-play mode */}
+        {/* Background: thumbnail always (iOS fallback), iframe only on desktop */}
         {!playing && (
-          <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
-            <iframe
-              src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
-              style={{ width: "100%", height: "100%", border: "none" }}
-              allow="autoplay; encrypted-media"
-              title={`${active.title} background`}
+          <>
+            {/* Static thumbnail — always rendered, acts as mobile bg + desktop placeholder */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
+              alt={active.title}
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", pointerEvents: "none",
+                filter: "brightness(0.55)",
+              }}
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
             />
-          </div>
+            {/* Autoplay iframe — desktop only, overlays the thumbnail */}
+            {!isMobile && (
+              <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
+                  style={{ width: "100%", height: "100%", border: "none" }}
+                  allow="autoplay; encrypted-media"
+                  title={`${active.title} background`}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {/* Full-screen player overlay (with sound) */}
