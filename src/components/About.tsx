@@ -46,6 +46,52 @@ const credits = [
 ];
 
 
+/* ─── Skill card with glass hover glow ─── */
+function SkillCard({ skill, index, inView }: {
+  skill: { en: string; zh: string; tools: string };
+  index: number;
+  inView: boolean;
+}) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      className="border-r last:border-r-0 p-6 md:p-8 relative overflow-hidden"
+      style={{
+        borderColor: "var(--border)",
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
+        transition: `opacity 0.7s ease ${index * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.1}s`,
+        background: hover ? "rgba(255,255,255,0.025)" : "transparent",
+      }}>
+      {/* Hover glow */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 80% 80% at 50% 100%, rgba(100,120,200,0.08) 0%, transparent 70%)",
+        opacity: hover ? 1 : 0,
+        transition: "opacity .4s ease",
+      }} />
+      {/* Shimmer top border */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: 1,
+        background: hover
+          ? "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%)"
+          : "transparent",
+        transition: "background .4s ease",
+      }} />
+      <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
+        {String(index + 1).padStart(2, "0")}
+      </p>
+      <h3 className="text-[15px] font-medium mb-0.5" style={{ color: "var(--text)" }}>{skill.en}</h3>
+      <p className="text-[13px] mb-3" style={{ color: "var(--text-2)" }}>{skill.zh}</p>
+      <p className="font-mono-label text-[9px] leading-relaxed tracking-wider" style={{ color: "var(--text-3)" }}>
+        {skill.tools}
+      </p>
+    </div>
+  );
+}
+
 export default function About() {
   const { ref: bioRef,  inView: bioIn  } = useInView(0.05, true);
   const { ref: skRef,   inView: skIn   } = useInView(0.05, true);
@@ -166,6 +212,27 @@ export default function About() {
               animation: "slideDown 1.6s ease-in-out infinite",
             }} />
           </div>
+        </div>
+      </div>
+
+      {/* ── Marquee strip ── */}
+      <div className="border-t overflow-hidden" style={{ borderColor: "var(--border)", background: "rgba(255,255,255,0.018)", backdropFilter: "blur(12px)" }}>
+        <div style={{ display: "flex", animation: "marquee 28s linear infinite", width: "max-content", padding: "10px 0" }}>
+          {Array(2).fill(null).map((_, rep) => (
+            <div key={rep} style={{ display: "flex", alignItems: "center", gap: 0 }}>
+              {["Director", "·", "DP", "·", "Screenplay", "·", "Photography", "·", "AIGC Creation", "·", "Color Grading", "·", "Visual Producer", "·"].map((item, j) => (
+                <span key={j} className="font-mono-label"
+                  style={{
+                    fontSize: 8, letterSpacing: "0.32em",
+                    color: item === "·" ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.32)",
+                    padding: item === "·" ? "0 20px" : "0 4px",
+                    whiteSpace: "nowrap",
+                  }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -358,33 +425,29 @@ export default function About() {
       ═══════════════════════════════════════ */}
       <div ref={skRef} className="grid md:grid-cols-4 border-t border-b" style={{ borderColor: "var(--border)" }}>
         {skills.map((skill, i) => (
-          <div key={skill.en} className="border-r last:border-r-0 p-6 md:p-8"
-            style={{
-              borderColor: "var(--border)",
-              opacity: skIn ? 1 : 0,
-              transform: skIn ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
-              transition: `opacity 0.7s ease ${i * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s`,
-            }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
-              {String(i + 1).padStart(2, "0")}
-            </p>
-            <h3 className="text-[15px] font-medium mb-0.5" style={{ color: "var(--text)" }}>{skill.en}</h3>
-            <p className="text-[13px] mb-3" style={{ color: "var(--text-2)" }}>{skill.zh}</p>
-            <p className="font-mono-label text-[9px] leading-relaxed tracking-wider" style={{ color: "var(--text-3)" }}>
-              {skill.tools}
-            </p>
-          </div>
+          <SkillCard key={skill.en} skill={skill} index={i} inView={skIn} />
         ))}
       </div>
 
       {/* Domain bar */}
-      <div className="px-6 md:px-10 py-3 flex items-center gap-2" style={{ background: "var(--bg-card)" }}>
-        <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>
-          MAIN DOMAIN /
-        </span>
-        <span className="font-mono-label text-[9px] tracking-[0.18em]" style={{ color: "var(--text-2)" }}>
-          Video Production & Post-Production · 影像製作與後製作業
-        </span>
+      <div className="border-t overflow-hidden" style={{ borderColor: "var(--border)", background: "rgba(255,255,255,0.012)", backdropFilter: "blur(12px)" }}>
+        <div style={{ display: "flex", animation: "marquee 40s linear infinite", width: "max-content", padding: "9px 0" }}>
+          {Array(2).fill(null).map((_, rep) => (
+            <div key={rep} style={{ display: "flex", alignItems: "center" }}>
+              {["Video Production & Post-Production", "·", "影像製作與後製作業", "·", "Taiwan · Taichung", "·", "MINEH4O / Oscar Lai", "·", "2026 Portfolio", "·"].map((item, j) => (
+                <span key={j} className="font-mono-label"
+                  style={{
+                    fontSize: 8, letterSpacing: "0.28em",
+                    color: item === "·" ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.28)",
+                    padding: item === "·" ? "0 24px" : "0 4px",
+                    whiteSpace: "nowrap",
+                  }}>
+                  {item}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

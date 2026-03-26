@@ -17,6 +17,25 @@ const QUOTES = [
   { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
 ];
 
+/* ─── Cinematic frame corner ─── */
+function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay: number; loaded: boolean }) {
+  const t = pos.startsWith("t") ? "1.8rem" : undefined;
+  const b = pos.startsWith("b") ? "5.2rem" : undefined;
+  const l = pos.endsWith("l") ? "1.8rem" : undefined;
+  const r = pos.endsWith("r") ? "1.8rem" : undefined;
+  const c = "rgba(255,255,255,0.8)";
+  return (
+    <div className="absolute pointer-events-none hidden md:block"
+      style={{ top: t, bottom: b, left: l, right: r, width: 26, height: 26,
+        opacity: loaded ? 0.25 : 0, transition: `opacity 1.2s ease ${delay}s` }}>
+      {/* Horizontal arm */}
+      <div style={{ position: "absolute", [pos.endsWith("l") ? "left" : "right"]: 0, [pos.startsWith("t") ? "top" : "bottom"]: 0, width: "100%", height: 1, background: c }} />
+      {/* Vertical arm */}
+      <div style={{ position: "absolute", [pos.endsWith("l") ? "left" : "right"]: 0, [pos.startsWith("t") ? "top" : "bottom"]: 0, width: 1, height: "100%", background: c }} />
+    </div>
+  );
+}
+
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [quoteHover, setQuoteHover] = useState(false);
@@ -31,9 +50,79 @@ export default function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
 
+      {/* ── Ambient floating orbs ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div style={{
+          position: "absolute", top: "8%", right: "18%",
+          width: 700, height: 700, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(80,100,160,0.055) 0%, transparent 65%)",
+          animation: "float 22s ease-in-out infinite",
+          willChange: "transform",
+        }} />
+        <div style={{
+          position: "absolute", bottom: "15%", left: "12%",
+          width: 500, height: 500, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(60,60,90,0.07) 0%, transparent 65%)",
+          animation: "float 30s ease-in-out infinite reverse",
+          willChange: "transform",
+        }} />
+        <div style={{
+          position: "absolute", top: "45%", left: "50%",
+          width: 350, height: 350, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(100,80,160,0.04) 0%, transparent 65%)",
+          animation: "float 18s ease-in-out 4s infinite",
+          willChange: "transform",
+        }} />
+      </div>
+
+      {/* ── Large "2026" background watermark ── */}
+      <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+        <span className="font-display select-none"
+          style={{
+            fontSize: "clamp(20rem, 68vw, 96rem)",
+            color: "rgba(255,255,255,0.016)",
+            letterSpacing: "0.02em",
+            lineHeight: 1,
+            paddingRight: "2%",
+            userSelect: "none",
+          }}>
+          2026
+        </span>
+      </div>
+
+      {/* ── Cinematic corner brackets ── */}
+      {/* Top-left */}
+      <CornerBracket pos="tl" delay={0.4} loaded={loaded} />
+      {/* Top-right */}
+      <CornerBracket pos="tr" delay={0.5} loaded={loaded} />
+      {/* Bottom-left */}
+      <CornerBracket pos="bl" delay={0.6} loaded={loaded} />
+      {/* Bottom-right */}
+      <CornerBracket pos="br" delay={0.7} loaded={loaded} />
+
+      {/* ── REC indicator (top right) ── */}
+      <div className="absolute hidden md:flex items-center gap-2 pointer-events-none"
+        style={{
+          top: "2rem", right: "2.5rem", zIndex: 10,
+          opacity: loaded ? 1 : 0, transition: "opacity 1.2s ease 2.2s",
+        }}>
+        <div style={{
+          width: 6, height: 6, borderRadius: "50%",
+          background: "rgba(220,50,50,0.85)",
+          boxShadow: "0 0 10px rgba(220,50,50,0.5)",
+          animation: "pulse-slow 1.8s ease-in-out infinite",
+        }} />
+        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.28)" }}>
+          REC
+        </span>
+        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.15em", color: "rgba(255,255,255,0.15)" }}>
+          2026
+        </span>
+      </div>
+
       {/* Frosted ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: "radial-gradient(ellipse 80% 50% at 55% 50%, rgba(255,255,255,0.028) 0%, transparent 70%)",
+        background: "radial-gradient(ellipse 80% 50% at 55% 50%, rgba(255,255,255,0.022) 0%, transparent 70%)",
       }} />
 
       {/* Vertical labels — left gutter */}
@@ -117,18 +206,31 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Tagline */}
-        <div className="mt-5 flex flex-wrap items-center gap-3">
+        {/* Tagline — glass pills */}
+        <div className="mt-5 flex flex-wrap items-center gap-2">
           {TAGLINE.map((word, i) => (
-            <span key={i} className="font-mono-label text-[11px] tracking-[0.28em]"
-              style={{
-                color: word === "·" ? "var(--text-3)" : "var(--text-2)",
+            word === "·" ? (
+              <span key={i} style={{
+                color: "rgba(255,255,255,0.18)", fontSize: 10, lineHeight: 1,
                 opacity: loaded ? 1 : 0,
-                transform: loaded ? "translateY(0)" : "translateY(12px)",
-                transition: `opacity .6s ease ${0.9 + i * 0.07}s, transform .6s ease ${0.9 + i * 0.07}s`,
-              }}>
-              {word}
-            </span>
+                transition: `opacity .6s ease ${0.88 + i * 0.07}s`,
+              }}>·</span>
+            ) : (
+              <span key={i} className="font-mono-label text-[10px] tracking-[0.22em]"
+                style={{
+                  background: "rgba(255,255,255,0.045)",
+                  backdropFilter: "blur(16px)",
+                  WebkitBackdropFilter: "blur(16px)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  padding: "5px 12px",
+                  color: "rgba(255,255,255,0.6)",
+                  opacity: loaded ? 1 : 0,
+                  transform: loaded ? "translateY(0)" : "translateY(14px)",
+                  transition: `opacity .65s ease ${0.88 + i * 0.07}s, transform .65s cubic-bezier(.16,1,.3,1) ${0.88 + i * 0.07}s`,
+                }}>
+                {word}
+              </span>
+            )
           ))}
         </div>
 
