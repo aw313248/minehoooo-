@@ -12,20 +12,20 @@ const QUOTES = [
 ];
 
 const bioCn = [
-  "我叫明宏，英文名 Oscar，高中以前，我還說不清楚這個名字對我有什麼意義",
+  "我叫明宏，英文名 Oscar——從高中拿起相機亂拍，到現在站在監視器後面，花了很長時間才意識到，這些其實是同一件事的不同版本",
   "從國中接觸 YouTube 開始，剪輯、特效、配樂、說故事——全靠自學，這些累積奠定了我對影像最早的敏感度",
-  "上了大學才真正認識「電影」，在故事結構不斷被拆解、重組的過程中，反覆體會那種「原來，我怎麼沒發現？！」的衝擊感，那種既視感讓我對影像的動力越來越強",
+  "上了大學才真正認識「電影」，在故事結構不斷被拆解、重組的過程中，反覆體會那種「原來，我怎麼沒發現？！」的衝擊——每一次，都讓對影像的驅動力再強一點",
   "偶爾理性地像個木頭，鑽研每顆鏡頭的調度；偶爾感性到在電影前面無表情地讓淚水流過",
-  "也曾任系學會副會長——在不同立場間來回調度，學會從多個角度理解人與衝突",
+  "在片場我學到一件事：最好的畫面通常不是「拍」出來的，是靠信任跟溝通換來的——這讓我開始認真理解人，不只是理解鏡頭",
   "透過畫面說故事，這件事讓我熱血，現在還是",
 ];
 
 const bioEn = [
-  "My name is Oscar, or Ming-Hong — before high school, I had no idea what weight that name would carry",
+  "My name is Oscar, or Ming-Hong — from pointing a camera at nothing in high school to standing behind a monitor now, it took a long time to realize it was always the same thing",
   "It started with YouTube in middle school — editing, effects, sound design, storytelling, all self-taught — that obsession laid the foundation for everything I do now",
   "University brought cinema — real cinema — stories taken apart and reassembled until the seams show, every collision brought the same feeling: 'Wait — how did I miss that?' and every time, it made the drive stronger",
   "Equal parts analytical and emotional — sometimes the most methodical person in the room mapping every lens movement frame by frame, sometimes sitting stone-faced in a theater as tears run down silently",
-  "Served as VP of my department's student council — learning to navigate between perspectives, translate competing interests, and turn friction into understanding",
+  "On set I've learned that the best frames are rarely just captured — they're earned, through trust and knowing how to read the room. That's what made me start studying people, not just lenses",
   "Using images to tell stories: still the most electric thing I know how to do",
 ];
 
