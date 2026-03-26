@@ -223,10 +223,10 @@ export default function PageScroll({ children }: Props) {
         </div>
       ))}
 
-      {/* ── Page indicator ── */}
-      <div className="page-nav" style={{
+      {/* ── Page indicator — desktop only ── */}
+      <div className="page-nav hidden md:flex" style={{
         position: "fixed", right: 20, top: "50%", transform: "translateY(-50%)",
-        zIndex: 100, display: "flex", flexDirection: "column", gap: 6, alignItems: "flex-end",
+        zIndex: 100, flexDirection: "column", gap: 6, alignItems: "flex-end",
       }}>
         {LABELS.slice(0, total).map((lbl, i) => (
           <button
