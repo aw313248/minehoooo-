@@ -151,12 +151,28 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
   );
 }
 
-/* ─── Section divider ─── */
-function SectionLabel({ label }: { label: string }) {
+/* ─── Category header ─── */
+function CatHeader({ num, label, count, note }: { num: string; label: string; count?: number; note?: string }) {
   return (
-    <div className="flex items-center gap-3 mb-5 mt-8 first:mt-0">
-      <p className="font-mono-label text-[9px] tracking-[0.3em] shrink-0" style={{ color: "var(--text-3)" }}>{label}</p>
-      <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+    <div className="flex items-end justify-between mb-6 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+      <div className="flex items-baseline gap-5">
+        <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>{num}</span>
+        <span className="font-display leading-none" style={{ fontSize: "clamp(1.1rem, 2.6vw, 2rem)", color: "var(--text)", letterSpacing: "0.01em" }}>{label}</span>
+      </div>
+      <div className="hidden md:flex flex-col items-end gap-0.5">
+        {count !== undefined && <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{count} WORKS</span>}
+        {note && <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>{note}</span>}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Sub-label inside a category ─── */
+function SubLabel({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4 mt-8 first:mt-0">
+      <p className="font-mono-label text-[8px] tracking-[0.32em] shrink-0" style={{ color: "rgba(255,255,255,0.2)" }}>{label}</p>
+      <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
     </div>
   );
 }
@@ -361,6 +377,7 @@ export default function WorkVideo() {
   const { ref: trRef, inView: trIn } = useInView(0.02);
   const { ref: wRef,  inView: wIn  } = useInView(0.02);
   const { ref: evRef, inView: evIn } = useInView(0.02);
+  const { ref: leRef, inView: leIn } = useInView(0.02);
   const { ref: sRef,  inView: sIn  } = useInView(0.04);
   const { ref: igRef, inView: igIn } = useInView(0.04);
 
@@ -543,12 +560,10 @@ export default function WorkVideo() {
         ))}
       </div>
 
-      {/* ── 03 · OTHER WORKS — clean grid ── */}
+      {/* ── 03 · MUSIC VIDEO · COLOR WORK ── */}
       <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-
-        {/* Color Grade */}
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <SectionLabel label="COLOR GRADE" />
+          <CatHeader num="03" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="DP · COLOR GRADING" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
             {colorCredits.map((v, i) => (
               <div key={v.id} style={{
@@ -560,65 +575,51 @@ export default function WorkVideo() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Short Film & Narrative */}
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease .1s" }}>
-          <SectionLabel label="SHORT FILM · NARRATIVE" />
+      {/* ── 04 · SHORT FILM & COMMERCIAL ── */}
+      <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="04" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
+
+          {/* Short Film */}
+          <SubLabel label="SHORT FILM · NARRATIVE" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
             {shortFilms.map((v, i) => (
               <div key={v.id} style={{
-                opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07 + 0.05}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07 + 0.05}s`,
+                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role}
                   cat={v.cat} award={"award" in v ? v.award : undefined} />
               </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* ── 04 · COMMERCIAL · LIVE · EVENT ── */}
-      <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-
-        {/* Commercial */}
-        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <SectionLabel label="COMMERCIAL" />
+          {/* Commercial */}
+          <SubLabel label="COMMERCIAL · BRAND" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
             {commercial.map((v, i) => (
               <div key={v.id} style={{
                 opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
+                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Live & Documentary */}
-        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease .08s" }}>
-          <SectionLabel label="LIVE · DOCUMENTARY" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-            {liveDoc.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Event Record */}
-        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease .16s" }}>
-          <SectionLabel label="EVENT RECORD" />
+      {/* ── 05 · LIVE · DOCUMENTARY · EVENT ── */}
+      <div ref={leRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: leIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="05" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {eventRec.map((v, i) => (
+            {[...liveDoc, ...eventRec].map((v, i) => (
               <div key={v.id} style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
+                opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.06}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
@@ -630,7 +631,7 @@ export default function WorkVideo() {
       {/* ── 05 · YOUTUBE SHORTS ── */}
       <div ref={sRef} className="px-8 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
-          <SectionLabel label="YOUTUBE SHORTS" />
+          <SubLabel label="YOUTUBE SHORTS" />
         </div>
         <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
           {ytShorts.map((s, i) => (

@@ -312,10 +312,10 @@ export default function About() {
               { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
             ].map(item => (
               <div key={item.label}>
-                <p className="font-mono-label text-[9px] tracking-[0.3em] mb-1.5" style={{ color: "var(--text-3)" }}>
+                <p className="font-mono-label text-[10px] tracking-[0.28em] mb-1.5" style={{ color: "var(--text-3)" }}>
                   {item.label}
                 </p>
-                <p className="font-mono-label text-[10px] leading-relaxed whitespace-pre-line" style={{ color: "var(--text-2)" }}>
+                <p className="font-mono-label text-[12px] leading-relaxed whitespace-pre-line" style={{ color: "var(--text-2)" }}>
                   {item.value}
                 </p>
               </div>
@@ -323,12 +323,12 @@ export default function About() {
           </div>
 
           {/* Credits */}
-          <div className="border-t pt-6 space-y-2" style={{ borderColor: "var(--border)" }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
+          <div className="border-t pt-6 space-y-2.5" style={{ borderColor: "var(--border)" }}>
+            <p className="font-mono-label text-[10px] tracking-[0.28em] mb-3.5" style={{ color: "var(--text-3)" }}>
               SELECTED CREDITS / 部分合作
             </p>
             {credits.map(c => (
-              <p key={c.text} className="font-mono-label text-[9px] leading-relaxed"
+              <p key={c.text} className="font-mono-label text-[11px] leading-relaxed"
                 style={{ color: c.highlight ? "var(--text-2)" : "var(--text-3)" }}>
                 — {c.text}
               </p>
@@ -336,8 +336,8 @@ export default function About() {
           </div>
 
           {/* Social */}
-          <div className="border-t pt-5 space-y-1.5" style={{ borderColor: "var(--border)" }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
+          <div className="border-t pt-5 space-y-2" style={{ borderColor: "var(--border)" }}>
+            <p className="font-mono-label text-[10px] tracking-[0.28em] mb-3.5" style={{ color: "var(--text-3)" }}>
               FOLLOW / 追蹤
             </p>
             {[
@@ -347,11 +347,11 @@ export default function About() {
             ].map(s => (
               <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-between group">
-                <span className="font-mono-label text-[9px] tracking-[0.12em] group-hover:text-white transition-colors"
+                <span className="font-mono-label text-[11px] tracking-[0.12em] group-hover:text-white transition-colors"
                   style={{ color: "var(--text-2)" }}>
                   {s.handle}
                 </span>
-                <span className="font-mono-label text-[7px]" style={{ color: "var(--text-3)" }}>{s.desc}</span>
+                <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{s.desc}</span>
               </a>
             ))}
           </div>
