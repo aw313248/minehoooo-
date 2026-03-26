@@ -50,24 +50,38 @@ const colorCredits = [
   { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", artist: "89教科書",                      role: "COLOR",       cat: "COLOR" },
 ];
 
-const shortFilm = {
-  id: "fR2TDfx04oU",
-  title: "紅箱子",
-  artist: "劇情短片",
-  award: "入圍 2023 新北市學生影像新星獎",
-  role: "DIR · DP · EDIT",
-  cat: "SHORT FILM",
-};
+const shortFilms = [
+  {
+    id: "fR2TDfx04oU",
+    title: "紅箱子",
+    artist: "劇情短片",
+    award: "入圍 2023 新北市學生影像新星獎",
+    role: "DIR · DP · EDIT",
+    cat: "SHORT FILM",
+  },
+  {
+    id: "FM5ukv7kqBM",
+    title: "助理導演 作品",
+    artist: "Music Video",
+    role: "AD · ASSISTANT DIR",
+    cat: "MUSIC VIDEO",
+  },
+];
 
-const eventVideos = [
-  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "",          role: "DIR · DP",          cat: "EVENT"      },
-  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",   artist: "",          role: "DIR · DP",          cat: "LIVE"       },
-  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",  artist: "",          role: "DIR · DP",          cat: "DOCUMENTARY"},
-  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "",          role: "DIR · DP",          cat: "EVENT"      },
-  { id: "Ou1y4dnFrsU", title: "台中好聖誕",           artist: "台中市政府", role: "DIR · DP",          cat: "COMMERCIAL" },
-  { id: "7rU2JUGplXw", title: "皮泰中學 55週年 校慶", artist: "",          role: "DIR · DP",          cat: "EVENT"      },
-  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光",       artist: "",          role: "LIGHTING · COLOR",  cat: "COMMERCIAL" },
-  { id: "FM5ukv7kqBM", title: "助理導演 作品",         artist: "",          role: "AD · ASSISTANT DIR",cat: "MUSIC VIDEO"},
+const commercial = [
+  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · DP",         cat: "COMMERCIAL" },
+  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "",           role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
+];
+
+const liveDoc = [
+  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",  artist: "", role: "DIR · DP", cat: "LIVE"        },
+  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄", artist: "", role: "DIR · DP", cat: "DOCUMENTARY" },
+];
+
+const eventRec = [
+  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "7rU2JUGplXw", title: "皮泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
 ];
 
 const ytShorts = [
@@ -547,30 +561,64 @@ export default function WorkVideo() {
           </div>
         </div>
 
-        {/* Short Film */}
+        {/* Short Film & Narrative */}
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease .1s" }}>
-          <SectionLabel label="SHORT FILM" />
+          <SectionLabel label="SHORT FILM · NARRATIVE" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-            <div style={{
-              opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
-              transition: "opacity .6s ease .05s, transform .6s cubic-bezier(.16,1,.3,1) .05s",
-            }}>
-              <GridCard id={shortFilm.id} title={shortFilm.title} artist={shortFilm.artist}
-                role={shortFilm.role} award={shortFilm.award} />
-            </div>
+            {shortFilms.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.07 + 0.05}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07 + 0.05}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role}
+                  cat={v.cat} award={"award" in v ? v.award : undefined} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ── 04 · EVENT & COMMERCIAL ── */}
+      {/* ── 04 · COMMERCIAL · LIVE · EVENT ── */}
       <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+
+        {/* Commercial */}
         <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <SectionLabel label="EVENT & COMMERCIAL" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {eventVideos.map((v, i) => (
+          <SectionLabel label="COMMERCIAL" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {commercial.map((v, i) => (
               <div key={v.id} style={{
                 opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.06}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06}s`,
+                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Live & Documentary */}
+        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease .08s" }}>
+          <SectionLabel label="LIVE · DOCUMENTARY" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {liveDoc.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Event Record */}
+        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease .16s" }}>
+          <SectionLabel label="EVENT RECORD" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            {eventRec.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
