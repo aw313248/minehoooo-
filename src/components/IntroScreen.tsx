@@ -133,18 +133,18 @@ export default function IntroScreen() {
           transformOrigin: "left",
           transform: isIn ? "scaleX(1)" : "scaleX(0)",
           transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.05s",
-          marginBottom: "2rem",
+          marginBottom: "2.8rem",
         }} />
 
         {/* Quote lines */}
         {q.lines.map((line, i) => (
-          <div key={i} style={{ overflow: "hidden", marginBottom: i < q.lines.length - 1 ? "0.35rem" : 0 }}>
+          <div key={i} style={{ overflow: "hidden", marginBottom: i < q.lines.length - 1 ? "0.9rem" : 0 }}>
             <p style={{
               fontFamily: "var(--font-bebas), sans-serif",
               fontSize: "clamp(1.8rem, 4.5vw, 3.6rem)",
               color: "rgba(255,255,255,0.9)",
-              letterSpacing: "0.05em",
-              lineHeight: 1.1,
+              letterSpacing: "0.06em",
+              lineHeight: 1.15,
               opacity: isIn ? 1 : 0,
               transform: isIn ? "translateY(0) skewY(0deg)" : "translateY(60%) skewY(3deg)",
               filter: isIn ? "blur(0px)" : "blur(5px)",
@@ -182,7 +182,7 @@ export default function IntroScreen() {
           transformOrigin: "right",
           transform: isIn ? "scaleX(1)" : "scaleX(0)",
           transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s",
-          marginTop: "2rem",
+          marginTop: "2.8rem",
         }} />
       </div>
 
