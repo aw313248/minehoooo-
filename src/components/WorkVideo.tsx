@@ -110,6 +110,16 @@ const allReels = [
   { code: "C35vYmTSML-", tier: 4, year: "2023" },
 ];
 
+/* Selected IG Reels to embed — sorted by engagement */
+const igReelsData = [
+  { code: "DTg9q2_kpmY", label: "片場幕後花絮",          likes: 382, account: "minehoooo.arw" },
+  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 274, account: "minehoooo.arw" },
+  { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",     likes: 599, account: "mlpon6"        },
+  { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",    likes: 167, account: "minehoooo.arw" },
+  { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",    likes: 109, account: "minehoooo.arw" },
+  { code: "DTihUcyEiZ-", label: "幕後 · 工作精神",        likes: 107, account: "minehoooo.arw" },
+];
+
 /* ─── Role badge ─── */
 function RoleTag({ text }: { text: string }) {
   return (
@@ -696,85 +706,69 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 05 · IG Reels CTA ── */}
-      <div ref={igRef}>
-        <a href="https://www.instagram.com/minehoooo/" target="_blank" rel="noopener noreferrer"
-          className="group block relative overflow-hidden border-t"
-          style={{ borderColor: "var(--border)" }}>
+      {/* ── 06 · IG REELS ── */}
+      <div ref={igRef} className="border-t" style={{ borderColor: "var(--border)" }}>
 
-          <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{
-            background: "radial-gradient(ellipse 70% 90% at 50% 60%, rgba(120,60,220,0.09) 0%, transparent 70%)",
-          }} />
-          <div className="absolute inset-0 pointer-events-none" style={{
-            backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "20% 100%",
-          }} />
+        {/* Header */}
+        <div className="px-8 md:px-14 pt-10 pb-2"
+          style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw" />
+        </div>
 
-          <div className="relative px-8 md:px-14 pt-14 pb-10 flex flex-col gap-6">
-            <div style={{ opacity: igIn ? 1 : 0, transition: "opacity .8s ease" }}>
-              <p className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
-                INSTAGRAM · @minehoooo
-              </p>
-            </div>
-
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"
-              style={{ opacity: igIn ? 1 : 0, transform: igIn ? "translateY(0)" : "translateY(40px)", transition: "opacity .9s ease .1s, transform .9s cubic-bezier(.16,1,.3,1) .1s" }}>
-              <div>
-                <div className="flex items-baseline gap-4 mb-3">
-                  <span className="font-display leading-none" style={{ fontSize: "clamp(5rem,16vw,18rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-                    {allReels.length}
-                  </span>
-                  <div>
-                    <p className="font-mono-label text-[9px] tracking-[0.25em]" style={{ color: "var(--text-3)" }}>SHORT</p>
-                    <p className="font-mono-label text-[9px] tracking-[0.25em]" style={{ color: "var(--text-3)" }}>FILMS</p>
+        {/* Horizontal scroll of embedded reels */}
+        <div className="px-8 md:px-14 pb-6">
+          <div className="flex gap-5 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
+            {igReelsData.map((reel, i) => (
+              <div key={reel.code} className="shrink-0"
+                style={{
+                  width: 300,
+                  opacity: igIn ? 1 : 0,
+                  transform: igIn ? "translateX(0)" : "translateX(28px)",
+                  transition: `opacity .6s ease ${i * .1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * .1}s`,
+                }}>
+                <div style={{ borderRadius: 8, overflow: "hidden", background: "#111" }}>
+                  <iframe
+                    src={`https://www.instagram.com/p/${reel.code}/embed/`}
+                    width="300"
+                    height="520"
+                    frameBorder={0}
+                    scrolling="no"
+                    style={{ display: "block", border: "none" }}
+                    title={reel.label}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="pt-2.5">
+                  <p className="text-[11px] font-medium leading-snug" style={{ color: "var(--text)" }}>{reel.label}</p>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>@{reel.account}</span>
+                    <span className="font-mono-label text-[8px]" style={{ color: "rgba(255,255,255,0.28)" }}>♡ {reel.likes.toLocaleString()}</span>
                   </div>
                 </div>
-                <p className="font-mono-label text-[10px] tracking-[0.2em]" style={{ color: "var(--text-2)" }}>
-                  More work lives here — updated continuously
-                </p>
-                <p className="font-mono-label text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--text-3)" }}>
-                  The work never stops — follow along
-                </p>
               </div>
-
-              <div className="flex flex-col items-start md:items-end gap-4 shrink-0">
-                <div className="hidden md:flex flex-col gap-[3px]">
-                  {allReels.map((r) => (
-                    <div key={r.code} style={{
-                      width: r.tier === 1 ? 32 : r.tier === 2 ? 24 : r.tier === 3 ? 18 : 12,
-                      height: 2,
-                      borderRadius: 1,
-                      background: r.tier === 1
-                        ? "rgba(255,255,255,0.5)"
-                        : r.tier === 2
-                        ? "rgba(60,140,255,0.4)"
-                        : r.tier === 3
-                        ? "rgba(60,200,160,0.3)"
-                        : "rgba(220,120,60,0.25)",
-                    }} />
-                  ))}
-                </div>
-
-                {/* CTA button — bigger IG icon */}
-                <div className="flex items-center gap-3 px-5 py-3.5 transition-all duration-400 group-hover:bg-white/5"
-                  style={{
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    backdropFilter: "blur(12px)",
-                  }}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-                    <circle cx="12" cy="12" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-                    <circle cx="17.5" cy="6.5" r="1.4" fill="rgba(255,255,255,0.8)"/>
-                  </svg>
-                  <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text)" }}>
-                    OPEN INSTAGRAM
-                  </span>
-                  <span style={{ color: "var(--text)", fontSize: 16 }}>↗</span>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        </a>
+        </div>
+
+        {/* Follow CTA */}
+        <div className="px-8 md:px-14 pb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+          style={{ opacity: igIn ? 1 : 0, transition: "opacity .8s ease .4s" }}>
+          <p className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>
+            More work lives on Instagram — updated continuously
+          </p>
+          <a href="https://www.instagram.com/minehoooo/" target="_blank" rel="noopener noreferrer"
+            className="group shrink-0 flex items-center gap-3 px-5 py-3 transition-all duration-300 hover:bg-white/5"
+            style={{ border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)", width: "fit-content" }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
+              <circle cx="12" cy="12" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
+              <circle cx="17.5" cy="6.5" r="1.4" fill="rgba(255,255,255,0.8)"/>
+            </svg>
+            <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text)" }}>
+              @minehoooo ↗
+            </span>
+          </a>
+        </div>
       </div>
 
     </section>

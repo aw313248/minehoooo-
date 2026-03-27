@@ -230,6 +230,17 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* Visitor stat — center */}
+        <div className="hidden md:flex flex-col items-center gap-0.5 shrink-0 px-6 border-x"
+          style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+          <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.02em" }}>
+            150K+
+          </span>
+          <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+            VIEWS
+          </span>
+        </div>
+
         {/* IG DM — right */}
         <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
           className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"

@@ -39,9 +39,9 @@ export default function CustomCursor() {
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${mx}px,${my}px)`;
       }
-      // Ring follows with tight lag (0.18 = fast but still perceptibly lagging)
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
+      // Ring follows with tight lag (0.32 = snappy)
+      rx += (mx - rx) * 0.32;
+      ry += (my - ry) * 0.32;
       if (ringRef.current) {
         const scale = isHover ? 1.7 : 1;
         ringRef.current.style.transform = `translate(${rx}px,${ry}px) scale(${scale})`;
@@ -87,7 +87,7 @@ export default function CustomCursor() {
         border: "1px solid rgba(255,255,255,0.4)",
         pointerEvents: "none",
         zIndex: 999998,
-        transition: "transform 0.12s ease, opacity 0.3s ease",
+        transition: "opacity 0.3s ease",
         willChange: "transform",
         backdropFilter: "blur(1px)",
       }} />
