@@ -715,37 +715,104 @@ export default function WorkVideo() {
           <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw" />
         </div>
 
-        {/* Horizontal scroll of embedded reels */}
+        {/* Horizontal scroll — custom reel cards */}
         <div className="px-8 md:px-14 pb-6">
-          <div className="flex gap-5 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
+          <div className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
             {igReelsData.map((reel, i) => (
-              <div key={reel.code} className="shrink-0"
+              <a key={reel.code}
+                href={`https://www.instagram.com/p/${reel.code}/`}
+                target="_blank" rel="noopener noreferrer"
+                className="group shrink-0 block"
                 style={{
-                  width: 300,
+                  width: 180,
                   opacity: igIn ? 1 : 0,
                   transform: igIn ? "translateX(0)" : "translateX(28px)",
-                  transition: `opacity .6s ease ${i * .1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * .1}s`,
+                  transition: `opacity .6s ease ${i * .09}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * .09}s`,
+                  textDecoration: "none",
                 }}>
-                <div style={{ borderRadius: 8, overflow: "hidden", background: "#111" }}>
-                  <iframe
-                    src={`https://www.instagram.com/p/${reel.code}/embed/`}
-                    width="300"
-                    height="520"
-                    frameBorder={0}
-                    scrolling="no"
-                    style={{ display: "block", border: "none" }}
-                    title={reel.label}
-                    loading="lazy"
-                  />
-                </div>
-                <div className="pt-2.5">
-                  <p className="text-[11px] font-medium leading-snug" style={{ color: "var(--text)" }}>{reel.label}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>@{reel.account}</span>
-                    <span className="font-mono-label text-[8px]" style={{ color: "rgba(255,255,255,0.28)" }}>♡ {reel.likes.toLocaleString()}</span>
+
+                {/* Card — 9:16 portrait */}
+                <div className="relative overflow-hidden"
+                  style={{ aspectRatio: "9/16", background: "#0c0c0e", border: "1px solid rgba(255,255,255,0.07)" }}>
+
+                  {/* Noise grain */}
+                  <div style={{
+                    position: "absolute", inset: 0, pointerEvents: "none",
+                    backgroundImage: "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
+                    backgroundSize: "100px 100px",
+                    opacity: 0.12, mixBlendMode: "screen",
+                  }} />
+
+                  {/* Large faint index */}
+                  <div style={{
+                    position: "absolute", top: "50%", left: "50%",
+                    transform: "translate(-50%, -60%)",
+                    fontFamily: "var(--font-bebas)", fontSize: "clamp(6rem, 18vw, 10rem)",
+                    color: "rgba(255,255,255,0.03)", lineHeight: 1, userSelect: "none", pointerEvents: "none",
+                  }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Ambient glow */}
+                  <div style={{
+                    position: "absolute", inset: 0,
+                    background: "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(80,80,160,0.08) 0%, transparent 70%)",
+                    pointerEvents: "none",
+                  }} />
+
+                  {/* Play icon + REELS label — center */}
+                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                    <div style={{
+                      width: 44, height: 44, borderRadius: "50%",
+                      border: "1px solid rgba(255,255,255,0.18)",
+                      background: "rgba(255,255,255,0.06)",
+                      backdropFilter: "blur(12px)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      transition: "background .3s, border-color .3s",
+                    }}
+                      className="group-hover:[background:rgba(255,255,255,0.14)] group-hover:[border-color:rgba(255,255,255,0.32)]">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <span className="font-mono-label text-[7px] tracking-[0.38em]" style={{ color: "rgba(255,255,255,0.2)" }}>REELS</span>
+                  </div>
+
+                  {/* Bottom gradient + title */}
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0,
+                    background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%)",
+                    padding: "2rem 1rem 1rem",
+                  }}>
+                    <p className="font-display leading-tight"
+                      style={{ fontSize: "clamp(1rem, 3vw, 1.3rem)", color: "rgba(255,255,255,0.88)", letterSpacing: "0.02em" }}>
+                      {reel.label}
+                    </p>
+                  </div>
+
+                  {/* Top: account + likes */}
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span className="font-mono-label text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                      @{reel.account}
+                    </span>
+                    <span className="font-mono-label text-[7px]" style={{ color: "rgba(255,255,255,0.22)" }}>
+                      ♡ {reel.likes}
+                    </span>
+                  </div>
+
+                  {/* Hover: IG arrow */}
+                  <div style={{
+                    position: "absolute", top: "0.75rem", right: "0.75rem",
+                    opacity: 0, transition: "opacity .25s",
+                  }}
+                    className="group-hover:opacity-100">
+                    <span style={{
+                      fontFamily: "var(--font-space-mono)", fontSize: 9,
+                      color: "rgba(255,255,255,0.6)",
+                      background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
+                      padding: "3px 7px",
+                    }}>↗</span>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
