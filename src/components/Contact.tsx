@@ -13,10 +13,18 @@ const IG_ACCOUNTS = [
 export default function Contact() {
   const { ref, inView } = useInView(0.06);
   const [year, setYear] = useState("2026");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setYear(String(new Date().getFullYear()));
   }, []);
+
+  function copyEmail() {
+    navigator.clipboard.writeText("minehoooo@gmail.com").then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
 
   return (
     <section id="contact" style={{ background: "#000", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
@@ -84,11 +92,12 @@ export default function Contact() {
             Open for all creative collaborations
           </p>
 
-          {/* Email */}
+          {/* Email + copy */}
           <div style={{
             opacity: inView ? 1 : 0,
             transition: "opacity .8s ease .26s",
             marginBottom: "1.2rem",
+            display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
           }}>
             <a href="mailto:minehoooo@gmail.com"
               className="inline-flex items-center gap-2 font-mono-label text-[10px] tracking-[0.18em]"
@@ -101,6 +110,19 @@ export default function Contact() {
               </svg>
               minehoooo@gmail.com
             </a>
+            <button onClick={copyEmail}
+              className="font-mono-label text-[8px] tracking-[0.25em] px-2 py-0.5"
+              style={{
+                border: "1px solid rgba(255,255,255,0.12)",
+                color: copied ? "rgba(74,222,128,0.9)" : "rgba(255,255,255,0.28)",
+                background: copied ? "rgba(74,222,128,0.06)" : "rgba(255,255,255,0.03)",
+                cursor: "pointer", transition: "all .25s ease",
+              }}>
+              {copied ? "COPIED ✓" : "COPY"}
+            </button>
+            <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+              GMT+8 · 24h 內回覆
+            </span>
           </div>
 
           {/* Primary CTA — IG DM */}

@@ -296,6 +296,13 @@ export default function About() {
 
           {/* Name (compact) */}
           <div>
+            {/* Available badge */}
+            <div className="flex items-center gap-2 mb-3">
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px rgba(74,222,128,0.7)", animation: "pulse-slow 2s ease-in-out infinite" }} />
+              <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "rgba(74,222,128,0.8)" }}>
+                AVAILABLE · 2026
+              </span>
+            </div>
             <div className="relative inline-block"
               onMouseEnter={() => setPanelHover(true)}
               onMouseLeave={() => setPanelHover(false)}>
@@ -338,7 +345,9 @@ export default function About() {
             {[
               { label: "ROLE / 職稱",       value: "Director · DP · Screenplay\n導演 · 攝影師 · 編劇" },
               { label: "EDUCATION / 學歷",  value: "朝陽科技大學\n傳播藝術系 · 電影組" },
-              { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
+              { label: "BASED IN / 所在地", value: "Taiwan · Taichung · GMT+8" },
+              { label: "TOOLS / 工具",      value: "Premiere Pro · DaVinci Resolve\nAfter Effects · Lightroom" },
+              { label: "SINCE / 起始年",    value: "2019 — NOW" },
             ].map(item => (
               <div key={item.label}>
                 <p className="font-mono-label text-[10px] tracking-[0.28em] mb-1.5" style={{ color: "var(--text-3)" }}>

@@ -11,12 +11,16 @@ function goto(page: number) {
 export default function MobileNav() {
   const [page, setPage] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [flash, setFlash] = useState(false);
 
   useEffect(() => {
     const handler = (e: Event) => {
       const p = (e as CustomEvent<number>).detail;
       setPage(p);
-      setVisible(p > 0); // hide on Hero (page 0 has its own strip)
+      setVisible(p > 0);
+      // Brief flash of section name on change
+      setFlash(true);
+      setTimeout(() => setFlash(false), 1600);
     };
     window.addEventListener("pagechange", handler);
     return () => window.removeEventListener("pagechange", handler);
@@ -37,9 +41,9 @@ export default function MobileNav() {
         justifyContent: "space-between",
       }}>
 
-      {/* Current section label */}
-      <span className="font-mono-label text-[9px] tracking-[0.28em]"
-        style={{ color: "rgba(255,255,255,0.4)" }}>
+      {/* Current section label — brighter on flash */}
+      <span className="font-mono-label text-[9px] tracking-[0.28em] transition-all duration-500"
+        style={{ color: flash ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.35)" }}>
         {SECTIONS[page]}
       </span>
 

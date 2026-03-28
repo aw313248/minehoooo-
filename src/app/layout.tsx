@@ -127,6 +127,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.youtube.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
+        <link rel="preconnect" href="https://www.instagram.com" />
+        <link rel="dns-prefetch" href="https://www.instagram.com" />
       </head>
       <body
         className={`${geistSans.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased`}

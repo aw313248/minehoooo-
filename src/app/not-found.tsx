@@ -34,6 +34,7 @@ export default function NotFound() {
           lineHeight: 1,
           letterSpacing: "0.01em",
           marginBottom: "1.5rem",
+          animation: "textGlitch 5s ease-in-out infinite",
         }}>
           LOST FRAME
         </h1>

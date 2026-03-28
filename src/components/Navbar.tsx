@@ -46,6 +46,16 @@ export default function Navbar() {
         borderBottom: scrolled || activePage > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
       }}
     >
+      {/* Page progress line — very bottom of header */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "rgba(255,255,255,0.04)" }}>
+        <div style={{
+          height: "100%",
+          width: `${((activePage) / 5) * 100}%`,
+          background: "linear-gradient(to right, rgba(255,255,255,0.35), rgba(255,255,255,0.12))",
+          transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
+        }} />
+      </div>
+
       <nav className="flex items-center justify-between px-6 md:px-10 py-4">
         <button
           onClick={() => goto(0)}

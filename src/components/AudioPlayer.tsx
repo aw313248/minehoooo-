@@ -55,13 +55,13 @@ export default function AudioPlayer() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Track label */}
+      {/* Track label — visible when playing, full opacity on hover */}
       <div
         className="font-mono-label text-[8px] tracking-[0.2em] text-right mb-2 transition-all duration-300"
         style={{
           color: "rgba(255,255,255,0.3)",
-          opacity: hovered ? 1 : 0,
-          transform: hovered ? "translateY(0)" : "translateY(4px)",
+          opacity: playing ? (hovered ? 1 : 0.45) : (hovered ? 1 : 0),
+          transform: (hovered || playing) ? "translateY(0)" : "translateY(4px)",
           whiteSpace: "nowrap",
         }}
       >

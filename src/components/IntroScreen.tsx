@@ -85,6 +85,12 @@ export default function IntroScreen() {
         overflow: "hidden",
       }}
     >
+      {/* ── Edge vignette ── */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%)",
+      }} />
+
       {/* ── Grain texture ── */}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",

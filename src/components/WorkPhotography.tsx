@@ -18,6 +18,7 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
   idx: number; total: number;
 }) {
   const [mounted, setMounted] = useState(false);
+  const touchX = useState<number | null>(null);
   useEffect(() => { const id = requestAnimationFrame(() => setMounted(true)); return () => cancelAnimationFrame(id); }, []);
   useEffect(() => {
     const fn = (e: KeyboardEvent) => {
@@ -29,6 +30,15 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
     return () => window.removeEventListener("keydown", fn);
   }, [onClose, onPrev, onNext, hasPrev, hasNext]);
 
+  function onTouchStart(e: React.TouchEvent) { touchX[1](e.touches[0].clientX); }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchX[0] === null) return;
+    const dx = e.changedTouches[0].clientX - touchX[0];
+    if (dx > 50 && hasPrev) onPrev();
+    if (dx < -50 && hasNext) onNext();
+    touchX[1](null);
+  }
+
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center"
       style={{
@@ -36,7 +46,9 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
         backdropFilter: mounted ? "blur(24px)" : "blur(0px)",
         transition: "background .35s ease, backdrop-filter .35s ease",
       }}
-      onClick={onClose}>
+      onClick={onClose}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}>
       <div className="relative flex items-center gap-4"
         style={{
           opacity: mounted ? 1 : 0,
@@ -192,6 +204,14 @@ export default function WorkPhotography() {
             <p className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.5)" }}>
               {cat.en.toUpperCase()} · MINEH4O · {String(heroIdx + 1).padStart(2, "0")} / {String(Math.min(cat.files.length, 6)).padStart(2, "0")}
             </p>
+          </div>
+
+          {/* OPEN overlay — desktop hover */}
+          <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <div style={{ background: "rgba(0,0,0,0.52)", backdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.14)", padding: "10px 22px", display: "flex", alignItems: "center", gap: 8 }}>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.8)" }}>OPEN ↗</span>
+            </div>
           </div>
 
           {/* Dot progress */}

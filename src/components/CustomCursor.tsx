@@ -46,6 +46,7 @@ export default function CustomCursor() {
         const scale = isHover ? 1.7 : 1;
         ringRef.current.style.transform = `translate(${rx}px,${ry}px) scale(${scale})`;
         ringRef.current.style.opacity   = isHover ? "0.8" : "1";
+        ringRef.current.style.borderColor = isHover ? "rgba(180,200,255,0.55)" : "rgba(255,255,255,0.4)";
       }
       raf = requestAnimationFrame(tick);
     };

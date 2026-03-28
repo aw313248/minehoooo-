@@ -35,15 +35,31 @@ export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [quoteIdx, setQuoteIdx] = useState(0);
+  const [showScroll, setShowScroll] = useState(false);
+  const [count, setCount] = useState(0);
   const q = QUOTES[quoteIdx];
 
   useEffect(() => {
     setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
-    const t = setTimeout(() => setLoaded(true), 180);
+    const t  = setTimeout(() => setLoaded(true), 180);
+    const t2 = setTimeout(() => setShowScroll(true), 3000);
+    const t3 = setTimeout(() => setShowScroll(false), 7500);
     const onPageChange = (e: Event) => setIsActive((e as CustomEvent<number>).detail === 0);
     window.addEventListener("pagechange", onPageChange);
-    return () => { clearTimeout(t); window.removeEventListener("pagechange", onPageChange); };
+    return () => { clearTimeout(t); clearTimeout(t2); clearTimeout(t3); window.removeEventListener("pagechange", onPageChange); };
   }, []);
+
+  // Count-up 0 → 150 after loaded
+  useEffect(() => {
+    if (!loaded) return;
+    let n = 0;
+    const timer = setInterval(() => {
+      n += 4;
+      if (n >= 150) { setCount(150); clearInterval(timer); }
+      else setCount(n);
+    }, 14);
+    return () => clearInterval(timer);
+  }, [loaded]);
 
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
@@ -137,9 +153,13 @@ export default function Hero() {
           opacity: loaded ? 1 : 0,
           transform: loaded ? "translateY(0)" : "translateY(10px)",
           transition: "opacity .7s ease .05s, transform .7s ease .05s",
+          display: "flex", alignItems: "center", gap: 12,
         }}>
           <span className="font-mono-label text-[10px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
             @minehoooo
+          </span>
+          <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.15)" }}>
+            · @minehoooo.arw
           </span>
         </div>
 
@@ -234,7 +254,7 @@ export default function Hero() {
         <div className="hidden md:flex flex-col items-center gap-0.5 shrink-0 px-6 border-x"
           style={{ borderColor: "rgba(255,255,255,0.07)" }}>
           <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.02em" }}>
-            150K+
+            {count}K+
           </span>
           <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.2)" }}>
             VIEWS
@@ -267,6 +287,22 @@ export default function Hero() {
           }}>
           DM @minehoooo ↗
         </a>
+      </div>
+
+      {/* Scroll-down hint — desktop, auto-fades */}
+      <div className="hidden md:flex flex-col items-center gap-2 absolute pointer-events-none"
+        style={{
+          bottom: "5.5rem", left: "50%", transform: "translateX(-50%)",
+          opacity: showScroll && isActive ? 1 : 0,
+          transition: "opacity 1s ease",
+          zIndex: 10,
+        }}>
+        <span className="font-mono-label text-[7px] tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.22)" }}>
+          SCROLL
+        </span>
+        <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.4s ease-in-out infinite" }} />
+        </div>
       </div>
 
       {/* Frosted bottom gradient — half-glass fade into the strip */}
