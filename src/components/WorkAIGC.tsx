@@ -94,17 +94,23 @@ export default function WorkAIGC() {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
           background: "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(80,30,160,0.18) 0%, transparent 70%)" }} />
 
-        {/* Top: section label */}
+        {/* Top: cinematic section header */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
-          padding: "2.2rem 3rem",
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%)",
+          padding: "2rem 3rem 1.4rem",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
           opacity: heroLoaded ? 1 : 0,
           transition: "opacity .6s ease",
         }}>
-          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "rgba(255,255,255,0.38)" }}>
-            04 — AIGC
-          </span>
+          {/* Gradient rule */}
+          <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 10 }} />
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+              <span className="font-display leading-none" style={{ fontSize: "clamp(1.6rem,3vw,2.8rem)", color: "rgba(255,255,255,0.06)", letterSpacing: "0.02em" }}>04</span>
+              <span className="font-display leading-none" style={{ fontSize: "clamp(1rem,2vw,1.8rem)", color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>AIGC</span>
+            </div>
+            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "rgba(255,255,255,0.22)" }}>AI GENERATED · HYBRID</span>
+          </div>
         </div>
 
         {/* Bottom left: title + info */}

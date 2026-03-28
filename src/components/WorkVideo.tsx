@@ -433,12 +433,14 @@ export default function WorkVideo() {
             {/* Static thumbnail — always rendered, acts as mobile bg + desktop placeholder */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              key={active.id}
               src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
               alt={active.title}
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%",
                 objectFit: "cover", pointerEvents: "none",
                 filter: "brightness(0.55)",
+                animation: "crossfadeIn 0.85s cubic-bezier(.16,1,.3,1) forwards",
               }}
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
             />

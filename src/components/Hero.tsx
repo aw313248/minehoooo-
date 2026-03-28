@@ -163,11 +163,33 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* MINEH4O — character reveal */}
-        <div className="relative inline-block">
+        {/* MINEH4O — character reveal + glitch layers */}
+        <div className="relative inline-block" style={{ overflow: "hidden" }}>
           <h1 className="font-display leading-none select-none mt-3"
             style={{ fontSize: "clamp(6.5rem, 23vw, 30rem)", color: "var(--text)", cursor: "default" }}>
             <CharReveal text="MINEH4O" inView={loaded} baseDelay={0.12} stagger={0.048} />
+          </h1>
+          {/* Glitch layer 1 — cyan tint, clips top portion */}
+          <h1 aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
+            style={{
+              fontSize: "clamp(6.5rem, 23vw, 30rem)",
+              color: "rgba(80,220,255,0.9)",
+              cursor: "default",
+              animation: "heroGlitch1 9s ease-in-out 4s infinite",
+              opacity: 0,
+            }}>
+            MINEH4O
+          </h1>
+          {/* Glitch layer 2 — red tint, clips bottom portion */}
+          <h1 aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
+            style={{
+              fontSize: "clamp(6.5rem, 23vw, 30rem)",
+              color: "rgba(255,60,80,0.85)",
+              cursor: "default",
+              animation: "heroGlitch2 9s ease-in-out 4s infinite",
+              opacity: 0,
+            }}>
+            MINEH4O
           </h1>
         </div>
 

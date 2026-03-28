@@ -142,14 +142,18 @@ export default function About() {
           COVER — full viewport, photo + name
       ═══════════════════════════════════════ */}
       <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
-        {/* Background photo */}
+        {/* Background photo — Ken Burns slow zoom */}
         <Image
           src="/profile.png"
           alt="Oscar Lai — minehoooo"
           fill
           priority
           className="object-cover"
-          style={{ objectPosition: "center top" }}
+          style={{
+            objectPosition: "center top",
+            animation: "kenBurns 22s ease-in-out infinite alternate",
+            transformOrigin: "center top",
+          }}
         />
 
         {/* Gradient overlay — strong at bottom so text reads */}

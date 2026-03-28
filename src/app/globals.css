@@ -185,3 +185,46 @@ body::before {
   0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
   50%       { box-shadow: 0 0 22px 4px rgba(255,255,255,0.07); }
 }
+
+/* ── CROSSFADE IN (WorkVideo featured MV switch) ── */
+@keyframes crossfadeIn {
+  from { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+/* ── KEN BURNS (About profile photo slow zoom) ── */
+@keyframes kenBurns {
+  0%   { transform: scale(1.0)  translate(0%,   0%); }
+  50%  { transform: scale(1.06) translate(-1%,  0.5%); }
+  100% { transform: scale(1.03) translate(0.5%, -0.5%); }
+}
+
+/* ── FILM GRAIN SHIFT (WorkPhotography grain overlay) ── */
+@keyframes grainShift {
+  0%  { background-position: 0   0;   }
+  10% { background-position: -5% -10%; }
+  20% { background-position: -15% 5%; }
+  30% { background-position: 7%  -25%; }
+  40% { background-position: -5%  25%; }
+  50% { background-position: -15% 10%; }
+  60% { background-position: 15%  0%;  }
+  70% { background-position: 0   15%;  }
+  80% { background-position: 3%  35%;  }
+  90% { background-position: -10% 10%; }
+  100%{ background-position: 0   0;    }
+}
+
+/* ── HERO GLITCH LAYERS ── */
+@keyframes heroGlitch1 {
+  0%,  90%, 100% { clip-path: inset(0 0 100% 0); opacity: 0; transform: translate(0,0); }
+  91% { clip-path: inset(12% 0 55% 0); opacity: 0.7; transform: translate(-4px, 0); }
+  92% { clip-path: inset(50% 0 8%  0); opacity: 0.7; transform: translate(4px,  0); }
+  93% { clip-path: inset(30% 0 35% 0); opacity: 0.6; transform: translate(-2px, 1px); }
+  94% { clip-path: inset(0 0 100% 0); opacity: 0; transform: translate(0,0); }
+}
+@keyframes heroGlitch2 {
+  0%,  91%, 100% { clip-path: inset(0 0 100% 0); opacity: 0; transform: translate(0,0); }
+  91.5% { clip-path: inset(60% 0 5%  0); opacity: 0.55; transform: translate(5px, 0) skewX(2deg); }
+  92.5% { clip-path: inset(20% 0 60% 0); opacity: 0.55; transform: translate(-3px, 0); }
+  93.5% { clip-path: inset(0 0 100% 0); opacity: 0; }
+}
