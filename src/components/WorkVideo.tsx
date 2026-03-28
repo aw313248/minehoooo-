@@ -743,22 +743,18 @@ export default function WorkVideo() {
                     opacity: 0.12, mixBlendMode: "screen",
                   }} />
 
-                  {/* Large faint index */}
-                  <div style={{
-                    position: "absolute", top: "50%", left: "50%",
-                    transform: "translate(-50%, -60%)",
-                    fontFamily: "var(--font-bebas)", fontSize: "clamp(6rem, 18vw, 10rem)",
-                    color: "rgba(255,255,255,0.03)", lineHeight: 1, userSelect: "none", pointerEvents: "none",
-                  }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
+                  {/* Thumbnail image — falls back to dark bg if not found */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={`/reels/${reel.code}.jpg`}
+                    alt={reel.label}
+                    onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform .5s cubic-bezier(.16,1,.3,1)" }}
+                    className="group-hover:scale-[1.04]"
+                  />
 
-                  {/* Ambient glow */}
-                  <div style={{
-                    position: "absolute", inset: 0,
-                    background: "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(80,80,160,0.08) 0%, transparent 70%)",
-                    pointerEvents: "none",
-                  }} />
+                  {/* Overlay so text stays readable over thumbnail */}
+                  <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.28)", pointerEvents: "none" }} />
 
                   {/* Play icon + REELS label — center */}
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
