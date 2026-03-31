@@ -112,12 +112,13 @@ const allReels = [
 
 /* Selected IG Reels to embed — sorted by engagement */
 const igReelsData = [
-  { code: "DTg9q2_kpmY", label: "片場幕後花絮",          likes: 382, account: "minehoooo.arw" },
-  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 274, account: "minehoooo.arw" },
   { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",     likes: 599, account: "mlpon6"        },
-  { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",    likes: 167, account: "minehoooo.arw" },
-  { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",    likes: 109, account: "minehoooo.arw" },
-  { code: "DTihUcyEiZ-", label: "幕後 · 工作精神",        likes: 107, account: "minehoooo.arw" },
+  { code: "DTg9q2_kpmY", label: "片場幕後花絮",            likes: 382, account: "minehoooo.arw" },
+  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 274, account: "minehoooo.arw" },
+  { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",     likes: 167, account: "minehoooo.arw" },
+  { code: "DWiAEIvhfbb", label: "家的樣子 · 日常影像",     likes: 151, account: "minehoooo.arw" },
+  { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",     likes: 109, account: "minehoooo.arw" },
+  { code: "DTihUcyEiZ-", label: "幕後 · 工作精神",         likes: 107, account: "minehoooo.arw" },
 ];
 
 /* ─── Role badge ─── */
