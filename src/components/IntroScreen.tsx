@@ -142,26 +142,35 @@ export default function IntroScreen() {
           marginBottom: "2.8rem",
         }} />
 
-        {/* Quote lines */}
-        {q.lines.map((line, i) => (
-          <div key={i} style={{ overflow: "hidden", marginBottom: i < q.lines.length - 1 ? "0.9rem" : 0 }}>
-            <p style={{
-              fontFamily: "var(--font-bebas), sans-serif",
-              fontSize: "clamp(1.8rem, 4.5vw, 3.6rem)",
-              color: "rgba(255,255,255,0.9)",
-              letterSpacing: "0.06em",
-              lineHeight: 1.15,
-              opacity: isIn ? 1 : 0,
-              transform: isIn ? "translateY(0) skewY(0deg)" : "translateY(60%) skewY(3deg)",
-              filter: isIn ? "blur(0px)" : "blur(5px)",
-              transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.16}s,
-                           transform 0.8s cubic-bezier(0.16,1,0.3,1) ${0.1 + i * 0.16}s,
-                           filter 0.7s ease ${0.1 + i * 0.16}s`,
-            }}>
-              {line}
-            </p>
-          </div>
-        ))}
+        {/* Quote lines — hierarchy: setup lines small+faded, last line large+bright */}
+        {q.lines.map((line, i) => {
+          const isLast = i === q.lines.length - 1;
+          return (
+            <div key={i} style={{ overflow: "hidden", marginBottom: isLast ? 0 : "1.1rem" }}>
+              <p style={{
+                fontFamily: isLast
+                  ? "var(--font-bebas), sans-serif"
+                  : "var(--font-geist-sans), 'PingFang TC', sans-serif",
+                fontSize: isLast
+                  ? "clamp(3.2rem, 9vw, 7.5rem)"
+                  : "clamp(0.7rem, 1.6vw, 1rem)",
+                fontWeight: isLast ? 400 : 300,
+                color: isLast ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.38)",
+                letterSpacing: isLast ? "0.05em" : "0.18em",
+                lineHeight: isLast ? 1.0 : 1.6,
+                textAlign: "left",
+                opacity: isIn ? 1 : 0,
+                transform: isIn ? "translateY(0) skewY(0deg)" : "translateY(70%) skewY(2deg)",
+                filter: isIn ? "blur(0px)" : "blur(4px)",
+                transition: `opacity 0.85s cubic-bezier(0.16,1,0.3,1) ${0.08 + i * 0.18}s,
+                             transform 0.85s cubic-bezier(0.16,1,0.3,1) ${0.08 + i * 0.18}s,
+                             filter 0.7s ease ${0.08 + i * 0.18}s`,
+              }}>
+                {line}
+              </p>
+            </div>
+          );
+        })}
 
         {/* Attribution */}
         {q.attr && (

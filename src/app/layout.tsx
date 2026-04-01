@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: "%s | MINEH4O",
   },
   description:
-    "賴明宏 Oscar Lai 的影像作品集。導演、攝影師、AIGC 創作者，專注於音樂錄影帶、劇情短片、商業攝影與 AI 影像創作。台灣・台中。",
+    "賴明宏 Oscar Lai 的影像作品集。導演、攝影師、AIGC 創作者，專注於音樂錄影帶、商業攝影、人像攝影、專輯封面設計與 AI 影像創作。代表作：陳卓 愚人節 MV、光與景三部曲、一千座山封面設計、2026 TEDxNTHU。台灣・台中。",
   keywords: [
     "賴明宏", "Oscar Lai", "MINEH4O", "minehoooo",
     "導演", "攝影師", "Director", "Director of Photography", "DP",
@@ -40,6 +40,14 @@ export const metadata: Metadata = {
     "AIGC", "AI影像", "AI動畫",
     "Visual Producer", "影像製作", "台灣導演", "台中導演",
     "陳卓 Jon Chen", "光與景三部曲",
+    "愚人節 ALL FOOL'S DAY", "愚人節MV", "陳卓一千座山", "一千座山一千條河",
+    "Album Cover Design", "專輯封面設計",
+    "TEDxNTHU", "TEDx清大", "2026 TEDxNTHU",
+    "中華職棒明星賽", "Taiwolf", "明星賽紀實",
+    "婚攝", "婚禮攝影", "Wedding Photography",
+    "Editorial Photography", "人像攝影", "商業攝影",
+    "petit", "Probeer", "PARK2",
+    "Portrait Photography", "台灣攝影師",
     "Portfolio", "作品集",
   ],
   authors: [{ name: "Oscar Lai", url: SITE_URL }],
@@ -51,7 +59,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: "MINEH4O — Portfolio",
     title: "MINEH4O — 賴明宏 Oscar Lai | Director · DP",
-    description: "台灣影像創作者 · 導演 · 攝影師 · AIGC 創作 · Taiwan Taichung",
+    description: "台灣影像創作者 · 導演 · 攝影師 · 封面設計 · AIGC 創作 · 陳卓 愚人節 MV · TEDxNTHU · Taiwan Taichung",
     images: [
       {
         url: "/og-image.png",
@@ -111,6 +119,16 @@ const jsonLd = {
     "Film Direction", "Cinematography", "Music Video Production",
     "AIGC", "AI Video Generation", "Color Grading",
     "Photography", "Screenplay Writing",
+    "Album Cover Design", "Editorial Photography",
+    "Wedding Photography", "TEDx Event Coverage",
+    "Sports Documentary", "Portrait Photography",
+  ],
+  workExample: [
+    { "@type": "CreativeWork", name: "愚人節 ALL FOOL'S DAY", description: "Music Video · 陳卓 Jon Chen 五週年紀念版", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "CreativeWork", name: "陳卓 光與景三部曲", description: "Music Video Series · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "CreativeWork", name: "一千座山一千條河", description: "Album Cover Design · 陳卓 Jon Chen", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
   ],
 };
 
