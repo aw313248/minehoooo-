@@ -153,10 +153,10 @@ export default function IntroScreen() {
                   : "var(--font-geist-sans), 'PingFang TC', sans-serif",
                 fontSize: isLast
                   ? "clamp(2.2rem, 5.5vw, 4.4rem)"
-                  : "clamp(0.95rem, 2vw, 1.3rem)",
+                  : "clamp(1.2rem, 3vw, 1.9rem)",
                 fontWeight: isLast ? 400 : 300,
-                color: isLast ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.38)",
-                letterSpacing: isLast ? "0.05em" : "0.18em",
+                color: isLast ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.55)",
+                letterSpacing: isLast ? "0.05em" : "0.12em",
                 lineHeight: isLast ? 1.0 : 1.6,
                 textAlign: "left",
                 opacity: isIn ? 1 : 0,
