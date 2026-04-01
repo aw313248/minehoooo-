@@ -17,6 +17,15 @@ const featuredMVs = [
     tags: ["MUSIC VIDEO", "DIR", "DP", "AI"],
   },
   {
+    id: "d9_EuYkmfzM",
+    title: "愚人節 ALL FOOL'S DAY",
+    artist: "陳卓 Jon Chen",
+    subEn: "Music Video · 5th Anniversary",
+    subZh: "音樂錄影帶 · 五週年紀念版",
+    role: "DIR · DP",
+    tags: ["MUSIC VIDEO", "DIR", "DP"],
+  },
+  {
     id: "hk43CW2Kqow",
     title: "LAST 10",
     artist: "",

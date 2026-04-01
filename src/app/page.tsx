@@ -4,6 +4,7 @@ import Hero            from "@/components/Hero";
 import WorkPhotography from "@/components/WorkPhotography";
 import WorkVideo       from "@/components/WorkVideo";
 import WorkAIGC        from "@/components/WorkAIGC";
+import WorkDesign      from "@/components/WorkDesign";
 import About           from "@/components/About";
 import Contact         from "@/components/Contact";
 import MobileNav       from "@/components/MobileNav";
@@ -22,6 +23,7 @@ export default function Home() {
         <WorkPhotography />
         <WorkVideo />
         <WorkAIGC />
+        <WorkDesign />
         <Contact />
       </PageScroll>
       <MobileNav />

@@ -38,8 +38,10 @@ const skills = [
 
 const credits = [
   { text: "古林睿煬 — 2024 CPBL MVP · 日職北海道火腿鬥士", highlight: true  },
-  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP",          highlight: true  },
+  { text: "陳卓 Jon Chen 光與景三部曲 + 愚人節 — DIR · DP", highlight: true  },
   { text: "Kolli — MV DIR · DP",                            highlight: true  },
+  { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · DP",     highlight: true  },
+  { text: "明星賽紀實：逐夢之路 Taiwolf — DIR · DP",        highlight: true  },
   { text: "多位知名音樂人 MV 攝影 · 調色",                  highlight: false },
   { text: "「紅箱子」入圍 2023 放視大賞",                   highlight: false },
   { text: "傳播藝術系 27th 系學會副會長",                   highlight: false },
