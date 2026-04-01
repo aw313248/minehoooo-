@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { CharReveal } from "@/components/WordReveal";
+import { useLang } from "@/contexts/LangContext";
 
 const IG_ACCOUNTS = [
   { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · MV · Reels" },
@@ -10,10 +11,16 @@ const IG_ACCOUNTS = [
   { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
 ];
 
+type FormState = "idle" | "sending" | "sent" | "error";
+
 export default function Contact() {
   const { ref, inView } = useInView(0.06);
   const [year, setYear] = useState("2026");
   const [copied, setCopied] = useState(false);
+  const { lang } = useLang();
+  const [showForm, setShowForm] = useState(false);
+  const [formState, setFormState] = useState<FormState>("idle");
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => {
     setYear(String(new Date().getFullYear()));
@@ -26,6 +33,42 @@ export default function Contact() {
     });
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setFormState("sending");
+    try {
+      const res = await fetch("https://formspree.io/f/xvgaeqby", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setFormState("sent");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setFormState("error");
+      }
+    } catch {
+      setFormState("error");
+    }
+  }
+
+  const t = {
+    subtitle: lang === "zh" ? "有合作提案 · 歡迎聯繫" : "Open for collaboration · Get in touch",
+    reply:    lang === "zh" ? "GMT+8 · 24h 內回覆" : "GMT+8 · Reply within 24h",
+    sendDm:   lang === "zh" ? "SEND A DM" : "SEND A DM",
+    formBtn:  lang === "zh" ? "直接留言" : "SEND A MESSAGE",
+    nameLabel:    lang === "zh" ? "名稱 / NAME" : "NAME",
+    emailLabel:   lang === "zh" ? "Email" : "EMAIL",
+    msgLabel:     lang === "zh" ? "訊息內容 / MESSAGE" : "MESSAGE",
+    namePh:       lang === "zh" ? "你的名字或品牌名稱" : "Your name or brand",
+    msgPh:        lang === "zh" ? "合作類型、時間、預算⋯" : "Project type, timeline, budget…",
+    submit:       lang === "zh" ? "送出" : "SEND",
+    sending:      lang === "zh" ? "送出中⋯" : "SENDING…",
+    sent:         lang === "zh" ? "已送出 ✓ 我會盡快回覆！" : "Sent ✓ I'll get back to you soon!",
+    errMsg:       lang === "zh" ? "發生錯誤，請直接寄信至 minehoooo@gmail.com" : "Something went wrong. Email me directly at minehoooo@gmail.com",
+  };
+
   return (
     <section id="contact" style={{ background: "#000", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
@@ -33,7 +76,7 @@ export default function Contact() {
       <div className="border-b px-8 md:px-14 py-3 flex items-center justify-between"
         style={{ borderColor: "rgba(255,255,255,0.07)" }}>
         <span className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "rgba(255,255,255,0.3)" }}>
-          06 — CONTACT
+          05 — CONTACT
         </span>
         <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
           minehoooo.xyz
@@ -73,7 +116,7 @@ export default function Contact() {
               opacity: inView ? 1 : 0,
               transition: "opacity .7s ease",
             }}>
-            有合作提案 · 歡迎聯繫
+            {t.subtitle}
           </p>
 
           {/* Heading */}
@@ -121,7 +164,7 @@ export default function Contact() {
               {copied ? "COPIED ✓" : "COPY"}
             </button>
             <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
-              GMT+8 · 24h 內回覆
+              {t.reply}
             </span>
           </div>
 
@@ -167,6 +210,94 @@ export default function Contact() {
               </div>
               <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 18, marginLeft: 4 }}>↗</span>
             </a>
+
+            {/* Toggle: show contact form */}
+            <div style={{ marginTop: 16 }}>
+              <button onClick={() => { setShowForm(v => !v); setFormState("idle"); }}
+                className="font-mono-label text-[9px] tracking-[0.22em]"
+                style={{
+                  color: showForm ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.3)",
+                  background: "none", border: "none", cursor: "pointer",
+                  borderBottom: "1px solid rgba(255,255,255,0.12)",
+                  paddingBottom: 2,
+                  transition: "color .25s ease",
+                }}>
+                {showForm ? "↑ CLOSE" : `↓ ${t.formBtn}`}
+              </button>
+            </div>
+
+            {/* Inline contact form */}
+            {showForm && (
+              <form onSubmit={handleSubmit} style={{ marginTop: 20, maxWidth: 420 }}>
+                {formState === "sent" ? (
+                  <p className="font-mono-label text-[10px] tracking-[0.18em]" style={{ color: "rgba(74,222,128,0.9)" }}>
+                    {t.sent}
+                  </p>
+                ) : (
+                  <>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                        <div>
+                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                            {t.nameLabel}
+                          </label>
+                          <input type="text" required value={formData.name}
+                            onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                            placeholder={t.namePh}
+                            className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2"
+                            style={{
+                              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                              color: "rgba(255,255,255,0.8)", outline: "none",
+                            }} />
+                        </div>
+                        <div>
+                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                            {t.emailLabel}
+                          </label>
+                          <input type="email" required value={formData.email}
+                            onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+                            placeholder="email@example.com"
+                            className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2"
+                            style={{
+                              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                              color: "rgba(255,255,255,0.8)", outline: "none",
+                            }} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                          {t.msgLabel}
+                        </label>
+                        <textarea required rows={4} value={formData.message}
+                          onChange={e => setFormData(p => ({ ...p, message: e.target.value }))}
+                          placeholder={t.msgPh}
+                          className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2 resize-none"
+                          style={{
+                            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                            color: "rgba(255,255,255,0.8)", outline: "none",
+                          }} />
+                      </div>
+                    </div>
+                    {formState === "error" && (
+                      <p className="font-mono-label text-[8px] tracking-wide mt-2" style={{ color: "rgba(248,113,113,0.9)" }}>
+                        {t.errMsg}
+                      </p>
+                    )}
+                    <button type="submit" disabled={formState === "sending"}
+                      className="font-mono-label text-[9px] tracking-[0.28em] mt-3 px-6 py-2.5"
+                      style={{
+                        background: formState === "sending" ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.08)",
+                        border: "1px solid rgba(255,255,255,0.18)",
+                        color: formState === "sending" ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.8)",
+                        cursor: formState === "sending" ? "default" : "pointer",
+                        transition: "all .25s ease",
+                      }}>
+                      {formState === "sending" ? t.sending : t.submit}
+                    </button>
+                  </>
+                )}
+              </form>
+            )}
           </div>
         </div>
 

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
 import { WordReveal } from "@/components/WordReveal";
 import { photoCategories, type PhotoCategory } from "@/data/photos";
+import { useLang } from "@/contexts/LangContext";
 
 function encode(folder: string, file: string) {
   return `/photos/${folder}/${encodeURIComponent(file)}`;
@@ -149,6 +150,7 @@ export default function WorkPhotography() {
   const [heroIdx, setHeroIdx]     = useState(0);
   const [lightbox, setLightbox]   = useState<{ idx: number } | null>(null);
   const { ref, inView }           = useInView(0.05);
+  const { lang }                  = useLang();
   const cat = photoCategories.find(c => c.id === activeId)!;
   const encodedFiles = cat.files.map(f => encode(cat.id, f));
 
@@ -255,7 +257,7 @@ export default function WorkPhotography() {
           <div className="hidden md:block">
             <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-5"
               style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
-              02 — 攝影
+              {lang === "zh" ? "02 — 攝影" : "02 — PHOTOGRAPHY"}
             </span>
             <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(3.5rem,8vw,9rem)", color: "var(--text)" }}>
               <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />
@@ -277,21 +279,25 @@ export default function WorkPhotography() {
 
           {/* ── Mobile: horizontal pill categories ── */}
           <div className="md:hidden flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: "none" }}>
-            {photoCategories.map((c) => (
+            {photoCategories.map((c) => {
+              const isActive = c.id === activeId;
+              return (
               <button key={c.id} onClick={() => setActiveId(c.id)}
-                className="shrink-0 px-3 py-1.5 transition-all duration-300"
+                className="shrink-0 px-3 py-1.5 active:scale-95"
                 style={{
-                  background: c.id === activeId ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
+                  background: isActive ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
                   backdropFilter: "blur(8px)",
-                  border: c.id === activeId ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                  border: isActive ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.08)",
                   borderRadius: 2,
+                  transition: "background .2s ease, border-color .2s ease, transform .15s ease",
                 }}>
                 <span className="font-mono-label text-[9px] tracking-wider whitespace-nowrap"
-                  style={{ color: c.id === activeId ? "var(--text)" : "var(--text-3)" }}>
+                  style={{ color: isActive ? "var(--text)" : "var(--text-3)" }}>
                   {c.en}
                 </span>
               </button>
-            ))}
+              );
+            })}
           </div>
 
           {/* ── Mobile: full photo grid (all photos, scrollable) ── */}
@@ -316,25 +322,34 @@ export default function WorkPhotography() {
           {/* ── Desktop: vertical category list ── */}
           <div className="hidden md:block">
             <div className="space-y-1 mb-8">
-              {photoCategories.map((c, i) => (
+              {photoCategories.map((c, i) => {
+                const isActive = c.id === activeId;
+                return (
                 <button key={c.id} onClick={() => setActiveId(c.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 transition-all duration-300 text-left"
+                  className="w-full flex items-center justify-between px-4 py-3 text-left group"
                   style={{
-                    background:     c.id === activeId ? "rgba(255,255,255,0.07)" : "transparent",
-                    backdropFilter: c.id === activeId ? "blur(8px)" : "none",
-                    borderLeft:     c.id === activeId ? "2px solid rgba(255,255,255,0.5)" : "2px solid transparent",
+                    background:     isActive ? "rgba(255,255,255,0.07)" : "transparent",
+                    backdropFilter: isActive ? "blur(8px)" : "none",
+                    borderLeft:     isActive ? "2px solid rgba(255,255,255,0.5)" : "2px solid rgba(255,255,255,0.08)",
                     opacity: inView ? 1 : 0,
-                    transition: `opacity .6s ease ${.1 + i * .08}s, background .3s, border-color .3s`,
-                  }}>
+                    transition: `opacity .6s ease ${.1 + i * .08}s, background .25s ease, border-color .25s ease`,
+                  }}
+                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderLeftColor = "rgba(255,255,255,0.25)"; } }}
+                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderLeftColor = "rgba(255,255,255,0.08)"; } }}>
                   <div>
-                    <p className="text-[13px] font-medium" style={{ color: c.id === activeId ? "var(--text)" : "var(--text-2)" }}>
+                    <p className="text-[13px] font-medium transition-colors duration-200" style={{ color: isActive ? "var(--text)" : "var(--text-2)" }}>
                       {c.en}
                     </p>
                     <p className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>{c.zh}</p>
                   </div>
-                  <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
+                    <span className="font-mono-label text-[9px] transition-opacity duration-200"
+                      style={{ color: "rgba(255,255,255,0.4)", opacity: isActive ? 1 : 0 }}>→</span>
+                  </div>
                 </button>
-              ))}
+                );
+              })}
             </div>
             <p className="font-mono-label text-[9px] leading-relaxed mb-6" style={{ color: "var(--text-3)" }}>
               {cat.desc}

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLang } from "@/contexts/LangContext";
 
 // Page index → nav section mapping
 // 0=Hero, 1=About, 2=Photography, 3=Video, 4=AIGC, 5=Contact
@@ -19,6 +20,7 @@ export default function Navbar() {
   const [scrolled,  setScrolled]  = useState(false);
   const [menuOpen,  setMenuOpen]  = useState(false);
   const [activePage, setActivePage] = useState(0);
+  const { lang, toggle } = useLang();
 
   useEffect(() => {
     // Current page index from PageScroll
@@ -98,6 +100,23 @@ export default function Navbar() {
               </li>
             );
           })}
+          {/* Language toggle */}
+          <li>
+            <button onClick={toggle}
+              className="font-mono-label text-[9px] tracking-[0.22em] px-2 py-1"
+              style={{
+                border: "1px solid rgba(255,255,255,0.14)",
+                color: "rgba(255,255,255,0.5)",
+                background: "transparent",
+                cursor: "pointer",
+                transition: "color .25s ease, border-color .25s ease",
+                letterSpacing: "0.18em",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.85)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; }}>
+              {lang === "zh" ? "EN" : "中文"}
+            </button>
+          </li>
         </ul>
 
         {/* Mobile hamburger */}
@@ -140,6 +159,13 @@ export default function Navbar() {
                 </li>
               );
             })}
+            <li>
+              <button onClick={toggle}
+                className="font-mono-label text-xs tracking-[0.3em]"
+                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.45)" }}>
+                {lang === "zh" ? "SWITCH TO EN" : "切換中文"}
+              </button>
+            </li>
           </ul>
         </div>
       )}

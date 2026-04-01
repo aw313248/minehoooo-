@@ -306,6 +306,7 @@ function SeriesPanel({ video, index, inView }: {
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`} alt={video.title}
+          loading="lazy"
           style={{
             position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
             transform: hovered ? "scale(1.04)" : "scale(1)",
@@ -639,7 +640,7 @@ export default function WorkVideo() {
       {/* ── 03 · MUSIC VIDEO · COLOR WORK ── */}
       <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="03" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="DP · COLOR GRADING" />
+          <CatHeader num="01" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="DP · COLOR GRADING" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
             {colorCredits.map((v, i) => (
               <div key={v.id} style={{
@@ -656,7 +657,7 @@ export default function WorkVideo() {
       {/* ── 04 · SHORT FILM & COMMERCIAL ── */}
       <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="04" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
+          <CatHeader num="02" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
 
           {/* Short Film */}
           <SubLabel label="SHORT FILM · NARRATIVE" />
@@ -690,7 +691,7 @@ export default function WorkVideo() {
       {/* ── 05 · LIVE · DOCUMENTARY · EVENT ── */}
       <div ref={leRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: leIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="05" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
+          <CatHeader num="03" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
             {[...liveDoc, ...eventRec].map((v, i) => (
               <div key={v.id} style={{
@@ -716,6 +717,7 @@ export default function WorkVideo() {
                 <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 3, background: "#080808" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`https://img.youtube.com/vi/${s.id}/hqdefault.jpg`} alt={s.title}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 flex items-end pb-2 pl-2">
                     <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
@@ -738,7 +740,7 @@ export default function WorkVideo() {
         {/* Header */}
         <div className="px-8 md:px-14 pt-10 pb-2"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw" />
+          <CatHeader num="04" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw" />
         </div>
 
         {/* Horizontal scroll — custom reel cards */}
@@ -774,6 +776,7 @@ export default function WorkVideo() {
                   <img
                     src={`/reels/${reel.code}.jpg`}
                     alt={reel.label}
+                    loading="lazy"
                     onError={e => { (e.target as HTMLImageElement).style.display = "none"; }}
                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform .5s cubic-bezier(.16,1,.3,1)" }}
                     className="group-hover:scale-[1.04]"

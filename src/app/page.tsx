@@ -10,10 +10,11 @@ import MobileNav       from "@/components/MobileNav";
 import PageTitle       from "@/components/PageTitle";
 import AudioPlayer     from "@/components/AudioPlayer";
 import AutoPlay        from "@/components/AutoPlay";
+import { LangProvider } from "@/contexts/LangContext";
 
 export default function Home() {
   return (
-    <>
+    <LangProvider>
       <Navbar />
       <PageTitle />
       <PageScroll>
@@ -27,6 +28,6 @@ export default function Home() {
       <MobileNav />
       <AudioPlayer />
       <AutoPlay />
-    </>
+    </LangProvider>
   );
 }
