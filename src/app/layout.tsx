@@ -28,11 +28,11 @@ const SITE_URL = "https://minehoooo.xyz";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "MINEH4O — 賴明宏 Oscar Lai | Director · DP · Visual Producer",
+    default: "MINEH4O — 賴明宏 Oscar Lai | 陳卓 愚人節 ALL FOOL'S DAY MV Director · DP",
     template: "%s | MINEH4O",
   },
   description:
-    "賴明宏 Oscar Lai 的影像作品集。導演、攝影師、AIGC 創作者，專注於音樂錄影帶、商業攝影、人像攝影、專輯封面設計與 AI 影像創作。代表作：陳卓 愚人節 MV、光與景三部曲、一千座山封面設計、2026 TEDxNTHU。台灣・台中。",
+    "陳卓 Jon Chen《愚人節 ALL FOOL'S DAY》五週年紀念版音樂錄影帶導演 賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作，代表作：愚人節 MV、光與景三部曲、一千座山封面設計、2026 TEDxNTHU。台灣・台中。",
   keywords: [
     "賴明宏", "Oscar Lai", "MINEH4O", "minehoooo",
     "導演", "攝影師", "Director", "Director of Photography", "DP",
@@ -99,12 +99,13 @@ const videoJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    name: "愚人節 ALL FOOL'S DAY — 陳卓 Jon Chen | Official Music Video",
-    description: "陳卓 Jon Chen 愚人節 ALL FOOL'S DAY 五週年紀念版音樂錄影帶。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
-    thumbnailUrl: `https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg`,
+    name: "愚人節 ALL FOOL'S DAY — 陳卓 Jon Chen | Official Music Video 五週年紀念版",
+    description: "陳卓 Jon Chen 愚人節 ALL FOOL'S DAY 五週年紀念版音樂錄影帶 2026。導演 Director & DP: 賴明宏 Oscar Lai (MINEH4O)。April Fool's Day MV。",
+    thumbnailUrl: "https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
     url: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    keywords: "愚人節,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
   },
   {
     "@context": "https://schema.org",
