@@ -217,7 +217,7 @@ export default function About() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
             <div>
               <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.65)" }}>
-                賴明宏 Lie Ming-Hong
+                賴明宏 Lai Ming-Hong
               </p>
               <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>
                 Director · DP · Screenplay · Photography
@@ -342,7 +342,7 @@ export default function About() {
               </div>
             </div>
             <p className="font-mono-label text-[10px] tracking-[0.2em]" style={{ color: "var(--text-2)" }}>
-              賴明宏 Lie Ming-Hong
+              賴明宏 Lai Ming-Hong
             </p>
           </div>
 
