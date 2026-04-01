@@ -40,7 +40,8 @@ export const metadata: Metadata = {
     "AIGC", "AI影像", "AI動畫",
     "Visual Producer", "影像製作", "台灣導演", "台中導演",
     "陳卓 Jon Chen", "光與景三部曲",
-    "愚人節 ALL FOOL'S DAY", "愚人節MV", "陳卓一千座山", "一千座山一千條河",
+    "愚人節", "愚人節快樂", "愚人節 MV", "愚人節 ALL FOOL'S DAY", "愚人節MV 2026",
+    "陳卓一千座山", "一千座山一千條河",
     "Album Cover Design", "專輯封面設計",
     "TEDxNTHU", "TEDx清大", "2026 TEDxNTHU",
     "中華職棒明星賽", "Taiwolf", "明星賽紀實",
@@ -104,7 +105,7 @@ const videoJsonLd = [
     thumbnailUrl: "https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
     url: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
-    keywords: "愚人節,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
+    keywords: "愚人節,愚人節快樂,愚人節MV,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
   },
   {
