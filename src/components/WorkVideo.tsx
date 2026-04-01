@@ -104,7 +104,7 @@ const liveDoc = [
 const eventRec = [
   { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
   { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
-  { id: "7rU2JUGplXw", title: "皮泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
 ];
 
 const ytShorts = [
