@@ -75,6 +75,20 @@ const shortFilms = [
     role: "AD · ASSISTANT DIR",
     cat: "MUSIC VIDEO",
   },
+  {
+    id: "mQ0KWgkGHlw",
+    title: "親愛的",
+    artist: "陳芳語 Kimberley Chen",
+    role: "AD · ART DEPT",
+    cat: "MUSIC VIDEO",
+  },
+  {
+    id: "W7E5bJ1Cmuo",
+    title: "我們的愛",
+    artist: "陳芳語 Kimberley Chen",
+    role: "PRODUCTION ASST",
+    cat: "MUSIC VIDEO",
+  },
 ];
 
 const commercial = [
