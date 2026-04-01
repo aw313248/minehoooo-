@@ -122,4 +122,38 @@ export const photoCategories: PhotoCategory[] = [
       "DSC07456 拷貝.jpg",
     ],
   },
+  {
+    id:   "taichung-part2",
+    en:   "Taichung · Part 2",
+    zh:   "臺中勤美 Part 2",
+    desc: "臺中勤美誠品 editorial · 人像 · 商業攝影 · Photographed & Retouched by MINEH4O",
+    files: [
+      "petit-1.jpg",
+      "petit-2.jpg",
+      "petit-3.jpg",
+      "probeer-1.jpg",
+      "probeer-2.jpg",
+    ],
+  },
+  {
+    id:   "park2",
+    en:   "PARK2 · Kissing Day",
+    zh:   "PARK2 國際親吻日",
+    desc: "2025 PARK2 國際親吻日活動攝影 · Campaign Photography · Photographed by MINEH4O",
+    files: [
+      "park2-1.jpg",
+      "park2-2.jpg",
+      "park2-3.jpg",
+    ],
+  },
+  {
+    id:   "wedding",
+    en:   "Wedding",
+    zh:   "婚攝紀實",
+    desc: "2024 婚禮攝影精修 · Wedding Documentary Photography · Photographed & Retouched by MINEH4O",
+    files: [
+      "wedding-1.jpg",
+      "wedding-2.jpg",
+    ],
+  },
 ];
