@@ -78,7 +78,7 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
         {/* Image */}
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt="" className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 2 }} />
+          <img src={src} alt={`MINEH4O Photography ${String(idx + 1).padStart(2,"0")} of ${total}`} className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 2 }} />
           {/* Counter */}
           <span className="absolute bottom-3 left-3 font-mono-label text-[8px] tracking-[0.2em]"
             style={{ color: "rgba(255,255,255,0.4)" }}>

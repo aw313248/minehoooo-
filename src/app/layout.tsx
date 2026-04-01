@@ -95,6 +95,39 @@ export const metadata: Metadata = {
   },
 };
 
+const videoJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "愚人節 ALL FOOL'S DAY — 陳卓 Jon Chen | Official Music Video",
+    description: "陳卓 Jon Chen 愚人節 ALL FOOL'S DAY 五週年紀念版音樂錄影帶。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: `https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg`,
+    embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
+    url: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "流明 LUMEN — 陳卓 Jon Chen | Official Music Video (光與景三部曲 Ⅰ)",
+    description: "陳卓 光與景三部曲 第一部 流明 LUMEN。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: `https://img.youtube.com/vi/erQ9lR_rNik/maxresdefault.jpg`,
+    embedUrl: "https://www.youtube.com/embed/erQ9lR_rNik",
+    url: "https://www.youtube.com/watch?v=erQ9lR_rNik",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "BRING ME YOUR LOVELY — Kolli (NN) | Music Video AI Hybrid",
+    description: "BRING ME YOUR LOVELY — AI Hybrid Music Video。Director, DP & AI: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: `https://img.youtube.com/vi/eI1O_9jBHU0/maxresdefault.jpg`,
+    embedUrl: "https://www.youtube.com/embed/eI1O_9jBHU0",
+    url: "https://www.youtube.com/watch?v=eI1O_9jBHU0",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -156,6 +189,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {videoJsonLd.map((v, i) => (
+          <Script
+            key={`video-ld-${i}`}
+            id={`video-ld-${i}`}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(v) }}
+          />
+        ))}
         <IntroScreen />
         <CustomCursor />
         {children}
