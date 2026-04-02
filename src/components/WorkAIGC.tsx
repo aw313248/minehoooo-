@@ -6,7 +6,16 @@ import { AnimLine } from "@/components/AnimLine";
 
 const MAIN_VIDEO = "u5WaOT1m670";
 
-const extraVideos = [
+const extraVideos: Array<{
+  title: string; sub: string; role: string;
+  id?: string; igCode?: string;
+}> = [
+  {
+    igCode: "DWnqw4KEkmf",
+    title: "HORROR · AIGC SHORT",
+    sub: "AI Generated · Horror · Short Film",
+    role: "DIR · AI",
+  },
   {
     id: "ZbaSBFVP-Tg",
     title: "AIGC Short Film",
@@ -246,19 +255,44 @@ export default function WorkAIGC() {
             <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
           </div>
           <div className="grid grid-cols-1 gap-6">
-            {extraVideos.map((v, i) => (
-              <AnimLine key={v.id} delay={0.1 + i * 0.14} inView={moreIn}>
-                <a href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer" className="group block">
+            {extraVideos.map((v, i) => {
+              const isIg = !!v.igCode;
+              const href = isIg
+                ? `https://www.instagram.com/reel/${v.igCode}/`
+                : `https://www.youtube.com/watch?v=${v.id}`;
+              return (
+              <AnimLine key={v.igCode ?? v.id} delay={0.1 + i * 0.14} inView={moreIn}>
+                <a href={href} target="_blank" rel="noopener noreferrer" className="group block">
                   <div className="relative overflow-hidden mb-3"
-                    style={{ aspectRatio: "16/9", borderRadius: 3, background: "#050505" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                      onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
+                    style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 3, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
+                    {isIg ? (
+                      /* IG reel — dark gradient placeholder */
+                      <div className="absolute inset-0 flex items-center justify-center"
+                        style={{ background: "linear-gradient(135deg, rgba(40,0,80,0.9) 0%, rgba(10,0,20,0.95) 100%)" }}>
+                        {/* Scanline texture */}
+                        <div style={{
+                          position: "absolute", inset: 0, pointerEvents: "none",
+                          backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px)",
+                        }} />
+                        {/* IG icon */}
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                          stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="2" width="20" height="20" rx="5" />
+                          <circle cx="12" cy="12" r="4" />
+                          <circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.18)" stroke="none" />
+                        </svg>
+                      </div>
+                    ) : (
+                      /* YouTube thumbnail */
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
+                    )}
                     <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(80,0,160,0.25) 0%, rgba(0,0,0,0.3) 100%)" }} />
                     <div className="absolute bottom-3 left-3 flex gap-2">
-                      {["AIGC", "AI"].map(t => (
+                      {(isIg ? ["AIGC", "AI", "IG REEL"] : ["AIGC", "AI"]).map(t => (
                         <span key={t} className="font-mono-label text-[7px] tracking-widest px-2 py-0.5"
                           style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.7)" }}>
                           {t}
@@ -268,7 +302,10 @@ export default function WorkAIGC() {
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-12 h-12 rounded-full flex items-center justify-center"
                         style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.18)" }}>
-                        <svg className="w-5 h-5 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        {isIg
+                          ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="white" stroke="none" /></svg>
+                          : <svg className="w-5 h-5 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        }
                       </div>
                     </div>
                   </div>
@@ -285,7 +322,8 @@ export default function WorkAIGC() {
                   }}>{v.role}</span>
                 </a>
               </AnimLine>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
