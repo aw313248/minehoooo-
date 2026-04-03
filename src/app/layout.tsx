@@ -100,7 +100,7 @@ const videoJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    name: "愚人節 ALL FOOL'S DAY — 陳卓 Jon Chen | Official Music Video 五週年紀念版",
+    name: "陳卓 Jon Chen 【愚人節（五週年紀念版）All Fool's Day (5th Anniversary Edition)】Official Music Video",
     description: "陳卓 Jon Chen 愚人節 ALL FOOL'S DAY 五週年紀念版音樂錄影帶 2026。導演 Director & DP: 賴明宏 Oscar Lai (MINEH4O)。April Fool's Day MV。",
     thumbnailUrl: "https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
@@ -115,12 +115,12 @@ const videoJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    name: "流明 LUMEN — 陳卓 Jon Chen | Official Music Video (光與景三部曲 Ⅰ)",
-    description: "陳卓 光與景三部曲 第一部 流明 LUMEN。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
-    thumbnailUrl: `https://img.youtube.com/vi/erQ9lR_rNik/maxresdefault.jpg`,
+    name: "陳卓 Jon Chen 《流鳴》Lumen (Official MV) 光與景三部曲｜之一",
+    description: "陳卓 光與景三部曲 第一部《流鳴》Lumen Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: "https://img.youtube.com/vi/erQ9lR_rNik/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/erQ9lR_rNik",
     url: "https://www.youtube.com/watch?v=erQ9lR_rNik",
-    uploadDate: "2023-09-01",
+    uploadDate: "2023-10-01",
     duration: "PT3M45S",
     inLanguage: "zh-TW",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
@@ -128,14 +128,53 @@ const videoJsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "VideoObject",
-    name: "BRING ME YOUR LOVELY — Kolli (NN) | Music Video AI Hybrid",
+    name: "陳卓 Jon Chen 《光圈》Aperture (Official MV) 光與景三部曲｜之二",
+    description: "陳卓 光與景三部曲 第二部《光圈》Aperture Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: "https://img.youtube.com/vi/cIsS50e6YQ0/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/cIsS50e6YQ0",
+    url: "https://www.youtube.com/watch?v=cIsS50e6YQ0",
+    uploadDate: "2024-01-01",
+    duration: "PT4M00S",
+    inLanguage: "zh-TW",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "陳卓 Jon Chen 《沒收》Deprived (Official MV) 光與景三部曲｜之三",
+    description: "陳卓 光與景三部曲 第三部《沒收》Deprived Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
+    thumbnailUrl: "https://img.youtube.com/vi/sxrucEXI9-A/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/sxrucEXI9-A",
+    url: "https://www.youtube.com/watch?v=sxrucEXI9-A",
+    uploadDate: "2024-04-01",
+    duration: "PT4M10S",
+    inLanguage: "zh-TW",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "Kolli (NN) - BRING ME YOUR LOVELY | AI Hybrid Music Video",
     description: "BRING ME YOUR LOVELY — AI Hybrid Music Video。Director, DP & AI: 賴明宏 Oscar Lai (MINEH4O)。",
-    thumbnailUrl: `https://img.youtube.com/vi/eI1O_9jBHU0/maxresdefault.jpg`,
+    thumbnailUrl: "https://img.youtube.com/vi/eI1O_9jBHU0/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/eI1O_9jBHU0",
     url: "https://www.youtube.com/watch?v=eI1O_9jBHU0",
-    uploadDate: "2025-06-01",
+    uploadDate: "2025-03-01",
     duration: "PT3M30S",
     inLanguage: "en",
+    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: "我把腦子裡的畫面做出來了 | AIGC Short Film",
+    description: "賴明宏 Oscar Lai (MINEH4O) AIGC 短片創作。AI Generated Short Film using Midjourney, ComfyUI, Stable Diffusion.",
+    thumbnailUrl: "https://img.youtube.com/vi/u5WaOT1m670/maxresdefault.jpg",
+    embedUrl: "https://www.youtube.com/embed/u5WaOT1m670",
+    url: "https://www.youtube.com/watch?v=u5WaOT1m670",
+    uploadDate: "2024-08-01",
+    duration: "PT2M30S",
+    inLanguage: "zh-TW",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
   },
 ];
@@ -169,6 +208,7 @@ const personJsonLd = {
     "https://instagram.com/minehoooo",
     "https://instagram.com/minehoooo.arw",
     "https://instagram.com/mlpon6",
+    "https://www.youtube.com/@BigCataw313248",
     "https://minehoooo.xyz",
   ],
   knowsAbout: [
@@ -198,6 +238,53 @@ const websiteJsonLd = {
   description: "賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作。Taiwan-based Film Director & DP.",
   inLanguage: ["zh-TW", "en"],
   author: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "陳卓愚人節MV是誰拍的？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "陳卓《愚人節 ALL FOOL'S DAY》五週年紀念版 MV 由台灣導演賴明宏 Oscar Lai（MINEH4O）擔任導演及攝影指導（Director & DP）。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "MINEH4O 是誰？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "MINEH4O 是台灣導演兼攝影師賴明宏（Oscar Lai）的創作筆名。主要作品包括陳卓《愚人節》《光與景三部曲》、TEDxNTHU 演講紀錄，以及多位音樂人的 MV 攝影及調色，現居台中。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "賴明宏 Oscar Lai 拍過哪些音樂錄影帶？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "賴明宏 Oscar Lai（MINEH4O）代表作包括：陳卓《愚人節》《流鳴》《光圈》《沒收》光與景三部曲、Kolli (NN)《BRING ME YOUR LOVELY》AI Hybrid MV，以及多首台灣音樂人 MV 攝影與調色。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Oscar Lai 會拍 AIGC 影片嗎？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "是的，賴明宏 Oscar Lai 使用 Midjourney、ComfyUI、Stable Diffusion 等工具創作 AIGC 短片與 AI Hybrid MV，代表作為《BRING ME YOUR LOVELY》與《我把腦子裡的畫面做出來了》。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "如何聯絡 MINEH4O 合作？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "可透過 Instagram @minehoooo 傳送私訊，或寄信至 minehoooo@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
+      },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -232,6 +319,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
         <Script id="website-ld" type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <Script id="faq-ld" type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         {videoJsonLd.map((v, i) => (
           <Script key={`video-ld-${i}`} id={`video-ld-${i}`} type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(v) }} />
