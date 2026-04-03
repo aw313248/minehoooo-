@@ -105,8 +105,12 @@ const videoJsonLd = [
     thumbnailUrl: "https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg",
     embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
     url: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
+    uploadDate: "2026-04-01",
+    duration: "PT4M12S",
     keywords: "愚人節,愚人節快樂,愚人節MV,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
+    inLanguage: "zh-TW",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
+    productionCompany: { "@type": "Organization", name: "MINEH4O" },
   },
   {
     "@context": "https://schema.org",
@@ -116,6 +120,9 @@ const videoJsonLd = [
     thumbnailUrl: `https://img.youtube.com/vi/erQ9lR_rNik/maxresdefault.jpg`,
     embedUrl: "https://www.youtube.com/embed/erQ9lR_rNik",
     url: "https://www.youtube.com/watch?v=erQ9lR_rNik",
+    uploadDate: "2023-09-01",
+    duration: "PT3M45S",
+    inLanguage: "zh-TW",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
   },
   {
@@ -126,29 +133,43 @@ const videoJsonLd = [
     thumbnailUrl: `https://img.youtube.com/vi/eI1O_9jBHU0/maxresdefault.jpg`,
     embedUrl: "https://www.youtube.com/embed/eI1O_9jBHU0",
     url: "https://www.youtube.com/watch?v=eI1O_9jBHU0",
+    uploadDate: "2025-06-01",
+    duration: "PT3M30S",
+    inLanguage: "en",
     director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
   },
 ];
 
-const jsonLd = {
+const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Oscar Lai",
-  alternateName: ["賴明宏", "MINEH4O", "minehoooo"],
+  givenName: "Ming-Hong",
+  familyName: "Lai",
+  alternateName: ["賴明宏", "MINEH4O", "minehoooo", "Oscar LAI"],
   url: SITE_URL,
   image: `${SITE_URL}/profile.png`,
   jobTitle: "Director · Director of Photography · Visual Producer",
   description:
     "台灣影像創作者，專注於音樂錄影帶導演、攝影及 AIGC 創作。Taiwan-based visual producer specializing in music videos, cinematography, and AI visual creation.",
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Taichung",
-    addressCountry: "TW",
+  nationality: { "@type": "Country", name: "Taiwan" },
+  homeLocation: {
+    "@type": "Place",
+    name: "Taichung, Taiwan",
+    address: { "@type": "PostalAddress", addressLocality: "Taichung", addressCountry: "TW" },
+  },
+  knowsLanguage: ["zh-TW", "en"],
+  hasOccupation: {
+    "@type": "Occupation",
+    name: "Film Director",
+    occupationLocation: { "@type": "Country", name: "Taiwan" },
+    skills: "Cinematography, Music Video Direction, AIGC, Color Grading, Photography, Screenplay",
   },
   sameAs: [
     "https://instagram.com/minehoooo",
     "https://instagram.com/minehoooo.arw",
     "https://instagram.com/mlpon6",
+    "https://minehoooo.xyz",
   ],
   knowsAbout: [
     "Film Direction", "Cinematography", "Music Video Production",
@@ -159,12 +180,24 @@ const jsonLd = {
     "Sports Documentary", "Portrait Photography",
   ],
   workExample: [
-    { "@type": "CreativeWork", name: "愚人節 ALL FOOL'S DAY", description: "Music Video · 陳卓 Jon Chen 五週年紀念版", creator: { "@type": "Person", name: "Oscar Lai" } },
-    { "@type": "CreativeWork", name: "陳卓 光與景三部曲", description: "Music Video Series · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "VideoObject", name: "愚人節 ALL FOOL'S DAY", description: "Music Video · 陳卓 Jon Chen 五週年紀念版 · Dir & DP", url: "https://www.youtube.com/watch?v=d9_EuYkmfzM" },
+    { "@type": "VideoObject", name: "流明 LUMEN", description: "陳卓 光與景三部曲 Ⅰ · Music Video · Dir & DP", url: "https://www.youtube.com/watch?v=erQ9lR_rNik" },
+    { "@type": "VideoObject", name: "BRING ME YOUR LOVELY", description: "Kolli (NN) · AI Hybrid Music Video · Dir & DP & AI", url: "https://www.youtube.com/watch?v=eI1O_9jBHU0" },
     { "@type": "CreativeWork", name: "一千座山一千條河", description: "Album Cover Design · 陳卓 Jon Chen", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
   ],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "MINEH4O — Oscar Lai Portfolio",
+  alternateName: "MINEH4O",
+  url: SITE_URL,
+  description: "賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作。Taiwan-based Film Director & DP.",
+  inLanguage: ["zh-TW", "en"],
+  author: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
 };
 
 export default function RootLayout({
@@ -177,27 +210,31 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        {/* hreflang — bilingual site */}
+        <link rel="alternate" hrefLang="zh-TW" href="https://minehoooo.xyz" />
+        <link rel="alternate" hrefLang="en" href="https://minehoooo.xyz" />
+        <link rel="alternate" hrefLang="x-default" href="https://minehoooo.xyz" />
+        {/* Preload critical above-fold assets */}
+        <link rel="preload" href="/profile.png" as="image" />
+        {/* Preconnect external resources */}
         <link rel="preconnect" href="https://www.youtube.com" />
         <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="preconnect" href="https://img.youtube.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://img.youtube.com" />
         <link rel="preconnect" href="https://www.instagram.com" />
         <link rel="dns-prefetch" href="https://www.instagram.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
       </head>
       <body
         className={`${geistSans.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased`}
       >
-        <Script
-          id="json-ld"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <Script id="person-ld" type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+        <Script id="website-ld" type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         {videoJsonLd.map((v, i) => (
-          <Script
-            key={`video-ld-${i}`}
-            id={`video-ld-${i}`}
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(v) }}
-          />
+          <Script key={`video-ld-${i}`} id={`video-ld-${i}`} type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(v) }} />
         ))}
         {/* Google Analytics GA4 */}
         <Script
