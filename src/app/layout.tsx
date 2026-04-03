@@ -69,6 +69,15 @@ export const metadata: Metadata = {
         alt: "MINEH4O — Oscar Lai Portfolio",
       },
     ],
+    videos: [
+      {
+        url: "https://www.youtube.com/embed/d9_EuYkmfzM",
+        secureUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
+        type: "text/html",
+        width: 1280,
+        height: 720,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -103,6 +112,7 @@ const videoJsonLd = [
     name: "陳卓 Jon Chen 【愚人節（五週年紀念版）All Fool's Day (5th Anniversary Edition)】Official Music Video",
     description: "陳卓 Jon Chen 愚人節 ALL FOOL'S DAY 五週年紀念版音樂錄影帶 2026。導演 Director & DP: 賴明宏 Oscar Lai (MINEH4O)。April Fool's Day MV。",
     thumbnailUrl: "https://img.youtube.com/vi/d9_EuYkmfzM/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
     embedUrl: "https://www.youtube.com/embed/d9_EuYkmfzM",
     url: "https://www.youtube.com/watch?v=d9_EuYkmfzM",
     uploadDate: "2026-04-01",
@@ -118,6 +128,7 @@ const videoJsonLd = [
     name: "陳卓 Jon Chen 《流鳴》Lumen (Official MV) 光與景三部曲｜之一",
     description: "陳卓 光與景三部曲 第一部《流鳴》Lumen Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
     thumbnailUrl: "https://img.youtube.com/vi/erQ9lR_rNik/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=erQ9lR_rNik",
     embedUrl: "https://www.youtube.com/embed/erQ9lR_rNik",
     url: "https://www.youtube.com/watch?v=erQ9lR_rNik",
     uploadDate: "2023-10-01",
@@ -131,6 +142,7 @@ const videoJsonLd = [
     name: "陳卓 Jon Chen 《光圈》Aperture (Official MV) 光與景三部曲｜之二",
     description: "陳卓 光與景三部曲 第二部《光圈》Aperture Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
     thumbnailUrl: "https://img.youtube.com/vi/cIsS50e6YQ0/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=cIsS50e6YQ0",
     embedUrl: "https://www.youtube.com/embed/cIsS50e6YQ0",
     url: "https://www.youtube.com/watch?v=cIsS50e6YQ0",
     uploadDate: "2024-01-01",
@@ -144,6 +156,7 @@ const videoJsonLd = [
     name: "陳卓 Jon Chen 《沒收》Deprived (Official MV) 光與景三部曲｜之三",
     description: "陳卓 光與景三部曲 第三部《沒收》Deprived Official MV。Director & DP: 賴明宏 Oscar Lai (MINEH4O)。",
     thumbnailUrl: "https://img.youtube.com/vi/sxrucEXI9-A/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=sxrucEXI9-A",
     embedUrl: "https://www.youtube.com/embed/sxrucEXI9-A",
     url: "https://www.youtube.com/watch?v=sxrucEXI9-A",
     uploadDate: "2024-04-01",
@@ -157,6 +170,7 @@ const videoJsonLd = [
     name: "Kolli (NN) - BRING ME YOUR LOVELY | AI Hybrid Music Video",
     description: "BRING ME YOUR LOVELY — AI Hybrid Music Video。Director, DP & AI: 賴明宏 Oscar Lai (MINEH4O)。",
     thumbnailUrl: "https://img.youtube.com/vi/eI1O_9jBHU0/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=eI1O_9jBHU0",
     embedUrl: "https://www.youtube.com/embed/eI1O_9jBHU0",
     url: "https://www.youtube.com/watch?v=eI1O_9jBHU0",
     uploadDate: "2025-03-01",
@@ -170,6 +184,7 @@ const videoJsonLd = [
     name: "我把腦子裡的畫面做出來了 | AIGC Short Film",
     description: "賴明宏 Oscar Lai (MINEH4O) AIGC 短片創作。AI Generated Short Film using Midjourney, ComfyUI, Stable Diffusion.",
     thumbnailUrl: "https://img.youtube.com/vi/u5WaOT1m670/maxresdefault.jpg",
+    contentUrl: "https://www.youtube.com/watch?v=u5WaOT1m670",
     embedUrl: "https://www.youtube.com/embed/u5WaOT1m670",
     url: "https://www.youtube.com/watch?v=u5WaOT1m670",
     uploadDate: "2024-08-01",
@@ -182,6 +197,7 @@ const videoJsonLd = [
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${SITE_URL}/#person`,
   name: "Oscar Lai",
   givenName: "Ming-Hong",
   familyName: "Lai",
@@ -221,7 +237,7 @@ const personJsonLd = {
   ],
   workExample: [
     { "@type": "VideoObject", name: "愚人節 ALL FOOL'S DAY", description: "Music Video · 陳卓 Jon Chen 五週年紀念版 · Dir & DP", url: "https://www.youtube.com/watch?v=d9_EuYkmfzM" },
-    { "@type": "VideoObject", name: "流明 LUMEN", description: "陳卓 光與景三部曲 Ⅰ · Music Video · Dir & DP", url: "https://www.youtube.com/watch?v=erQ9lR_rNik" },
+    { "@type": "VideoObject", name: "流鳴 LUMEN", description: "陳卓 光與景三部曲 Ⅰ · Music Video · Dir & DP", url: "https://www.youtube.com/watch?v=erQ9lR_rNik" },
     { "@type": "VideoObject", name: "BRING ME YOUR LOVELY", description: "Kolli (NN) · AI Hybrid Music Video · Dir & DP & AI", url: "https://www.youtube.com/watch?v=eI1O_9jBHU0" },
     { "@type": "CreativeWork", name: "一千座山一千條河", description: "Album Cover Design · 陳卓 Jon Chen", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
@@ -232,12 +248,13 @@ const personJsonLd = {
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
   name: "MINEH4O — Oscar Lai Portfolio",
   alternateName: "MINEH4O",
   url: SITE_URL,
   description: "賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作。Taiwan-based Film Director & DP.",
   inLanguage: ["zh-TW", "en"],
-  author: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+  author: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
 };
 
 const faqJsonLd = {
