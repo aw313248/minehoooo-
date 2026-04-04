@@ -115,6 +115,9 @@ const videoJsonLd = [
     duration: "PT4M12S",
     keywords: "愚人節,愚人節快樂,愚人節MV,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
     inLanguage: "zh-TW",
+    genre: "Music Video",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
     musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
     copyrightHolder: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
@@ -133,6 +136,9 @@ const videoJsonLd = [
     uploadDate: "2023-10-01",
     duration: "PT3M45S",
     inLanguage: "zh-TW",
+    genre: "Music Video",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
     musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
@@ -148,6 +154,9 @@ const videoJsonLd = [
     uploadDate: "2024-01-01",
     duration: "PT4M00S",
     inLanguage: "zh-TW",
+    genre: "Music Video",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
     musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
@@ -163,6 +172,9 @@ const videoJsonLd = [
     uploadDate: "2024-04-01",
     duration: "PT4M10S",
     inLanguage: "zh-TW",
+    genre: "Music Video",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
     musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
@@ -178,6 +190,9 @@ const videoJsonLd = [
     uploadDate: "2025-03-01",
     duration: "PT3M30S",
     inLanguage: "en",
+    genre: "Music Video",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
     musicBy: { "@type": "MusicGroup", name: "Kolli (NN)" },
   },
@@ -193,6 +208,9 @@ const videoJsonLd = [
     uploadDate: "2024-08-01",
     duration: "PT2M30S",
     inLanguage: "zh-TW",
+    genre: "Short Film",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
     director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
   },
 ];
@@ -253,6 +271,11 @@ const personJsonLd = {
     contactType: "business inquiries",
     availableLanguage: ["zh-TW", "en"],
   },
+  potentialAction: {
+    "@type": "ContactAction",
+    name: "聯絡合作 / Contact Oscar Lai",
+    target: "mailto:minehoooo@gmail.com",
+  },
 };
 
 const websiteJsonLd = {
@@ -265,6 +288,11 @@ const websiteJsonLd = {
   description: "賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作。Taiwan-based Film Director & DP.",
   inLanguage: ["zh-TW", "en"],
   author: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
+  potentialAction: {
+    "@type": "ViewAction",
+    name: "查看作品集",
+    target: SITE_URL,
+  },
 };
 
 const profilePageJsonLd = {
