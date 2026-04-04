@@ -66,14 +66,6 @@ export const metadata: Metadata = {
     siteName: "MINEH4O — Portfolio",
     title: "MINEH4O — 賴明宏 Oscar Lai | Director · DP",
     description: "台灣影像創作者 · 導演 · 攝影師 · 封面設計 · AIGC 創作 · 陳卓 愚人節 MV · TEDxNTHU · Taiwan Taichung",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "MINEH4O — Oscar Lai Portfolio",
-      },
-    ],
     videos: [
       {
         url: "https://www.youtube.com/embed/d9_EuYkmfzM",
@@ -88,7 +80,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MINEH4O — Oscar Lai | Director · DP",
     description: "台灣影像創作者 · 導演 · 攝影師 · AIGC 創作",
-    images: ["/og-image.png"],
     creator: "@minehoooo",
   },
   robots: {
