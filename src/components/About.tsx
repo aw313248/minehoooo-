@@ -12,21 +12,19 @@ const QUOTES = [
 ];
 
 const bioCn = [
-  "我叫明宏，英文名 Oscar——從高中拿起相機亂拍，到現在站在攝影機後面，花了很長時間才意識到，這些其實是同一件事的不同版本",
-  "從國中接觸 YouTube 開始，剪輯、特效、配樂、說故事——全靠自學，這些累積奠定了我對影像最早的敏感度",
-  "上了大學才真正認識「電影」，在故事結構不斷被拆解、重組的過程中，反覆體會那種「原來，我怎麼沒發現？！」的衝擊——每一次，都讓對影像的驅動力再強一點",
-  "偶爾理性地像個木頭，鑽研每顆鏡頭的調度；偶爾感性到在電影前面無表情地讓淚水流過",
-  "在片場我學到一件事：最好的畫面通常不是「拍」出來的，是靠信任跟溝通換來的——這讓我開始認真理解人，不只是理解鏡頭",
-  "透過畫面說故事，這件事讓我熱血，現在還是",
+  "我叫明宏。鏡頭這件事，從高中就開始了——不是因為有計畫，是因為停不下來。",
+  "剪輯、音樂、色調、構圖，這些最早是靠 YouTube 自學拼出來的直覺。大學念傳播，才第一次認識「電影語言」——知道每個鏡頭都在說話之後，就再也看不了不知道自己在說什麼的畫面。",
+  "我在乎畫面的邏輯，也在乎它的重量。喜歡在拍攝前把每個運鏡想清楚，也能在現場即時回應那種沒法預期的真實。",
+  "在片場待久了，發現最難的從來不是器材，是信任。好的畫面通常是溝通換來的，不是架好機器就有的。",
+  "用影像說故事——這件事我認真做了七年，還沒有要停的意思。",
 ];
 
 const bioEn = [
-  "My name is Oscar, or Ming-Hong — from pointing a camera at nothing in high school to standing behind a monitor now, it took a long time to realize it was always the same thing",
-  "It started with YouTube in middle school — editing, effects, sound design, storytelling, all self-taught — that obsession laid the foundation for everything I do now",
-  "University brought cinema — real cinema — stories taken apart and reassembled until the seams show, every collision brought the same feeling: 'Wait — how did I miss that?' and every time, it made the drive stronger",
-  "Equal parts analytical and emotional — sometimes the most methodical person in the room mapping every lens movement frame by frame, sometimes sitting stone-faced in a theater as tears run down silently",
-  "On set I've learned that the best frames are rarely just captured — they're earned, through trust and knowing how to read the room. That's what made me start studying people, not just lenses",
-  "Using images to tell stories: still the most electric thing I know how to do",
+  "I'm Oscar. The camera thing started in high school — not by plan, but because I couldn't stop.",
+  "Editing, sound, color, composition: built first through obsession, then through study. Film school gave me language for what I was already doing — and once you understand why a frame works, you can't unsee the ones that don't.",
+  "I care about the logic of an image and its weight. I work best when I've thought through every movement in advance — and when I can respond in the moment to what no preparation could predict.",
+  "The longer I've spent on set, the more I've come to believe that the hardest part isn't the equipment. It's trust. The frames worth keeping are almost always earned through conversation, not just craft.",
+  "I've been telling stories through images for seven years. No signs of stopping.",
 ];
 
 const skills = [
