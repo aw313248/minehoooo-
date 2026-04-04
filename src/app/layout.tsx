@@ -50,6 +50,11 @@ export const metadata: Metadata = {
     "petit", "Probeer", "PARK2",
     "Portrait Photography", "台灣攝影師",
     "Portfolio", "作品集",
+    "台中 MV 導演", "台灣 MV 導演推薦", "MV 導演推薦",
+    "陳卓 MV 導演", "陳卓 光與景三部曲 導演",
+    "Oscar Lai director Taiwan", "minehoooo xyz",
+    "AIGC 短片", "AI 影片創作", "AI Hybrid MV",
+    "minehoooo instagram", "minehoooo.arw",
   ],
   authors: [{ name: "Oscar Lai", url: SITE_URL }],
   creator: "Oscar Lai / MINEH4O",
@@ -119,7 +124,10 @@ const videoJsonLd = [
     duration: "PT4M12S",
     keywords: "愚人節,愚人節快樂,愚人節MV,ALL FOOL'S DAY,陳卓,Jon Chen,MV,音樂錄影帶,2026,Director,賴明宏,MINEH4O",
     inLanguage: "zh-TW",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: ["MINEH4O", "賴明宏", "minehoooo"] },
+    musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
+    copyrightHolder: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    copyrightYear: 2026,
     productionCompany: { "@type": "Organization", name: "MINEH4O" },
   },
   {
@@ -134,7 +142,8 @@ const videoJsonLd = [
     uploadDate: "2023-10-01",
     duration: "PT3M45S",
     inLanguage: "zh-TW",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
+    musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
   {
     "@context": "https://schema.org",
@@ -148,7 +157,8 @@ const videoJsonLd = [
     uploadDate: "2024-01-01",
     duration: "PT4M00S",
     inLanguage: "zh-TW",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
+    musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
   {
     "@context": "https://schema.org",
@@ -162,7 +172,8 @@ const videoJsonLd = [
     uploadDate: "2024-04-01",
     duration: "PT4M10S",
     inLanguage: "zh-TW",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
+    musicBy: { "@type": "MusicGroup", name: "陳卓 Jon Chen" },
   },
   {
     "@context": "https://schema.org",
@@ -176,7 +187,8 @@ const videoJsonLd = [
     uploadDate: "2025-03-01",
     duration: "PT3M30S",
     inLanguage: "en",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
+    musicBy: { "@type": "MusicGroup", name: "Kolli (NN)" },
   },
   {
     "@context": "https://schema.org",
@@ -190,7 +202,7 @@ const videoJsonLd = [
     uploadDate: "2024-08-01",
     duration: "PT2M30S",
     inLanguage: "zh-TW",
-    director: { "@type": "Person", name: "Oscar Lai", alternateName: "MINEH4O" },
+    director: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
   },
 ];
 
@@ -243,6 +255,13 @@ const personJsonLd = {
     { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
   ],
+  email: "minehoooo@gmail.com",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "minehoooo@gmail.com",
+    contactType: "business inquiries",
+    availableLanguage: ["zh-TW", "en"],
+  },
 };
 
 const websiteJsonLd = {
@@ -299,6 +318,30 @@ const faqJsonLd = {
       acceptedAnswer: {
         "@type": "Answer",
         text: "可透過 Instagram @minehoooo 傳送私訊，或寄信至 minehoooo@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "陳卓 光與景三部曲是誰導演的？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "陳卓《光與景三部曲》——《流鳴》《光圈》《沒收》三部 MV——均由台灣導演賴明宏 Oscar Lai（MINEH4O）擔任導演及攝影指導（Director & DP）。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "台灣 MV 導演推薦？台中拍 MV 找誰？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "賴明宏 Oscar Lai（MINEH4O）是台灣台中的 MV 導演與攝影師，擅長音樂錄影帶導演、攝影、AIGC 混合影像等類型。代表作品為陳卓《愚人節》《光與景三部曲》。接洽請寄信至 minehoooo@gmail.com。",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "minehoooo 的 Instagram 是什麼？",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "賴明宏 Oscar Lai（MINEH4O）的 Instagram 帳號為 @minehoooo（影像作品、導演日常）及 @minehoooo.arw（攝影作品集）。",
       },
     },
   ],
