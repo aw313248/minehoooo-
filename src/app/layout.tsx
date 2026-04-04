@@ -28,11 +28,11 @@ const SITE_URL = "https://minehoooo.xyz";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "MINEH4O — 賴明宏 Oscar Lai | 陳卓 愚人節 ALL FOOL'S DAY MV Director · DP",
+    default: "MINEH4O — 賴明宏 Oscar Lai | 陳卓 愚人節 MV 導演 · DP",
     template: "%s | MINEH4O",
   },
   description:
-    "陳卓 Jon Chen《愚人節 ALL FOOL'S DAY》五週年紀念版音樂錄影帶導演 賴明宏 Oscar Lai 的影像作品集。MV 導演、攝影師、AIGC 創作，代表作：愚人節 MV、光與景三部曲、一千座山封面設計、2026 TEDxNTHU。台灣・台中。",
+    "賴明宏 Oscar Lai（MINEH4O）— 陳卓《愚人節》《光與景三部曲》MV 導演 · 攝影師 · AIGC 創作。台灣台中影像創作者。作品：2026 TEDxNTHU、一千座山封面、明星賽紀實。",
   keywords: [
     "賴明宏", "Oscar Lai", "MINEH4O", "minehoooo",
     "導演", "攝影師", "Director", "Director of Photography", "DP",
@@ -267,6 +267,21 @@ const websiteJsonLd = {
   author: { "@type": "Person", "@id": `${SITE_URL}/#person`, name: "Oscar Lai", alternateName: "MINEH4O" },
 };
 
+const profilePageJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${SITE_URL}/#profilepage`,
+  name: "MINEH4O — 賴明宏 Oscar Lai Portfolio",
+  url: SITE_URL,
+  dateCreated: "2026-01-01",
+  dateModified: "2026-04-04",
+  inLanguage: ["zh-TW", "en"],
+  isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+  about: { "@type": "Person", "@id": `${SITE_URL}/#person` },
+  mainEntity: { "@type": "Person", "@id": `${SITE_URL}/#person` },
+  description: "賴明宏 Oscar Lai（MINEH4O）的個人作品集網站。陳卓《愚人節》《光與景三部曲》MV 導演，台灣台中影像創作者。",
+};
+
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -352,6 +367,10 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="zh-TW" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="en" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="x-default" href="https://minehoooo.xyz" />
+        {/* rel="me" — identity verification for Google Knowledge Panel */}
+        <link rel="me" href="https://instagram.com/minehoooo" />
+        <link rel="me" href="https://instagram.com/minehoooo.arw" />
+        <link rel="me" href="https://www.youtube.com/@BigCataw313248" />
         {/* Preload critical above-fold assets */}
         <link rel="preload" href="/profile.png" as="image" />
         {/* Preconnect external resources */}
@@ -370,6 +389,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
         <Script id="website-ld" type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <Script id="profilepage-ld" type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageJsonLd) }} />
         <Script id="faq-ld" type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         {videoJsonLd.map((v, i) => (
