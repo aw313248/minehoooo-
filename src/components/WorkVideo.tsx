@@ -1,21 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 
 
 /* ─── Data ─── */
 
 const featuredMVs = [
-  {
-    id: "eI1O_9jBHU0",
-    title: "BRING ME YOUR LOVELY",
-    artist: "Kolli (NN)",
-    subEn: "Music Video · AI Hybrid",
-    subZh: "音樂錄影帶 · AI 製作",
-    role: "DIR · DP · AI",
-    tags: ["MUSIC VIDEO", "DIR", "DP", "AI"],
-  },
   {
     id: "d9_EuYkmfzM",
     title: "愚人節 ALL FOOL'S DAY",
@@ -24,6 +16,15 @@ const featuredMVs = [
     subZh: "音樂錄影帶 · 五週年紀念版",
     role: "DIR · DP",
     tags: ["MUSIC VIDEO", "DIR", "DP"],
+  },
+  {
+    id: "eI1O_9jBHU0",
+    title: "BRING ME YOUR LOVELY",
+    artist: "Kolli (NN)",
+    subEn: "Music Video · AI Hybrid",
+    subZh: "音樂錄影帶 · AI 製作",
+    role: "DIR · DP · AI",
+    tags: ["MUSIC VIDEO", "DIR", "DP", "AI"],
   },
   {
     id: "hk43CW2Kqow",
@@ -428,6 +429,7 @@ export default function WorkVideo() {
   }, []);
 
   const { ref: pRef,  inView: pIn  } = useInView(0.02);
+  const { ref: mvRef, inView: mvIn } = useInView(0.02);
   const { ref: trRef, inView: trIn } = useInView(0.02);
   const { ref: wRef,  inView: wIn  } = useInView(0.02);
   const { ref: evRef, inView: evIn } = useInView(0.02);
@@ -439,10 +441,18 @@ export default function WorkVideo() {
 
   useEffect(() => {
     const t = setTimeout(() => setHeroLoaded(true), 150);
-    // Delay iframe mount so page content renders first
     const t2 = setTimeout(() => setIframeReady(true), 900);
     return () => { clearTimeout(t); clearTimeout(t2); };
   }, []);
+
+  // Auto-rotate between 愚人節 and Bring Me Your Lovely every 8s
+  useEffect(() => {
+    if (playing) return;
+    const interval = setInterval(() => {
+      setActiveIdx(i => (i === 0 ? 1 : 0));
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [playing]);
 
   const active = featuredMVs[activeIdx];
 
@@ -452,33 +462,41 @@ export default function WorkVideo() {
       {/* ── CINEMATIC HERO — fullscreen featured MV ── */}
       <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
 
-        {/* Background: thumbnail always (iOS fallback), iframe only on desktop */}
+        {/* Background: thumbnail crossfade via Framer Motion */}
         {!playing && (
           <>
-            {/* Static thumbnail — always rendered, acts as mobile bg + desktop placeholder */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              key={active.id}
-              src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
-              alt={active.title}
-              style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", pointerEvents: "none",
-                filter: "brightness(0.55)",
-                animation: "crossfadeIn 0.85s cubic-bezier(.16,1,.3,1) forwards",
-              }}
-              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
-            />
+            <AnimatePresence mode="sync">
+              <motion.img
+                key={active.id}
+                src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
+                alt={active.title}
+                initial={{ opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  position: "absolute", inset: 0, width: "100%", height: "100%",
+                  objectFit: "cover", pointerEvents: "none",
+                  filter: "brightness(0.55)",
+                }}
+                onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
+              />
+            </AnimatePresence>
             {/* Autoplay iframe — desktop only, delayed mount */}
             {!isMobile && iframeReady && (
-              <div style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
+              <motion.div
+                key={`iframe-${active.id}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.4, ease: "easeInOut" }}
+                style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
                 <iframe
                   src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
                   style={{ width: "100%", height: "100%", border: "none" }}
                   allow="autoplay; encrypted-media"
                   title={`${active.title} background`}
                 />
-              </div>
+              </motion.div>
             )}
           </>
         )}
@@ -531,44 +549,46 @@ export default function WorkVideo() {
 
         {/* Bottom left: title block */}
         {!playing && (
-          <div style={{ position: "absolute", bottom: "3.5rem", left: "3rem", right: "3rem", zIndex: 10 }}>
-            {/* Role / category row */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 10, marginBottom: 14,
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateX(0)" : "translateX(-20px)",
-              transition: "opacity .7s ease .1s, transform .7s cubic-bezier(.16,1,.3,1) .1s",
-            }}>
-              <RoleTag text={active.role} />
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)" }}>
-                {active.subEn.toUpperCase()}
-              </span>
-            </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active.id}
+              initial={{ opacity: 0, x: -24 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 16 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              style={{ position: "absolute", bottom: "3.5rem", left: "3rem", right: "3rem", zIndex: 10 }}>
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.05, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <RoleTag text={active.role} />
+                <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)" }}>
+                  {active.subEn.toUpperCase()}
+                </span>
+              </motion.div>
 
-            {/* Title — large Bebas */}
-            <h2 className="font-display leading-none" style={{
-              fontSize: "clamp(3.2rem, 10vw, 13rem)",
-              color: "var(--text)", letterSpacing: "0.01em",
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateX(0)" : "translateX(-28px)",
-              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .18s, transform .9s cubic-bezier(.16,1,.3,1) .18s",
-            }}>
-              {active.title}
-            </h2>
+              <motion.h2
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="font-display leading-none"
+                style={{ fontSize: "clamp(3.2rem, 10vw, 13rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+                {active.title}
+              </motion.h2>
 
-            {/* Director */}
-            {active.artist && (
-              <p className="font-mono-label" style={{
-                fontSize: 10, letterSpacing: "0.18em", marginTop: 14,
-                color: "rgba(255,255,255,0.45)",
-                opacity: heroLoaded ? 1 : 0,
-                transform: heroLoaded ? "translateX(0)" : "translateX(-16px)",
-                transition: "opacity .7s ease .32s, transform .7s cubic-bezier(.16,1,.3,1) .32s",
-              }}>
-                Directed by <span style={{ color: "rgba(255,255,255,0.72)" }}>{active.artist}</span>
-              </p>
-            )}
-          </div>
+              {active.artist && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.28, duration: 0.6 }}
+                  className="font-mono-label"
+                  style={{ fontSize: 10, letterSpacing: "0.18em", marginTop: 14, color: "rgba(255,255,255,0.45)" }}>
+                  Directed by <span style={{ color: "rgba(255,255,255,0.72)" }}>{active.artist}</span>
+                </motion.p>
+              )}
+            </motion.div>
+          </AnimatePresence>
         )}
 
         {/* Bottom right: play / stop */}
@@ -608,6 +628,23 @@ export default function WorkVideo() {
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
           <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.25)" }}>SCROLL</span>
+        </div>
+      </div>
+
+      {/* ── DIRECTOR MV — 愚人節 & Bring Me Your Lovely ── */}
+      <div ref={mvRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={2} note="FEATURED DIRECTOR WORKS" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {featuredMVs.slice(0, 2).map((v, i) => (
+              <div key={v.id} style={{
+                opacity: mvIn ? 1 : 0, transform: mvIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.1}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

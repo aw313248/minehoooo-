@@ -266,22 +266,15 @@ export default function WorkAIGC() {
                   <div className="relative overflow-hidden mb-3"
                     style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 3, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
                     {isIg ? (
-                      /* IG reel — dark gradient placeholder */
-                      <div className="absolute inset-0 flex items-center justify-center"
-                        style={{ background: "linear-gradient(135deg, rgba(40,0,80,0.9) 0%, rgba(10,0,20,0.95) 100%)" }}>
-                        {/* Scanline texture */}
-                        <div style={{
-                          position: "absolute", inset: 0, pointerEvents: "none",
-                          backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0px, rgba(255,255,255,0.022) 1px, transparent 1px, transparent 3px)",
+                      /* IG reel — local thumbnail from public/reels/ */
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={`/reels/${v.igCode}.jpg`} alt={v.title}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                        onError={e => {
+                          const el = e.target as HTMLImageElement;
+                          el.style.display = "none";
                         }} />
-                        {/* IG icon */}
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                          stroke="rgba(255,255,255,0.18)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                          <rect x="2" y="2" width="20" height="20" rx="5" />
-                          <circle cx="12" cy="12" r="4" />
-                          <circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.18)" stroke="none" />
-                        </svg>
-                      </div>
                     ) : (
                       /* YouTube thumbnail */
                       /* eslint-disable-next-line @next/next/no-img-element */

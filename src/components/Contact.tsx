@@ -121,7 +121,7 @@ export default function Contact() {
 
           {/* Heading */}
           <h2 className="font-display leading-none mb-6"
-            style={{ fontSize: "clamp(3.5rem, 12vw, 14rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+            style={{ fontSize: "clamp(3.5rem, 12vw, 14rem)", color: "var(--text)", letterSpacing: "0.01em", whiteSpace: "nowrap" }}>
             <CharReveal text="LET'S WORK" inView={inView} baseDelay={0.1} stagger={0.042} />
           </h2>
 
