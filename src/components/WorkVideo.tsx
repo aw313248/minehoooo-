@@ -72,25 +72,28 @@ const shortFilms = [
     role: "DIR · DP · EDIT",
     cat: "SHORT FILM",
   },
+];
+
+const setCredits = [
   {
     id: "FM5ukv7kqBM",
     title: "沒什麼道理",
     artist: "STILA 言芯",
-    role: "AD · ASSISTANT DIR",
+    role: "SET DEPT",
     cat: "MUSIC VIDEO",
   },
   {
     id: "mQ0KWgkGHlw",
     title: "侵愛的",
     artist: "陳芳語 Kimberley Chen",
-    role: "AD · ART DEPT",
+    role: "SET DEPT",
     cat: "MUSIC VIDEO",
   },
   {
     id: "W7E5bJ1Cmuo",
     title: "我們的愛",
     artist: "陳芳語 Kimberley Chen",
-    role: "PRODUCTION ASST",
+    role: "SET DEPT",
     cat: "MUSIC VIDEO",
   },
 ];
@@ -697,7 +700,7 @@ export default function WorkVideo() {
       {/* ── 04 · SHORT FILM & COMMERCIAL ── */}
       <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="02" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
+          <CatHeader num="02" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + setCredits.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
 
           {/* Short Film */}
           <SubLabel label="SHORT FILM · NARRATIVE" />
@@ -709,6 +712,19 @@ export default function WorkVideo() {
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role}
                   cat={v.cat} award={"award" in v ? v.award : undefined} />
+              </div>
+            ))}
+          </div>
+
+          {/* Set Credits */}
+          <SubLabel label="ON SET · PRODUCTION" />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            {setCredits.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08 + 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.08}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
             ))}
           </div>
