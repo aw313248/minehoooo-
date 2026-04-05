@@ -76,6 +76,14 @@ const shortFilms = [
 
 const setCredits = [
   {
+    id: "RsPI2V_RQus",
+    title: "回收場的夏天",
+    artist: "Reclaim My Summer · 公視學生劇展",
+    role: "CAMERA ASST",
+    cat: "SHORT FILM",
+    award: "金穗獎最佳劇情片 · 金鐘獎入圍",
+  },
+  {
     id: "FM5ukv7kqBM",
     title: "沒什麼道理",
     artist: "STILA 言芯",
