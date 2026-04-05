@@ -139,14 +139,24 @@ export default function WorksClient() {
           border: 1px solid currentColor;
           opacity: 0.8;
         }
+        /* Title — sans-serif stack that covers CJK without serif fallback */
         .w-title {
-          font-family: var(--font-bebas), serif;
-          font-size: clamp(2.8rem, 9.5vw, 8.5rem);
-          line-height: 0.94;
-          color: #fff;
-          letter-spacing: 0.01em;
+          font-family: var(--font-geist-sans), "PingFang TC", "Noto Sans TC",
+                       "Microsoft JhengHei", sans-serif;
+          font-size: clamp(1.9rem, 4.8vw, 4.2rem);
+          line-height: 1.18;
+          color: rgba(255,255,255,0.85);
+          letter-spacing: 0.26em;            /* start wide → narrows on enter */
           margin: 0 0 clamp(1.2rem,2.5vh,2rem);
-          font-weight: 400;
+          font-weight: 300;
+          transition: letter-spacing 1.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .w-txt--in .w-title {
+          letter-spacing: 0.10em;            /* focus-in effect */
+        }
+        /* Trilogy: champagne gold */
+        .w-title--trilogy {
+          color: rgba(227,210,180,0.82);
         }
         .w-cta {
           display: inline-block;
@@ -322,7 +332,9 @@ export default function WorksClient() {
                   </span>
                 )}
 
-                <h2 className="w-title">{w.title}</h2>
+                <h2 className={`w-title${trilogySet.has(w.slug) ? ' w-title--trilogy' : ''}`}>
+                  {w.title}
+                </h2>
 
                 <Link
                   href={`/works/${w.slug}`}
