@@ -17,93 +17,95 @@ export const metadata: Metadata = {
   },
 };
 
-const CATEGORIES = ["ALL", "MUSIC VIDEO", "AIGC", "SHORT FILM"] as const;
-type Cat = typeof CATEGORIES[number];
-
-// Group trilogy together
 const trilogySlug = ["chen-zhuo-lumen", "chen-zhuo-aperture", "chen-zhuo-deprived"];
 
 export default function WorksPage() {
+  const trilogyWorks = trilogySlug.map(s => worksData.find(w => w.slug === s)).filter(Boolean);
+  const otherWorks = worksData.filter(w => !trilogySlug.includes(w.slug));
+
   return (
     <>
       <style>{`
         @keyframes wFadeIn {
-          from { opacity: 0; transform: translateY(14px); }
+          from { opacity: 0; transform: translateY(12px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .works-page { animation: wFadeIn 0.6s cubic-bezier(0.4,0,0.2,1) both; }
+        .works-page { animation: wFadeIn 0.7s cubic-bezier(0.4,0,0.2,1) both; }
 
-        /* Horizontal scroll container */
         .works-scroll {
           display: flex;
-          gap: 2px;
+          gap: 12px;
           overflow-x: auto;
           scroll-snap-type: x mandatory;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
           padding: 0 clamp(1.5rem, 6vw, 5rem);
-          padding-right: clamp(3rem, 12vw, 10rem);
         }
         .works-scroll::-webkit-scrollbar { display: none; }
 
-        /* Regular card */
         .work-card {
-          flex: 0 0 clamp(280px, 42vw, 560px);
+          flex: 0 0 clamp(260px, 38vw, 480px);
           scroll-snap-align: start;
-          scroll-snap-stop: normal;
-          cursor: pointer;
           text-decoration: none;
           display: block;
         }
-        .work-card-inner {
+        .work-card-trilogy {
+          flex: 0 0 clamp(360px, 52vw, 640px);
+        }
+        /* spacer at end to show 0.5 of next card */
+        .works-scroll::after {
+          content: '';
+          flex: 0 0 clamp(1rem, 4vw, 3rem);
+        }
+
+        .card-thumb-wrap {
           position: relative;
           overflow: hidden;
           aspect-ratio: 16/9;
-          background: #0a0a0a;
+          background: #0d0d0d;
+          border: 1px solid rgba(255,255,255,0.06);
         }
-        .work-card-thumb {
+        .card-thumb {
           width: 100%; height: 100%;
           object-fit: cover;
-          filter: brightness(0.65);
+          filter: brightness(0.72);
           transition: transform 0.9s cubic-bezier(0.4,0,0.2,1),
-                      filter 0.6s ease;
+                      filter 0.5s ease;
+          display: block;
         }
-        .work-card:hover .work-card-thumb {
+        .work-card:hover .card-thumb {
           transform: scale(1.04);
-          filter: brightness(0.8);
-        }
-        .work-card-overlay {
-          position: absolute; inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 55%);
-        }
-        .work-card-meta {
-          position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem;
+          filter: brightness(0.88);
         }
 
-        /* Trilogy card — 1.8× wider */
-        .work-card-trilogy {
-          flex: 0 0 clamp(480px, 72vw, 960px);
+        .card-info {
+          padding: 10px 0 0;
         }
-
-        /* Filter tabs */
-        .filter-tab {
-          background: none; border: none; cursor: pointer;
+        .card-role {
           font-family: var(--font-space-mono), monospace;
-          font-size: 8px; letter-spacing: 0.3em;
+          font-size: 9px;
+          letter-spacing: 0.28em;
           color: rgba(255,255,255,0.28);
-          padding: 6px 0;
-          border-bottom: 1px solid transparent;
-          transition: color 0.25s, border-color 0.25s;
+          margin-bottom: 5px;
+          display: block;
         }
-        .filter-tab:hover { color: rgba(255,255,255,0.6); }
-        .filter-tab[data-active="true"] {
-          color: rgba(255,255,255,0.85);
-          border-bottom-color: rgba(255,255,255,0.5);
+        .card-title {
+          font-family: var(--font-space-mono), monospace;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+          color: rgba(255,255,255,0.78);
+          line-height: 1.5;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .card-title-trilogy {
+          font-size: 13px;
         }
 
         @media (max-width: 640px) {
-          .work-card { flex: 0 0 82vw; }
-          .work-card-trilogy { flex: 0 0 92vw; }
+          .work-card { flex: 0 0 78vw; }
+          .work-card-trilogy { flex: 0 0 88vw; }
         }
       `}</style>
 
@@ -114,7 +116,7 @@ export default function WorksPage() {
           position: "sticky", top: 0, zIndex: 10,
           padding: "1.2rem clamp(1.5rem,6vw,5rem)",
           display: "flex", justifyContent: "space-between", alignItems: "center",
-          background: "rgba(0,0,0,0.88)", backdropFilter: "blur(14px)",
+          background: "rgba(0,0,0,0.9)", backdropFilter: "blur(14px)",
           borderBottom: "1px solid rgba(255,255,255,0.05)",
         }}>
           <Link href="/" style={{ textDecoration: "none" }}>
@@ -130,117 +132,92 @@ export default function WorksPage() {
         </div>
 
         {/* Header */}
-        <div style={{ padding: "4rem clamp(1.5rem,6vw,5rem) 3rem" }}>
+        <div style={{ padding: "5rem clamp(1.5rem,6vw,5rem) 4rem" }}>
           <p style={{
             fontFamily: "var(--font-space-mono), monospace",
-            fontSize: 8, letterSpacing: "0.38em", color: "rgba(255,255,255,0.2)",
-            marginBottom: "1.2rem",
+            fontSize: 8, letterSpacing: "0.42em", color: "rgba(255,255,255,0.18)",
+            marginBottom: "0.8rem",
           }}>在地影像工作者 · MINEH4O</p>
           <h1 style={{
-            fontFamily: "var(--font-bebas), serif",
-            fontSize: "clamp(3.5rem, 10vw, 9rem)", lineHeight: 1,
-            color: "#fff", letterSpacing: "0.01em", margin: 0,
-          }}>WORKS</h1>
+            fontFamily: "var(--font-space-mono), monospace",
+            fontSize: "clamp(1rem, 1.8vw, 1.4rem)",
+            letterSpacing: "0.38em",
+            color: "rgba(255,255,255,0.55)",
+            fontWeight: 400,
+            margin: 0,
+          }}>SELECTED WORKS</h1>
         </div>
 
-        {/* Horizontal gallery — ALL works */}
-        <section aria-label="作品列表" style={{ paddingBottom: "5rem" }}>
-
-          {/* Trilogy — special wide card first */}
-          <div style={{ marginBottom: "0.5rem" }}>
-            <div style={{
-              padding: "0 clamp(1.5rem,6vw,5rem)",
-              marginBottom: "0.8rem",
-            }}>
-              <span style={{
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.18)",
-              }}>陳卓 · 光與景三部曲</span>
-            </div>
-
-            <div className="works-scroll" style={{ paddingBottom: "1.2rem" }}>
-              {trilogySlug.map(slug => {
-                const w = worksData.find(x => x.slug === slug);
-                if (!w) return null;
-                const thumb = `https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`;
-                return (
-                  <Link key={w.slug} href={`/works/${w.slug}`} className="work-card work-card-trilogy">
-                    <div className="work-card-inner">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        className="work-card-thumb"
-                        src={thumb}
-                        alt={`${w.title} - 在地影像工作者 MINEH4O`}
-                        loading="lazy"
-                      />
-                      <div className="work-card-overlay" />
-                      <div className="work-card-meta">
-                        <p style={{
-                          fontFamily: "var(--font-space-mono), monospace",
-                          fontSize: 7, letterSpacing: "0.25em",
-                          color: "rgba(255,255,255,0.35)", marginBottom: 6,
-                        }}>{w.role} · {w.uploadDate.slice(0, 4)}</p>
-                        <p style={{
-                          fontFamily: "var(--font-bebas), serif",
-                          fontSize: "clamp(1.6rem, 3.5vw, 3rem)", lineHeight: 1,
-                          color: "#fff", letterSpacing: "0.01em",
-                        }}>{w.title}</p>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* All other works */}
+        {/* Trilogy */}
+        <section aria-label="陳卓 光與景三部曲" style={{ marginBottom: "6rem" }}>
           <div style={{
             padding: "0 clamp(1.5rem,6vw,5rem)",
-            marginBottom: "0.8rem", marginTop: "2.5rem",
+            marginBottom: "1.4rem",
+            display: "flex", alignItems: "center", gap: "1rem",
           }}>
             <span style={{
               fontFamily: "var(--font-space-mono), monospace",
-              fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.18)",
-            }}>全部作品</span>
+              fontSize: 8, letterSpacing: "0.38em", color: "rgba(255,255,255,0.2)",
+            }}>陳卓 · 光與景三部曲</span>
+            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.05)" }} />
           </div>
 
-          <div className="works-scroll" style={{ paddingBottom: "2rem" }}>
-            {worksData
-              .filter(w => !trilogySlug.includes(w.slug))
-              .map(w => {
-                const thumb = `https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`;
-                return (
-                  <Link key={w.slug} href={`/works/${w.slug}`} className="work-card">
-                    <div className="work-card-inner">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        className="work-card-thumb"
-                        src={thumb}
-                        alt={`${w.title} - 在地影像工作者 MINEH4O`}
-                        loading="lazy"
-                      />
-                      <div className="work-card-overlay" />
-                      <div className="work-card-meta">
-                        <p style={{
-                          fontFamily: "var(--font-space-mono), monospace",
-                          fontSize: 7, letterSpacing: "0.25em",
-                          color: "rgba(255,255,255,0.35)", marginBottom: 6,
-                        }}>{w.role} · {w.uploadDate.slice(0, 4)}</p>
-                        <p style={{
-                          fontFamily: "var(--font-bebas), serif",
-                          fontSize: "clamp(1.4rem, 3vw, 2.4rem)", lineHeight: 1.05,
-                          color: "#fff", letterSpacing: "0.01em",
-                        }}>{w.title}</p>
-                        <p style={{
-                          fontFamily: "var(--font-space-mono), monospace",
-                          fontSize: 7, letterSpacing: "0.18em",
-                          color: "rgba(255,255,255,0.25)", marginTop: 4,
-                        }}>{w.artist}</p>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+          <div className="works-scroll">
+            {trilogyWorks.map(w => {
+              if (!w) return null;
+              return (
+                <Link key={w.slug} href={`/works/${w.slug}`} className="work-card work-card-trilogy">
+                  <div className="card-thumb-wrap">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="card-thumb"
+                      src={`https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`}
+                      alt={`${w.title} - 在地影像工作者 MINEH4O`}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="card-info">
+                    <span className="card-role">{w.role} · {w.uploadDate.slice(0, 4)}</span>
+                    <p className="card-title card-title-trilogy">{w.title}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* All other works */}
+        <section aria-label="全部作品" style={{ marginBottom: "6rem" }}>
+          <div style={{
+            padding: "0 clamp(1.5rem,6vw,5rem)",
+            marginBottom: "1.4rem",
+            display: "flex", alignItems: "center", gap: "1rem",
+          }}>
+            <span style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: 8, letterSpacing: "0.38em", color: "rgba(255,255,255,0.2)",
+            }}>ALL WORKS</span>
+            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.05)" }} />
+          </div>
+
+          <div className="works-scroll">
+            {otherWorks.map(w => (
+              <Link key={w.slug} href={`/works/${w.slug}`} className="work-card">
+                <div className="card-thumb-wrap">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="card-thumb"
+                    src={`https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`}
+                    alt={`${w.title} - 在地影像工作者 MINEH4O`}
+                    loading="lazy"
+                  />
+                </div>
+                <div className="card-info">
+                  <span className="card-role">{w.role} · {w.uploadDate.slice(0, 4)}</span>
+                  <p className="card-title">{w.title}</p>
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 
@@ -253,12 +230,12 @@ export default function WorksPage() {
           <Link href="/" style={{ textDecoration: "none" }}>
             <span style={{
               fontFamily: "var(--font-bebas), serif",
-              fontSize: 18, letterSpacing: "0.08em", color: "rgba(255,255,255,0.25)",
+              fontSize: 16, letterSpacing: "0.08em", color: "rgba(255,255,255,0.2)",
             }}>MINEH4O</span>
           </Link>
           <span style={{
             fontFamily: "var(--font-space-mono), monospace",
-            fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.15)",
+            fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.14)",
           }}>minehoooo.xyz</span>
         </div>
 
