@@ -247,12 +247,90 @@ export default function WorksClient() {
           background: rgba(255,255,255,0.75);
         }
 
+        /* ── BTS section ── */
+        .w-bts {
+          position: relative;
+          height: 100dvh;
+          scroll-snap-align: start;
+          background: #050505;
+          display: flex;
+          flex-direction: column;
+          padding: clamp(3rem,6vh,5rem) clamp(2rem,6vw,5rem);
+          gap: 0;
+        }
+        .bts-header {
+          display: flex; align-items: center; gap: 1.2rem;
+          margin-bottom: clamp(1.4rem,3vh,2.4rem);
+          flex-shrink: 0;
+        }
+        .bts-label {
+          font-family: var(--font-space-mono), monospace;
+          font-size: 8px; letter-spacing: 0.42em;
+          color: rgba(255,255,255,0.2);
+          white-space: nowrap;
+        }
+        .bts-line {
+          flex: 1; height: 1px;
+          background: rgba(255,255,255,0.06);
+        }
+        .bts-grid {
+          display: grid;
+          grid-template-columns: 1fr 1.55fr 1fr;
+          grid-template-rows: 1fr 1fr;
+          gap: 6px;
+          flex: 1;
+          min-height: 0;
+        }
+        .bts-p1 { grid-column: 1; grid-row: 1 / 3; overflow: hidden; }
+        .bts-p2 { grid-column: 2; grid-row: 1;     overflow: hidden; }
+        .bts-p3 { grid-column: 3; grid-row: 1 / 3; overflow: hidden; }
+        .bts-p4 { grid-column: 2; grid-row: 2;     overflow: hidden; }
+        .bts-photo {
+          width: 100%; height: 100%;
+          object-fit: cover; display: block;
+          filter: brightness(0.88);
+          transition: filter 0.6s ease, transform 0.9s cubic-bezier(0.4,0,0.2,1);
+        }
+        .bts-p1:hover .bts-photo,
+        .bts-p2:hover .bts-photo,
+        .bts-p3:hover .bts-photo,
+        .bts-p4:hover .bts-photo { filter: brightness(1); transform: scale(1.03); }
+        .bts-footer {
+          flex-shrink: 0;
+          margin-top: clamp(1.2rem,2.5vh,2rem);
+          display: flex; justify-content: space-between; align-items: flex-end;
+          opacity: 0; transform: translateY(14px);
+          transition: opacity 0.85s ease 0.2s, transform 0.85s ease 0.2s;
+        }
+        .bts-footer--in { opacity: 1; transform: translateY(0); }
+        .bts-text {
+          font-family: var(--font-geist-sans), "PingFang TC", sans-serif;
+          font-size: clamp(12px,1.6vw,15px);
+          color: rgba(255,255,255,0.38);
+          font-weight: 300;
+          letter-spacing: 0.06em;
+          line-height: 1.8;
+        }
+        .bts-credit {
+          font-family: var(--font-space-mono), monospace;
+          font-size: 7px; letter-spacing: 0.3em;
+          color: rgba(255,255,255,0.14);
+        }
+
         /* ── mobile ── */
         @media (max-width: 640px) {
           .w-nav { display: none; }
           .w-idx { display: none; }
           .w-title { font-size: clamp(2.4rem,13vw,4.2rem); }
           .w-txt { padding: 0 1.6rem clamp(4rem,12vh,6rem); }
+          .bts-grid {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+          }
+          .bts-p1 { grid-column: 1; grid-row: 1; }
+          .bts-p2 { grid-column: 2; grid-row: 1; }
+          .bts-p3 { grid-column: 1; grid-row: 2; }
+          .bts-p4 { grid-column: 2; grid-row: 2; }
         }
       `}</style>
 
@@ -276,6 +354,15 @@ export default function WorksClient() {
             <span className={`w-dot${activeIdx === i ? ' w-dot--active' : ''}`} />
           </a>
         ))}
+        <a
+          href="#bts"
+          className="w-dot-item"
+          aria-label="現場紀錄"
+          aria-current={activeIdx === worksData.length ? 'true' : undefined}
+        >
+          <span className="w-dot-label">現場</span>
+          <span className={`w-dot${activeIdx === worksData.length ? ' w-dot--active' : ''}`} />
+        </a>
       </nav>
 
       {/* Scroll container */}
@@ -357,6 +444,65 @@ export default function WorksClient() {
             </section>
           );
         })}
+
+        {/* ── BTS / 現場 section ── */}
+        <section
+          id="bts"
+          data-idx={String(worksData.length)}
+          ref={el => { sectionRefs.current[worksData.length] = el as HTMLElement | null; }}
+          className="w-bts"
+          aria-label="現場紀錄"
+        >
+          <div className="bts-header">
+            <span className="bts-label">現場 · BTS</span>
+            <div className="bts-line" aria-hidden="true" />
+          </div>
+
+          <div className="bts-grid">
+            <div className="bts-p1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="bts-photo"
+                src="/photos/activity/1.jpg"
+                alt="在地影像工作者 MINEH4O 於 MV 拍攝現場化妝準備階段的幕後紀錄"
+                loading="lazy"
+              />
+            </div>
+            <div className="bts-p2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="bts-photo"
+                src="/photos/activity/2.jpg"
+                alt="MINEH4O 影像工作紀錄：舞台演出拍攝現場全景，台中在地影像工作者"
+                loading="lazy"
+              />
+            </div>
+            <div className="bts-p3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="bts-photo"
+                src="/photos/activity/3.jpg"
+                alt="在地影像工作者 MINEH4O 於表演現場進行影像捕捉的工作瞬間"
+                loading="lazy"
+              />
+            </div>
+            <div className="bts-p4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="bts-photo"
+                src="/photos/activity/4.jpg"
+                alt="MINEH4O 現場調度紀錄：台中 MV 導演於舞台演出拍攝的幕後工作"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div className={`bts-footer${visible.has(worksData.length) ? ' bts-footer--in' : ''}`}>
+            <p className="bts-text">影像之前，是人與空間的對話。</p>
+            <span className="bts-credit">MINEH4O · minehoooo.xyz</span>
+          </div>
+        </section>
+
       </div>
     </>
   );
