@@ -235,7 +235,7 @@ function HScrollStrip({ items, inView }: {
           }}>
           <HoverPreview id={v.id}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title}
+            <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={`${v.artist} ${v.title} MV - 在地影像工作者 MINEH4O`}
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
@@ -305,7 +305,7 @@ function SeriesPanel({ video, index, inView }: {
         </div>
       ) : (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`} alt={video.title}
+        <img src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`} alt={`${video.artist} ${video.title} MV - 在地影像工作者 MINEH4O`}
           loading="lazy"
           style={{
             position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
@@ -377,7 +377,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
     <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group block">
       <HoverPreview id={id}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={title}
+        <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={`${artist ? artist + " " : ""}${title} - 在地影像工作者 MINEH4O`}
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }} />
@@ -468,7 +468,7 @@ export default function WorkVideo() {
               <motion.img
                 key={active.id}
                 src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
-                alt={active.title}
+                alt={`${active.artist} ${active.title} MV 影像作品 - 在地影像工作者 MINEH4O`}
                 initial={{ opacity: 0, scale: 1.04 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}

@@ -147,13 +147,14 @@ export default function Contact() {
               style={{ color: "rgba(255,255,255,0.35)", transition: "color .3s" }}
               onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}>
-              <svg width="12" height="10" viewBox="0 0 24 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="12" height="10" viewBox="0 0 24 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="16" rx="2"/>
                 <polyline points="2,2 12,11 22,2"/>
               </svg>
               minehoooo@gmail.com
             </a>
             <button onClick={copyEmail}
+              aria-label="複製在地影像工作者 MINEH4O 的聯繫信箱"
               className="font-mono-label text-[8px] tracking-[0.25em] px-2 py-0.5"
               style={{
                 border: "1px solid rgba(255,255,255,0.12)",
@@ -195,7 +196,7 @@ export default function Contact() {
                 el.style.borderColor = "rgba(255,255,255,0.12)";
               }}>
               {/* IG icon */}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
                 <circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.7)" stroke="none" />
