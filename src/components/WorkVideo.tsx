@@ -53,7 +53,10 @@ const trilogy = [
 ];
 
 const colorCredits = [
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",       artist: "Lil RAD & Coy6oi",            role: "DP · COLOR",   cat: "COLOR"     },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",            artist: "Lil RAD & Coy6oi", role: "DP · COLOR", cat: "COLOR" },
+  { id: "lKYtN2OqbHQ", title: "沒有你的世界 (Video Production)", artist: "Lil RAD & Coy6oi · Tizzy & Oscar", role: "DP · COLOR", cat: "COLOR" },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi",       role: "DP",         cat: "COLOR" },
+  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi",    role: "DP · COLOR", cat: "COLOR" },
   { id: "_IUqMAI5GQg", title: "說了算",             artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", role: "COLOR",        cat: "COLOR"     },
   { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾",    artist: "7type & 66 & CHE · 中部管轄區",              role: "COLOR",        cat: "COLOR"     },
   { id: "0jyUrpj5Jiw", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "COLOR",        cat: "COLOR"     },
