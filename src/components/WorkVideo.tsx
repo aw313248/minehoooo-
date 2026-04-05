@@ -18,6 +18,15 @@ const featuredMVs = [
     tags: ["MUSIC VIDEO", "DIR", "EDIT", "COLOR"],
   },
   {
+    id: "jLLNkQod8pg",
+    title: "向前行吧 GO AHEAD",
+    artist: "梁承煜",
+    subEn: "Music Video",
+    subZh: "音樂錄影帶",
+    role: "DIR · DP",
+    tags: ["MUSIC VIDEO", "DIR", "DP"],
+  },
+  {
     id: "d9_EuYkmfzM",
     title: "愚人節 ALL FOOL'S DAY",
     artist: "陳卓 Jon Chen",
