@@ -9,6 +9,15 @@ import { useInView } from "@/hooks/useInView";
 
 const featuredMVs = [
   {
+    id: "xKo8NW2mBso",
+    title: "我也是個人 IT HURTS",
+    artist: "梁承煜",
+    subEn: "Music Video",
+    subZh: "音樂錄影帶",
+    role: "DIR · EDIT · COLOR",
+    tags: ["MUSIC VIDEO", "DIR", "EDIT", "COLOR"],
+  },
+  {
     id: "d9_EuYkmfzM",
     title: "愚人節 ALL FOOL'S DAY",
     artist: "陳卓 Jon Chen",
