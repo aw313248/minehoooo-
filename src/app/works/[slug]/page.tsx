@@ -51,15 +51,18 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
     ?.map(s => worksData.find(w => w.slug === s))
     .filter(Boolean) ?? [];
 
+  const pageUrl = `${SITE_URL}/works/${work.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "VideoObject",
+    "@id": `${pageUrl}#video`,
     name: work.title,
     description: work.metaDescription,
     thumbnailUrl: thumb,
     contentUrl: `https://www.youtube.com/watch?v=${work.youtubeId}`,
     embedUrl: `https://www.youtube.com/embed/${work.youtubeId}`,
-    url: `https://www.youtube.com/watch?v=${work.youtubeId}`,
+    url: pageUrl,
     uploadDate: work.uploadDate,
     duration: work.duration,
     inLanguage: "zh-TW",
