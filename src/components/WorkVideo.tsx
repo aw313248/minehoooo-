@@ -53,11 +53,14 @@ const trilogy = [
 ];
 
 const colorCredits = [
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",    artist: "Lil RAD & Coy6oi",            role: "DP · COLOR",  cat: "COLOR" },
-  { id: "_IUqMAI5GQg", title: "說了算",          artist: "亥伯龍 · Doggy Chang · 7type", role: "COLOR",       cat: "COLOR" },
-  { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾", artist: "7type & 66 & CHE",             role: "COLOR",       cat: "COLOR" },
-  { id: "0jyUrpj5Jiw", title: "DaLow",          artist: "大樓DaLow ft. C Grass",         role: "COLOR",       cat: "COLOR" },
-  { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", artist: "89教科書",                      role: "COLOR",       cat: "COLOR" },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",       artist: "Lil RAD & Coy6oi",            role: "DP · COLOR",   cat: "COLOR"     },
+  { id: "_IUqMAI5GQg", title: "說了算",             artist: "亥伯龍 · Doggy Chang · 7type", role: "COLOR",        cat: "COLOR"     },
+  { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾",    artist: "7type & 66 & CHE",             role: "COLOR",        cat: "COLOR"     },
+  { id: "0jyUrpj5Jiw", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "COLOR",        cat: "COLOR"     },
+  { id: "kUvT3eBfN9w", title: "愛你真的梅辦法",    artist: "89教科書",                      role: "COLOR",        cat: "COLOR"     },
+  { id: "J-BIhdj-4oM", title: "Badass Dance",      artist: "大樓DaLow ft. Aiken",           role: "LIGHTING",     cat: "LIGHTING"  },
+  { id: "BbDtN119tts", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "LIGHTING",     cat: "LIGHTING"  },
+  { id: "kL8_Sk0JmKM", title: "記住你要快樂",     artist: "帝仰 tiang",                    role: "DIR · COLOR",  cat: "COLOR"     },
 ];
 
 const shortFilms = [
