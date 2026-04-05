@@ -7,61 +7,25 @@ import { useInView } from "@/hooks/useInView";
 
 /* ─── Data ─── */
 
+// Hero rotation — 精選輪播
 const featuredMVs = [
-  {
-    id: "xKo8NW2mBso",
-    title: "我也是個人 IT HURTS",
-    artist: "梁承煜",
-    subEn: "Music Video",
-    subZh: "音樂錄影帶",
-    role: "DIR · EDIT · COLOR",
-    tags: ["MUSIC VIDEO", "DIR", "EDIT", "COLOR"],
-  },
-  {
-    id: "jLLNkQod8pg",
-    title: "向前行吧 GO AHEAD",
-    artist: "梁承煜",
-    subEn: "Music Video",
-    subZh: "音樂錄影帶",
-    role: "DIR · DP",
-    tags: ["MUSIC VIDEO", "DIR", "DP"],
-  },
-  {
-    id: "d9_EuYkmfzM",
-    title: "愚人節 ALL FOOL'S DAY",
-    artist: "陳卓 Jon Chen",
-    subEn: "Music Video · 5th Anniversary",
-    subZh: "音樂錄影帶 · 五週年紀念版",
-    role: "DIR · DP",
-    tags: ["MUSIC VIDEO", "DIR", "DP"],
-  },
-  {
-    id: "eI1O_9jBHU0",
-    title: "BRING ME YOUR LOVELY",
-    artist: "Kolli (NN)",
-    subEn: "Music Video · AI Hybrid",
-    subZh: "音樂錄影帶 · AI 製作",
-    role: "DIR · DP · AI",
-    tags: ["MUSIC VIDEO", "DIR", "DP", "AI"],
-  },
-  {
-    id: "hk43CW2Kqow",
-    title: "LAST 10",
-    artist: "",
-    subEn: "Music Video · AI Hybrid",
-    subZh: "MV 創作 · AI 製作 50%",
-    role: "DIR · DP · AI 50%",
-    tags: ["MUSIC VIDEO", "AI HYBRID"],
-  },
-  {
-    id: "erQ9lR_rNik",
-    title: "流明 LUMEN",
-    artist: "陳卓 Jon Chen",
-    subEn: "Music Video · Trilogy Ⅰ",
-    subZh: "音樂錄影帶 · 三部曲 Ⅰ",
-    role: "DIR · DP",
-    tags: ["MUSIC VIDEO", "TRILOGY"],
-  },
+  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · DP",        tags: ["MUSIC VIDEO", "DIR", "DP"] },
+  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · DP · AI",   tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
+  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP",              tags: ["MUSIC VIDEO", "DP"] },
+  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", subEn: "Music Video", subZh: "音樂錄影帶",              role: "COLOR",           tags: ["MUSIC VIDEO", "COLOR"] },
+  { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",     tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
+];
+
+// 導演作品列表（下方格子）
+const directorMVs = [
+  { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
+  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · DP",            cat: "MUSIC VIDEO" },
+  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "",       role: "DIR · DP · AI 50%",   cat: "MUSIC VIDEO" },
 ];
 
 const trilogy = [
@@ -480,11 +444,11 @@ export default function WorkVideo() {
     return () => { clearTimeout(t); clearTimeout(t2); };
   }, []);
 
-  // Auto-rotate between 愚人節 and Bring Me Your Lovely every 8s
+  // Auto-rotate through all featured MVs every 8s
   useEffect(() => {
     if (playing) return;
     const interval = setInterval(() => {
-      setActiveIdx(i => (i === 0 ? 1 : 0));
+      setActiveIdx(i => (i + 1) % featuredMVs.length);
     }, 8000);
     return () => clearInterval(interval);
   }, [playing]);
@@ -669,14 +633,14 @@ export default function WorkVideo() {
       {/* ── DIRECTOR MV — 愚人節 & Bring Me Your Lovely ── */}
       <div ref={mvRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={2} note="FEATURED DIRECTOR WORKS" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-            {featuredMVs.slice(0, 2).map((v, i) => (
+          <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={directorMVs.length} note="DIRECTOR WORKS" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+            {directorMVs.map((v, i) => (
               <div key={v.id} style={{
                 opacity: mvIn ? 1 : 0, transform: mvIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.1}s`,
               }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
             ))}
           </div>
