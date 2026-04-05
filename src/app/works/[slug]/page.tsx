@@ -85,6 +85,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      <style>{`
+        .work-related-link { border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.3s; }
+        .work-related-link:hover { border-color: rgba(255,255,255,0.22); }
+      `}</style>
       <main style={{ background: "#000", minHeight: "100dvh", overflowY: "auto", color: "#fff" }}>
 
         {/* Top bar */}
@@ -199,14 +203,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
               <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
                 {related.map(r => r && (
                   <Link key={r.slug} href={`/works/${r.slug}`} style={{ textDecoration: "none" }}>
-                    <div style={{
+                    <div className="work-related-link" style={{
                       display: "flex", justifyContent: "space-between", alignItems: "center",
                       padding: "0.8rem 1rem",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      transition: "border-color 0.3s",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)")}
-                    onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)")}>
+                    }}>
                       <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}>{r.title}</span>
                       <span style={{
                         fontFamily: "var(--font-space-mono), monospace",

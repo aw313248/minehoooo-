@@ -3,15 +3,17 @@
   "configurations": [
     {
       "name": "Next.js Dev (Turbopack)",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["/tmp/next-dev.sh"],
+      "port": 3000,
+      "cwd": "/Users/minehoooo/Desktop/接案/2026 作品集/portfolio"
     },
     {
-      "name": "Next.js Production Preview",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
-      "port": 3000
+      "name": "cinematic-preview",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": ["-c", "/Users/minehoooo/.nvm/versions/node/v24.14.1/bin/node /Users/minehoooo/Desktop/接案/2026 作品集/cinematic-experiment/server.js"],
+      "port": 3456,
+      "cwd": "/Users/minehoooo/Desktop/接案/2026 作品集/cinematic-experiment"
     }
   ]
 }
