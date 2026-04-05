@@ -51,6 +51,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
     ?.map(s => worksData.find(w => w.slug === s))
     .filter(Boolean) ?? [];
 
+  // Next work (circular)
+  const currentIdx = worksData.findIndex(w => w.slug === slug);
+  const nextWork = worksData[(currentIdx + 1) % worksData.length];
+
   const pageUrl = `${SITE_URL}/works/${work.slug}`;
 
   const jsonLd = {
@@ -89,10 +93,19 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
       />
 
       <style>{`
+        @keyframes workFadeIn {
+          from { opacity: 0; transform: translateY(18px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .work-page-enter { animation: workFadeIn 0.72s cubic-bezier(0.4,0,0.2,1) both; }
         .work-related-link { border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.3s; }
         .work-related-link:hover { border-color: rgba(255,255,255,0.22); }
+        .next-work-card { border-top: 1px solid rgba(255,255,255,0.07); transition: background 0.4s ease; }
+        .next-work-card:hover { background: rgba(255,255,255,0.03); }
+        .next-work-thumb { transform: scale(1); transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+        .next-work-card:hover .next-work-thumb { transform: scale(1.04); }
       `}</style>
-      <main style={{ background: "#000", minHeight: "100dvh", overflowY: "auto", color: "#fff" }}>
+      <main className="work-page-enter" style={{ background: "#000", minHeight: "100dvh", overflowY: "auto", color: "#fff" }}>
 
         {/* Top bar */}
         <div style={{
@@ -222,6 +235,41 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             </div>
           )}
         </div>
+
+        {/* Next Work */}
+        <Link href={`/works/${nextWork.slug}`} style={{ textDecoration: "none", display: "block" }}>
+          <div className="next-work-card" style={{ padding: "0 2rem" }}>
+            <div style={{ maxWidth: 720, margin: "0 auto", padding: "3rem 0" }}>
+              <p style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: 8, letterSpacing: "0.38em", color: "rgba(255,255,255,0.2)", marginBottom: "1.6rem",
+              }}>NEXT WORK</p>
+              <div style={{ display: "flex", gap: "1.8rem", alignItems: "center" }}>
+                <div style={{ width: 120, aspectRatio: "16/9", overflow: "hidden", flexShrink: 0, background: "#111" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="next-work-thumb"
+                    src={`https://img.youtube.com/vi/${nextWork.youtubeId}/mqdefault.jpg`}
+                    alt={`${nextWork.title} - 在地影像工作者 MINEH4O`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.7)" }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: 7, letterSpacing: "0.22em", color: "rgba(255,255,255,0.25)", marginBottom: 8,
+                  }}>{nextWork.role} · {nextWork.artist}</p>
+                  <p style={{
+                    fontFamily: "var(--font-bebas), serif",
+                    fontSize: "clamp(1.4rem, 4vw, 2.6rem)", lineHeight: 1.1,
+                    color: "rgba(255,255,255,0.85)", letterSpacing: "0.01em",
+                  }}>{nextWork.title}</p>
+                </div>
+                <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 20, flexShrink: 0 }}>→</span>
+              </div>
+            </div>
+          </div>
+        </Link>
 
         {/* Footer */}
         <div style={{
