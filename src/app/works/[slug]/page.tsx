@@ -67,7 +67,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
     contentUrl: `https://www.youtube.com/watch?v=${work.youtubeId}`,
     embedUrl: `https://www.youtube.com/embed/${work.youtubeId}`,
     url: pageUrl,
-    uploadDate: work.uploadDate,
+    uploadDate: work.uploadDate.length === 10
+      ? `${work.uploadDate}T00:00:00+08:00`
+      : work.uploadDate,
     duration: work.duration,
     inLanguage: "zh-TW",
     genre: work.category,
