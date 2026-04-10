@@ -17,7 +17,9 @@ export async function generateMetadata(
   const work = getWorkBySlug(slug);
   if (!work) return { title: "Not Found" };
 
-  const thumb = `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`;
+  const thumb = work.youtubeId
+    ? `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`
+    : null;
   const url = `${SITE_URL}/works/${work.slug}`;
 
   return {
@@ -30,13 +32,13 @@ export async function generateMetadata(
       url,
       title: `${work.title} — MINEH4O`,
       description: work.metaDescription,
-      images: [{ url: thumb, width: 1280, height: 720, alt: `${work.title} MV 視覺縮圖 - 在地影像工作者 MINEH4O` }],
+      ...(thumb ? { images: [{ url: thumb, width: 1280, height: 720, alt: `${work.title} MV 視覺縮圖 - 在地影像工作者 MINEH4O` }] } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: `${work.title} — MINEH4O`,
       description: work.metaDescription,
-      images: [thumb],
+      ...(thumb ? { images: [thumb] } : {}),
     },
   };
 }
@@ -46,7 +48,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
   const work = getWorkBySlug(slug);
   if (!work) notFound();
 
-  const thumb = `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`;
+  const thumb = work.youtubeId
+    ? `https://img.youtube.com/vi/${work.youtubeId}/maxresdefault.jpg`
+    : null;
   const related = work.relatedSlugs
     ?.map(s => worksData.find(w => w.slug === s))
     .filter(Boolean) ?? [];
@@ -63,9 +67,14 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
     "@id": `${pageUrl}#video`,
     name: work.title,
     description: work.metaDescription,
-    thumbnailUrl: thumb,
-    contentUrl: `https://www.youtube.com/watch?v=${work.youtubeId}`,
-    embedUrl: `https://www.youtube.com/embed/${work.youtubeId}`,
+    ...(thumb ? { thumbnailUrl: thumb } : {}),
+    ...(work.youtubeId ? {
+      contentUrl: `https://www.youtube.com/watch?v=${work.youtubeId}`,
+      embedUrl: `https://www.youtube.com/embed/${work.youtubeId}`,
+    } : work.igReelId ? {
+      contentUrl: `https://www.instagram.com/reel/${work.igReelId}/`,
+      embedUrl: `https://www.instagram.com/reel/${work.igReelId}/embed/`,
+    } : {}),
     url: pageUrl,
     uploadDate: work.uploadDate.length === 10
       ? `${work.uploadDate}T00:00:00+08:00`
@@ -129,14 +138,23 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           }}>{work.category}</span>
         </div>
 
-        {/* Hero: thumbnail */}
+        {/* Hero: thumbnail or gradient */}
         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", maxHeight: "60vh", overflow: "hidden" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={thumb}
-            alt={`${work.title} MV 官方視覺縮圖 - 在地影像工作者 MINEH4O 影像作品`}
-            style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.6)" }}
-          />
+          {thumb ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={thumb}
+              alt={`${work.title} 官方視覺縮圖 - 在地影像工作者 MINEH4O 影像作品`}
+              style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.6)" }}
+            />
+          ) : (
+            <div style={{
+              width: "100%", height: "100%",
+              background: work.thumbColor
+                ? `linear-gradient(135deg, ${work.thumbColor} 0%, #000 100%)`
+                : "linear-gradient(135deg, #050505 0%, #000 100%)",
+            }} />
+          )}
           <div style={{
             position: "absolute", inset: 0,
             background: "linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 60%)",
@@ -157,20 +175,48 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
         {/* Content */}
         <div style={{ maxWidth: 720, margin: "0 auto", padding: "3rem 2rem 6rem" }}>
 
-          {/* YouTube embed */}
-          <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, marginBottom: "3rem" }}>
-            <iframe
-              src={`https://www.youtube.com/embed/${work.youtubeId}?rel=0&modestbranding=1`}
-              title={work.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              loading="lazy"
-              style={{
-                position: "absolute", top: 0, left: 0,
-                width: "100%", height: "100%", border: "none",
-              }}
-            />
-          </div>
+          {/* Video embed */}
+          {work.youtubeId ? (
+            <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, marginBottom: "3rem" }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${work.youtubeId}?rel=0&modestbranding=1`}
+                title={work.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                loading="lazy"
+                style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+              />
+            </div>
+          ) : work.igReelId ? (
+            <div style={{ marginBottom: "3rem" }}>
+              <div style={{ position: "relative", paddingBottom: "177.78%", height: 0, maxWidth: 360, margin: "0 auto" }}>
+                <iframe
+                  src={`https://www.instagram.com/reel/${work.igReelId}/embed/`}
+                  title={work.title}
+                  allowFullScreen
+                  loading="lazy"
+                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+                />
+              </div>
+              <div style={{ textAlign: "center", marginTop: "1.2rem" }}>
+                <a
+                  href={`https://www.instagram.com/reel/${work.igReelId}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "var(--font-space-mono), monospace",
+                    fontSize: 8, letterSpacing: "0.38em",
+                    color: "rgba(255,255,255,0.4)",
+                    textDecoration: "none",
+                    borderBottom: "1px solid rgba(255,255,255,0.15)",
+                    paddingBottom: 3,
+                  }}
+                >
+                  WATCH ON INSTAGRAM →
+                </a>
+              </div>
+            </div>
+          ) : null}
 
           {/* Divider */}
           <div style={{ height: 1, background: "rgba(255,255,255,0.08)", marginBottom: "2.5rem" }} />
@@ -248,13 +294,22 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
               }}>NEXT WORK</p>
               <div style={{ display: "flex", gap: "1.8rem", alignItems: "center" }}>
                 <div style={{ width: 120, aspectRatio: "16/9", overflow: "hidden", flexShrink: 0, background: "#111" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="next-work-thumb"
-                    src={`https://img.youtube.com/vi/${nextWork.youtubeId}/mqdefault.jpg`}
-                    alt={`${nextWork.title} - 在地影像工作者 MINEH4O`}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.7)" }}
-                  />
+                  {nextWork.youtubeId ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      className="next-work-thumb"
+                      src={`https://img.youtube.com/vi/${nextWork.youtubeId}/mqdefault.jpg`}
+                      alt={`${nextWork.title} - 在地影像工作者 MINEH4O`}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.7)" }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: "100%", height: "100%",
+                      background: nextWork.thumbColor
+                        ? `linear-gradient(135deg, ${nextWork.thumbColor} 0%, #000 100%)`
+                        : "#111",
+                    }} />
+                  )}
                 </div>
                 <div style={{ flex: 1 }}>
                   <p style={{

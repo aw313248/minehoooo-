@@ -368,7 +368,9 @@ export default function WorksClient() {
       {/* Scroll container */}
       <div className="w-scroll" role="main" aria-label="作品列表">
         {worksData.map((w, i) => {
-          const thumb  = `https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`;
+          const thumb  = w.youtubeId
+            ? `https://img.youtube.com/vi/${w.youtubeId}/maxresdefault.jpg`
+            : null;
           const isAct  = activeIdx === i;
           const isVis  = visible.has(i);
           const badge  = getBadge(w.slug);
@@ -382,15 +384,23 @@ export default function WorksClient() {
               className={`w-sec${isAct ? ' w-sec--active' : ''}`}
               aria-label={w.title}
             >
-              {/* BG image */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="w-bg"
-                src={thumb}
-                alt=""
-                aria-hidden="true"
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
+              {/* BG image or gradient */}
+              {thumb ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  className="w-bg"
+                  src={thumb}
+                  alt=""
+                  aria-hidden="true"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                />
+              ) : (
+                <div
+                  className="w-bg"
+                  style={{ background: w.thumbColor ?? '#050505', filter: 'none' }}
+                  aria-hidden="true"
+                />
+              )}
 
               {/* Colour overlay */}
               <div

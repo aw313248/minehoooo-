@@ -1,6 +1,8 @@
 export interface WorkEntry {
   slug: string;
-  youtubeId: string;
+  youtubeId?: string;       // optional — IG-only works won't have this
+  igReelId?: string;        // Instagram Reel ID for IG-only works
+  thumbColor?: string;      // fallback gradient color when no YouTube thumb
   title: string;
   titleEn: string;
   artist: string;
@@ -239,6 +241,46 @@ export const worksData: WorkEntry[] = [
       "調色由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["lil-rad-no-you", "tiang-remember-to-be-happy"],
+  },
+  {
+    slug: "house-rules",
+    igReelId: "DW4B7HOEsLw",
+    thumbColor: "#0a0a12",
+    title: "《HOUSE RULES》",
+    titleEn: "HOUSE RULES — AIGC Short Film — MINEH4O",
+    artist: "MINEH4O × Higgsfield",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-04-01T00:00:00+08:00",
+    duration: "PT1M00S",
+    metaDescription: "在地影像工作者 MINEH4O 與 Higgsfield AI 合作的 AIGC 短片《HOUSE RULES》。He broke into the wrong kitchen. The fridge had a gun. The floor had a fight.",
+    keywords: ["HOUSE RULES", "AIGC 短片", "AI Short Film", "Higgsfield AI", "MINEH4O", "在地影像工作者", "AI 影像", "AIGC 電影"],
+    description: [
+      "He broke into the wrong kitchen. The fridge had a gun. The floor had a fight. And the real boss hadn't even woken up yet.",
+      "《HOUSE RULES》是 MINEH4O 與生成式 AI 平台 Higgsfield 合作的 AIGC 短片，用一個荒謬的入室搶劫場景，測試 AI 影像在劇情敘事上的邊界。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["bring-me-your-lovely"],
+  },
+  {
+    slug: "taichung-how-long",
+    igReelId: "DW56cv5kjjT",
+    thumbColor: "#120808",
+    title: "《台中人？你們要忍多久》",
+    titleEn: "台中人？你們要忍多久 — Short Film — MINEH4O",
+    artist: "MINEH4O",
+    role: "DIR · EDIT",
+    category: "SHORT FILM",
+    uploadDate: "2026-04-09T00:00:00+08:00",
+    duration: "PT2M00S",
+    metaDescription: "在地影像工作者 MINEH4O 關於台中在地社會議題的短影音作品。別扯中央，對人民來說你就是政府。",
+    keywords: ["台中 社會議題", "台中人 短影音", "MINEH4O", "在地影像工作者", "台中 地方政府", "短影音 議題"],
+    description: [
+      "別扯中央，對人民來說你就是政府（地方）。",
+      "這支短片是在地影像工作者 MINEH4O 對台中在地議題的直接表態。用鏡頭和剪輯說出那些習慣被迴避的問題。",
+      "導演、剪輯均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["house-rules"],
   },
 ];
 
