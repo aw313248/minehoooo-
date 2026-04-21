@@ -6,7 +6,17 @@ import { worksData } from '@/data/works';
 
 const trilogySet = new Set(["chen-zhuo-lumen", "chen-zhuo-aperture", "chen-zhuo-deprived"]);
 const radSet = new Set(["lil-rad-no-you", "lil-rad-love-me-not", "lil-rad-loving-after-all"]);
-const aigcSet = new Set(["bring-me-your-lovely"]);
+const aigcSet = new Set([
+  "bring-me-your-lovely", "house-rules",
+  "taichung-228", "taichung-aigc-train",
+  "toy-story-aigc", "miles-morales-aigc", "going-down-aigc",
+]);
+
+function formatNum(n: number): string {
+  if (n >= 10000) return (n / 10000).toFixed(1).replace('.0', '') + '萬';
+  if (n >= 1000) return (n / 1000).toFixed(1).replace('.0', '') + 'K';
+  return String(n);
+}
 
 function getOverlay(slug: string) {
   if (trilogySet.has(slug))
@@ -172,6 +182,22 @@ export default function WorksClient() {
           color: rgba(255,255,255,0.92);
           border-color: rgba(255,255,255,0.55);
           letter-spacing: 0.46em;
+        }
+
+        /* ── stats row ── */
+        .w-stats {
+          display: flex; gap: 1.2rem; margin-top: 1.2rem;
+          align-items: center;
+        }
+        .w-stat {
+          font-family: var(--font-space-mono), monospace;
+          font-size: 7px; letter-spacing: 0.28em;
+          color: rgba(255,255,255,0.28);
+          display: flex; align-items: center; gap: 5px;
+        }
+        .w-stat-dot {
+          width: 3px; height: 3px; border-radius: 50%;
+          background: rgba(255,255,255,0.15); flex-shrink: 0;
         }
 
         /* ── section index number ── */
@@ -440,6 +466,31 @@ export default function WorksClient() {
                 >
                   VIEW WORK →
                 </Link>
+
+                {/* Stats row */}
+                {w.stats && (w.stats.igViews || w.stats.views || w.stats.likes) && (
+                  <div className="w-stats" aria-label={`作品數據`}>
+                    {(w.stats.igViews || w.stats.views) && (
+                      <span className="w-stat">
+                        {formatNum(w.stats.igViews ?? w.stats.views ?? 0)} 觀看
+                      </span>
+                    )}
+                    {(w.stats.igViews || w.stats.views) && w.stats.likes && (
+                      <span className="w-stat-dot" aria-hidden="true" />
+                    )}
+                    {w.stats.likes && (
+                      <span className="w-stat">
+                        {formatNum(w.stats.likes)} 讚
+                      </span>
+                    )}
+                    {w.stats.comments && (
+                      <>
+                        <span className="w-stat-dot" aria-hidden="true" />
+                        <span className="w-stat">{w.stats.comments} 留言</span>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Scroll hint on first section */}
