@@ -490,7 +490,7 @@ const videoJsonLd = [
     "@context": "https://schema.org",
     "@type": "VideoObject",
     name: "大家願意....一起披上披風！！！孩子們需要超人",
-    description: "台中在地影像工作者 MINEH4O 執導公益短片《孩子們需要超人》。大家願意一起披上披風——孩子們需要的，是願意出現的人。4 分 26 秒，2026 年 4 月。",
+    description: "在地影像工作者 MINEH4O 對台灣社會現況的直接表態。孩子們需要超人，但超人不應該只靠奇蹟。台中在地社會議題短片，4 分 26 秒，2026 年 4 月。",
     thumbnailUrl: "https://img.youtube.com/vi/raIh2Qlj5YY/maxresdefault.jpg",
     contentUrl: "https://www.youtube.com/watch?v=raIh2Qlj5YY",
     embedUrl: "https://www.youtube.com/embed/raIh2Qlj5YY",
