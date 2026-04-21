@@ -10,6 +10,7 @@ const aigcSet = new Set([
   "bring-me-your-lovely", "house-rules",
   "taichung-228", "taichung-aigc-train",
   "toy-story-aigc", "miles-morales-aigc", "going-down-aigc",
+  "sweet-potato-ball-aigc",
 ]);
 
 function formatNum(n: number): string {
