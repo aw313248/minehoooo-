@@ -178,10 +178,10 @@ export default function About() {
           <div className="relative inline-block"
             onMouseEnter={() => setCoverHover(true)}
             onMouseLeave={() => setCoverHover(false)}>
-            <h1 className="font-display leading-none mb-3"
+            <h2 className="font-display leading-none mb-3"
               style={{ fontSize: "clamp(5rem,20vw,24rem)", color: "var(--text)", letterSpacing: "0.01em", cursor: "default" }}>
               OSCAR
-            </h1>
+            </h2>
             {/* Quote tooltip */}
             <div style={{
               position: "absolute", bottom: "calc(100% + 8px)", left: 0,

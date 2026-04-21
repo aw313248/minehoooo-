@@ -170,7 +170,7 @@ export default function Hero() {
             <CharReveal text="MINEH4O" inView={loaded} baseDelay={0.12} stagger={0.048} />
           </h1>
           {/* Glitch layer 1 — cyan tint, clips top portion */}
-          <h1 aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
+          <span aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
             style={{
               fontSize: "clamp(6.5rem, 23vw, 30rem)",
               color: "rgba(80,220,255,0.9)",
@@ -179,9 +179,9 @@ export default function Hero() {
               opacity: 0,
             }}>
             MINEH4O
-          </h1>
+          </span>
           {/* Glitch layer 2 — red tint, clips bottom portion */}
-          <h1 aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
+          <span aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
             style={{
               fontSize: "clamp(6.5rem, 23vw, 30rem)",
               color: "rgba(255,60,80,0.85)",
@@ -190,7 +190,7 @@ export default function Hero() {
               opacity: 0,
             }}>
             MINEH4O
-          </h1>
+          </span>
         </div>
 
         {/* Tagline — glass pills */}
