@@ -1,3 +1,11 @@
+export interface WorkStats {
+  views?: number;          // YouTube 觀看數 or IG 觀看數
+  likes?: number;          // 讚數
+  comments?: number;       // 留言數
+  igViews?: number;        // IG Reel 觀看數（若與 YouTube 分開）
+  source?: "youtube" | "instagram";
+}
+
 export interface WorkEntry {
   slug: string;
   youtubeId?: string;       // optional — IG-only works won't have this
@@ -14,6 +22,7 @@ export interface WorkEntry {
   keywords: string[];
   description: string[];   // paragraphs in zh-TW
   relatedSlugs?: string[];
+  stats?: WorkStats;        // 行銷數據
 }
 
 export const worksData: WorkEntry[] = [
@@ -316,6 +325,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["bring-me-your-lovely"],
+    stats: { likes: 66, source: "instagram" as const },
   },
   {
     slug: "taichung-how-long",
@@ -336,6 +346,112 @@ export const worksData: WorkEntry[] = [
       "導演、剪輯均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules"],
+    stats: { likes: 11000, comments: 420, source: "instagram" as const },
+  },
+  {
+    slug: "taichung-228",
+    igReelId: "DVQvmpNEt8k",
+    thumbColor: "#100a08",
+    title: "《台中人在228中竟能成立武裝部隊？》",
+    titleEn: "Taichung 228 AIGC — Historical Short Film",
+    artist: "MINEH4O",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-02-28",
+    duration: "PT1M00S",
+    metaDescription: "台中在地影像工作者 MINEH4O 以 AIGC 重建二二八事件中，台中人自發組織武裝抵抗的歷史瞬間。在地視角的 AIGC 歷史短片，2026 年。",
+    keywords: ["二二八 AIGC", "台中228", "二二八事件 AIGC", "台中 歷史影像", "MINEH4O", "在地影像工作者"],
+    description: [
+      "二二八，台中人的故事不該只在課本裡。",
+      "在地影像工作者 MINEH4O 用 AIGC 技術，重建那段少有人記錄的歷史——1947 年 228 事件中，台中人自發組織武裝抵抗的瞬間。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["taichung-aigc-train", "house-rules"],
+    stats: { igViews: 8398, likes: 289, comments: 19, source: "instagram" as const },
+  },
+  {
+    slug: "taichung-aigc-train",
+    igReelId: "DWJW8U3EpoR",
+    thumbColor: "#100c08",
+    title: "《台中 AIGC》",
+    titleEn: "TAICHUNG AIGC — Train Short Film",
+    artist: "MINEH4O",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-03-21",
+    duration: "PT1M00S",
+    metaDescription: "清晨一個靈感，台中在地影像工作者 MINEH4O 以純 AIGC 重現台中火車瞬間。台灣 AIGC 短片，2026 年 3 月。",
+    keywords: ["台中 AIGC", "AIGC 短片", "AIGC 火車", "MINEH4O", "在地影像工作者", "AI 影像生成"],
+    description: [
+      "某一天的清晨在路上跑著跑著，突然有個靈感。",
+      "在地影像工作者 MINEH4O 把那個瞬間的意象，轉化成 AIGC 影像——台中的火車，一種在地的情感記憶。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["house-rules", "taichung-228"],
+    stats: { igViews: 4796, likes: 131, comments: 8, source: "instagram" as const },
+  },
+  {
+    slug: "toy-story-aigc",
+    igReelId: "DWAol6QE2J1",
+    thumbColor: "#0a1030",
+    title: "《玩具總動員根本不是夢》",
+    titleEn: "Toy Story AIGC — Living Toys Short Film",
+    artist: "MINEH4O",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-03-18",
+    duration: "PT1M00S",
+    metaDescription: "台中在地影像工作者 MINEH4O（mlpon6）以 AIGC 重現玩具活過來的視覺幻想。玩具總動員不是夢，是 AIGC 做到的事。2026 年 3 月。",
+    keywords: ["玩具總動員 AIGC", "AIGC 短片", "Toy Story AI", "MINEH4O", "mlpon6", "在地影像工作者", "AI 影像"],
+    description: [
+      "玩具總動員根本不是夢——只要你有 AIGC。",
+      "在地影像工作者 MINEH4O 透過 mlpon6 帳號發布的純 AIGC 實驗短片，用生成式 AI 讓玩具在畫面裡真的活起來。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["house-rules", "taichung-aigc-train"],
+    stats: { igViews: 4382, likes: 119, comments: 2, source: "instagram" as const },
+  },
+  {
+    slug: "miles-morales-aigc",
+    igReelId: "DWTu59DBxpv",
+    thumbColor: "#08080f",
+    title: "《Miles Morales 害的》",
+    titleEn: "Miles Morales AIGC — Spider-Man Short Film",
+    artist: "MINEH4O",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-03-01",
+    duration: "PT1M00S",
+    metaDescription: "台中在地影像工作者 MINEH4O 以 AIGC 致敬 Miles Morales Spider-Man 的拼貼視覺風格。台灣 AIGC 短片，2026 年。",
+    keywords: ["Miles Morales AIGC", "Spider-Man AIGC", "AIGC 短片", "MINEH4O", "在地影像工作者", "AI 影像"],
+    description: [
+      "都是 Miles Morales 害的。",
+      "在地影像工作者 MINEH4O 用 AIGC 技術，把 Miles Morales 那種拼貼感與速度感的視覺語言帶進原創短片。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["house-rules", "going-down-aigc"],
+    stats: { igViews: 2654, likes: 116, comments: 6, source: "instagram" as const },
+  },
+  {
+    slug: "going-down-aigc",
+    igReelId: "DWnqw4KEkmf",
+    thumbColor: "#050508",
+    title: "《GOING DOWN？》",
+    titleEn: "GOING DOWN? — AIGC Horror Short Film",
+    artist: "MINEH4O",
+    role: "DIR · AIGC",
+    category: "SHORT FILM",
+    uploadDate: "2026-04-02",
+    duration: "PT1M00S",
+    metaDescription: "台中在地影像工作者 MINEH4O 以 AIGC 打造的恐怖驚悚短片《GOING DOWN？》。電梯裡的恐懼，生成式 AI 的暗黑美學。2026 年 4 月。",
+    keywords: ["GOING DOWN AIGC", "AIGC 恐怖片", "AIGC 短片", "恐怖驚悚 AIGC", "MINEH4O", "在地影像工作者", "AI 影像"],
+    description: [
+      "良心提醒：這是恐怖驚悚片。",
+      "在地影像工作者 MINEH4O 用 AIGC 技術，在電梯這個最日常的空間裡，製造最純粹的恐懼感。",
+      "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
+    ],
+    relatedSlugs: ["house-rules", "miles-morales-aigc"],
+    stats: { igViews: 1878, likes: 34, source: "instagram" as const },
   },
 ];
 
