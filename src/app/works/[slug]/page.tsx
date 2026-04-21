@@ -257,6 +257,56 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             ))}
           </div>
 
+          {/* Stats */}
+          {work.stats && (work.stats.igViews || work.stats.views || work.stats.likes) && (
+            <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <p style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", marginBottom: "1rem",
+              }}>DATA</p>
+              <div style={{ display: "flex", gap: "2.5rem", flexWrap: "wrap" }}>
+                {(work.stats.igViews || work.stats.views) && (
+                  <div>
+                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>VIEWS</p>
+                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
+                      {((work.stats.igViews ?? work.stats.views ?? 0) >= 10000
+                        ? ((work.stats.igViews ?? work.stats.views ?? 0) / 10000).toFixed(1).replace('.0','') + '萬'
+                        : ((work.stats.igViews ?? work.stats.views ?? 0) >= 1000
+                          ? ((work.stats.igViews ?? work.stats.views ?? 0) / 1000).toFixed(1).replace('.0','') + 'K'
+                          : String(work.stats.igViews ?? work.stats.views)))}
+                    </p>
+                  </div>
+                )}
+                {work.stats.likes && (
+                  <div>
+                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>LIKES</p>
+                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
+                      {work.stats.likes >= 10000
+                        ? (work.stats.likes / 10000).toFixed(1).replace('.0','') + '萬'
+                        : work.stats.likes >= 1000
+                          ? (work.stats.likes / 1000).toFixed(1).replace('.0','') + 'K'
+                          : String(work.stats.likes)}
+                    </p>
+                  </div>
+                )}
+                {work.stats.comments && (
+                  <div>
+                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>COMMENTS</p>
+                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
+                      {String(work.stats.comments)}
+                    </p>
+                  </div>
+                )}
+                <div>
+                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>SOURCE</p>
+                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 9, letterSpacing: "0.22em", color: "rgba(255,255,255,0.45)", margin: 0 }}>
+                    {work.stats.source === "instagram" ? "INSTAGRAM" : "YOUTUBE"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Related works */}
           {related.length > 0 && (
             <div>
