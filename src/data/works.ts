@@ -3,7 +3,9 @@ export interface WorkStats {
   likes?: number;          // 讚數
   comments?: number;       // 留言數
   igViews?: number;        // IG Reel 觀看數（若與 YouTube 分開）
+  reachRate?: number;      // 推播率 % — 需從 IG Insights 手動填入（reach / followers × 100）
   source?: "youtube" | "instagram";
+  lastUpdated?: string;    // ISO date — 數據最後更新日期
 }
 
 export interface WorkEntry {
@@ -347,7 +349,7 @@ export const worksData: WorkEntry[] = [
       "導演、剪輯均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules"],
-    stats: { likes: 11000, comments: 420, source: "instagram" as const },
+    stats: { likes: 2279, comments: 457, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "taichung-228",
@@ -431,7 +433,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "going-down-aigc"],
-    stats: { igViews: 2654, likes: 116, comments: 6, source: "instagram" as const },
+    stats: { igViews: 2654, likes: 117, comments: 6, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "going-down-aigc",
@@ -452,7 +454,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "miles-morales-aigc"],
-    stats: { igViews: 1878, likes: 34, source: "instagram" as const },
+    stats: { igViews: 1878, likes: 34, comments: 3, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "sweet-potato-ball-aigc",
@@ -465,8 +467,8 @@ export const worksData: WorkEntry[] = [
     role: "DIR · AIGC",
     category: "SHORT FILM",
     uploadDate: "2026-04-21",
-    duration: "PT0M15S",
-    metaDescription: "台中在地影像工作者 MINEH4O 的純 AIGC 短片——台灣人的童年零食地瓜球，拿起球拍打乒乓。15 秒的荒謬與驚喜，2026 年 4 月。",
+    duration: "PT0M16S",
+    metaDescription: "台中在地影像工作者 MINEH4O 的純 AIGC 短片——台灣人的童年零食地瓜球，拿起球拍打乒乓。16 秒的荒謬與驚喜，2026 年 4 月。",
     keywords: ["地瓜球 AIGC", "AIGC 短片", "台灣 AIGC", "MINEH4O", "在地影像工作者", "AI 影像", "地瓜球"],
     description: [
       "地瓜球也能打乒乓——這是 AIGC 說的，不是我說的。",
@@ -474,7 +476,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "toy-story-aigc", "taichung-aigc-train"],
-    stats: { source: "youtube" as const },
+    stats: { views: 4, likes: 86, comments: 9, source: "youtube" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "children-need-superheroes",
@@ -494,7 +496,7 @@ export const worksData: WorkEntry[] = [
       "導演、剪輯均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["taichung-how-long"],
-    stats: { views: 35, source: "youtube" as const },
+    stats: { views: 37, source: "youtube" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "lil-rad-knew-it-earlier",
@@ -504,16 +506,16 @@ export const worksData: WorkEntry[] = [
     artist: "Lil RAD & Coy6oi",
     role: "DP",
     category: "MUSIC VIDEO",
-    uploadDate: "2026-01-01",
-    duration: "PT3M30S",
-    metaDescription: "台中在地影像工作者 MINEH4O 擔任攝影指導，為 Lil RAD & Coy6oi《早知道一個人也過得很好》ft.斑恩Ben 打造影像。台灣饒舌 MV 2026 年。",
+    uploadDate: "2026-04-24",
+    duration: "PT3M37S",
+    metaDescription: "台中在地影像工作者 MINEH4O 擔任攝影指導，為 Lil RAD & Coy6oi《早知道一個人也過得很好》ft.斑恩Ben 打造影像。台灣饒舌 MV，2026 年 4 月。",
     keywords: ["Lil RAD 早知道一個人也過得很好", "Coy6oi MV", "斑恩Ben", "MINEH4O", "在地影像工作者", "台灣饒舌 MV"],
     description: [
       "《早知道一個人也過得很好》是 Lil RAD & Coy6oi 與斑恩Ben 的合作。",
       "攝影指導由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["lil-rad-no-you", "lil-rad-love-me-not", "lil-rad-loving-after-all"],
-    stats: { source: "youtube" as const },
+    stats: { views: 12166, source: "youtube" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "her-slope",
@@ -523,8 +525,8 @@ export const worksData: WorkEntry[] = [
     artist: "第62屆金馬影展入選短片",
     role: "ART DEPT",
     category: "SHORT FILM",
-    uploadDate: "2025-11-06",
-    duration: "PT0M53S",
+    uploadDate: "2025-10-17",
+    duration: "PT0M54S",
     metaDescription: "《爬坡 Her Slope》入選 2025 第62屆金馬影展（台北金馬影展 TGHFF），在地影像工作者 MINEH4O（賴明宏）擔任現場美術支援。台灣最高榮譽影展入選短片。",
     keywords: ["爬坡 Her Slope", "金馬影展 短片", "TGHFF 2025", "第62屆金馬", "台北金馬影展", "MINEH4O", "在地影像工作者", "金馬入選"],
     description: [
@@ -532,7 +534,7 @@ export const worksData: WorkEntry[] = [
       "在地影像工作者 MINEH4O（賴明宏）於本片擔任現場美術支援，參與 2025 年的金馬影展官方展映。",
     ],
     relatedSlugs: ["children-need-superheroes", "taichung-how-long"],
-    stats: { views: 427, source: "youtube" as const },
+    stats: { views: 427, source: "youtube" as const, lastUpdated: "2026-04-27" },
   },
 ];
 
