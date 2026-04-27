@@ -289,14 +289,6 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                     </p>
                   </div>
                 )}
-                {work.stats.comments && (
-                  <div>
-                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>COMMENTS</p>
-                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
-                      {String(work.stats.comments)}
-                    </p>
-                  </div>
-                )}
                 <div>
                   <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>SOURCE</p>
                   <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 9, letterSpacing: "0.22em", color: "rgba(255,255,255,0.45)", margin: 0 }}>

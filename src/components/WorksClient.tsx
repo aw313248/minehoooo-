@@ -484,12 +484,6 @@ export default function WorksClient() {
                         {formatNum(w.stats.likes)} 讚
                       </span>
                     )}
-                    {w.stats.comments && (
-                      <>
-                        <span className="w-stat-dot" aria-hidden="true" />
-                        <span className="w-stat">{w.stats.comments} 留言</span>
-                      </>
-                    )}
                   </div>
                 )}
               </div>

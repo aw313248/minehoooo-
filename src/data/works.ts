@@ -1,7 +1,6 @@
 export interface WorkStats {
   views?: number;          // YouTube 觀看數 or IG 觀看數
   likes?: number;          // 讚數
-  comments?: number;       // 留言數
   igViews?: number;        // IG Reel 觀看數（若與 YouTube 分開）
   reachRate?: number;      // 推播率 % — 需從 IG Insights 手動填入（reach / followers × 100）
   source?: "youtube" | "instagram";
@@ -349,7 +348,7 @@ export const worksData: WorkEntry[] = [
       "導演、剪輯均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules"],
-    stats: { likes: 2279, comments: 457, source: "instagram" as const, lastUpdated: "2026-04-27" },
+    stats: { likes: 2279, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "taichung-228",
@@ -370,7 +369,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["taichung-aigc-train", "house-rules"],
-    stats: { igViews: 8398, likes: 289, comments: 19, source: "instagram" as const },
+    stats: { igViews: 8398, likes: 289, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "taichung-aigc-train",
@@ -391,7 +390,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "taichung-228"],
-    stats: { igViews: 4796, likes: 131, comments: 8, source: "instagram" as const },
+    stats: { igViews: 4796, likes: 131, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "toy-story-aigc",
@@ -412,7 +411,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "taichung-aigc-train"],
-    stats: { igViews: 4382, likes: 119, comments: 2, source: "instagram" as const },
+    stats: { igViews: 4382, likes: 119, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "miles-morales-aigc",
@@ -433,7 +432,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "going-down-aigc"],
-    stats: { igViews: 2654, likes: 117, comments: 6, source: "instagram" as const, lastUpdated: "2026-04-27" },
+    stats: { igViews: 2654, likes: 117, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "going-down-aigc",
@@ -454,7 +453,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "miles-morales-aigc"],
-    stats: { igViews: 1878, likes: 34, comments: 3, source: "instagram" as const, lastUpdated: "2026-04-27" },
+    stats: { igViews: 1878, likes: 34, source: "instagram" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "sweet-potato-ball-aigc",
@@ -476,7 +475,7 @@ export const worksData: WorkEntry[] = [
       "導演、AIGC 影像均由在地影像工作者 MINEH4O（賴明宏）執行。",
     ],
     relatedSlugs: ["house-rules", "toy-story-aigc", "taichung-aigc-train"],
-    stats: { views: 4, likes: 86, comments: 9, source: "youtube" as const, lastUpdated: "2026-04-27" },
+    stats: { views: 4, likes: 86, source: "youtube" as const, lastUpdated: "2026-04-27" },
   },
   {
     slug: "children-need-superheroes",
