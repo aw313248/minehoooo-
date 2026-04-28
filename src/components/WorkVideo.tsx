@@ -59,6 +59,21 @@ const shortFilms = [
     role: "DIR · DP · EDIT",
     cat: "SHORT FILM",
   },
+  {
+    id: "raIh2Qlj5YY",
+    title: "孩子們需要超人",
+    artist: "社會議題短片",
+    role: "DIR · EDIT",
+    cat: "SHORT FILM",
+  },
+  {
+    id: "z8IYXjmBXBk",
+    title: "HOUSE RULES",
+    artist: "MINEH4O × Higgsfield AI",
+    award: "AIGC Short Film",
+    role: "DIR · AIGC",
+    cat: "AIGC",
+  },
 ];
 
 const setCredits = [
@@ -107,8 +122,10 @@ const commercial = [
 ];
 
 const liveDoc = [
-  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",  artist: "", role: "DIR · DP", cat: "LIVE"        },
-  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄", artist: "", role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",      artist: "TEDxNTHU · 清大",  role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》",   artist: "Taiwolf × 中華職棒", role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",            artist: "",                  role: "DIR · DP", cat: "LIVE"        },
+  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",          artist: "",                  role: "DIR · DP", cat: "DOCUMENTARY" },
 ];
 
 const eventRec = [
@@ -119,6 +136,7 @@ const eventRec = [
 
 const ytShorts = [
   { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
+  { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓",     tags: ["#AIGC", "#台灣"]   },
   { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",           tags: ["#器材", "#DJI"]   },
   { id: "EoJmdg8SxsI", title: "Short Film",                  tags: ["#短片"]            },
   { id: "5Y5u1Mtbmmo", title: "Short Film",                  tags: ["#短片"]            },
@@ -152,13 +170,20 @@ const allReels = [
 
 /* Selected IG Reels to embed — sorted by engagement */
 const igReelsData = [
-  { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",     likes: 599, account: "mlpon6"        },
-  { code: "DTg9q2_kpmY", label: "片場幕後花絮",            likes: 382, account: "minehoooo.arw" },
-  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 289, account: "minehoooo.arw" },
-  { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",     likes: 167, account: "minehoooo.arw" },
-  { code: "DWiAEIvhfbb", label: "家的樣子 · 日常影像",     likes: 151, account: "minehoooo.arw" },
-  { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",     likes: 109, account: "minehoooo.arw" },
-  { code: "DTihUcyEiZ-", label: "幕後 · 工作精神",         likes: 107, account: "minehoooo.arw" },
+  { code: "DW56cv5kjjT", label: "台中人，你們要忍多久",    likes: 2279, account: "minehoooo"     },
+  { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",      likes: 599,  account: "mlpon6"        },
+  { code: "DTg9q2_kpmY", label: "片場幕後花絮",             likes: 382,  account: "minehoooo.arw" },
+  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像",  likes: 289,  account: "minehoooo.arw" },
+  { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",      likes: 167,  account: "minehoooo.arw" },
+  { code: "DWiAEIvhfbb", label: "家的樣子 · 日常影像",      likes: 151,  account: "minehoooo.arw" },
+  { code: "DWJW8U3EpoR", label: "台中 AIGC · 火車",         likes: 131,  account: "minehoooo.arw" },
+  { code: "DWAol6QE2J1", label: "玩具總動員不是夢 · AIGC",  likes: 119,  account: "mlpon6"        },
+  { code: "DWTu59DBxpv", label: "Miles Morales · AIGC",     likes: 117,  account: "mlpon6"        },
+  { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",      likes: 109,  account: "minehoooo.arw" },
+  { code: "DTihUcyEiZ-", label: "幕後 · 工作精神",          likes: 107,  account: "minehoooo.arw" },
+  { code: "DXZZ6Gbkv_Y", label: "地瓜球打乒乓 · AIGC",     likes: 86,   account: "minehoooo.arw" },
+  { code: "DW4B7HOEsLw", label: "HOUSE RULES · AIGC 短片",  likes: 66,   account: "minehoooo.arw" },
+  { code: "DWnqw4KEkmf", label: "GOING DOWN? · 恐怖 AIGC",  likes: 34,   account: "mlpon6"        },
 ];
 
 /* ─── Role badge ─── */
@@ -186,7 +211,7 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
   return (
     <div className="relative overflow-hidden"
       style={{ aspectRatio, borderRadius: 3, background: "#050505" }}
-      onMouseEnter={() => { timer.current = setTimeout(() => setActive(true), 420); }}
+      onMouseEnter={() => { timer.current = setTimeout(() => setActive(true), 700); }}
       onMouseLeave={() => { clearTimeout(timer.current); setActive(false); }}>
       {children}
       {active && (
@@ -436,6 +461,7 @@ export default function WorkVideo() {
   const [playing, setPlaying]     = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [isMobile, setIsMobile]   = useState(false);
+  // iframeReady removed — background autoplay iframe removed for performance
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
@@ -453,12 +479,9 @@ export default function WorkVideo() {
   const { ref: sRef,  inView: sIn  } = useInView(0.04);
   const { ref: igRef, inView: igIn } = useInView(0.04);
 
-  const [iframeReady, setIframeReady] = useState(false);
-
   useEffect(() => {
     const t = setTimeout(() => setHeroLoaded(true), 150);
-    const t2 = setTimeout(() => setIframeReady(true), 900);
-    return () => { clearTimeout(t); clearTimeout(t2); };
+    return () => { clearTimeout(t); };
   }, []);
 
   // Auto-rotate through all featured MVs every 8s
@@ -498,22 +521,7 @@ export default function WorkVideo() {
                 onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
               />
             </AnimatePresence>
-            {/* Autoplay iframe — desktop only, delayed mount */}
-            {!isMobile && iframeReady && (
-              <motion.div
-                key={`iframe-${active.id}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.4, ease: "easeInOut" }}
-                style={{ position: "absolute", inset: "-12%", width: "124%", height: "124%", pointerEvents: "none" }}>
-                <iframe
-                  src={`https://www.youtube.com/embed/${active.id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${active.id}&rel=0&modestbranding=1&playsinline=1&start=4`}
-                  style={{ width: "100%", height: "100%", border: "none" }}
-                  allow="autoplay; encrypted-media"
-                  title={`${active.title} background`}
-                />
-              </motion.div>
-            )}
+            {/* Background iframe removed — thumbnail crossfade is performant enough */}
           </>
         )}
 
