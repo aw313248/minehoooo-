@@ -198,7 +198,7 @@ export default function Hero() {
           {TAGLINE.map((word, i) => (
             word === "·" ? (
               <span key={i} style={{
-                color: "rgba(255,255,255,0.18)", fontSize: 10, lineHeight: 1,
+                color: "var(--white-dim)", fontSize: 10, lineHeight: 1,
                 opacity: loaded ? 1 : 0,
                 transition: `opacity .6s ease ${0.88 + i * 0.07}s`,
               }}>·</span>
@@ -278,7 +278,7 @@ export default function Hero() {
           <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "var(--white-secondary)", letterSpacing: "0.02em" }}>
             {count}K+
           </span>
-          <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+          <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "var(--white-dim)" }}>
             VIEWS
           </span>
         </div>
@@ -303,9 +303,9 @@ export default function Hero() {
           }}
           onMouseLeave={e => {
             const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = "rgba(255,255,255,0.055)";
-            el.style.borderColor = "rgba(255,255,255,0.1)";
-            el.style.color = "rgba(255,255,255,0.5)";
+            el.style.background = "var(--white-ghost)";
+            el.style.borderColor = "var(--white-ghost)";
+            el.style.color = "var(--white-soft)";
           }}>
           DM @minehoooo ↗
         </a>
@@ -323,7 +323,7 @@ export default function Hero() {
           SCROLL
         </span>
         <div style={{ width: 1, height: 36, background: "var(--white-ghost)", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.4s ease-in-out infinite" }} />
+          <div style={{ position: "absolute", inset: 0, background: "var(--white-secondary)", animation: "slideDown 1.4s ease-in-out infinite" }} />
         </div>
       </div>
 

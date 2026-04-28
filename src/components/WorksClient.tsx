@@ -77,7 +77,7 @@ export default function WorksClient() {
           text-decoration: none; pointer-events: all;
           transition: color 0.3s;
         }
-        .wt-back:hover { color: rgba(255,255,255,0.9); }
+        .wt-back:hover { color: var(--white-primary); }
         .wt-label {
           font-family: var(--font-space-mono), monospace;
           font-size: 8px; letter-spacing: 0.24em; color: var(--white-dim);
@@ -333,7 +333,7 @@ export default function WorksClient() {
         .bts-text {
           font-family: var(--font-geist-sans), "PingFang TC", sans-serif;
           font-size: clamp(12px,1.6vw,15px);
-          color: rgba(255,255,255,0.38);
+          color: var(--white-soft);
           font-weight: 300;
           letter-spacing: 0.06em;
           line-height: 1.8;
@@ -341,7 +341,7 @@ export default function WorksClient() {
         .bts-credit {
           font-family: var(--font-space-mono), monospace;
           font-size: 7px; letter-spacing: 0.3em;
-          color: rgba(255,255,255,0.14);
+          color: var(--white-dim);
         }
 
         /* ── mobile ── */

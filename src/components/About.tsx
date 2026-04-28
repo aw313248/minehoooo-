@@ -190,9 +190,9 @@ export default function About() {
               transform: coverHover ? "translateY(0) scale(1)" : "translateY(6px) scale(0.98)",
               transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
               background: "rgba(0,0,0,0.72)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px", maxWidth: 300, zIndex: 50,
+              border: "1px solid var(--white-ghost)", padding: "14px 20px", maxWidth: 300, zIndex: 50,
             }}>
-              <div style={{ height: 1, background: "rgba(255,255,255,0.1)", marginBottom: 12, transformOrigin: "left",
+              <div style={{ height: 1, background: "var(--white-ghost)", marginBottom: 12, transformOrigin: "left",
                 transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
               {q.lines.map((line, i) => (
                 <p key={i} style={{
@@ -208,7 +208,7 @@ export default function About() {
                   letterSpacing: "0.25em", color: "var(--white-muted)", marginTop: 10,
                   opacity: coverHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
               )}
-              <div style={{ height: 1, background: "rgba(255,255,255,0.06)", marginTop: 12, transformOrigin: "right",
+              <div style={{ height: 1, background: "var(--white-ghost)", marginTop: 12, transformOrigin: "right",
                 transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s" }} />
             </div>
           </div>
@@ -243,10 +243,10 @@ export default function About() {
             style={{ color: "var(--white-muted)", writingMode: "vertical-rl" }}>
             SCROLL
           </span>
-          <div style={{ width: 1, height: 48, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
+          <div style={{ width: 1, height: 48, background: "var(--white-dim)", position: "relative", overflow: "hidden" }}>
             <div style={{
               position: "absolute", inset: 0,
-              background: "rgba(255,255,255,0.7)",
+              background: "var(--white-secondary)",
               animation: "slideDown 1.6s ease-in-out infinite",
             }} />
           </div>
@@ -262,7 +262,7 @@ export default function About() {
                 <span key={j} className="font-mono-label"
                   style={{
                     fontSize: 8, letterSpacing: "0.32em",
-                    color: item === "·" ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.32)",
+                    color: item === "·" ? "var(--white-dim)" : "var(--white-muted)",
                     padding: item === "·" ? "0 20px" : "0 4px",
                     whiteSpace: "nowrap",
                   }}>
@@ -321,7 +321,7 @@ export default function About() {
                 transform: panelHover ? "translateY(0) scale(1)" : "translateY(-4px) scale(0.98)",
                 transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
                 background: "rgba(0,0,0,0.82)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,0.1)", padding: "12px 16px", maxWidth: 240, zIndex: 50,
+                border: "1px solid var(--white-ghost)", padding: "12px 16px", maxWidth: 240, zIndex: 50,
               }}>
                 {q.lines.map((line, i) => (
                   <p key={i} style={{
@@ -540,7 +540,7 @@ export default function About() {
                 <span key={j} className="font-mono-label"
                   style={{
                     fontSize: 8, letterSpacing: "0.28em",
-                    color: item === "·" ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.28)",
+                    color: item === "·" ? "var(--white-ghost)" : "var(--white-muted)",
                     padding: item === "·" ? "0 24px" : "0 4px",
                     whiteSpace: "nowrap",
                   }}>

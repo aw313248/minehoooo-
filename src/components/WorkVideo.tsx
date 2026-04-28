@@ -198,7 +198,7 @@ function CatHeader({ num, label, count, note }: { num: string; label: string; co
         </div>
         <div className="hidden md:flex flex-col items-end gap-0.5">
           {count !== undefined && <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>{count} WORKS</span>}
-          {note && <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>{note}</span>}
+          {note && <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "var(--white-dim)" }}>{note}</span>}
         </div>
       </div>
     </div>
@@ -325,7 +325,7 @@ function SeriesPanel({ video, index, inView }: {
       <div className="absolute right-8 md:right-16" style={{
         top: "50%", transform: "translateY(-50%)", pointerEvents: "none", userSelect: "none",
         fontFamily: "var(--font-bebas)", fontSize: "clamp(7rem, 18vw, 16rem)",
-        color: "rgba(255,255,255,0.04)", lineHeight: 1,
+        color: "var(--white-ghost)", lineHeight: 1,
       }}>{video.ep}</div>
 
       {/* Bottom-left content */}
@@ -338,7 +338,7 @@ function SeriesPanel({ video, index, inView }: {
           <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
             TRILOGY {video.ep}
           </span>
-          <div style={{ width: 60, height: 1, background: "rgba(255,255,255,0.12)" }} />
+          <div style={{ width: 60, height: 1, background: "var(--white-dim)" }} />
           <RoleTag text={video.role} />
         </div>
         <h3 className="font-display leading-none" style={{
@@ -350,7 +350,7 @@ function SeriesPanel({ video, index, inView }: {
           fontSize: 10, letterSpacing: "0.18em", marginTop: 10, color: "var(--white-muted)",
           opacity: inView ? 1 : 0, transition: `opacity .7s ease ${0.25 + index * 0.1}s`,
         }}>
-          Directed by <span style={{ color: "rgba(255,255,255,0.65)" }}>{video.artist}</span>
+          Directed by <span style={{ color: "var(--white-secondary)" }}>{video.artist}</span>
         </p>
       </div>
 
@@ -535,7 +535,7 @@ export default function WorkVideo() {
                 style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 0" }}>
                 <span className="font-mono-label" style={{
                   fontSize: 8, letterSpacing: "0.28em",
-                  color: i === activeIdx ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
+                  color: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
                   borderBottom: i === activeIdx ? "1px solid var(--white-soft)" : "1px solid transparent",
                   paddingBottom: 3, transition: "color .3s, border-color .3s",
                 }}>
@@ -598,11 +598,11 @@ export default function WorkVideo() {
               className="group flex items-center gap-2.5"
               style={{
                 background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.15)", padding: "10px 20px", cursor: "pointer",
+                border: "1px solid var(--white-dim)", padding: "10px 20px", cursor: "pointer",
                 transition: "background .3s",
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)"; }}>
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-ghost)"; }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
               <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
               <span style={{ color: "var(--white-soft)", fontSize: 14 }}>↗</span>
@@ -611,7 +611,7 @@ export default function WorkVideo() {
             <button onClick={() => setPlaying(false)}
               className="font-mono-label"
               style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text-3)",
-                border: "1px solid rgba(255,255,255,0.12)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
+                border: "1px solid var(--white-dim)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
               ✕ STOP
             </button>
           )}
@@ -623,8 +623,8 @@ export default function WorkVideo() {
           zIndex: 10, opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .7s",
           display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
         }}>
-          <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
+          <div style={{ width: 1, height: 36, background: "var(--white-dim)", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, background: "var(--white-secondary)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
           <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>SCROLL</span>
         </div>
@@ -770,7 +770,7 @@ export default function WorkVideo() {
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 flex items-end pb-2 pl-2">
                     <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-                      style={{ background: "rgba(0,0,0,0.7)", color: "rgba(255,255,255,0.7)" }}>SHORTS</span>
+                      style={{ background: "rgba(0,0,0,0.7)", color: "var(--white-secondary)" }}>SHORTS</span>
                   </div>
                 </div>
                 <p className="text-[10px] leading-tight font-medium" style={{ color: "var(--text)" }}>{s.title}</p>
@@ -867,7 +867,7 @@ export default function WorkVideo() {
                     <span className="font-mono-label text-[7px] tracking-[0.15em]" style={{ color: "var(--white-muted)" }}>
                       @{reel.account}
                     </span>
-                    <span className="font-mono-label text-[7px]" style={{ color: "rgba(255,255,255,0.22)" }}>
+                    <span className="font-mono-label text-[7px]" style={{ color: "var(--white-muted)" }}>
                       ♡ {reel.likes}
                     </span>
                   </div>
@@ -899,10 +899,10 @@ export default function WorkVideo() {
           </p>
           <a href="https://www.instagram.com/minehoooo/" target="_blank" rel="noopener noreferrer"
             className="group shrink-0 flex items-center gap-3 px-5 py-3 transition-all duration-300 hover:bg-white/5"
-            style={{ border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(12px)", width: "fit-content" }}>
+            style={{ border: "1px solid var(--white-dim)", backdropFilter: "blur(12px)", width: "fit-content" }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-              <circle cx="12" cy="12" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
+              <rect x="2" y="2" width="20" height="20" rx="5" stroke="var(--white-secondary)" strokeWidth="1.5"/>
+              <circle cx="12" cy="12" r="4.5" stroke="var(--white-secondary)" strokeWidth="1.5"/>
               <circle cx="17.5" cy="6.5" r="1.4" fill="var(--white-primary)"/>
             </svg>
             <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text)" }}>
