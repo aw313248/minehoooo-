@@ -9,111 +9,69 @@ import { useInView } from "@/hooks/useInView";
 
 // Hero rotation — 精選輪播
 const featuredMVs = [
-  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · DP",        tags: ["MUSIC VIDEO", "DIR", "DP"] },
-  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · DP · AI",   tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
-  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · DP",        tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP",              tags: ["MUSIC VIDEO", "DP"] },
-  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "DP",              tags: ["MUSIC VIDEO", "DP"] },
-  { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", subEn: "Music Video", subZh: "音樂錄影帶",              role: "COLOR",           tags: ["MUSIC VIDEO", "COLOR"] },
-  { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",     tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
+  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · DP",      tags: ["MUSIC VIDEO", "DIR", "DP"] },
+  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · DP · AI", tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
+  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP",            tags: ["MUSIC VIDEO", "DP"] },
+  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "DP",            tags: ["MUSIC VIDEO", "DP"] },
+  { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type", subEn: "Music Video",          subZh: "音樂錄影帶",                 role: "COLOR",         tags: ["MUSIC VIDEO", "COLOR"] },
+  { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",   tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
 ];
 
-// 導演作品列表（下方格子）
+// 導演作品
 const directorMVs = [
   { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
   { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · DP",            cat: "MUSIC VIDEO" },
   { id: "hk43CW2Kqow", title: "LAST 10",              artist: "",       role: "DIR · DP · AI 50%",   cat: "MUSIC VIDEO" },
 ];
 
+// 光與景三部曲
 const trilogy = [
-  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP", cat: "TRILOGY" },
-  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP", cat: "TRILOGY" },
-  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP", cat: "TRILOGY" },
+  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
 ];
 
+// Lil RAD × Coy6oi — 獨立系列，陳卓三部曲同款呈現
+const lilRadSeries = [
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                      ep: "Ⅰ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not",           ep: "Ⅱ", artist: "Lil RAD & Coy6oi",           role: "DP"         },
+  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All",         ep: "Ⅲ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",              ep: "Ⅳ", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP"        },
+];
+
+// COLOR WORK — 流量高排前面，Lil RAD 已獨立成專區
 const colorCredits = [
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",            artist: "Lil RAD & Coy6oi", role: "DP · COLOR", cat: "COLOR" },
-  { id: "lKYtN2OqbHQ", title: "沒有你的世界 (Video Production)", artist: "Lil RAD & Coy6oi · Tizzy & Oscar", role: "DP · COLOR", cat: "COLOR" },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi",       role: "DP",         cat: "COLOR" },
-  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi",    role: "DP · COLOR", cat: "COLOR" },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    role: "DP",         cat: "COLOR" },
-  { id: "_IUqMAI5GQg", title: "說了算",             artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", role: "COLOR",        cat: "COLOR"     },
-  { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾",    artist: "7type & 66 & CHE · 中部管轄區",              role: "COLOR",        cat: "COLOR"     },
-  { id: "0jyUrpj5Jiw", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "COLOR",        cat: "COLOR"     },
-  { id: "kUvT3eBfN9w", title: "愛你真的梅辦法",    artist: "89教科書",                      role: "COLOR",        cat: "COLOR"     },
-  { id: "J-BIhdj-4oM", title: "Badass Dance",      artist: "大樓DaLow ft. Aiken",           role: "LIGHTING",     cat: "LIGHTING"  },
-  { id: "BbDtN119tts", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "LIGHTING",     cat: "LIGHTING"  },
-  { id: "kL8_Sk0JmKM", title: "記住你要快樂",     artist: "帝仰 tiang",                    role: "DIR · COLOR",  cat: "COLOR"     },
+  { id: "kUvT3eBfN9w", title: "愛你真的梅辦法",  artist: "89教科書",                         role: "COLOR",       cat: "COLOR"    },
+  { id: "_IUqMAI5GQg", title: "說了算",           artist: "亥伯龍 · Doggy Chang · 7type",     role: "COLOR",       cat: "COLOR"    },
+  { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾",  artist: "7type & 66 & CHE · 中部管轄區",    role: "COLOR",       cat: "COLOR"    },
+  { id: "0jyUrpj5Jiw", title: "DaLow",           artist: "大樓DaLow ft. C Grass",            role: "COLOR",       cat: "COLOR"    },
+  { id: "J-BIhdj-4oM", title: "Badass Dance",     artist: "大樓DaLow ft. Aiken",              role: "LIGHTING",    cat: "LIGHTING" },
+  { id: "BbDtN119tts", title: "DaLow",           artist: "大樓DaLow ft. C Grass",            role: "LIGHTING",    cat: "LIGHTING" },
+  { id: "kL8_Sk0JmKM", title: "記住你要快樂",   artist: "帝仰 tiang",                       role: "DIR · COLOR", cat: "COLOR"    },
 ];
 
-const shortFilms = [
-  {
-    id: "fR2TDfx04oU",
-    title: "紅箱子",
-    artist: "劇情短片",
-    award: "入圍 2023 新北市學生影像新星獎",
-    role: "DIR · DP · EDIT",
-    cat: "SHORT FILM",
-  },
-  {
-    id: "raIh2Qlj5YY",
-    title: "孩子們需要超人",
-    artist: "社會議題短片",
-    role: "DIR · EDIT",
-    cat: "SHORT FILM",
-  },
-  {
-    id: "z8IYXjmBXBk",
-    title: "HOUSE RULES",
-    artist: "MINEH4O × Higgsfield AI",
-    award: "AIGC Short Film",
-    role: "DIR · AIGC",
-    cat: "AIGC",
-  },
+// 劇情短片 — 全部統一（包含在片/幕後）
+const narrativeShorts = [
+  { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "金穗獎最佳劇情片" },
+  { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "2025 金馬影展入選" },
+  { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · DP · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
+  { id: "raIh2Qlj5YY", title: "孩子們需要超人", artist: "社會議題短片",                      role: "DIR · EDIT",     cat: "SHORT FILM" },
 ];
 
-const setCredits = [
-  {
-    id: "RsPI2V_RQus",
-    title: "回收場的夏天",
-    artist: "Reclaim My Summer · 公視學生劇展",
-    role: "CAMERA ASST",
-    cat: "SHORT FILM",
-    award: "金穗獎最佳劇情片 · 金鐘獎入圍",
-  },
-  {
-    id: "FM5ukv7kqBM",
-    title: "沒什麼道理",
-    artist: "STILA 言芯",
-    role: "SET DEPT",
-    cat: "MUSIC VIDEO",
-  },
-  {
-    id: "mQ0KWgkGHlw",
-    title: "侵愛的",
-    artist: "陳芳語 Kimberley Chen",
-    role: "SET DEPT",
-    cat: "MUSIC VIDEO",
-  },
-  {
-    id: "W7E5bJ1Cmuo",
-    title: "我們的愛",
-    artist: "陳芳語 Kimberley Chen",
-    role: "SET DEPT",
-    cat: "MUSIC VIDEO",
-  },
-  {
-    id: "lLYzcW9pzGU",
-    title: "爬坡 Her Slope",
-    artist: "第62屆金馬影展 TGHFF",
-    role: "ART DEPT",
-    cat: "SHORT FILM",
-    award: "2025 金馬影展入選",
-  },
+// 陳芳語 Kimberley Chen — 獨立歌手群組
+const kimberleyCredits = [
+  { id: "mQ0KWgkGHlw", title: "侵愛的",   artist: "陳芳語 Kimberley Chen", role: "SET DEPT", cat: "MUSIC VIDEO" },
+  { id: "W7E5bJ1Cmuo", title: "我們的愛", artist: "陳芳語 Kimberley Chen", role: "SET DEPT", cat: "MUSIC VIDEO" },
+];
+
+// 其他 MV 現場組
+const otherOnSet = [
+  { id: "FM5ukv7kqBM", title: "沒什麼道理", artist: "STILA 言芯", role: "SET DEPT", cat: "MUSIC VIDEO" },
 ];
 
 const commercial = [
@@ -121,17 +79,24 @@ const commercial = [
   { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "",           role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
 ];
 
+// 紀錄片 — 規模大的先排
 const liveDoc = [
-  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",      artist: "TEDxNTHU · 清大",  role: "DIR · DP", cat: "DOCUMENTARY" },
-  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》",   artist: "Taiwolf × 中華職棒", role: "DIR · DP", cat: "DOCUMENTARY" },
-  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",            artist: "",                  role: "DIR · DP", cat: "LIVE"        },
-  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",          artist: "",                  role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",    artist: "TEDxNTHU · 清大",    role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》", artist: "Taiwolf × 中華職棒",  role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",          artist: "",                   role: "DIR · DP", cat: "LIVE"        },
+  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",        artist: "",                   role: "DIR · DP", cat: "DOCUMENTARY" },
 ];
 
+// 活動記錄 — 知名度高的先排
 const eventRec = [
-  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
-  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
   { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
+];
+
+// AIGC YouTube 作品
+const aigcWorks = [
+  { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O × Higgsfield AI", role: "DIR · AIGC", cat: "AIGC", award: "AIGC Short Film" },
 ];
 
 const ytShorts = [
@@ -168,7 +133,7 @@ const allReels = [
   { code: "C35vYmTSML-", tier: 4, year: "2023" },
 ];
 
-/* Selected IG Reels to embed — sorted by engagement */
+// IG Reels — 按互動數排序
 const igReelsData = [
   { code: "DW56cv5kjjT", label: "台中人，你們要忍多久",    likes: 2279, account: "minehoooo"     },
   { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",      likes: 599,  account: "mlpon6"        },
@@ -185,6 +150,7 @@ const igReelsData = [
   { code: "DW4B7HOEsLw", label: "HOUSE RULES · AIGC 短片",  likes: 66,   account: "minehoooo.arw" },
   { code: "DWnqw4KEkmf", label: "GOING DOWN? · 恐怖 AIGC",  likes: 34,   account: "mlpon6"        },
 ];
+
 
 /* ─── Role badge ─── */
 function RoleTag({ text }: { text: string }) {
@@ -231,7 +197,6 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
 function CatHeader({ num, label, count, note }: { num: string; label: string; count?: number; note?: string }) {
   return (
     <div className="mb-8">
-      {/* Gradient rule */}
       <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.22), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 14 }} />
       <div className="flex items-end justify-between">
         <div className="flex items-baseline gap-4">
@@ -247,12 +212,43 @@ function CatHeader({ num, label, count, note }: { num: string; label: string; co
   );
 }
 
-/* ─── Sub-label inside a category ─── */
+/* ─── Sub-label ─── */
 function SubLabel({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 mb-4 mt-8 first:mt-0">
       <p className="font-mono-label text-[8px] tracking-[0.32em] shrink-0" style={{ color: "var(--white-dim)" }}>{label}</p>
       <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
+    </div>
+  );
+}
+
+/* ─── Artist group header ─── */
+function ArtistGroupHeader({ name, count }: { name: string; count: number }) {
+  return (
+    <div className="flex items-center gap-3 mb-4 mt-6 first:mt-0">
+      <p className="font-mono-label text-[9px] tracking-[0.22em] shrink-0" style={{ color: "var(--white-soft)" }}>{name}</p>
+      <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.08)" }} />
+      <span className="font-mono-label text-[7px] tracking-[0.2em] shrink-0" style={{ color: "var(--white-dim)" }}>{count} MV</span>
+    </div>
+  );
+}
+
+/* ─── Documentary ticker (跑馬燈) ─── */
+function DocTicker({ items }: { items: string[] }) {
+  const text = items.map(s => s.toUpperCase()).join("  ·  ") + "  ·  ";
+  return (
+    <div style={{ overflow: "hidden", borderBottom: "1px solid var(--white-ghost)", marginBottom: 24 }}>
+      <div style={{ padding: "10px 0", whiteSpace: "nowrap" }}>
+        <span style={{
+          display: "inline-block",
+          animation: "docTicker 32s linear infinite",
+          fontFamily: "var(--font-space-mono), monospace",
+          fontSize: 8, letterSpacing: "0.28em",
+          color: "var(--white-dim)",
+        }}>
+          {text}{text}{text}
+        </span>
+      </div>
     </div>
   );
 }
@@ -290,14 +286,6 @@ function HScrollStrip({ items, inView }: {
                 </span>
               </div>
             )}
-            {v.award && (
-              <div className="absolute top-2 left-2">
-                <span className="font-mono-label text-[7px] tracking-wider px-2 py-0.5"
-                  style={{ background: "rgba(255,220,80,0.15)", border: "1px solid rgba(255,220,80,0.3)", color: "rgba(255,220,80,0.9)", backdropFilter: "blur(8px)" }}>
-                  ★ {v.award}
-                </span>
-              </div>
-            )}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="w-10 h-10 rounded-full flex items-center justify-center"
                 style={{ background: "var(--white-ghost)", backdropFilter: "blur(16px)", border: "1px solid var(--white-dim)" }}>
@@ -316,11 +304,13 @@ function HScrollStrip({ items, inView }: {
   );
 }
 
-/* ─── Cinematic series panel (trilogy) ─── */
-function SeriesPanel({ video, index, inView }: {
+/* ─── Cinematic series panel (trilogy / Lil RAD series) ─── */
+function SeriesPanel({ video, index, inView, seriesLabel = "TRILOGY", creditLabel = "by" }: {
   video: { id: string; title: string; ep: string; artist: string; role: string };
   index: number;
   inView: boolean;
+  seriesLabel?: string;
+  creditLabel?: string;
 }) {
   const [preview, setPreview] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -357,7 +347,6 @@ function SeriesPanel({ video, index, inView }: {
           onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`; }} />
       )}
 
-      {/* Gradient overlays */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
         background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.08) 55%, rgba(0,0,0,0.28) 100%)" }} />
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
@@ -378,7 +367,7 @@ function SeriesPanel({ video, index, inView }: {
           transition: `opacity .6s ease ${0.05 + index * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${0.05 + index * 0.1}s`,
         }}>
           <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
-            TRILOGY {video.ep}
+            {seriesLabel} {video.ep}
           </span>
           <div style={{ width: 60, height: 1, background: "var(--white-dim)" }} />
           <RoleTag text={video.role} />
@@ -392,7 +381,7 @@ function SeriesPanel({ video, index, inView }: {
           fontSize: 10, letterSpacing: "0.18em", marginTop: 10, color: "var(--white-muted)",
           opacity: inView ? 1 : 0, transition: `opacity .7s ease ${0.25 + index * 0.1}s`,
         }}>
-          Directed by <span style={{ color: "var(--white-secondary)" }}>{video.artist}</span>
+          {creditLabel} <span style={{ color: "var(--white-secondary)" }}>{video.artist}</span>
         </p>
       </div>
 
@@ -411,7 +400,7 @@ function SeriesPanel({ video, index, inView }: {
   );
 }
 
-/* ─── Grid card (for clean grid sections) ─── */
+/* ─── Grid card ─── */
 function GridCard({ id, title, artist, role, cat, award }: {
   id: string; title: string; artist?: string; role: string; cat?: string; award?: string;
 }) {
@@ -460,31 +449,13 @@ export default function WorkVideo() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [playing, setPlaying]     = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const [isMobile, setIsMobile]   = useState(false);
-  // iframeReady removed — background autoplay iframe removed for performance
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const onResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const { ref: pRef,  inView: pIn  } = useInView(0.02);
-  const { ref: mvRef, inView: mvIn } = useInView(0.02);
-  const { ref: trRef, inView: trIn } = useInView(0.02);
-  const { ref: wRef,  inView: wIn  } = useInView(0.02);
-  const { ref: evRef, inView: evIn } = useInView(0.02);
-  const { ref: leRef, inView: leIn } = useInView(0.02);
-  const { ref: sRef,  inView: sIn  } = useInView(0.04);
-  const { ref: igRef, inView: igIn } = useInView(0.04);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroLoaded(true), 150);
     return () => { clearTimeout(t); };
   }, []);
 
-  // Auto-rotate through all featured MVs every 8s
+  // Auto-rotate hero every 8s
   useEffect(() => {
     if (playing) return;
     const interval = setInterval(() => {
@@ -492,6 +463,17 @@ export default function WorkVideo() {
     }, 8000);
     return () => clearInterval(interval);
   }, [playing]);
+
+  const { ref: pRef,   inView: pIn   } = useInView(0.02);
+  const { ref: mvRef,  inView: mvIn  } = useInView(0.02);
+  const { ref: trRef,  inView: trIn  } = useInView(0.02);
+  const { ref: lrRef,  inView: lrIn  } = useInView(0.02);  // Lil RAD series
+  const { ref: wRef,   inView: wIn   } = useInView(0.02);
+  const { ref: evRef,  inView: evIn  } = useInView(0.02);
+  const { ref: leRef,  inView: leIn  } = useInView(0.02);
+  const { ref: aigcRef, inView: aigcIn } = useInView(0.02); // AIGC
+  const { ref: sRef,   inView: sIn   } = useInView(0.04);
+  const { ref: igRef,  inView: igIn  } = useInView(0.04);
 
   const active = featuredMVs[activeIdx];
 
@@ -501,31 +483,28 @@ export default function WorkVideo() {
       {/* ── CINEMATIC HERO — fullscreen featured MV ── */}
       <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
 
-        {/* Background: thumbnail crossfade via Framer Motion */}
+        {/* Thumbnail crossfade (no autoplay iframe for perf) */}
         {!playing && (
-          <>
-            <AnimatePresence mode="sync">
-              <motion.img
-                key={active.id}
-                src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
-                alt={`${active.artist} ${active.title} MV 影像作品 - 在地影像工作者 MINEH4O`}
-                initial={{ opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  position: "absolute", inset: 0, width: "100%", height: "100%",
-                  objectFit: "cover", pointerEvents: "none",
-                  filter: "brightness(0.55)",
-                }}
-                onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
-              />
-            </AnimatePresence>
-            {/* Background iframe removed — thumbnail crossfade is performant enough */}
-          </>
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={active.id}
+              src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
+              alt={`${active.artist} ${active.title} MV 影像作品 - 在地影像工作者 MINEH4O`}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", pointerEvents: "none",
+                filter: "brightness(0.55)",
+              }}
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
+            />
+          </AnimatePresence>
         )}
 
-        {/* Full-screen player overlay (with sound) */}
+        {/* Full-screen player overlay (with sound, on demand) */}
         {playing && (
           <div style={{ position: "absolute", inset: 0, zIndex: 15 }}>
             <iframe className="w-full h-full"
@@ -537,7 +516,7 @@ export default function WorkVideo() {
           </div>
         )}
 
-        {/* Gradient overlays — cinematic */}
+        {/* Gradient overlays */}
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
           background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.35) 100%)" }} />
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
@@ -548,8 +527,7 @@ export default function WorkVideo() {
           position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
           padding: "2.2rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center",
           background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%)",
-          opacity: heroLoaded ? 1 : 0,
-          transition: "opacity .6s ease",
+          opacity: heroLoaded ? 1 : 0, transition: "opacity .6s ease",
         }}>
           <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "var(--white-soft)" }}>
             03 — VIDEO
@@ -591,7 +569,6 @@ export default function WorkVideo() {
                   {active.subEn.toUpperCase()}
                 </span>
               </motion.div>
-
               <motion.h2
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -600,7 +577,6 @@ export default function WorkVideo() {
                 style={{ fontSize: "clamp(3.2rem, 10vw, 13rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
                 {active.title}
               </motion.h2>
-
               {active.artist && (
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -608,7 +584,7 @@ export default function WorkVideo() {
                   transition={{ delay: 0.28, duration: 0.6 }}
                   className="font-mono-label"
                   style={{ fontSize: 10, letterSpacing: "0.18em", marginTop: 14, color: "var(--white-soft)" }}>
-                  Directed by <span style={{ color: "var(--white-secondary)" }}>{active.artist}</span>
+                  by <span style={{ color: "var(--white-secondary)" }}>{active.artist}</span>
                 </motion.p>
               )}
             </motion.div>
@@ -655,7 +631,7 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── DIRECTOR MV — 愚人節 & Bring Me Your Lovely ── */}
+      {/* ── 01 · DIRECTOR WORKS ── */}
       <div ref={mvRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={directorMVs.length} note="DIRECTOR WORKS" />
@@ -672,18 +648,13 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 02 · LIGHT & SCENE TRILOGY — cinematic series ── */}
+      {/* ── 光與景三部曲 ── */}
       <div ref={trRef} className="border-b" style={{ borderColor: "var(--border)" }}>
-        {/* Series header */}
         <div className="px-8 md:px-14 py-6 border-b flex items-center justify-between"
           style={{ borderColor: "var(--border)", opacity: trIn ? 1 : 0, transition: "opacity .8s ease" }}>
           <div>
-            <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>
-              FEATURED SERIES
-            </p>
-            <h2 className="font-display leading-none" style={{
-              fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em",
-            }}>
+            <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
+            <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
               LIGHT & SCENE TRILOGY
             </h2>
           </div>
@@ -694,14 +665,35 @@ export default function WorkVideo() {
           </div>
         </div>
         {trilogy.map((v, i) => (
-          <SeriesPanel key={v.id} video={v} index={i} inView={trIn} />
+          <SeriesPanel key={v.id} video={v} index={i} inView={trIn} seriesLabel="TRILOGY" creditLabel="Directed by" />
         ))}
       </div>
 
-      {/* ── 03 · MUSIC VIDEO · COLOR WORK ── */}
+      {/* ── Lil RAD × Coy6oi SERIES ── */}
+      <div ref={lrRef} className="border-b" style={{ borderColor: "var(--border)" }}>
+        <div className="px-8 md:px-14 py-6 border-b flex items-center justify-between"
+          style={{ borderColor: "var(--border)", opacity: lrIn ? 1 : 0, transition: "opacity .8s ease" }}>
+          <div>
+            <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
+            <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+              LIL RAD × COY6OI
+            </h2>
+          </div>
+          <div className="hidden md:block text-right">
+            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>DP</p>
+            <p className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--text-2)" }}>Lil RAD & Coy6oi</p>
+            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>DP · COLOR · 4 MUSIC VIDEOS</p>
+          </div>
+        </div>
+        {lilRadSeries.map((v, i) => (
+          <SeriesPanel key={v.id} video={v} index={i} inView={lrIn} seriesLabel="LIL RAD SERIES" creditLabel="by" />
+        ))}
+      </div>
+
+      {/* ── 02 · MUSIC VIDEO · COLOR WORK ── */}
       <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="01" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="DP · COLOR GRADING" />
+          <CatHeader num="02" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="COLOR GRADING · DP" />
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
             {colorCredits.map((v, i) => (
               <div key={v.id} style={{
@@ -715,32 +707,44 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 04 · SHORT FILM & COMMERCIAL ── */}
+      {/* ── 03 · NARRATIVE SHORT FILM + ON SET ── */}
       <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="02" label="SHORT FILM & COMMERCIAL" count={shortFilms.length + setCredits.length + commercial.length} note="NARRATIVE · CLIENT WORK" />
 
-          {/* Short Film */}
-          <SubLabel label="SHORT FILM · NARRATIVE" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-            {shortFilms.map((v, i) => (
+          {/* Narrative Shorts */}
+          <CatHeader num="03" label="NARRATIVE SHORT FILM" count={narrativeShorts.length} note="DRAMA · FESTIVAL WORKS" />
+          <div className="grid grid-cols-2 gap-4 md:gap-5">
+            {narrativeShorts.map((v, i) => (
               <div key={v.id} style={{
                 opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
               }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role}
-                  cat={v.cat} award={"award" in v ? v.award : undefined} />
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={"award" in v ? v.award : undefined} />
               </div>
             ))}
           </div>
 
-          {/* Set Credits */}
-          <SubLabel label="ON SET · PRODUCTION" />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {setCredits.map((v, i) => (
+          {/* On Set — MV Credits (grouped by artist) */}
+          <SubLabel label="ON SET · MV PRODUCTION" />
+
+          <ArtistGroupHeader name="KIMBERLEY CHEN · 陳芳語" count={kimberleyCredits.length} />
+          <div className="grid grid-cols-2 gap-4 md:gap-5 mb-6">
+            {kimberleyCredits.map((v, i) => (
               <div key={v.id} style={{
                 opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.08}s`,
+                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
+
+          <ArtistGroupHeader name="STILA 言芯" count={otherOnSet.length} />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            {otherOnSet.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08 + 0.15}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.15}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
@@ -762,12 +766,18 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 05 · LIVE · DOCUMENTARY · EVENT ── */}
+      {/* ── 04 · LIVE · DOCUMENTARY · EVENT ── */}
       <div ref={leRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: leIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="03" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {[...liveDoc, ...eventRec].map((v, i) => (
+          <CatHeader num="04" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
+
+          {/* 跑馬燈 ticker */}
+          <DocTicker items={["CPBL ALL-STAR 2025 精銳紀實", "TEDxNTHU OOTB 年會", "僑泰中學 55週年 校慶", "九龍灣鳳靈修院 南巡", "DJ SOCUTE 演出記錄", "USR計畫 活動紀錄"]} />
+
+          {/* Documentary */}
+          <SubLabel label="DOCUMENTARY · LIVE" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+            {liveDoc.map((v, i) => (
               <div key={v.id} style={{
                 opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.06}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06}s`,
@@ -776,10 +786,43 @@ export default function WorkVideo() {
               </div>
             ))}
           </div>
+
+          {/* Event Records */}
+          <SubLabel label="EVENT RECORDS" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+            {eventRec.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.06 + 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06 + 0.08}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── 05 · YOUTUBE SHORTS ── */}
+      {/* ── 05 · AIGC SHORT FILM ── */}
+      <div ref={aigcRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: aigcIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="05" label="AIGC SHORT FILM" count={aigcWorks.length} note="GENERATIVE AI · DIR" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+            {aigcWorks.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: aigcIn ? 1 : 0, transform: aigcIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={v.award} />
+              </div>
+            ))}
+          </div>
+          <p className="font-mono-label text-[8px] tracking-[0.22em] mt-6" style={{ color: "var(--white-dim)" }}>
+            → More AIGC short films in IG Reels below ↓
+          </p>
+        </div>
+      </div>
+
+      {/* ── 06 · YOUTUBE SHORTS ── */}
       <div ref={sRef} className="px-8 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
           <SubLabel label="YOUTUBE SHORTS" />
@@ -808,16 +851,14 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 06 · IG REELS ── */}
+      {/* ── 07 · IG REELS ── */}
       <div ref={igRef} className="border-t" style={{ borderColor: "var(--border)" }}>
 
-        {/* Header */}
         <div className="px-8 md:px-14 pt-10 pb-2"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="04" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw" />
+          <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw · @mlpon6" />
         </div>
 
-        {/* Horizontal scroll — custom reel cards */}
         <div className="px-8 md:px-14 pb-6">
           <div className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
             {igReelsData.map((reel, i) => (
@@ -833,7 +874,6 @@ export default function WorkVideo() {
                   textDecoration: "none",
                 }}>
 
-                {/* Card — 9:16 portrait */}
                 <div className="relative overflow-hidden"
                   style={{ aspectRatio: "9/16", background: "#0c0c0e", border: "1px solid var(--white-ghost)" }}>
 
@@ -845,7 +885,6 @@ export default function WorkVideo() {
                     opacity: 0.12, mixBlendMode: "screen",
                   }} />
 
-                  {/* Thumbnail image — falls back to dark bg if not found */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={`/reels/${reel.code}.jpg`}
@@ -856,10 +895,8 @@ export default function WorkVideo() {
                     className="group-hover:scale-[1.04]"
                   />
 
-                  {/* Overlay so text stays readable over thumbnail */}
                   <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.28)", pointerEvents: "none" }} />
 
-                  {/* Play icon + REELS label — center */}
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
                     <div style={{
                       width: 44, height: 44, borderRadius: "50%",
@@ -875,7 +912,6 @@ export default function WorkVideo() {
                     <span className="font-mono-label text-[7px] tracking-[0.38em]" style={{ color: "var(--white-dim)" }}>REELS</span>
                   </div>
 
-                  {/* Bottom gradient + title */}
                   <div style={{
                     position: "absolute", bottom: 0, left: 0, right: 0,
                     background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%)",
@@ -887,28 +923,18 @@ export default function WorkVideo() {
                     </p>
                   </div>
 
-                  {/* Top: account + likes */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <span className="font-mono-label text-[7px] tracking-[0.15em]" style={{ color: "var(--white-muted)" }}>
                       @{reel.account}
                     </span>
                     <span className="font-mono-label text-[7px]" style={{ color: "var(--white-muted)" }}>
-                      ♡ {reel.likes}
+                      ♡ {reel.likes.toLocaleString()}
                     </span>
                   </div>
 
-                  {/* Hover: IG arrow */}
-                  <div style={{
-                    position: "absolute", top: "0.75rem", right: "0.75rem",
-                    opacity: 0, transition: "opacity .25s",
-                  }}
+                  <div style={{ position: "absolute", top: "0.75rem", right: "0.75rem", opacity: 0, transition: "opacity .25s" }}
                     className="group-hover:opacity-100">
-                    <span style={{
-                      fontFamily: "var(--font-space-mono)", fontSize: 9,
-                      color: "var(--white-secondary)",
-                      background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
-                      padding: "3px 7px",
-                    }}>↗</span>
+                    <span style={{ fontFamily: "var(--font-space-mono)", fontSize: 9, color: "var(--white-secondary)", background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)", padding: "3px 7px" }}>↗</span>
                   </div>
                 </div>
               </a>
