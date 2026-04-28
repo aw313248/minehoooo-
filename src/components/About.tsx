@@ -63,7 +63,7 @@ function SkillCard({ skill, index, inView }: {
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0) scale(1)" : "translateY(36px) scale(0.97)",
         transition: `opacity 0.7s ease ${index * 0.1}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${index * 0.1}s`,
-        background: hover ? "rgba(255,255,255,0.025)" : "transparent",
+        background: hover ? "var(--white-ghost)" : "transparent",
       }}>
       {/* Hover glow */}
       <div style={{
@@ -133,7 +133,7 @@ export default function About() {
         <div style={{
           position: "absolute", top: 0, left: 0, width: "100%",
           height: `${scrollPct * 100}%`,
-          background: "rgba(255,255,255,0.18)",
+          background: "var(--white-dim)",
           transition: "height 0.1s linear",
         }} />
       </div>
@@ -167,7 +167,7 @@ export default function About() {
 
         {/* Top label */}
         <div className="absolute px-8 md:px-14" style={{ top: "5.5rem" }}>
-          <p className="font-mono-label text-[9px] tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+          <p className="font-mono-label text-[9px] tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
             01 — ABOUT · MINEH4O
           </p>
         </div>
@@ -197,7 +197,7 @@ export default function About() {
               {q.lines.map((line, i) => (
                 <p key={i} style={{
                   fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                  fontSize: "0.88rem", fontWeight: 300, color: "rgba(255,255,255,0.82)",
+                  fontSize: "0.88rem", fontWeight: 300, color: "var(--white-primary)",
                   letterSpacing: "0.02em", lineHeight: 1.7, marginBottom: i < q.lines.length - 1 ? 2 : 0,
                   opacity: coverHover ? 1 : 0, transform: coverHover ? "translateY(0)" : "translateY(6px)",
                   transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
@@ -205,7 +205,7 @@ export default function About() {
               ))}
               {q.attr && (
                 <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: "0.5rem",
-                  letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)", marginTop: 10,
+                  letterSpacing: "0.25em", color: "var(--white-muted)", marginTop: 10,
                   opacity: coverHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
               )}
               <div style={{ height: 1, background: "rgba(255,255,255,0.06)", marginTop: 12, transformOrigin: "right",
@@ -214,22 +214,22 @@ export default function About() {
           </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
             <div>
-              <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.65)" }}>
+              <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "var(--white-secondary)" }}>
                 賴明宏 Lai Ming-Hong
               </p>
-              <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>
+              <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "var(--white-soft)" }}>
                 Director · DP · Screenplay · Photography
               </p>
             </div>
             <div className="flex gap-3 md:gap-4">
               <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
                 className="font-mono-label text-[8px] tracking-[0.25em]"
-                style={{ color: "rgba(255,255,255,0.4)" }}>
+                style={{ color: "var(--white-soft)" }}>
                 @minehoooo
               </a>
               <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
                 className="font-mono-label text-[8px] tracking-[0.25em]"
-                style={{ color: "rgba(255,255,255,0.4)" }}>
+                style={{ color: "var(--white-soft)" }}>
                 @minehoooo.arw
               </a>
             </div>
@@ -240,7 +240,7 @@ export default function About() {
         <div className="absolute hidden md:flex flex-col items-center gap-2"
           style={{ bottom: "2.5rem", right: "3.5rem" }}>
           <span className="font-mono-label text-[7px] tracking-[0.35em]"
-            style={{ color: "rgba(255,255,255,0.3)", writingMode: "vertical-rl" }}>
+            style={{ color: "var(--white-muted)", writingMode: "vertical-rl" }}>
             SCROLL
           </span>
           <div style={{ width: 1, height: 48, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
@@ -326,7 +326,7 @@ export default function About() {
                 {q.lines.map((line, i) => (
                   <p key={i} style={{
                     fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                    fontSize: "0.82rem", fontWeight: 300, color: "rgba(255,255,255,0.82)",
+                    fontSize: "0.82rem", fontWeight: 300, color: "var(--white-primary)",
                     letterSpacing: "0.02em", lineHeight: 1.7, marginBottom: i < q.lines.length - 1 ? 2 : 0,
                     opacity: panelHover ? 1 : 0, transform: panelHover ? "translateY(0)" : "translateY(4px)",
                     transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
@@ -334,7 +334,7 @@ export default function About() {
                 ))}
                 {q.attr && (
                   <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: "0.45rem",
-                    letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)", marginTop: 8,
+                    letterSpacing: "0.25em", color: "var(--white-muted)", marginTop: 8,
                     opacity: panelHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
                 )}
               </div>
@@ -449,7 +449,7 @@ export default function About() {
               background: "linear-gradient(to right, rgba(10,10,11,0.5) 0%, transparent 60%)",
             }} />
             <div style={{ position: "absolute", bottom: "1.2rem", left: "2rem", right: "2rem" }}>
-              <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "var(--white-soft)" }}>
                 DIRECTOR · DP · SCREENPLAY
               </p>
               <p className="font-display leading-none" style={{ fontSize: "clamp(2rem, 8vw, 3.5rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
@@ -512,7 +512,7 @@ export default function About() {
                   </p>
                   {credit.highlight && (
                     <div style={{ flexShrink: 0, paddingTop: 6 }}>
-                      <div style={{ width: 4, height: 4, borderRadius: "50%", background: "rgba(255,255,255,0.35)" }} />
+                      <div style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--white-soft)" }} />
                     </div>
                   )}
                 </div>

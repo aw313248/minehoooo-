@@ -74,11 +74,11 @@ export default function Contact() {
 
       {/* ── Top label ── */}
       <div className="border-b px-8 md:px-14 py-3 flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-        <span className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "rgba(255,255,255,0.3)" }}>
+        style={{ borderColor: "var(--white-ghost)" }}>
+        <span className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "var(--white-muted)" }}>
           05 — CONTACT
         </span>
-        <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+        <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "var(--white-dim)" }}>
           minehoooo.xyz
         </span>
       </div>
@@ -112,7 +112,7 @@ export default function Contact() {
           {/* Label */}
           <p className="font-mono-label text-[9px] tracking-[0.38em] mb-8"
             style={{
-              color: "rgba(255,255,255,0.3)",
+              color: "var(--white-muted)",
               opacity: inView ? 1 : 0,
               transition: "opacity .7s ease",
             }}>
@@ -127,7 +127,7 @@ export default function Contact() {
 
           <p className="font-mono-label text-[11px] md:text-[13px] tracking-[0.18em] mb-12 max-w-md leading-relaxed"
             style={{
-              color: "rgba(255,255,255,0.35)",
+              color: "var(--white-soft)",
               opacity: inView ? 1 : 0,
               transition: "opacity .8s ease .2s",
             }}>
@@ -144,8 +144,8 @@ export default function Contact() {
           }}>
             <a href="mailto:minehoooo@gmail.com"
               className="inline-flex items-center gap-2 font-mono-label text-[10px] tracking-[0.18em]"
-              style={{ color: "rgba(255,255,255,0.35)", transition: "color .3s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+              style={{ color: "var(--white-soft)", transition: "color .3s" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--white-secondary)")}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.35)")}>
               <svg width="12" height="10" viewBox="0 0 24 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="16" rx="2"/>
@@ -157,14 +157,14 @@ export default function Contact() {
               aria-label="複製在地影像工作者 MINEH4O 的聯繫信箱"
               className="font-mono-label text-[8px] tracking-[0.25em] px-2 py-0.5"
               style={{
-                border: "1px solid rgba(255,255,255,0.12)",
+                border: "1px solid var(--white-dim)",
                 color: copied ? "rgba(74,222,128,0.9)" : "rgba(255,255,255,0.28)",
                 background: copied ? "rgba(74,222,128,0.06)" : "rgba(255,255,255,0.03)",
                 cursor: "pointer", transition: "all .25s ease",
               }}>
               {copied ? "COPIED ✓" : "COPY"}
             </button>
-            <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+            <span className="font-mono-label text-[8px] tracking-[0.2em]" style={{ color: "var(--white-dim)" }}>
               {t.reply}
             </span>
           </div>
@@ -178,38 +178,38 @@ export default function Contact() {
             <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
               className="group inline-flex items-center gap-4"
               style={{
-                background: "rgba(255,255,255,0.06)",
+                background: "var(--white-ghost)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,0.12)",
+                border: "1px solid var(--white-dim)",
                 padding: "14px 28px",
                 transition: "all .35s ease",
               }}
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLAnchorElement;
-                el.style.background = "rgba(255,255,255,0.11)";
-                el.style.borderColor = "rgba(255,255,255,0.25)";
+                el.style.background = "var(--white-dim)";
+                el.style.borderColor = "var(--white-muted)";
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLAnchorElement;
-                el.style.background = "rgba(255,255,255,0.06)";
+                el.style.background = "var(--white-ghost)";
                 el.style.borderColor = "rgba(255,255,255,0.12)";
               }}>
               {/* IG icon */}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                 <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="0.5" fill="rgba(255,255,255,0.7)" stroke="none" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="var(--white-secondary)" stroke="none" />
               </svg>
               <div className="flex flex-col">
-                <span className="font-mono-label text-[10px] tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                <span className="font-mono-label text-[10px] tracking-[0.28em]" style={{ color: "var(--white-soft)" }}>
                   SEND A DM
                 </span>
-                <span className="font-mono-label text-[13px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.85)" }}>
+                <span className="font-mono-label text-[13px] tracking-[0.12em]" style={{ color: "var(--white-primary)" }}>
                   @minehoooo
                 </span>
               </div>
-              <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 18, marginLeft: 4 }}>↗</span>
+              <span style={{ color: "var(--white-soft)", fontSize: 18, marginLeft: 4 }}>↗</span>
             </a>
 
             {/* Toggle: show contact form */}
@@ -217,7 +217,7 @@ export default function Contact() {
               <button onClick={() => { setShowForm(v => !v); setFormState("idle"); }}
                 className="font-mono-label text-[9px] tracking-[0.22em]"
                 style={{
-                  color: showForm ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.3)",
+                  color: showForm ? "var(--white-secondary)" : "var(--white-muted)",
                   background: "none", border: "none", cursor: "pointer",
                   borderBottom: "1px solid rgba(255,255,255,0.12)",
                   paddingBottom: 2,
@@ -239,7 +239,7 @@ export default function Contact() {
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                         <div>
-                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "var(--white-muted)" }}>
                             {t.nameLabel}
                           </label>
                           <input type="text" required value={formData.name}
@@ -247,12 +247,12 @@ export default function Contact() {
                             placeholder={t.namePh}
                             className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2"
                             style={{
-                              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                              color: "rgba(255,255,255,0.8)", outline: "none",
+                              background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
+                              color: "var(--white-primary)", outline: "none",
                             }} />
                         </div>
                         <div>
-                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                          <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "var(--white-muted)" }}>
                             {t.emailLabel}
                           </label>
                           <input type="email" required value={formData.email}
@@ -260,13 +260,13 @@ export default function Contact() {
                             placeholder="email@example.com"
                             className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2"
                             style={{
-                              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                              color: "rgba(255,255,255,0.8)", outline: "none",
+                              background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
+                              color: "var(--white-primary)", outline: "none",
                             }} />
                         </div>
                       </div>
                       <div>
-                        <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "rgba(255,255,255,0.28)" }}>
+                        <label className="font-mono-label text-[8px] tracking-[0.25em] block mb-1.5" style={{ color: "var(--white-muted)" }}>
                           {t.msgLabel}
                         </label>
                         <textarea required rows={4} value={formData.message}
@@ -274,8 +274,8 @@ export default function Contact() {
                           placeholder={t.msgPh}
                           className="w-full font-mono-label text-[10px] tracking-wide px-3 py-2 resize-none"
                           style={{
-                            background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                            color: "rgba(255,255,255,0.8)", outline: "none",
+                            background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
+                            color: "var(--white-primary)", outline: "none",
                           }} />
                       </div>
                     </div>
@@ -287,9 +287,9 @@ export default function Contact() {
                     <button type="submit" disabled={formState === "sending"}
                       className="font-mono-label text-[9px] tracking-[0.28em] mt-3 px-6 py-2.5"
                       style={{
-                        background: formState === "sending" ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.08)",
-                        border: "1px solid rgba(255,255,255,0.18)",
-                        color: formState === "sending" ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.8)",
+                        background: formState === "sending" ? "var(--white-ghost)" : "var(--white-ghost)",
+                        border: "1px solid var(--white-dim)",
+                        color: formState === "sending" ? "var(--white-soft)" : "var(--white-primary)",
                         cursor: formState === "sending" ? "default" : "pointer",
                         transition: "all .25s ease",
                       }}>
@@ -308,20 +308,20 @@ export default function Contact() {
             opacity: inView ? 1 : 0,
             transition: "opacity .8s ease .5s",
           }}>
-          <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+          <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "var(--white-dim)" }}>
             FOLLOW ALONG
           </p>
           {IG_ACCOUNTS.map(acc => (
             <a key={acc.handle} href={acc.href} target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-4 group">
               <span className="font-mono-label text-[8px] tracking-[0.18em]"
-                style={{ color: "rgba(255,255,255,0.2)" }}>
+                style={{ color: "var(--white-dim)" }}>
                 {acc.desc}
               </span>
               <span className="font-mono-label text-[10px] tracking-[0.14em] transition-colors duration-300"
-                style={{ color: "rgba(255,255,255,0.4)" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.4)")}>
+                style={{ color: "var(--white-soft)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--white-primary)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "var(--white-soft)")}>
                 {acc.handle}
               </span>
             </a>
@@ -331,17 +331,17 @@ export default function Contact() {
 
       {/* ── Mobile IG list ── */}
       <div className="md:hidden px-8 pb-10 flex flex-col gap-3 border-t"
-        style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-        <p className="font-mono-label text-[8px] tracking-[0.3em] pt-6 mb-1" style={{ color: "rgba(255,255,255,0.2)" }}>
+        style={{ borderColor: "var(--white-ghost)" }}>
+        <p className="font-mono-label text-[8px] tracking-[0.3em] pt-6 mb-1" style={{ color: "var(--white-dim)" }}>
           FOLLOW ALONG
         </p>
         {IG_ACCOUNTS.map(acc => (
           <a key={acc.handle} href={acc.href} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-between">
-            <span className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <span className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--white-soft)" }}>
               {acc.handle}
             </span>
-            <span className="font-mono-label text-[8px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+            <span className="font-mono-label text-[8px] tracking-[0.15em]" style={{ color: "var(--white-dim)" }}>
               {acc.desc}
             </span>
           </a>
@@ -350,8 +350,8 @@ export default function Contact() {
 
       {/* ── Footer strip ── */}
       <div className="border-t px-8 md:px-14 py-4 flex items-center justify-between flex-wrap gap-3"
-        style={{ borderColor: "rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.01)" }}>
-        <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+        style={{ borderColor: "var(--white-ghost)", background: "var(--white-ghost)" }}>
+        <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-dim)" }}>
           © {year} MINEH4O · 賴明宏 Oscar Lai
         </span>
         <div className="flex items-center gap-6">

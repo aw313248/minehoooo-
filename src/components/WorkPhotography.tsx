@@ -63,15 +63,15 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           className="hidden md:flex items-center justify-center"
           style={{
             width: 40, height: 40,
-            background: "rgba(255,255,255,0.05)",
-            borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.1)",
+            background: "var(--white-ghost)",
+            borderWidth: 1, borderStyle: "solid", borderColor: "var(--white-ghost)",
             cursor: hasPrev ? "pointer" : "default",
             opacity: hasPrev ? 1 : 0.18,
             transition: "opacity .2s, background .2s",
           }}
-          onMouseEnter={e => hasPrev && (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
-          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}>
-          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          onMouseEnter={e => hasPrev && (e.currentTarget.style.background = "var(--white-dim)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "var(--white-ghost)")}>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="7 1 1 7 7 13" />
           </svg>
         </button>
@@ -82,13 +82,13 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           <img src={src} alt={`MINEH4O Photography ${String(idx + 1).padStart(2,"0")} of ${total}`} className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 2 }} />
           {/* Counter */}
           <span className="absolute bottom-3 left-3 font-mono-label text-[8px] tracking-[0.2em]"
-            style={{ color: "rgba(255,255,255,0.4)" }}>
+            style={{ color: "var(--white-soft)" }}>
             {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
           {/* Close */}
           <button onClick={onClose} aria-label="Close lightbox"
             className="absolute top-3 right-3 font-mono-label text-[9px] tracking-widest px-3 py-1.5"
-            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "rgba(255,255,255,0.7)", borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.12)" }}>
+            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "var(--white-secondary)", borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.12)" }}>
             ESC ✕
           </button>
         </div>
@@ -98,15 +98,15 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           className="hidden md:flex items-center justify-center"
           style={{
             width: 40, height: 40,
-            background: "rgba(255,255,255,0.05)",
-            borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.1)",
+            background: "var(--white-ghost)",
+            borderWidth: 1, borderStyle: "solid", borderColor: "var(--white-ghost)",
             cursor: hasNext ? "pointer" : "default",
             opacity: hasNext ? 1 : 0.18,
             transition: "opacity .2s, background .2s",
           }}
-          onMouseEnter={e => hasNext && (e.currentTarget.style.background = "rgba(255,255,255,0.12)")}
-          onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}>
-          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="rgba(255,255,255,0.75)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          onMouseEnter={e => hasNext && (e.currentTarget.style.background = "var(--white-dim)")}
+          onMouseLeave={e => (e.currentTarget.style.background = "var(--white-ghost)")}>
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="1 1 7 7 1 13" />
           </svg>
         </button>
@@ -133,7 +133,7 @@ function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (idx: num
         })}
         {cat.files.length > 12 && (
           <div className="shrink-0 flex items-center justify-center"
-            style={{ width: 64, height: 64, background: "rgba(255,255,255,0.04)", borderRadius: 2, border: "1px solid rgba(255,255,255,0.07)" }}>
+            style={{ width: 64, height: 64, background: "var(--white-ghost)", borderRadius: 2, border: "1px solid var(--white-ghost)" }}>
             <span className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>+{cat.files.length - 12}</span>
           </div>
         )}
@@ -214,16 +214,16 @@ export default function WorkPhotography() {
           {/* Bottom info overlay */}
           <div className="absolute bottom-0 left-0 right-0 px-8 py-6"
             style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)", backdropFilter: "blur(0px)" }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <p className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--white-soft)" }}>
               {cat.en.toUpperCase()} · MINEH4O · {String(heroIdx + 1).padStart(2, "0")} / {String(Math.min(cat.files.length, 6)).padStart(2, "0")}
             </p>
           </div>
 
           {/* OPEN overlay — desktop hover */}
           <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <div style={{ background: "rgba(0,0,0,0.52)", backdropFilter: "blur(14px)", border: "1px solid rgba(255,255,255,0.14)", padding: "10px 22px", display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ background: "rgba(0,0,0,0.52)", backdropFilter: "blur(14px)", border: "1px solid var(--white-dim)", padding: "10px 22px", display: "flex", alignItems: "center", gap: 8 }}>
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.8)" }}>OPEN ↗</span>
+              <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "var(--white-primary)" }}>OPEN ↗</span>
             </div>
           </div>
 
@@ -234,7 +234,7 @@ export default function WorkPhotography() {
                 onClick={e => { e.stopPropagation(); setHeroIdx(i); }}
                 style={{
                   width: i === heroIdx ? 16 : 4, height: 4, borderRadius: 2, cursor: "pointer",
-                  background: i === heroIdx ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.25)",
+                  background: i === heroIdx ? "var(--white-primary)" : "var(--white-muted)",
                   transition: "all .4s ease",
                 }} />
             ))}
@@ -243,7 +243,7 @@ export default function WorkPhotography() {
           {/* View label — desktop hover only */}
           <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
             <span className="font-mono-label text-[11px] tracking-[0.3em]"
-              style={{ color: "rgba(255,255,255,0.8)", textShadow: "0 0 20px rgba(0,0,0,0.8)" }}>
+              style={{ color: "var(--white-primary)", textShadow: "0 0 20px rgba(0,0,0,0.8)" }}>
               VIEW FULL
             </span>
           </div>
@@ -285,9 +285,9 @@ export default function WorkPhotography() {
               <button key={c.id} onClick={() => setActiveId(c.id)}
                 className="shrink-0 px-3 py-1.5 active:scale-95"
                 style={{
-                  background: isActive ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
+                  background: isActive ? "var(--white-dim)" : "var(--white-ghost)",
                   backdropFilter: "blur(8px)",
-                  border: isActive ? "1px solid rgba(255,255,255,0.35)" : "1px solid rgba(255,255,255,0.08)",
+                  border: isActive ? "1px solid var(--white-soft)" : "1px solid var(--white-ghost)",
                   borderRadius: 2,
                   transition: "background .2s ease, border-color .2s ease, transform .15s ease",
                 }}>
@@ -328,14 +328,14 @@ export default function WorkPhotography() {
                 <button key={c.id} onClick={() => setActiveId(c.id)}
                   className="w-full flex items-center justify-between px-4 py-3 text-left group"
                   style={{
-                    background:     isActive ? "rgba(255,255,255,0.07)" : "transparent",
+                    background:     isActive ? "var(--white-ghost)" : "transparent",
                     backdropFilter: isActive ? "blur(8px)" : "none",
-                    borderLeft:     isActive ? "2px solid rgba(255,255,255,0.5)" : "2px solid rgba(255,255,255,0.08)",
+                    borderLeft:     isActive ? "2px solid var(--white-soft)" : "2px solid var(--white-ghost)",
                     opacity: inView ? 1 : 0,
                     transition: `opacity .6s ease ${.1 + i * .08}s, background .25s ease, border-color .25s ease`,
                   }}
-                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderLeftColor = "rgba(255,255,255,0.25)"; } }}
-                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderLeftColor = "rgba(255,255,255,0.08)"; } }}>
+                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.borderLeftColor = "var(--white-muted)"; } }}
+                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderLeftColor = "var(--white-ghost)"; } }}>
                   <div>
                     <p className="text-[13px] font-medium transition-colors duration-200" style={{ color: isActive ? "var(--text)" : "var(--text-2)" }}>
                       {c.en}
@@ -345,7 +345,7 @@ export default function WorkPhotography() {
                   <div className="flex items-center gap-2">
                     <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
                     <span className="font-mono-label text-[9px] transition-opacity duration-200"
-                      style={{ color: "rgba(255,255,255,0.4)", opacity: isActive ? 1 : 0 }}>→</span>
+                      style={{ color: "var(--white-soft)", opacity: isActive ? 1 : 0 }}>→</span>
                   </div>
                 </button>
                 );

@@ -18,7 +18,7 @@ function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay
   const b = pos.startsWith("b") ? "5.2rem" : undefined;
   const l = pos.endsWith("l") ? "1.8rem" : undefined;
   const r = pos.endsWith("r") ? "1.8rem" : undefined;
-  const c = "rgba(255,255,255,0.8)";
+  const c = "var(--white-primary)";
   return (
     <div className="absolute pointer-events-none hidden md:block"
       style={{ top: t, bottom: b, left: l, right: r, width: 26, height: 26,
@@ -122,10 +122,10 @@ export default function Hero() {
           boxShadow: "0 0 10px rgba(220,50,50,0.5)",
           animation: "pulse-slow 1.8s ease-in-out infinite",
         }} />
-        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.28)" }}>
+        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>
           REC
         </span>
-        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.15em", color: "rgba(255,255,255,0.15)" }}>
+        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.15em", color: "var(--white-dim)" }}>
           2026
         </span>
       </div>
@@ -158,7 +158,7 @@ export default function Hero() {
           <span className="font-mono-label text-[10px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
             @minehoooo
           </span>
-          <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.15)" }}>
+          <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-dim)" }}>
             · @minehoooo.arw
           </span>
         </div>
@@ -205,12 +205,12 @@ export default function Hero() {
             ) : (
               <span key={i} className="font-mono-label text-[10px] tracking-[0.22em]"
                 style={{
-                  background: "rgba(255,255,255,0.045)",
+                  background: "var(--white-ghost)",
                   backdropFilter: "blur(16px)",
                   WebkitBackdropFilter: "blur(16px)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid var(--white-ghost)",
                   padding: "5px 12px",
-                  color: "rgba(255,255,255,0.6)",
+                  color: "var(--white-secondary)",
                   opacity: loaded ? 1 : 0,
                   transform: loaded ? "translateY(0)" : "translateY(14px)",
                   transition: `opacity .65s ease ${0.88 + i * 0.07}s, transform .65s cubic-bezier(.16,1,.3,1) ${0.88 + i * 0.07}s`,
@@ -232,7 +232,7 @@ export default function Hero() {
       {/* Bottom strip — quote + IG DM */}
       <div className="border-t px-6 md:px-28 py-4 flex items-center justify-between gap-6"
         style={{
-          borderColor: "rgba(255,255,255,0.08)",
+          borderColor: "var(--white-ghost)",
           background: "rgba(0,0,0,0.55)",
           backdropFilter: "blur(40px)",
           WebkitBackdropFilter: "blur(40px)",
@@ -248,7 +248,7 @@ export default function Hero() {
                 fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
                 fontSize: "0.65rem",
                 fontWeight: 300,
-                color: "rgba(255,255,255,0.3)",
+                color: "var(--white-muted)",
                 letterSpacing: "0.04em",
                 lineHeight: 1.75,
                 whiteSpace: "nowrap",
@@ -265,7 +265,7 @@ export default function Hero() {
                 fontFamily: "var(--font-space-mono), monospace",
                 fontSize: "0.48rem",
                 letterSpacing: "0.2em",
-                color: "rgba(255,255,255,0.14)",
+                color: "var(--white-dim)",
                 marginTop: 3,
               }}>{q.attr}</span>
             )}
@@ -274,8 +274,8 @@ export default function Hero() {
 
         {/* Visitor stat — center */}
         <div className="hidden md:flex flex-col items-center gap-0.5 shrink-0 px-6 border-x"
-          style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-          <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "rgba(255,255,255,0.65)", letterSpacing: "0.02em" }}>
+          style={{ borderColor: "var(--white-ghost)" }}>
+          <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "var(--white-secondary)", letterSpacing: "0.02em" }}>
             {count}K+
           </span>
           <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.2)" }}>
@@ -287,19 +287,19 @@ export default function Hero() {
         <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
           className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
           style={{
-            background: "rgba(255,255,255,0.055)",
+            background: "var(--white-ghost)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid var(--white-ghost)",
             padding: "7px 16px",
-            color: "rgba(255,255,255,0.5)",
+            color: "var(--white-soft)",
             transition: "all .3s ease",
           }}
           onMouseEnter={e => {
             const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = "rgba(255,255,255,0.1)";
-            el.style.borderColor = "rgba(255,255,255,0.22)";
-            el.style.color = "rgba(255,255,255,0.85)";
+            el.style.background = "var(--white-ghost)";
+            el.style.borderColor = "var(--white-dim)";
+            el.style.color = "var(--white-primary)";
           }}
           onMouseLeave={e => {
             const el = e.currentTarget as HTMLAnchorElement;
@@ -319,10 +319,10 @@ export default function Hero() {
           transition: "opacity 1s ease",
           zIndex: 10,
         }}>
-        <span className="font-mono-label text-[7px] tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.22)" }}>
+        <span className="font-mono-label text-[7px] tracking-[0.4em]" style={{ color: "var(--white-dim)" }}>
           SCROLL
         </span>
-        <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }}>
+        <div style={{ width: 1, height: 36, background: "var(--white-ghost)", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.4s ease-in-out infinite" }} />
         </div>
       </div>

@@ -150,9 +150,9 @@ function RoleTag({ text }: { text: string }) {
     <span style={{
       fontFamily: "var(--font-space-mono), monospace",
       fontSize: 7, letterSpacing: "0.2em",
-      color: "rgba(255,255,255,0.7)",
-      background: "rgba(255,255,255,0.06)",
-      border: "1px solid rgba(255,255,255,0.2)",
+      color: "var(--white-secondary)",
+      background: "var(--white-ghost)",
+      border: "1px solid var(--white-dim)",
       padding: "2px 7px", borderRadius: 1,
       display: "inline-block",
     }}>{text}</span>
@@ -193,7 +193,7 @@ function CatHeader({ num, label, count, note }: { num: string; label: string; co
       <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.22), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 14 }} />
       <div className="flex items-end justify-between">
         <div className="flex items-baseline gap-4">
-          <span className="font-display leading-none" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "rgba(255,255,255,0.07)", letterSpacing: "0.02em" }}>{num}</span>
+          <span className="font-display leading-none" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", color: "var(--white-ghost)", letterSpacing: "0.02em" }}>{num}</span>
           <span className="font-display leading-none" style={{ fontSize: "clamp(1.2rem, 2.8vw, 2.2rem)", color: "var(--text)", letterSpacing: "0.01em" }}>{label}</span>
         </div>
         <div className="hidden md:flex flex-col items-end gap-0.5">
@@ -209,7 +209,7 @@ function CatHeader({ num, label, count, note }: { num: string; label: string; co
 function SubLabel({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 mb-4 mt-8 first:mt-0">
-      <p className="font-mono-label text-[8px] tracking-[0.32em] shrink-0" style={{ color: "rgba(255,255,255,0.2)" }}>{label}</p>
+      <p className="font-mono-label text-[8px] tracking-[0.32em] shrink-0" style={{ color: "var(--white-dim)" }}>{label}</p>
       <div className="flex-1 h-px" style={{ background: "rgba(255,255,255,0.05)" }} />
     </div>
   );
@@ -243,7 +243,7 @@ function HScrollStrip({ items, inView }: {
             {v.cat && (
               <div className="absolute top-2 left-2">
                 <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-                  style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.6)" }}>
+                  style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "var(--white-secondary)" }}>
                   {v.ep ? `${v.cat} ${v.ep}` : v.cat}
                 </span>
               </div>
@@ -258,7 +258,7 @@ function HScrollStrip({ items, inView }: {
             )}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.18)" }}>
+                style={{ background: "var(--white-ghost)", backdropFilter: "blur(16px)", border: "1px solid var(--white-dim)" }}>
                 <svg className="w-4 h-4 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
               </div>
             </div>
@@ -335,7 +335,7 @@ function SeriesPanel({ video, index, inView }: {
           opacity: inView ? 1 : 0, transform: inView ? "translateX(0)" : "translateX(-20px)",
           transition: `opacity .6s ease ${0.05 + index * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${0.05 + index * 0.1}s`,
         }}>
-          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.32em", color: "rgba(255,255,255,0.32)" }}>
+          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
             TRILOGY {video.ep}
           </span>
           <div style={{ width: 60, height: 1, background: "rgba(255,255,255,0.12)" }} />
@@ -347,7 +347,7 @@ function SeriesPanel({ video, index, inView }: {
           transition: `opacity .9s cubic-bezier(.16,1,.3,1) ${0.12 + index * 0.1}s, transform .9s cubic-bezier(.16,1,.3,1) ${0.12 + index * 0.1}s`,
         }}>{video.title}</h3>
         <p className="font-mono-label" style={{
-          fontSize: 10, letterSpacing: "0.18em", marginTop: 10, color: "rgba(255,255,255,0.32)",
+          fontSize: 10, letterSpacing: "0.18em", marginTop: 10, color: "var(--white-muted)",
           opacity: inView ? 1 : 0, transition: `opacity .7s ease ${0.25 + index * 0.1}s`,
         }}>
           Directed by <span style={{ color: "rgba(255,255,255,0.65)" }}>{video.artist}</span>
@@ -359,8 +359,8 @@ function SeriesPanel({ video, index, inView }: {
         position: "absolute", bottom: "2rem", right: "2rem", zIndex: 5,
         opacity: hovered ? 1 : 0, transition: "opacity .3s ease",
         display: "flex", alignItems: "center", gap: 8,
-        background: "rgba(255,255,255,0.07)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-        border: "1px solid rgba(255,255,255,0.14)", padding: "9px 18px",
+        background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+        border: "1px solid var(--white-dim)", padding: "9px 18px",
       }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
         <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.3em", color: "var(--text)" }}>WATCH ↗</span>
@@ -391,7 +391,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
               </span>
             ) : (
               <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-                style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.6)" }}>
+                style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "var(--white-secondary)" }}>
                 {cat}
               </span>
             )}
@@ -399,7 +399,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
         )}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-9 h-9 rounded-full flex items-center justify-center"
-            style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.18)" }}>
+            style={{ background: "var(--white-ghost)", backdropFilter: "blur(16px)", border: "1px solid var(--white-dim)" }}>
             <svg className="w-3.5 h-3.5 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
           </div>
         </div>
@@ -526,7 +526,7 @@ export default function WorkVideo() {
           opacity: heroLoaded ? 1 : 0,
           transition: "opacity .6s ease",
         }}>
-          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "rgba(255,255,255,0.38)" }}>
+          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "var(--white-soft)" }}>
             03 — VIDEO
           </span>
           <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
@@ -536,7 +536,7 @@ export default function WorkVideo() {
                 <span className="font-mono-label" style={{
                   fontSize: 8, letterSpacing: "0.28em",
                   color: i === activeIdx ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
-                  borderBottom: i === activeIdx ? "1px solid rgba(255,255,255,0.45)" : "1px solid transparent",
+                  borderBottom: i === activeIdx ? "1px solid var(--white-soft)" : "1px solid transparent",
                   paddingBottom: 3, transition: "color .3s, border-color .3s",
                 }}>
                   {String(i + 1).padStart(2, "0")} {i === activeIdx ? `· ${v.subEn.split("·")[0].trim()}` : ""}
@@ -562,7 +562,7 @@ export default function WorkVideo() {
                 transition={{ delay: 0.05, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <RoleTag text={active.role} />
-                <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)" }}>
+                <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "var(--white-soft)" }}>
                   {active.subEn.toUpperCase()}
                 </span>
               </motion.div>
@@ -582,8 +582,8 @@ export default function WorkVideo() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.28, duration: 0.6 }}
                   className="font-mono-label"
-                  style={{ fontSize: 10, letterSpacing: "0.18em", marginTop: 14, color: "rgba(255,255,255,0.45)" }}>
-                  Directed by <span style={{ color: "rgba(255,255,255,0.72)" }}>{active.artist}</span>
+                  style={{ fontSize: 10, letterSpacing: "0.18em", marginTop: 14, color: "var(--white-soft)" }}>
+                  Directed by <span style={{ color: "var(--white-secondary)" }}>{active.artist}</span>
                 </motion.p>
               )}
             </motion.div>
@@ -597,15 +597,15 @@ export default function WorkVideo() {
             <button onClick={() => setPlaying(true)}
               className="group flex items-center gap-2.5"
               style={{
-                background: "rgba(255,255,255,0.07)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
                 border: "1px solid rgba(255,255,255,0.15)", padding: "10px 20px", cursor: "pointer",
                 transition: "background .3s",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)"; }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
               <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
-              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>↗</span>
+              <span style={{ color: "var(--white-soft)", fontSize: 14 }}>↗</span>
             </button>
           ) : (
             <button onClick={() => setPlaying(false)}
@@ -626,7 +626,7 @@ export default function WorkVideo() {
           <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
-          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.25)" }}>SCROLL</span>
+          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>SCROLL</span>
         </div>
       </div>
 
@@ -810,7 +810,7 @@ export default function WorkVideo() {
 
                 {/* Card — 9:16 portrait */}
                 <div className="relative overflow-hidden"
-                  style={{ aspectRatio: "9/16", background: "#0c0c0e", border: "1px solid rgba(255,255,255,0.07)" }}>
+                  style={{ aspectRatio: "9/16", background: "#0c0c0e", border: "1px solid var(--white-ghost)" }}>
 
                   {/* Noise grain */}
                   <div style={{
@@ -838,16 +838,16 @@ export default function WorkVideo() {
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10 }}>
                     <div style={{
                       width: 44, height: 44, borderRadius: "50%",
-                      border: "1px solid rgba(255,255,255,0.18)",
-                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid var(--white-dim)",
+                      background: "var(--white-ghost)",
                       backdropFilter: "blur(12px)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       transition: "background .3s, border-color .3s",
                     }}
                       className="group-hover:[background:rgba(255,255,255,0.14)] group-hover:[border-color:rgba(255,255,255,0.32)]">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M8 5v14l11-7z"/></svg>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--white-primary)"><path d="M8 5v14l11-7z"/></svg>
                     </div>
-                    <span className="font-mono-label text-[7px] tracking-[0.38em]" style={{ color: "rgba(255,255,255,0.2)" }}>REELS</span>
+                    <span className="font-mono-label text-[7px] tracking-[0.38em]" style={{ color: "var(--white-dim)" }}>REELS</span>
                   </div>
 
                   {/* Bottom gradient + title */}
@@ -857,14 +857,14 @@ export default function WorkVideo() {
                     padding: "2rem 1rem 1rem",
                   }}>
                     <p className="font-display leading-tight"
-                      style={{ fontSize: "clamp(1rem, 3vw, 1.3rem)", color: "rgba(255,255,255,0.88)", letterSpacing: "0.02em" }}>
+                      style={{ fontSize: "clamp(1rem, 3vw, 1.3rem)", color: "var(--white-primary)", letterSpacing: "0.02em" }}>
                       {reel.label}
                     </p>
                   </div>
 
                   {/* Top: account + likes */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "0.75rem 1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span className="font-mono-label text-[7px] tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    <span className="font-mono-label text-[7px] tracking-[0.15em]" style={{ color: "var(--white-muted)" }}>
                       @{reel.account}
                     </span>
                     <span className="font-mono-label text-[7px]" style={{ color: "rgba(255,255,255,0.22)" }}>
@@ -880,7 +880,7 @@ export default function WorkVideo() {
                     className="group-hover:opacity-100">
                     <span style={{
                       fontFamily: "var(--font-space-mono)", fontSize: 9,
-                      color: "rgba(255,255,255,0.6)",
+                      color: "var(--white-secondary)",
                       background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)",
                       padding: "3px 7px",
                     }}>↗</span>
@@ -903,7 +903,7 @@ export default function WorkVideo() {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <rect x="2" y="2" width="20" height="20" rx="5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
               <circle cx="12" cy="12" r="4.5" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5"/>
-              <circle cx="17.5" cy="6.5" r="1.4" fill="rgba(255,255,255,0.8)"/>
+              <circle cx="17.5" cy="6.5" r="1.4" fill="var(--white-primary)"/>
             </svg>
             <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text)" }}>
               @minehoooo ↗

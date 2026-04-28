@@ -115,10 +115,10 @@ export default function WorkAIGC() {
           <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 10 }} />
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-              <span className="font-display leading-none" style={{ fontSize: "clamp(1.6rem,3vw,2.8rem)", color: "rgba(255,255,255,0.06)", letterSpacing: "0.02em" }}>04</span>
-              <span className="font-display leading-none" style={{ fontSize: "clamp(1rem,2vw,1.8rem)", color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>AIGC</span>
+              <span className="font-display leading-none" style={{ fontSize: "clamp(1.6rem,3vw,2.8rem)", color: "var(--white-ghost)", letterSpacing: "0.02em" }}>04</span>
+              <span className="font-display leading-none" style={{ fontSize: "clamp(1rem,2vw,1.8rem)", color: "var(--white-secondary)", letterSpacing: "0.04em" }}>AIGC</span>
             </div>
-            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "rgba(255,255,255,0.22)" }}>AI GENERATED · HYBRID</span>
+            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>AI GENERATED · HYBRID</span>
           </div>
         </div>
 
@@ -134,12 +134,12 @@ export default function WorkAIGC() {
               <span style={{
                 fontFamily: "var(--font-space-mono), monospace",
                 fontSize: 7, letterSpacing: "0.2em",
-                color: "rgba(255,255,255,0.7)",
+                color: "var(--white-secondary)",
                 background: "rgba(80,30,160,0.25)",
                 border: "1px solid rgba(120,60,220,0.4)",
                 padding: "2px 7px", borderRadius: 1,
               }}>DIR · DP · AI</span>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)" }}>
+              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "var(--white-soft)" }}>
                 AI GENERATED · SHORT FILM
               </span>
             </div>
@@ -156,12 +156,12 @@ export default function WorkAIGC() {
 
             <p className="font-mono-label" style={{
               fontSize: 10, letterSpacing: "0.18em", marginTop: 14,
-              color: "rgba(255,255,255,0.45)",
+              color: "var(--white-soft)",
               opacity: heroLoaded ? 1 : 0,
               transform: heroLoaded ? "translateX(0)" : "translateX(-16px)",
               transition: "opacity .7s ease .32s, transform .7s cubic-bezier(.16,1,.3,1) .32s",
             }}>
-              Created by <span style={{ color: "rgba(255,255,255,0.72)" }}>MINEH4O / Oscar Lai</span>
+              Created by <span style={{ color: "var(--white-secondary)" }}>MINEH4O / Oscar Lai</span>
             </p>
           </div>
         )}
@@ -173,21 +173,21 @@ export default function WorkAIGC() {
             <button onClick={() => setPlaying(true)}
               className="group flex items-center gap-2.5"
               style={{
-                background: "rgba(255,255,255,0.07)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.15)", padding: "10px 20px", cursor: "pointer",
+                background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid var(--white-dim)", padding: "10px 20px", cursor: "pointer",
                 transition: "background .3s",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.13)"; }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)"; }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
               <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
-              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 14 }}>↗</span>
+              <span style={{ color: "var(--white-soft)", fontSize: 14 }}>↗</span>
             </button>
           ) : (
             <button onClick={() => setPlaying(false)}
               className="font-mono-label"
               style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text-3)",
-                border: "1px solid rgba(255,255,255,0.12)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
+                border: "1px solid var(--white-dim)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
               ✕ STOP
             </button>
           )}
@@ -202,7 +202,7 @@ export default function WorkAIGC() {
           <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.12)", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
-          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "rgba(255,255,255,0.25)" }}>SCROLL</span>
+          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>SCROLL</span>
         </div>
       </div>
 
@@ -287,14 +287,14 @@ export default function WorkAIGC() {
                     <div className="absolute bottom-3 left-3 flex gap-2">
                       {(isIg ? ["AIGC", "AI", "IG REEL"] : ["AIGC", "AI"]).map(t => (
                         <span key={t} className="font-mono-label text-[7px] tracking-widest px-2 py-0.5"
-                          style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", color: "rgba(255,255,255,0.7)" }}>
+                          style={{ background: "rgba(0,0,0,0.65)", backdropFilter: "blur(6px)", color: "var(--white-secondary)" }}>
                           {t}
                         </span>
                       ))}
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="w-12 h-12 rounded-full flex items-center justify-center"
-                        style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.18)" }}>
+                        style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", border: "1px solid var(--white-dim)" }}>
                         {isIg
                           ? <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="white" stroke="none" /></svg>
                           : <svg className="w-5 h-5 ml-0.5" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -307,9 +307,9 @@ export default function WorkAIGC() {
                   <span style={{
                     fontFamily: "var(--font-space-mono), monospace",
                     fontSize: 7, letterSpacing: "0.2em",
-                    color: "rgba(255,255,255,0.7)",
-                    background: "rgba(255,255,255,0.06)",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    color: "var(--white-secondary)",
+                    background: "var(--white-ghost)",
+                    border: "1px solid var(--white-dim)",
                     padding: "2px 7px", borderRadius: 1,
                     display: "inline-block", marginTop: 8,
                   }}>{v.role}</span>

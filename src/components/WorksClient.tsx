@@ -73,14 +73,14 @@ export default function WorksClient() {
         }
         .wt-back {
           font-family: var(--font-space-mono), monospace;
-          font-size: 9px; letter-spacing: 0.32em; color: rgba(255,255,255,0.45);
+          font-size: 9px; letter-spacing: 0.32em; color: var(--white-soft);
           text-decoration: none; pointer-events: all;
           transition: color 0.3s;
         }
         .wt-back:hover { color: rgba(255,255,255,0.9); }
         .wt-label {
           font-family: var(--font-space-mono), monospace;
-          font-size: 8px; letter-spacing: 0.24em; color: rgba(255,255,255,0.18);
+          font-size: 8px; letter-spacing: 0.24em; color: var(--white-dim);
         }
 
         /* ── scroll container ── */
@@ -137,7 +137,7 @@ export default function WorksClient() {
           display: block;
           font-family: var(--font-space-mono), monospace;
           font-size: 8px; letter-spacing: 0.4em;
-          color: rgba(255,255,255,0.32);
+          color: var(--white-muted);
           margin-bottom: 0.9rem;
           transition-delay: 0.05s;
         }
@@ -156,7 +156,7 @@ export default function WorksClient() {
                        "Microsoft JhengHei", sans-serif;
           font-size: clamp(1.9rem, 4.8vw, 4.2rem);
           line-height: 1.18;
-          color: rgba(255,255,255,0.85);
+          color: var(--white-primary);
           letter-spacing: 0.26em;            /* start wide → narrows on enter */
           margin: 0 0 clamp(1.2rem,2.5vh,2rem);
           font-weight: 300;
@@ -173,15 +173,15 @@ export default function WorksClient() {
           display: inline-block;
           font-family: var(--font-space-mono), monospace;
           font-size: 8px; letter-spacing: 0.38em;
-          color: rgba(255,255,255,0.5);
+          color: var(--white-soft);
           text-decoration: none;
-          border-bottom: 1px solid rgba(255,255,255,0.18);
+          border-bottom: 1px solid var(--white-dim);
           padding-bottom: 3px;
           transition: color 0.3s, border-color 0.3s, letter-spacing 0.5s;
         }
         .w-cta:hover {
-          color: rgba(255,255,255,0.92);
-          border-color: rgba(255,255,255,0.55);
+          color: var(--white-primary);
+          border-color: var(--white-secondary);
           letter-spacing: 0.46em;
         }
 
@@ -193,12 +193,12 @@ export default function WorksClient() {
         .w-stat {
           font-family: var(--font-space-mono), monospace;
           font-size: 7px; letter-spacing: 0.28em;
-          color: rgba(255,255,255,0.28);
+          color: var(--white-muted);
           display: flex; align-items: center; gap: 5px;
         }
         .w-stat-dot {
           width: 3px; height: 3px; border-radius: 50%;
-          background: rgba(255,255,255,0.15); flex-shrink: 0;
+          background: var(--white-dim); flex-shrink: 0;
         }
 
         /* ── section index number ── */
@@ -208,7 +208,7 @@ export default function WorksClient() {
           font-family: var(--font-space-mono), monospace;
           font-size: clamp(4rem,10vw,7.5rem);
           letter-spacing: 0.04em;
-          color: rgba(255,255,255,0.035);
+          color: var(--white-ghost);
           font-weight: 400;
           user-select: none; pointer-events: none; z-index: 1;
           line-height: 1;
@@ -248,7 +248,7 @@ export default function WorksClient() {
         .w-dot-label {
           font-family: var(--font-space-mono), monospace;
           font-size: 7px; letter-spacing: 0.14em;
-          color: rgba(255,255,255,0.45);
+          color: var(--white-soft);
           white-space: nowrap;
           opacity: 0;
           transform: translateX(6px);
@@ -261,17 +261,17 @@ export default function WorksClient() {
         }
         .w-dot {
           width: 4px; height: 4px; border-radius: 50%;
-          background: rgba(255,255,255,0.22);
+          background: var(--white-dim);
           flex-shrink: 0;
           transition: all 0.3s ease;
         }
         .w-dot--active {
           width: 6px; height: 6px;
-          background: rgba(255,255,255,0.82);
+          background: var(--white-primary);
         }
         .w-dot-item:hover .w-dot,
         .w-dot-item:focus .w-dot {
-          background: rgba(255,255,255,0.75);
+          background: var(--white-secondary);
         }
 
         /* ── BTS section ── */
@@ -293,12 +293,12 @@ export default function WorksClient() {
         .bts-label {
           font-family: var(--font-space-mono), monospace;
           font-size: 8px; letter-spacing: 0.42em;
-          color: rgba(255,255,255,0.2);
+          color: var(--white-dim);
           white-space: nowrap;
         }
         .bts-line {
           flex: 1; height: 1px;
-          background: rgba(255,255,255,0.06);
+          background: var(--white-ghost);
         }
         .bts-grid {
           display: grid;

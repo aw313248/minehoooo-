@@ -47,11 +47,11 @@ export default function Navbar() {
       style={{
         background: scrolled || activePage > 0 ? "rgba(0,0,0,0.82)" : "transparent",
         backdropFilter: scrolled || activePage > 0 ? "blur(20px) saturate(1.8)" : "none",
-        borderBottom: scrolled || activePage > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
+        borderBottom: scrolled || activePage > 0 ? "1px solid var(--white-ghost)" : "none",
       }}
     >
       {/* Progress line */}
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "rgba(255,255,255,0.04)" }}>
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "var(--white-ghost)" }}>
         <div style={{
           height: "100%",
           width: `${(activePage / 5) * 100}%`,
@@ -85,7 +85,7 @@ export default function Navbar() {
                   <span
                     className="font-mono-label text-[10px] tracking-[0.28em] transition-colors duration-300"
                     style={{ color: active ? "#f5f5f7" : "#6e6e73" }}
-                    onMouseEnter={e => !active && (e.currentTarget.style.color = "rgba(245,245,247,0.7)")}
+                    onMouseEnter={e => !active && (e.currentTarget.style.color = "var(--white-secondary)")}
                     onMouseLeave={e => !active && (e.currentTarget.style.color = "#6e6e73")}
                   >
                     {lang === "zh" ? l.labelZh : l.label}
@@ -106,14 +106,14 @@ export default function Navbar() {
             <button onClick={toggle}
               className="font-mono-label text-[9px] tracking-[0.22em] px-2 py-1"
               style={{
-                border: "1px solid rgba(255,255,255,0.14)",
-                color: "rgba(255,255,255,0.5)",
+                border: "1px solid var(--white-dim)",
+                color: "var(--white-soft)",
                 background: "transparent", cursor: "pointer",
                 transition: "color .25s ease, border-color .25s ease",
                 letterSpacing: "0.18em",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.85)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.5)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; }}>
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--white-primary)"; e.currentTarget.style.borderColor = "var(--white-soft)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "var(--white-soft)"; e.currentTarget.style.borderColor = "var(--white-dim)"; }}>
               {lang === "zh" ? "EN" : "中文"}
             </button>
           </li>
@@ -148,21 +148,21 @@ export default function Navbar() {
                     style={{ background: "none", border: "none", cursor: "pointer" }}>
                     <div style={{
                       width: 4, height: 4, borderRadius: "50%",
-                      background: active ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.2)",
+                      background: active ? "var(--white-primary)" : "var(--white-dim)",
                       transition: "background .3s",
                     }} />
                     <span className="font-mono-label text-xs tracking-[0.3em]"
-                      style={{ color: active ? "#f5f5f7" : "rgba(255,255,255,0.45)" }}>
+                      style={{ color: active ? "#f5f5f7" : "var(--white-soft)" }}>
                       {lang === "zh" ? l.labelZh : l.label}
                     </span>
                   </button>
                 </li>
               );
             })}
-            <li style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 16 }}>
+            <li style={{ borderTop: "1px solid var(--white-ghost)", paddingTop: 16 }}>
               <button onClick={toggle}
                 className="font-mono-label text-xs tracking-[0.3em]"
-                style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.35)" }}>
+                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--white-soft)" }}>
                 {lang === "zh" ? "SWITCH TO EN" : "切換中文"}
               </button>
             </li>

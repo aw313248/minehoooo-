@@ -109,10 +109,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           to   { opacity: 1; transform: translateY(0); }
         }
         .work-page-enter { animation: workFadeIn 0.72s cubic-bezier(0.4,0,0.2,1) both; }
-        .work-related-link { border: 1px solid rgba(255,255,255,0.06); transition: border-color 0.3s; }
-        .work-related-link:hover { border-color: rgba(255,255,255,0.22); }
-        .next-work-card { border-top: 1px solid rgba(255,255,255,0.07); transition: background 0.4s ease; }
-        .next-work-card:hover { background: rgba(255,255,255,0.03); }
+        .work-related-link { border: 1px solid var(--white-ghost); transition: border-color 0.3s; }
+        .work-related-link:hover { border-color: var(--white-dim); }
+        .next-work-card { border-top: 1px solid var(--white-ghost); transition: background 0.4s ease; }
+        .next-work-card:hover { background: var(--white-ghost); }
         .next-work-thumb { transform: scale(1); transition: transform 0.8s cubic-bezier(0.4,0,0.2,1); }
         .next-work-card:hover .next-work-thumb { transform: scale(1.04); }
       `}</style>
@@ -124,17 +124,17 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           padding: "1.2rem 2rem",
           display: "flex", justifyContent: "space-between", alignItems: "center",
           background: "rgba(0,0,0,0.85)", backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid var(--white-ghost)",
         }}>
           <Link href="/#video" style={{ textDecoration: "none" }}>
             <span style={{
               fontFamily: "var(--font-space-mono), monospace",
-              fontSize: 9, letterSpacing: "0.32em", color: "rgba(255,255,255,0.4)",
+              fontSize: 9, letterSpacing: "0.32em", color: "var(--white-soft)",
             }}>← MINEH4O</span>
           </Link>
           <span style={{
             fontFamily: "var(--font-space-mono), monospace",
-            fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.2)",
+            fontSize: 8, letterSpacing: "0.22em", color: "var(--white-dim)",
           }}>{work.category}</span>
         </div>
 
@@ -162,7 +162,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           <div style={{ position: "absolute", bottom: "2rem", left: "2rem", right: "2rem" }}>
             <p style={{
               fontFamily: "var(--font-space-mono), monospace",
-              fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.4)", marginBottom: 10,
+              fontSize: 8, letterSpacing: "0.35em", color: "var(--white-soft)", marginBottom: 10,
             }}>{work.role} · {work.artist}</p>
             <h1 style={{
               fontFamily: "var(--font-bebas), serif",
@@ -206,9 +206,9 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                   style={{
                     fontFamily: "var(--font-space-mono), monospace",
                     fontSize: 8, letterSpacing: "0.38em",
-                    color: "rgba(255,255,255,0.4)",
+                    color: "var(--white-soft)",
                     textDecoration: "none",
-                    borderBottom: "1px solid rgba(255,255,255,0.15)",
+                    borderBottom: "1px solid var(--white-dim)",
                     paddingBottom: 3,
                   }}
                 >
@@ -219,27 +219,27 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
           ) : null}
 
           {/* Divider */}
-          <div style={{ height: 1, background: "rgba(255,255,255,0.08)", marginBottom: "2.5rem" }} />
+          <div style={{ height: 1, background: "var(--white-ghost)", marginBottom: "2.5rem" }} />
 
           {/* Description */}
           <div style={{ marginBottom: "3rem" }}>
             <p style={{
               fontFamily: "var(--font-space-mono), monospace",
-              fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", marginBottom: "1.2rem",
+              fontSize: 8, letterSpacing: "0.35em", color: "var(--white-muted)", marginBottom: "1.2rem",
             }}>ABOUT THIS WORK</p>
             {work.description.map((para, i) => (
               <p key={i} style={{
                 fontSize: "clamp(14px, 2vw, 16px)", lineHeight: 1.9,
-                color: "rgba(255,255,255,0.72)", marginBottom: "1.2rem",
+                color: "var(--white-secondary)", marginBottom: "1.2rem",
               }}>{para}</p>
             ))}
           </div>
 
           {/* Credits */}
-          <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid var(--white-ghost)" }}>
             <p style={{
               fontFamily: "var(--font-space-mono), monospace",
-              fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", marginBottom: "1rem",
+              fontSize: 8, letterSpacing: "0.35em", color: "var(--white-muted)", marginBottom: "1rem",
             }}>CREDITS</p>
             {[
               { label: "ARTIST", value: work.artist },
@@ -250,25 +250,25 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
               <div key={c.label} style={{ display: "flex", gap: "2rem", marginBottom: "0.6rem" }}>
                 <span style={{
                   fontFamily: "var(--font-space-mono), monospace",
-                  fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.25)", minWidth: 80,
+                  fontSize: 8, letterSpacing: "0.22em", color: "var(--white-muted)", minWidth: 80,
                 }}>{c.label}</span>
-                <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}>{c.value}</span>
+                <span style={{ fontSize: 13, color: "var(--white-secondary)" }}>{c.value}</span>
               </div>
             ))}
           </div>
 
           {/* Stats */}
           {work.stats && (work.stats.igViews || work.stats.views || work.stats.likes) && (
-            <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <div style={{ marginBottom: "3rem", padding: "1.5rem", border: "1px solid var(--white-ghost)" }}>
               <p style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", marginBottom: "1rem",
+                fontSize: 8, letterSpacing: "0.35em", color: "var(--white-muted)", marginBottom: "1rem",
               }}>DATA</p>
               <div style={{ display: "flex", gap: "2.5rem", flexWrap: "wrap" }}>
                 {(work.stats.igViews || work.stats.views) && (
                   <div>
-                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>VIEWS</p>
-                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
+                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "var(--white-muted)", marginBottom: 4 }}>VIEWS</p>
+                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "var(--white-primary)", letterSpacing: "0.04em", margin: 0 }}>
                       {((work.stats.igViews ?? work.stats.views ?? 0) >= 10000
                         ? ((work.stats.igViews ?? work.stats.views ?? 0) / 10000).toFixed(1).replace('.0','') + '萬'
                         : ((work.stats.igViews ?? work.stats.views ?? 0) >= 1000
@@ -279,8 +279,8 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                 )}
                 {work.stats.likes && (
                   <div>
-                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>LIKES</p>
-                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "rgba(255,255,255,0.8)", letterSpacing: "0.04em", margin: 0 }}>
+                    <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "var(--white-muted)", marginBottom: 4 }}>LIKES</p>
+                    <p style={{ fontFamily: "var(--font-bebas), serif", fontSize: "clamp(1.6rem,4vw,2.4rem)", color: "var(--white-primary)", letterSpacing: "0.04em", margin: 0 }}>
                       {work.stats.likes >= 10000
                         ? (work.stats.likes / 10000).toFixed(1).replace('.0','') + '萬'
                         : work.stats.likes >= 1000
@@ -290,8 +290,8 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                   </div>
                 )}
                 <div>
-                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "rgba(255,255,255,0.25)", marginBottom: 4 }}>SOURCE</p>
-                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 9, letterSpacing: "0.22em", color: "rgba(255,255,255,0.45)", margin: 0 }}>
+                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 7, letterSpacing: "0.28em", color: "var(--white-muted)", marginBottom: 4 }}>SOURCE</p>
+                  <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 9, letterSpacing: "0.22em", color: "var(--white-soft)", margin: 0 }}>
                     {work.stats.source === "instagram" ? "INSTAGRAM" : "YOUTUBE"}
                   </p>
                 </div>
@@ -304,7 +304,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             <div>
               <p style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 8, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", marginBottom: "1.2rem",
+                fontSize: 8, letterSpacing: "0.35em", color: "var(--white-muted)", marginBottom: "1.2rem",
               }}>RELATED WORKS</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.8rem" }}>
                 {related.map(r => r && (
@@ -313,10 +313,10 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                       display: "flex", justifyContent: "space-between", alignItems: "center",
                       padding: "0.8rem 1rem",
                     }}>
-                      <span style={{ fontSize: 13, color: "rgba(255,255,255,0.7)" }}>{r.title}</span>
+                      <span style={{ fontSize: 13, color: "var(--white-secondary)" }}>{r.title}</span>
                       <span style={{
                         fontFamily: "var(--font-space-mono), monospace",
-                        fontSize: 7, letterSpacing: "0.22em", color: "rgba(255,255,255,0.25)",
+                        fontSize: 7, letterSpacing: "0.22em", color: "var(--white-muted)",
                       }}>{r.role}</span>
                     </div>
                   </Link>
@@ -332,7 +332,7 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
             <div style={{ maxWidth: 720, margin: "0 auto", padding: "3rem 0" }}>
               <p style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 8, letterSpacing: "0.38em", color: "rgba(255,255,255,0.2)", marginBottom: "1.6rem",
+                fontSize: 8, letterSpacing: "0.38em", color: "var(--white-dim)", marginBottom: "1.6rem",
               }}>NEXT WORK</p>
               <div style={{ display: "flex", gap: "1.8rem", alignItems: "center" }}>
                 <div style={{ width: 120, aspectRatio: "16/9", overflow: "hidden", flexShrink: 0, background: "#111" }}>
@@ -356,15 +356,15 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
                 <div style={{ flex: 1 }}>
                   <p style={{
                     fontFamily: "var(--font-space-mono), monospace",
-                    fontSize: 7, letterSpacing: "0.22em", color: "rgba(255,255,255,0.25)", marginBottom: 8,
+                    fontSize: 7, letterSpacing: "0.22em", color: "var(--white-muted)", marginBottom: 8,
                   }}>{nextWork.role} · {nextWork.artist}</p>
                   <p style={{
                     fontFamily: "var(--font-bebas), serif",
                     fontSize: "clamp(1.4rem, 4vw, 2.6rem)", lineHeight: 1.1,
-                    color: "rgba(255,255,255,0.85)", letterSpacing: "0.01em",
+                    color: "var(--white-primary)", letterSpacing: "0.01em",
                   }}>{nextWork.title}</p>
                 </div>
-                <span style={{ color: "rgba(255,255,255,0.2)", fontSize: 20, flexShrink: 0 }}>→</span>
+                <span style={{ color: "var(--white-dim)", fontSize: 20, flexShrink: 0 }}>→</span>
               </div>
             </div>
           </div>
@@ -372,19 +372,19 @@ export default async function WorkPage({ params }: { params: Promise<{ slug: str
 
         {/* Footer */}
         <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
+          borderTop: "1px solid var(--white-ghost)",
           padding: "1.5rem 2rem",
           display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
           <Link href="/" style={{ textDecoration: "none" }}>
             <span style={{
               fontFamily: "var(--font-bebas), serif",
-              fontSize: 18, letterSpacing: "0.08em", color: "rgba(255,255,255,0.3)",
+              fontSize: 18, letterSpacing: "0.08em", color: "var(--white-muted)",
             }}>MINEH4O</span>
           </Link>
           <span style={{
             fontFamily: "var(--font-space-mono), monospace",
-            fontSize: 8, letterSpacing: "0.22em", color: "rgba(255,255,255,0.2)",
+            fontSize: 8, letterSpacing: "0.22em", color: "var(--white-dim)",
           }}>minehoooo.xyz</span>
         </div>
 
