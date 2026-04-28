@@ -17,6 +17,7 @@ const featuredMVs = [
   { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
   { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP",              tags: ["MUSIC VIDEO", "DP"] },
   { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",      tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "DP",              tags: ["MUSIC VIDEO", "DP"] },
   { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", subEn: "Music Video", subZh: "音樂錄影帶",              role: "COLOR",           tags: ["MUSIC VIDEO", "COLOR"] },
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",     tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
 ];
@@ -39,6 +40,7 @@ const colorCredits = [
   { id: "lKYtN2OqbHQ", title: "沒有你的世界 (Video Production)", artist: "Lil RAD & Coy6oi · Tizzy & Oscar", role: "DP · COLOR", cat: "COLOR" },
   { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi",       role: "DP",         cat: "COLOR" },
   { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi",    role: "DP · COLOR", cat: "COLOR" },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    role: "DP",         cat: "COLOR" },
   { id: "_IUqMAI5GQg", title: "說了算",             artist: "亥伯龍 · Doggy Chang · 7type · 中部管轄區", role: "COLOR",        cat: "COLOR"     },
   { id: "AuaEpljXpR8", title: "B.A.C 亚洲大尾",    artist: "7type & 66 & CHE · 中部管轄區",              role: "COLOR",        cat: "COLOR"     },
   { id: "0jyUrpj5Jiw", title: "DaLow",             artist: "大樓DaLow ft. C Grass",         role: "COLOR",        cat: "COLOR"     },
@@ -89,6 +91,14 @@ const setCredits = [
     role: "SET DEPT",
     cat: "MUSIC VIDEO",
   },
+  {
+    id: "lLYzcW9pzGU",
+    title: "爬坡 Her Slope",
+    artist: "第62屆金馬影展 TGHFF",
+    role: "ART DEPT",
+    cat: "SHORT FILM",
+    award: "2025 金馬影展入選",
+  },
 ];
 
 const commercial = [
@@ -115,6 +125,13 @@ const ytShorts = [
 ];
 
 const allReels = [
+  { code: "DWnqw4KEkmf", tier: 1, year: "2026" },
+  { code: "DWTu59DBxpv", tier: 1, year: "2026" },
+  { code: "DWAol6QE2J1", tier: 1, year: "2026" },
+  { code: "DWJW8U3EpoR", tier: 1, year: "2026" },
+  { code: "DXZZ6Gbkv_Y", tier: 1, year: "2026" },
+  { code: "DW4B7HOEsLw", tier: 1, year: "2026" },
+  { code: "DW56cv5kjjT", tier: 1, year: "2026" },
   { code: "DV3dhDzk-tv", tier: 1, year: "2026" },
   { code: "DVqvaWVEntr", tier: 1, year: "2026" },
   { code: "DVjCLj0kq-A", tier: 1, year: "2025" },
@@ -137,7 +154,7 @@ const allReels = [
 const igReelsData = [
   { code: "DT-tdb1Evcw", label: "導演 · 錄音組 爆了",     likes: 599, account: "mlpon6"        },
   { code: "DTg9q2_kpmY", label: "片場幕後花絮",            likes: 382, account: "minehoooo.arw" },
-  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 274, account: "minehoooo.arw" },
+  { code: "DVQvmpNEt8k", label: "228 電影清單 · 歷史影像", likes: 289, account: "minehoooo.arw" },
   { code: "DTej6F4ksVj", label: "導演技巧 · 素人演員",     likes: 167, account: "minehoooo.arw" },
   { code: "DWiAEIvhfbb", label: "家的樣子 · 日常影像",     likes: 151, account: "minehoooo.arw" },
   { code: "DViau5bkjjN", label: "白色恐怖 · 家族記憶",     likes: 109, account: "minehoooo.arw" },
