@@ -400,6 +400,149 @@ function SeriesPanel({ video, index, inView, seriesLabel = "TRILOGY", creditLabe
   );
 }
 
+/* ─── Carousel (1-2 cards per view, arrow navigation) ─── */
+function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
+  items: T[];
+  renderItem: (item: T, i: number) => React.ReactNode;
+  getKey: (item: T, i: number) => string;
+  perViewDesktop?: number;
+}) {
+  const [idx, setIdx] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const perView = isMobile ? 1 : perViewDesktop;
+  const maxIdx = Math.max(0, items.length - perView);
+  const slidePct = 100 / perView;
+
+  const canPrev = idx > 0;
+  const canNext = idx < maxIdx;
+
+  const handleTouchStart = (e: React.TouchEvent) => setTouchStartX(e.touches[0].clientX);
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX;
+    if (delta > 50 && canPrev) setIdx(i => i - 1);
+    else if (delta < -50 && canNext) setIdx(i => i + 1);
+    setTouchStartX(null);
+  };
+
+  if (items.length <= perView) {
+    return (
+      <div className="grid gap-4 md:gap-5" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
+        {items.map((item, i) => (
+          <div key={getKey(item, i)}>{renderItem(item, i)}</div>
+        ))}
+      </div>
+    );
+  }
+
+  const trackWidthPct = (items.length / perView) * 100;
+  const slideStepPct = 100 / items.length;
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}>
+        <div style={{
+          display: "flex",
+          width: `${trackWidthPct}%`,
+          transform: `translateX(-${idx * slideStepPct}%)`,
+          transition: "transform 0.7s cubic-bezier(.16,1,.3,1)",
+        }}>
+          {items.map((item, i) => (
+            <div key={getKey(item, i)} style={{
+              width: `${100 / items.length}%`,
+              paddingRight: i === items.length - 1 ? 0 : 16,
+              boxSizing: "border-box",
+              minWidth: 0,
+            }}>
+              {renderItem(item, i)}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Arrows */}
+      <button
+        onClick={() => canPrev && setIdx(i => i - 1)}
+        disabled={!canPrev}
+        aria-label="Previous"
+        style={{
+          position: "absolute", top: "38%", left: -8, transform: "translateY(-50%)",
+          width: 38, height: 38, borderRadius: "50%",
+          background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+          border: "1px solid var(--white-dim)",
+          color: "var(--white-primary)",
+          cursor: canPrev ? "pointer" : "not-allowed",
+          opacity: canPrev ? 1 : 0.3,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "opacity .3s, background .3s",
+          zIndex: 4,
+        }}
+        onMouseEnter={e => { if (canPrev) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.85)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.65)"; }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M15 18L9 12L15 6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button
+        onClick={() => canNext && setIdx(i => i + 1)}
+        disabled={!canNext}
+        aria-label="Next"
+        style={{
+          position: "absolute", top: "38%", right: -8, transform: "translateY(-50%)",
+          width: 38, height: 38, borderRadius: "50%",
+          background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+          border: "1px solid var(--white-dim)",
+          color: "var(--white-primary)",
+          cursor: canNext ? "pointer" : "not-allowed",
+          opacity: canNext ? 1 : 0.3,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "opacity .3s, background .3s",
+          zIndex: 4,
+        }}
+        onMouseEnter={e => { if (canNext) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.85)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.65)"; }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M9 6L15 12L9 18" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {/* Indicators */}
+      <div className="flex items-center justify-center gap-2 mt-5">
+        {Array.from({ length: maxIdx + 1 }).map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            style={{
+              width: i === idx ? 28 : 10,
+              height: 2,
+              background: i === idx ? "var(--white-soft)" : "var(--white-ghost)",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              transition: "width .4s, background .3s",
+            }}
+          />
+        ))}
+        <span className="font-mono-label ml-3" style={{ fontSize: 8, letterSpacing: "0.22em", color: "var(--text-3)" }}>
+          {String(idx + 1).padStart(2, "0")} / {String(maxIdx + 1).padStart(2, "0")}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Grid card ─── */
 function GridCard({ id, title, artist, role, cat, award }: {
   id: string; title: string; artist?: string; role: string; cat?: string; award?: string;
@@ -635,16 +778,18 @@ export default function WorkVideo() {
       <div ref={mvRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={directorMVs.length} note="DIRECTOR WORKS" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-            {directorMVs.map((v, i) => (
-              <div key={v.id} style={{
+          <Carousel
+            items={directorMVs}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
                 opacity: mvIn ? 1 : 0, transform: mvIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.1}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </div>
 
@@ -694,16 +839,18 @@ export default function WorkVideo() {
       <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="02" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="COLOR GRADING · DP" />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {colorCredits.map((v, i) => (
-              <div key={v.id} style={{
+          <Carousel
+            items={colorCredits}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
                 opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </div>
 
@@ -713,16 +860,18 @@ export default function WorkVideo() {
 
           {/* Narrative Shorts */}
           <CatHeader num="03" label="NARRATIVE SHORT FILM" count={narrativeShorts.length} note="DRAMA · FESTIVAL WORKS" />
-          <div className="grid grid-cols-2 gap-4 md:gap-5">
-            {narrativeShorts.map((v, i) => (
-              <div key={v.id} style={{
+          <Carousel
+            items={narrativeShorts}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
                 opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={"award" in v ? v.award : undefined} />
               </div>
-            ))}
-          </div>
+            )}
+          />
 
           {/* On Set — MV Credits (grouped by artist) */}
           <SubLabel label="ON SET · MV PRODUCTION" />
@@ -776,29 +925,33 @@ export default function WorkVideo() {
 
           {/* Documentary */}
           <SubLabel label="DOCUMENTARY · LIVE" />
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-            {liveDoc.map((v, i) => (
-              <div key={v.id} style={{
+          <Carousel
+            items={liveDoc}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
                 opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.06}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
-            ))}
-          </div>
+            )}
+          />
 
           {/* Event Records */}
           <SubLabel label="EVENT RECORDS" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-            {eventRec.map((v, i) => (
-              <div key={v.id} style={{
+          <Carousel
+            items={eventRec}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
                 opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.06 + 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06 + 0.08}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
 import { WordReveal } from "@/components/WordReveal";
@@ -115,32 +115,167 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
   );
 }
 
-/* ── Strip of small thumbnails at the bottom ── */
-function PhotoStrip({ cat, onSelect }: { cat: PhotoCategory; onSelect: (idx: number) => void }) {
-  const thumbs = cat.files.slice(0, 12);
+/* ── Photo carousel — horizontal slide with arrows, dots, touch swipe ── */
+function PhotoCarousel({
+  cat,
+  onSelect,
+  perViewDesktop = 2,
+  variant = "desktop",
+}: {
+  cat: PhotoCategory;
+  onSelect: (idx: number) => void;
+  perViewDesktop?: number;
+  variant?: "desktop" | "mobile";
+}) {
+  const [page, setPage]               = useState(0);
+  const [perView, setPerView]         = useState(variant === "mobile" ? 1 : perViewDesktop);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const trackRef                      = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (variant === "mobile") return;
+    const update = () => {
+      const w = window.innerWidth;
+      if (w >= 1280) setPerView(Math.min(perViewDesktop, 3));
+      else if (w >= 768) setPerView(Math.min(perViewDesktop, 2));
+      else setPerView(1);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [perViewDesktop, variant]);
+
+  useEffect(() => { setPage(0); }, [cat.id, perView]);
+
+  const totalPages = Math.max(1, Math.ceil(cat.files.length / perView));
+  const canPrev    = page > 0;
+  const canNext    = page < totalPages - 1;
+  const next       = () => canNext && setPage(p => p + 1);
+  const prev       = () => canPrev && setPage(p => p - 1);
+
+  function onTouchStart(e: React.TouchEvent) { setTouchStartX(e.touches[0].clientX); }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (dx > 50  && canPrev) prev();
+    if (dx < -50 && canNext) next();
+    setTouchStartX(null);
+  }
+
+  const aspectRatio = variant === "mobile" ? "4/5" : "4/3";
+
   return (
     <div className="relative">
-      <div className="flex gap-1.5 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
-        {thumbs.map((f, i) => {
-          const src = encode(cat.id, f);
-          return (
-            <div key={f} className="shrink-0 overflow-hidden cursor-pointer group relative"
-              style={{ width: 64, height: 64, borderRadius: 2 }}
-              onClick={() => onSelect(i)}>
-              <Image src={src} alt={f} fill loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-110" />
-            </div>
-          );
-        })}
-        {cat.files.length > 12 && (
-          <div className="shrink-0 flex items-center justify-center"
-            style={{ width: 64, height: 64, background: "var(--white-ghost)", borderRadius: 2, border: "1px solid var(--white-ghost)" }}>
-            <span className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>+{cat.files.length - 12}</span>
-          </div>
-        )}
+      {/* Track */}
+      <div
+        className="overflow-hidden"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{ touchAction: "pan-y" }}>
+        <div
+          ref={trackRef}
+          className="flex"
+          style={{
+            transform: `translateX(-${page * 100}%)`,
+            transition: "transform .6s cubic-bezier(.16,1,.3,1)",
+          }}>
+          {Array.from({ length: totalPages }).map((_, pIdx) => {
+            const start = pIdx * perView;
+            const slice = cat.files.slice(start, start + perView);
+            return (
+              <div key={pIdx} className="shrink-0 flex gap-1.5" style={{ width: "100%" }}>
+                {slice.map((f, i) => {
+                  const fileIdx = start + i;
+                  const src     = encode(cat.id, f);
+                  return (
+                    <button
+                      key={f}
+                      onClick={() => onSelect(fileIdx)}
+                      className="relative overflow-hidden group flex-1 min-w-0 active:scale-[0.98]"
+                      style={{ aspectRatio, borderRadius: 2, transition: "transform .2s ease" }}
+                      aria-label={`Open photo ${fileIdx + 1}`}>
+                      <Image
+                        src={src}
+                        alt={`${cat.en} ${fileIdx + 1}`}
+                        fill
+                        loading="lazy"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes={variant === "mobile" ? "100vw" : "50vw"}
+                      />
+                      {/* Index pill */}
+                      <span className="absolute bottom-2 left-2 font-mono-label text-[8px] tracking-[0.2em] px-1.5 py-0.5"
+                        style={{ color: "var(--white-secondary)", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}>
+                        {String(fileIdx + 1).padStart(2, "0")} / {String(cat.files.length).padStart(2, "0")}
+                      </span>
+                    </button>
+                  );
+                })}
+                {/* Fill blanks on last page so widths stay equal */}
+                {Array.from({ length: perView - slice.length }).map((_, k) => (
+                  <div key={`blank-${k}`} className="flex-1 min-w-0" style={{ aspectRatio }} />
+                ))}
+              </div>
+            );
+          })}
+        </div>
       </div>
-      {/* Right-edge fade hint — shows strip is scrollable */}
-      <div aria-hidden="true" className="absolute right-0 top-0 bottom-1 w-10 pointer-events-none"
-        style={{ background: "linear-gradient(to right, transparent, rgba(0,0,0,0.9))" }} />
+
+      {/* Controls row */}
+      <div className="flex items-center justify-between mt-3 gap-3">
+        <button onClick={prev} disabled={!canPrev} aria-label="Previous"
+          className="flex items-center justify-center shrink-0"
+          style={{
+            width: 32, height: 32, borderRadius: 2,
+            background:  canPrev ? "var(--white-ghost)" : "transparent",
+            border:     `1px solid ${canPrev ? "var(--white-dim)" : "var(--white-ghost)"}`,
+            opacity:     canPrev ? 1 : 0.25,
+            cursor:      canPrev ? "pointer" : "default",
+            transition: "background .2s ease, opacity .2s ease",
+          }}
+          onMouseEnter={e => canPrev && (e.currentTarget.style.background = "var(--white-dim)")}
+          onMouseLeave={e => canPrev && (e.currentTarget.style.background = "var(--white-ghost)")}>
+          <svg width="7" height="12" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="7 1 1 7 7 13" />
+          </svg>
+        </button>
+
+        {/* Dots */}
+        <div className="flex items-center gap-1.5 flex-1 justify-center flex-wrap">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button key={i} onClick={() => setPage(i)} aria-label={`Go to page ${i + 1}`}
+              style={{
+                width:  i === page ? 16 : 4,
+                height: 4, borderRadius: 2,
+                background: i === page ? "var(--white-primary)" : "var(--white-muted)",
+                transition: "all .4s ease",
+                cursor: "pointer",
+              }} />
+          ))}
+        </div>
+
+        {/* Page count + Next */}
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>
+            {String(page + 1).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}
+          </span>
+          <button onClick={next} disabled={!canNext} aria-label="Next"
+            className="flex items-center justify-center"
+            style={{
+              width: 32, height: 32, borderRadius: 2,
+              background:  canNext ? "var(--white-ghost)" : "transparent",
+              border:     `1px solid ${canNext ? "var(--white-dim)" : "var(--white-ghost)"}`,
+              opacity:     canNext ? 1 : 0.25,
+              cursor:      canNext ? "pointer" : "default",
+              transition: "background .2s ease, opacity .2s ease",
+            }}
+            onMouseEnter={e => canNext && (e.currentTarget.style.background = "var(--white-dim)")}
+            onMouseLeave={e => canNext && (e.currentTarget.style.background = "var(--white-ghost)")}>
+            <svg width="7" height="12" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="1 1 7 7 1 13" />
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -300,23 +435,12 @@ export default function WorkPhotography() {
             })}
           </div>
 
-          {/* ── Mobile: full photo grid (all photos, scrollable) ── */}
+          {/* ── Mobile: photo carousel (1 per view, swipeable) ── */}
           <div className="md:hidden px-3 pb-8 pt-2">
             <p className="font-mono-label text-[8px] tracking-[0.3em] mb-3 px-1" style={{ color: "var(--text-3)" }}>
-              {cat.files.length} PHOTOS — TAP TO ENLARGE
+              {cat.files.length} PHOTOS — SWIPE OR TAP TO ENLARGE
             </p>
-            <div className="grid grid-cols-2 gap-1">
-              {cat.files.map((f) => {
-                const src = encode(cat.id, f);
-                return (
-                  <div key={f} className="relative overflow-hidden cursor-pointer"
-                    style={{ aspectRatio: "4/3", borderRadius: 2 }}
-                    onClick={() => setLightbox({ idx: cat.files.indexOf(f) })}>
-                    <Image src={src} alt={f} fill loading="lazy" className="object-cover transition-transform duration-500 active:scale-95" />
-                  </div>
-                );
-              })}
-            </div>
+            <PhotoCarousel cat={cat} onSelect={idx => setLightbox({ idx })} variant="mobile" />
           </div>
 
           {/* ── Desktop: vertical category list ── */}
@@ -356,12 +480,12 @@ export default function WorkPhotography() {
             </p>
           </div>
 
-          {/* ── Desktop: thumbnail strip ── */}
+          {/* ── Desktop: photo carousel (2 per view, arrows + dots) ── */}
           <div className="hidden md:block">
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>GALLERY</p>
-            <PhotoStrip cat={cat} onSelect={idx => setLightbox({ idx })} />
+            <PhotoCarousel cat={cat} onSelect={idx => setLightbox({ idx })} perViewDesktop={2} variant="desktop" />
             <p className="font-mono-label text-[8px] mt-3" style={{ color: "var(--text-3)" }}>
-              Click thumbnail to enlarge · ESC to close
+              Click photo to enlarge · Arrow keys / swipe to browse · ESC to close
             </p>
           </div>
         </div>

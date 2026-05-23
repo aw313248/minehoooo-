@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar          from "@/components/Navbar";
 import PageScroll      from "@/components/PageScroll";
 import Hero            from "@/components/Hero";
