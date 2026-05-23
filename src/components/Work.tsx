@@ -92,7 +92,7 @@ function IgCard({ reel, delay, inView }: { reel: IgReel; delay: number; inView: 
     >
       {/* Card */}
       <div className="relative overflow-hidden"
-        style={{ aspectRatio:"9/16", background: tierBg[reel.tier], borderRadius:"4px" }}>
+        style={{ aspectRatio:"9/16", background: tierBg[reel.tier], borderRadius:"12px" }}>
         {/* Ripples */}
         {ripples.map(r => (
           <span key={r.id} style={{
@@ -151,7 +151,7 @@ function YTShortCard({ short, delay, inView }: { short: YTShort; delay: number; 
       transition: `opacity .75s ease ${delay}s, transform .75s cubic-bezier(.16,1,.3,1) ${delay}s`,
     }}>
       <div className="relative overflow-hidden cursor-pointer"
-        style={{ aspectRatio:"9/16", background:"#050505", borderRadius:"4px" }}
+        style={{ aspectRatio:"9/16", background:"#050505", borderRadius:"12px" }}
         onClick={(e) => { trigger(e); if (!playing) setPlaying(true); }}>
         {ripples.map(r => (
           <span key={r.id} style={{
@@ -214,7 +214,7 @@ function VideoCard({ v, delay, inView }: { v: YTVideo; delay: number; inView: bo
       transition: `opacity .9s ease ${delay}s, transform .9s cubic-bezier(.16,1,.3,1) ${delay}s`,
     }}>
       <div className="relative overflow-hidden cursor-pointer"
-        style={{ aspectRatio:"16/9", background:"#050505", borderRadius:"4px" }}
+        style={{ aspectRatio:"16/9", background:"#050505", borderRadius:"12px" }}
         onClick={(e) => { trigger(e); if (!playing) setPlaying(true); }}>
         {ripples.map(r => (
           <span key={r.id} style={{
@@ -286,7 +286,7 @@ function PlaceholderCard({ sub, catEn, delay, inView }: { sub: Sub; catEn: strin
         transition: `opacity .75s ease ${delay}s, transform .75s cubic-bezier(.16,1,.3,1) ${delay}s`,
       }}>
       <div className="relative overflow-hidden mb-3 transition-transform duration-500 ease-out group-hover:-translate-y-2"
-        style={{ aspectRatio:"3/4", background:sub.bg, borderRadius:"3px" }}
+        style={{ aspectRatio:"3/4", background:sub.bg, borderRadius:"10px" }}
         onClick={trigger}>
         {ripples.map(r => (
           <span key={r.id} style={{

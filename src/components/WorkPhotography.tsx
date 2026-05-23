@@ -79,7 +79,7 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
         {/* Image */}
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={`MINEH4O Photography ${String(idx + 1).padStart(2,"0")} of ${total}`} className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 2 }} />
+          <img src={src} alt={`MINEH4O Photography ${String(idx + 1).padStart(2,"0")} of ${total}`} className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 14 }} />
           {/* Counter */}
           <span className="absolute bottom-3 left-3 font-mono-label text-[8px] tracking-[0.2em]"
             style={{ color: "var(--white-soft)" }}>
@@ -192,7 +192,7 @@ function PhotoCarousel({
                       key={f}
                       onClick={() => onSelect(fileIdx)}
                       className="relative overflow-hidden group flex-1 min-w-0 active:scale-[0.98]"
-                      style={{ aspectRatio, borderRadius: 2, transition: "transform .2s ease" }}
+                      style={{ aspectRatio, borderRadius: 12, transition: "transform .2s ease" }}
                       aria-label={`Open photo ${fileIdx + 1}`}>
                       <Image
                         src={src}
@@ -225,7 +225,7 @@ function PhotoCarousel({
         <button onClick={prev} disabled={!canPrev} aria-label="Previous"
           className="flex items-center justify-center shrink-0"
           style={{
-            width: 32, height: 32, borderRadius: 2,
+            width: 36, height: 36, borderRadius: 999,
             background:  canPrev ? "var(--white-ghost)" : "transparent",
             border:     `1px solid ${canPrev ? "var(--white-dim)" : "var(--white-ghost)"}`,
             opacity:     canPrev ? 1 : 0.25,
@@ -261,7 +261,7 @@ function PhotoCarousel({
           <button onClick={next} disabled={!canNext} aria-label="Next"
             className="flex items-center justify-center"
             style={{
-              width: 32, height: 32, borderRadius: 2,
+              width: 36, height: 36, borderRadius: 999,
               background:  canNext ? "var(--white-ghost)" : "transparent",
               border:     `1px solid ${canNext ? "var(--white-dim)" : "var(--white-ghost)"}`,
               opacity:     canNext ? 1 : 0.25,
@@ -423,7 +423,7 @@ export default function WorkPhotography() {
                   background: isActive ? "var(--white-dim)" : "var(--white-ghost)",
                   backdropFilter: "blur(8px)",
                   border: isActive ? "1px solid var(--white-soft)" : "1px solid var(--white-ghost)",
-                  borderRadius: 2,
+                  borderRadius: 999,
                   transition: "background .2s ease, border-color .2s ease, transform .15s ease",
                 }}>
                 <span className="font-mono-label text-[9px] tracking-wider whitespace-nowrap"

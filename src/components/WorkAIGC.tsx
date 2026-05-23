@@ -137,7 +137,7 @@ export default function WorkAIGC() {
                 color: "var(--white-secondary)",
                 background: "rgba(80,30,160,0.25)",
                 border: "1px solid rgba(120,60,220,0.4)",
-                padding: "2px 7px", borderRadius: 1,
+                padding: "3px 8px", borderRadius: 6,
               }}>DIR · DP · AI</span>
               <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "var(--white-soft)" }}>
                 AI GENERATED · SHORT FILM
@@ -264,7 +264,7 @@ export default function WorkAIGC() {
               <AnimLine key={v.igCode ?? v.id} delay={0.1 + i * 0.14} inView={moreIn}>
                 <a href={href} target="_blank" rel="noopener noreferrer" className="group block">
                   <div className="relative overflow-hidden mb-3"
-                    style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 3, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
+                    style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 12, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
                     {isIg ? (
                       /* IG reel — local thumbnail from public/reels/ */
                       // eslint-disable-next-line @next/next/no-img-element
@@ -310,7 +310,7 @@ export default function WorkAIGC() {
                     color: "var(--white-secondary)",
                     background: "var(--white-ghost)",
                     border: "1px solid var(--white-dim)",
-                    padding: "2px 7px", borderRadius: 1,
+                    padding: "3px 8px", borderRadius: 6,
                     display: "inline-block", marginTop: 8,
                   }}>{v.role}</span>
                 </a>

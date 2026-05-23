@@ -161,7 +161,7 @@ function RoleTag({ text }: { text: string }) {
       color: "var(--white-secondary)",
       background: "var(--white-ghost)",
       border: "1px solid var(--white-dim)",
-      padding: "2px 7px", borderRadius: 1,
+      padding: "3px 8px", borderRadius: 6,
       display: "inline-block",
     }}>{text}</span>
   );
@@ -176,7 +176,7 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
 
   return (
     <div className="relative overflow-hidden"
-      style={{ aspectRatio, borderRadius: 3, background: "#050505" }}
+      style={{ aspectRatio, borderRadius: 12, background: "#050505" }}
       onMouseEnter={() => { timer.current = setTimeout(() => setActive(true), 700); }}
       onMouseLeave={() => { clearTimeout(timer.current); setActive(false); }}>
       {children}
@@ -984,7 +984,7 @@ export default function WorkVideo() {
           {ytShorts.map((s, i) => (
             <div key={s.id} className="shrink-0" style={{ width: 120, opacity: sIn ? 1 : 0, transform: sIn ? "translateY(0)" : "translateY(20px)", transition: `opacity .6s ease ${i * .1}s, transform .6s ease ${i * .1}s` }}>
               <a href={`https://youtube.com/shorts/${s.id}`} target="_blank" rel="noopener noreferrer" className="group block">
-                <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 3, background: "#080808" }}>
+                <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 12, background: "#080808" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`https://img.youtube.com/vi/${s.id}/hqdefault.jpg`} alt={s.title}
                     loading="lazy"

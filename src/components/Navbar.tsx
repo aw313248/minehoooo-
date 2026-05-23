@@ -71,49 +71,61 @@ export default function Navbar() {
           MINEH4O
         </button>
 
-        {/* Desktop — all links inline */}
-        <ul className="hidden md:flex items-center gap-8">
+        {/* Desktop — pill-style nav */}
+        <ul className="hidden md:flex items-center gap-2">
           {desktopLinks.map((l) => {
             const active = activePage === l.page;
             return (
               <li key={l.page}>
                 <button
                   onClick={() => goto(l.page)}
-                  className="relative flex flex-col items-center gap-1"
-                  style={{ background: "none", border: "none", cursor: "pointer", padding: "2px 0" }}
+                  className="relative"
+                  style={{
+                    background: active ? "var(--white-dim)" : "transparent",
+                    border: `1px solid ${active ? "var(--white-soft)" : "transparent"}`,
+                    borderRadius: 999,
+                    cursor: "pointer",
+                    padding: "8px 16px",
+                    transition: "background .3s ease, border-color .3s ease, transform .2s ease",
+                  }}
+                  onMouseEnter={e => {
+                    if (!active) {
+                      e.currentTarget.style.background = "var(--white-ghost)";
+                      e.currentTarget.style.borderColor = "var(--white-ghost)";
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!active) {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.borderColor = "transparent";
+                    }
+                  }}
                 >
                   <span
-                    className="font-mono-label text-[10px] tracking-[0.28em] transition-colors duration-300"
-                    style={{ color: active ? "#f5f5f7" : "#6e6e73" }}
-                    onMouseEnter={e => !active && (e.currentTarget.style.color = "var(--white-secondary)")}
-                    onMouseLeave={e => !active && (e.currentTarget.style.color = "#6e6e73")}
+                    className="font-mono-label text-[11px] tracking-[0.28em] transition-colors duration-300"
+                    style={{ color: active ? "var(--white-primary)" : "var(--white-soft)" }}
                   >
                     {lang === "zh" ? l.labelZh : l.label}
                   </span>
-                  <div style={{
-                    width: active ? 16 : 0, height: 1.5, borderRadius: 1,
-                    background: active ? "linear-gradient(to right, rgba(255,255,255,0.9), rgba(255,255,255,0.3))" : "transparent",
-                    boxShadow: active ? "0 0 6px rgba(255,255,255,0.35)" : "none",
-                    transition: "width 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease",
-                  }} />
                 </button>
               </li>
             );
           })}
 
-          {/* Language toggle */}
-          <li>
+          {/* Language toggle — pill */}
+          <li className="ml-2">
             <button onClick={toggle}
-              className="font-mono-label text-[9px] tracking-[0.22em] px-2 py-1"
+              className="font-mono-label text-[10px] tracking-[0.22em] px-3.5 py-2"
               style={{
                 border: "1px solid var(--white-dim)",
+                borderRadius: 999,
                 color: "var(--white-soft)",
-                background: "transparent", cursor: "pointer",
-                transition: "color .25s ease, border-color .25s ease",
+                background: "var(--white-ghost)", cursor: "pointer",
+                transition: "all .25s ease",
                 letterSpacing: "0.18em",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--white-primary)"; e.currentTarget.style.borderColor = "var(--white-soft)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "var(--white-soft)"; e.currentTarget.style.borderColor = "var(--white-dim)"; }}>
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--white-primary)"; e.currentTarget.style.borderColor = "var(--white-soft)"; e.currentTarget.style.background = "var(--white-dim)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "var(--white-soft)"; e.currentTarget.style.borderColor = "var(--white-dim)"; e.currentTarget.style.background = "var(--white-ghost)"; }}>
               {lang === "zh" ? "EN" : "中文"}
             </button>
           </li>

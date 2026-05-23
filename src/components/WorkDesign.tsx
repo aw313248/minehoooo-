@@ -106,7 +106,7 @@ function ProjectCard({ p, delay, inView }: { p: typeof projects[0]; delay: numbe
               color: "rgba(255,255,255,0.6)",
               background: "rgba(255,255,255,0.05)",
               border: "1px solid rgba(255,255,255,0.14)",
-              padding: "2px 7px", borderRadius: 1,
+              padding: "3px 8px", borderRadius: 6,
               whiteSpace: "nowrap", flexShrink: 0, marginTop: 2,
             }}
           >

@@ -36,6 +36,13 @@
   --space-6: 32px;
   --space-7: 48px;
   --space-8: 64px;
+
+  /* ── RADIUS TOKENS (2026-05 圓角全面採用) ── */
+  --radius-xs:   4px;   /* 細小 chip / tag */
+  --radius-sm:   8px;   /* 輸入欄 / 標籤 */
+  --radius-md:   12px;  /* 卡片 / 浮卡 */
+  --radius-lg:   16px;  /* 大型容器 / 主 CTA */
+  --radius-pill: 999px; /* 圓 pill 按鈕 */
 }
 
 html {

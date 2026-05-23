@@ -229,8 +229,8 @@ export default function Hero() {
 
       </div>
 
-      {/* Bottom strip — quote + IG DM */}
-      <div className="border-t px-6 md:px-28 py-4 flex items-center justify-between gap-6"
+      {/* Bottom strip — VIEWS · centered quote · IG DM */}
+      <div className="border-t px-6 md:px-12 py-4 grid items-center gap-4"
         style={{
           borderColor: "var(--white-ghost)",
           background: "rgba(0,0,0,0.55)",
@@ -238,77 +238,78 @@ export default function Hero() {
           WebkitBackdropFilter: "blur(40px)",
           opacity: loaded ? 1 : 0,
           transition: "opacity 1s ease 1.6s",
+          gridTemplateColumns: "1fr auto 1fr",
         }}>
 
-        {/* Quote — left */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-col">
-            {q.lines.map((line, i) => (
-              <span key={i} style={{
-                fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                fontSize: "0.65rem",
-                fontWeight: 300,
-                color: "var(--white-muted)",
-                letterSpacing: "0.04em",
-                lineHeight: 1.75,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "block",
-                opacity: loaded ? 1 : 0,
-                transform: loaded ? "translateY(0)" : "translateY(6px)",
-                transition: `opacity .55s ease ${1.75 + i * 0.14}s, transform .55s ease ${1.75 + i * 0.14}s`,
-              }}>{line}</span>
-            ))}
-            {q.attr && (
-              <span style={{
-                fontFamily: "var(--font-space-mono), monospace",
-                fontSize: "0.48rem",
-                letterSpacing: "0.2em",
-                color: "var(--white-dim)",
-                marginTop: 3,
-              }}>{q.attr}</span>
-            )}
-          </div>
-        </div>
-
-        {/* Visitor stat — center */}
-        <div className="hidden md:flex flex-col items-center gap-0.5 shrink-0 px-6 border-x"
-          style={{ borderColor: "var(--white-ghost)" }}>
-          <span className="font-display leading-none" style={{ fontSize: "1.5rem", color: "var(--white-secondary)", letterSpacing: "0.02em" }}>
+        {/* Visitor stat — left */}
+        <div className="hidden md:flex flex-col items-start gap-0.5 shrink-0">
+          <span className="font-display leading-none" style={{ fontSize: "1.4rem", color: "var(--white-secondary)", letterSpacing: "0.02em" }}>
             {count}K+
           </span>
           <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "var(--white-dim)" }}>
             VIEWS
           </span>
         </div>
+        {/* Mobile spacer */}
+        <div className="md:hidden" />
+
+        {/* Quote — centered, smaller */}
+        <div className="flex flex-col items-center text-center shrink min-w-0">
+          {q.lines.map((line, i) => (
+            <span key={i} style={{
+              fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+              fontSize: "0.52rem",
+              fontWeight: 300,
+              color: "var(--white-muted)",
+              letterSpacing: "0.05em",
+              lineHeight: 1.7,
+              whiteSpace: "nowrap",
+              display: "block",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(6px)",
+              transition: `opacity .55s ease ${1.75 + i * 0.14}s, transform .55s ease ${1.75 + i * 0.14}s`,
+            }}>{line}</span>
+          ))}
+          {q.attr && (
+            <span style={{
+              fontFamily: "var(--font-space-mono), monospace",
+              fontSize: "0.42rem",
+              letterSpacing: "0.22em",
+              color: "var(--white-dim)",
+              marginTop: 4,
+            }}>{q.attr}</span>
+          )}
+        </div>
 
         {/* IG DM — right */}
-        <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
-          className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
-          style={{
-            background: "var(--white-ghost)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            border: "1px solid var(--white-ghost)",
-            padding: "7px 16px",
-            color: "var(--white-soft)",
-            transition: "all .3s ease",
-          }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = "var(--white-ghost)";
-            el.style.borderColor = "var(--white-dim)";
-            el.style.color = "var(--white-primary)";
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLAnchorElement;
-            el.style.background = "var(--white-ghost)";
-            el.style.borderColor = "var(--white-ghost)";
-            el.style.color = "var(--white-soft)";
-          }}>
-          DM @minehoooo ↗
-        </a>
+        <div className="flex justify-end">
+          <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+            className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
+            style={{
+              background: "var(--white-ghost)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              border: "1px solid var(--white-ghost)",
+              borderRadius: 999,
+              padding: "8px 18px",
+              color: "var(--white-soft)",
+              transition: "all .3s ease",
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.background = "var(--white-dim)";
+              el.style.borderColor = "var(--white-muted)";
+              el.style.color = "var(--white-primary)";
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLAnchorElement;
+              el.style.background = "var(--white-ghost)";
+              el.style.borderColor = "var(--white-ghost)";
+              el.style.color = "var(--white-soft)";
+            }}>
+            DM @minehoooo ↗
+          </a>
+        </div>
       </div>
 
       {/* Scroll-down hint — desktop, auto-fades */}
