@@ -129,31 +129,26 @@ export default function PageScroll({ children }: Props) {
     });
   }, [total]);
 
-  // Wheel handler — page flip on every meaningful scroll tick (book-flip behavior)
-  // Intent: 1 scroll wheel notch = 1 page flip, regardless of internal scroll position.
-  // Threshold: deltaY > 8 to ignore noise / inertia trailing pulses.
+  // Wheel handler — internal scroll first, snap to next page at boundary
+  // Why: full page-flip skips content in long sections (Video / Photo). Restore safe behavior
+  // until those sections are compressed to fit one viewport.
   useEffect(() => {
     let last = 0;
-    const COOLDOWN = 950;
-    const THRESHOLD = 8;
 
     const onWheel = (e: WheelEvent) => {
+      const now = Date.now();
       const cur = refs.current[page];
       if (!cur) return;
 
-      // Always prevent default scroll — we're driving navigation manually
-      e.preventDefault();
+      const atBottom = cur.scrollTop + cur.clientHeight >= cur.scrollHeight - 4;
+      const atTop    = cur.scrollTop <= 4;
 
-      const now = Date.now();
-      if (transitioning || now - last < COOLDOWN) return;
-      if (Math.abs(e.deltaY) < THRESHOLD) return;
-
-      if (e.deltaY > 0) {
-        last = now;
-        navigate(1);
-      } else if (e.deltaY < 0) {
-        last = now;
-        navigate(-1);
+      if (e.deltaY > 0 && atBottom) {
+        e.preventDefault();
+        if (!transitioning && now - last > 950) { last = now; navigate(1); }
+      } else if (e.deltaY < 0 && atTop) {
+        e.preventDefault();
+        if (!transitioning && now - last > 950) { last = now; navigate(-1); }
       }
     };
 

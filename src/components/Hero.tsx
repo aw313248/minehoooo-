@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { CharReveal } from "@/components/WordReveal";
 
-const V_LABELS     = ["Visual Production", "Creative Direction", "AIGC Creation"];
 const TAGLINE      = ["Director", "·", "DP", "·", "Screenplay", "·", "Photography"];
 
 const QUOTES = [
@@ -135,25 +134,17 @@ export default function Hero() {
         background: "radial-gradient(ellipse 80% 50% at 55% 50%, rgba(255,255,255,0.022) 0%, transparent 70%)",
       }} />
 
-      {/* Vertical labels — left gutter */}
-      <div aria-hidden="true" className="absolute left-6 md:left-10 top-0 bottom-0 hidden md:flex flex-col justify-around py-32 pointer-events-none z-10">
-        {V_LABELS.map((label, i) => (
-          <span key={label} className="v-text font-mono-label text-[9px] tracking-[0.28em]"
-            style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: `opacity 1.2s ease ${0.7 + i * 0.25}s` }}>
-            {label}
-          </span>
-        ))}
-      </div>
+      {/* (left vertical labels removed — was breaking centered composition) */}
 
-      {/* Main content */}
-      <div className="flex-1 flex flex-col justify-center pl-6 md:pl-28 pr-6 md:pr-12" style={{ paddingTop: "80px" }}>
+      {/* Main content — fully centered */}
+      <div className="flex-1 flex flex-col justify-center items-center text-center px-6 md:px-12" style={{ paddingTop: "80px" }}>
 
         {/* Handle */}
         <div style={{
           opacity: loaded ? 1 : 0,
           transform: loaded ? "translateY(0)" : "translateY(10px)",
           transition: "opacity .7s ease .05s, transform .7s ease .05s",
-          display: "flex", alignItems: "center", gap: 12,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 12,
         }}>
           <span className="font-mono-label text-[10px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
             @minehoooo
@@ -163,7 +154,7 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* MINEH4O — character reveal + glitch layers */}
+        {/* MINEH4O — character reveal + glitch layers, centered */}
         <div className="relative inline-block" style={{ overflow: "hidden" }}>
           <h1 className="font-display leading-none select-none mt-3"
             style={{ fontSize: "clamp(6.5rem, 23vw, 30rem)", color: "var(--text)", cursor: "default" }}>
@@ -193,8 +184,8 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* Tagline — glass pills */}
-        <div className="mt-5 flex flex-wrap items-center gap-2">
+        {/* Tagline — glass pills, centered */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
           {TAGLINE.map((word, i) => (
             word === "·" ? (
               <span key={i} style={{
@@ -209,7 +200,8 @@ export default function Hero() {
                   backdropFilter: "blur(16px)",
                   WebkitBackdropFilter: "blur(16px)",
                   border: "1px solid var(--white-ghost)",
-                  padding: "5px 12px",
+                  borderRadius: 999,
+                  padding: "6px 14px",
                   color: "var(--white-secondary)",
                   opacity: loaded ? 1 : 0,
                   transform: loaded ? "translateY(0)" : "translateY(14px)",
@@ -222,7 +214,7 @@ export default function Hero() {
         </div>
 
         {/* Location */}
-        <p className="font-mono-label text-[9px] tracking-[0.35em] mt-3"
+        <p className="font-mono-label text-[9px] tracking-[0.35em] mt-4"
           style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: "opacity .8s ease 1.4s" }}>
           TAIWAN · TAICHUNG
         </p>
