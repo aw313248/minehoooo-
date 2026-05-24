@@ -179,7 +179,7 @@ export default function Contact() {
             transform: inView ? "translateY(0)" : "translateY(20px)",
             transition: "opacity .8s ease .3s, transform .8s cubic-bezier(.16,1,.3,1) .3s",
           }}>
-            <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
               className="group inline-flex items-center gap-5"
               style={{
                 background: "var(--white-ghost)",
@@ -213,7 +213,7 @@ export default function Contact() {
                   SEND A DM
                 </span>
                 <span className="font-mono-label text-[15px] md:text-[17px] tracking-[0.1em]" style={{ color: "var(--white-primary)" }}>
-                  @minehoooo
+                  @minehoooo.arw
                 </span>
               </div>
               <span style={{ color: "var(--white-secondary)", fontSize: 22, marginLeft: 6 }}>↗</span>

@@ -275,7 +275,7 @@ export default function Hero() {
 
         {/* IG DM — right */}
         <div className="flex justify-end">
-          <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+          <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
             className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
             style={{
               background: "var(--white-ghost)",
@@ -299,7 +299,7 @@ export default function Hero() {
               el.style.borderColor = "var(--white-ghost)";
               el.style.color = "var(--white-soft)";
             }}>
-            DM @minehoooo ↗
+            DM @minehoooo.arw ↗
           </a>
         </div>
       </div>
