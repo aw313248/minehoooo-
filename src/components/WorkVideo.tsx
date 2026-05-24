@@ -1101,16 +1101,16 @@ export default function WorkVideo() {
           <p className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>
             More work lives on Instagram — updated continuously
           </p>
-          <a href="https://www.instagram.com/minehoooo/" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.instagram.com/minehoooo.arw/" target="_blank" rel="noopener noreferrer"
             className="group shrink-0 flex items-center gap-3 px-5 py-3 transition-all duration-300 hover:bg-white/5"
-            style={{ border: "1px solid var(--white-dim)", backdropFilter: "blur(12px)", width: "fit-content" }}>
+            style={{ border: "1px solid var(--white-dim)", borderRadius: 999, backdropFilter: "blur(12px)", width: "fit-content" }}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <rect x="2" y="2" width="20" height="20" rx="5" stroke="var(--white-secondary)" strokeWidth="1.5"/>
               <circle cx="12" cy="12" r="4.5" stroke="var(--white-secondary)" strokeWidth="1.5"/>
               <circle cx="17.5" cy="6.5" r="1.4" fill="var(--white-primary)"/>
             </svg>
             <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--text)" }}>
-              @minehoooo ↗
+              @minehoooo.arw ↗
             </span>
           </a>
         </div>

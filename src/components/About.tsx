@@ -222,15 +222,15 @@ export default function About() {
               </p>
             </div>
             <div className="flex gap-3 md:gap-4">
+              <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+                className="font-mono-label text-[8px] tracking-[0.25em]"
+                style={{ color: "var(--white-primary)" }}>
+                @minehoooo.arw
+              </a>
               <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
                 className="font-mono-label text-[8px] tracking-[0.25em]"
                 style={{ color: "var(--white-soft)" }}>
                 @minehoooo
-              </a>
-              <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-                className="font-mono-label text-[8px] tracking-[0.25em]"
-                style={{ color: "var(--white-soft)" }}>
-                @minehoooo.arw
               </a>
             </div>
           </div>
@@ -383,8 +383,8 @@ export default function About() {
               FOLLOW / 追蹤
             </p>
             {[
+              { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Main · Director / DP / Photo" },
               { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · Reels" },
-              { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Photography" },
               { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
             ].map(s => (
               <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"
@@ -425,8 +425,8 @@ export default function About() {
             </div>
             <div className="flex gap-4 flex-wrap">
               {[
-                { handle: "@minehoooo",     href: "https://instagram.com/minehoooo" },
                 { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw" },
+                { handle: "@minehoooo",     href: "https://instagram.com/minehoooo" },
                 { handle: "@mlpon6",        href: "https://instagram.com/mlpon6" },
               ].map(s => (
                 <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"

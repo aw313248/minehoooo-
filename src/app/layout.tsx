@@ -582,8 +582,8 @@ const personJsonLd = {
     skills: "Cinematography, Music Video Direction, AIGC, Color Grading, Photography, Screenplay",
   },
   sameAs: [
-    "https://instagram.com/minehoooo",
     "https://instagram.com/minehoooo.arw",
+    "https://instagram.com/minehoooo",
     "https://instagram.com/mlpon6",
     "https://www.youtube.com/@BigCataw313248",
     "https://minehoooo.xyz",
@@ -771,9 +771,9 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="zh-TW" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="en" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="x-default" href="https://minehoooo.xyz" />
-        {/* rel="me" — identity verification for Google Knowledge Panel */}
-        <link rel="me" href="https://instagram.com/minehoooo" />
+        {/* rel="me" — identity verification for Google Knowledge Panel (.arw 為主帳號) */}
         <link rel="me" href="https://instagram.com/minehoooo.arw" />
+        <link rel="me" href="https://instagram.com/minehoooo" />
         <link rel="me" href="https://www.youtube.com/@BigCataw313248" />
         {/* Preload critical above-fold assets */}
         <link rel="preload" href="/profile.png" as="image" />
