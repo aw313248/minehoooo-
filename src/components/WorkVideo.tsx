@@ -468,49 +468,68 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
   const trackWidthPct = (items.length / perView) * 100;
   const slideStepPct = 100 / items.length;
 
+  // Cylinder gradient mask — fades card edges to simulate 3D rotation depth
+  const cylinderMask = "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 4%, #000 12%, #000 88%, rgba(0,0,0,0.35) 96%, transparent 100%)";
+
   return (
-    <div className="relative">
+    <div className="relative" style={{ paddingLeft: 32, paddingRight: 32 }}>
+      {/* Track wrapper with cylinder edge fade */}
       <div className="overflow-hidden"
+        style={{
+          maskImage: cylinderMask,
+          WebkitMaskImage: cylinderMask,
+        }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}>
         <div style={{
           display: "flex",
           width: `${trackWidthPct}%`,
           transform: `translateX(-${idx * slideStepPct}%)`,
-          transition: "transform 0.7s cubic-bezier(.16,1,.3,1)",
+          transition: "transform 0.85s cubic-bezier(.16,1,.3,1)",
         }}>
-          {items.map((item, i) => (
-            <div key={getKey(item, i)} style={{
-              width: `${100 / items.length}%`,
-              paddingRight: i === items.length - 1 ? 0 : 16,
-              boxSizing: "border-box",
-              minWidth: 0,
-            }}>
-              {renderItem(item, i)}
-            </div>
-          ))}
+          {items.map((item, i) => {
+            // Cards adjacent to viewport edges get reduced opacity for depth
+            const distFromCenter = Math.abs(i - (idx + perView / 2 - 0.5));
+            const visibleEdge = distFromCenter > perView / 2 - 0.5 && distFromCenter < perView / 2 + 0.6;
+            const sideOpacity = visibleEdge ? 0.55 : 1;
+            const sideScale   = visibleEdge ? 0.94 : 1;
+            return (
+              <div key={getKey(item, i)} style={{
+                width: `${100 / items.length}%`,
+                paddingRight: i === items.length - 1 ? 0 : 16,
+                boxSizing: "border-box",
+                minWidth: 0,
+                opacity: sideOpacity,
+                transform: `scale(${sideScale})`,
+                transformOrigin: "center center",
+                transition: "opacity .65s ease, transform .65s cubic-bezier(.16,1,.3,1)",
+              }}>
+                {renderItem(item, i)}
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Arrows */}
+      {/* Arrows — outside the masked area */}
       <button
         onClick={() => canPrev && setIdx(i => i - 1)}
         disabled={!canPrev}
         aria-label="Previous"
         style={{
-          position: "absolute", top: "38%", left: -8, transform: "translateY(-50%)",
+          position: "absolute", top: "38%", left: -4, transform: "translateY(-50%)",
           width: 38, height: 38, borderRadius: "50%",
-          background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+          background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
           border: "1px solid var(--white-dim)",
           color: "var(--white-primary)",
           cursor: canPrev ? "pointer" : "not-allowed",
           opacity: canPrev ? 1 : 0.3,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "opacity .3s, background .3s",
-          zIndex: 4,
+          zIndex: 6,
         }}
-        onMouseEnter={e => { if (canPrev) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.85)"; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.65)"; }}>
+        onMouseEnter={e => { if (canPrev) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.9)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.7)"; }}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M15 18L9 12L15 6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -520,19 +539,19 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
         disabled={!canNext}
         aria-label="Next"
         style={{
-          position: "absolute", top: "38%", right: -8, transform: "translateY(-50%)",
+          position: "absolute", top: "38%", right: -4, transform: "translateY(-50%)",
           width: 38, height: 38, borderRadius: "50%",
-          background: "rgba(0,0,0,0.65)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+          background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
           border: "1px solid var(--white-dim)",
           color: "var(--white-primary)",
           cursor: canNext ? "pointer" : "not-allowed",
           opacity: canNext ? 1 : 0.3,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "opacity .3s, background .3s",
-          zIndex: 4,
+          zIndex: 6,
         }}
-        onMouseEnter={e => { if (canNext) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.85)"; }}
-        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.65)"; }}>
+        onMouseEnter={e => { if (canNext) (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.9)"; }}
+        onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.7)"; }}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
           <path d="M9 6L15 12L9 18" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -547,7 +566,8 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
             aria-label={`Go to slide ${i + 1}`}
             style={{
               width: i === idx ? 28 : 10,
-              height: 2,
+              height: 3,
+              borderRadius: 999,
               background: i === idx ? "var(--white-soft)" : "var(--white-ghost)",
               border: "none",
               cursor: "pointer",
@@ -654,25 +674,29 @@ export default function WorkVideo() {
   return (
     <section style={{ background: "#000", minHeight: "100vh" }}>
 
-      {/* ── CINEMATIC HERO — featured MV with center-big, sides-faded peek carousel ── */}
+      {/* ── CINEMATIC HERO — fullscreen featured MV (滿版) ── */}
       <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#000" }}>
 
-        {/* Top: centered section label */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
-          padding: "2rem 3rem 1.4rem",
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
-          opacity: heroLoaded ? 1 : 0, transition: "opacity .6s ease",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
-        }}>
-          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
-            03 — VIDEO
-          </span>
-          <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
-          <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
-            FEATURED · {featuredMVs.length} WORKS
-          </span>
-        </div>
+        {/* Fullscreen background thumbnail — crossfade between featured */}
+        {!playing && (
+          <AnimatePresence mode="sync">
+            <motion.img
+              key={active.id}
+              src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
+              alt={`${active.artist} ${active.title} MV 影像作品 - 在地影像工作者 MINEH4O`}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%",
+                objectFit: "cover", pointerEvents: "none",
+                filter: "brightness(0.62)",
+              }}
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
+            />
+          </AnimatePresence>
+        )}
 
         {/* Full-screen player overlay (with sound, on demand) */}
         {playing && (
@@ -694,190 +718,30 @@ export default function WorkVideo() {
           </div>
         )}
 
-        {/* Carousel — 3-card peek (left dim · big center · right dim) */}
-        {!playing && (
-          <div className="absolute inset-0 flex items-center justify-center overflow-hidden"
-            style={{ paddingTop: 80, paddingBottom: 220 }}
-            onTouchStart={e => {
-              (window as unknown as { __t: number }).__t = e.touches[0].clientX;
-            }}
-            onTouchEnd={e => {
-              const start = (window as unknown as { __t: number }).__t || 0;
-              const dx = e.changedTouches[0].clientX - start;
-              if (dx > 50) setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length);
-              else if (dx < -50) setActiveIdx(i => (i + 1) % featuredMVs.length);
-            }}>
-            {featuredMVs.map((v, i) => {
-              const offset = ((i - activeIdx + featuredMVs.length) % featuredMVs.length);
-              // Map: 0=center, 1=right, len-1=left, else far (hidden)
-              const len = featuredMVs.length;
-              let pos: "center" | "left" | "right" | "far" = "far";
-              if (offset === 0) pos = "center";
-              else if (offset === 1) pos = "right";
-              else if (offset === len - 1) pos = "left";
+        {/* Gradient overlays for legibility */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
+          background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.45) 100%)" }} />
 
-              const isCenter = pos === "center";
-              const visible  = pos !== "far";
-              const accent   = roleAccent(v.role).color;
+        {/* Top: section label centered */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
+          padding: "2rem 3rem 1.4rem",
+          opacity: heroLoaded ? 1 : 0, transition: "opacity .6s ease",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
+        }}>
+          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
+            03 — VIDEO
+          </span>
+          <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
+          <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
+            FEATURED · {String(activeIdx + 1).padStart(2, "0")} / {String(featuredMVs.length).padStart(2, "0")}
+          </span>
+        </div>
 
-              return (
-                <button key={v.id}
-                  onClick={() => {
-                    if (isCenter) setPlaying(true);
-                    else setActiveIdx(i);
-                  }}
-                  aria-label={`${v.title} — ${roleAccent(v.role).label}`}
-                  style={{
-                    position: "absolute",
-                    width: isCenter ? "min(78vw, 1080px)" : "min(40vw, 460px)",
-                    aspectRatio: "16/9",
-                    transform: pos === "center" ? "translateX(0) scale(1)"
-                             : pos === "left"   ? "translateX(-62%) scale(0.78)"
-                             : pos === "right"  ? "translateX(62%) scale(0.78)"
-                             : "translateX(0) scale(0.4)",
-                    opacity: pos === "center" ? 1 : pos === "far" ? 0 : 0.32,
-                    pointerEvents: visible ? "auto" : "none",
-                    zIndex: isCenter ? 5 : 2,
-                    borderRadius: 18,
-                    overflow: "hidden",
-                    border: `1px solid ${isCenter ? "var(--white-dim)" : "var(--white-ghost)"}`,
-                    background: "#0a0a0a",
-                    cursor: isCenter ? "pointer" : "pointer",
-                    transition: "transform .85s cubic-bezier(.16,1,.3,1), opacity .65s ease, border-color .4s",
-                    padding: 0,
-                  }}>
-                  {/* Thumbnail */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
-                    alt={`${v.artist} ${v.title} MV - 在地影像工作者 MINEH4O`}
-                    style={{
-                      width: "100%", height: "100%", objectFit: "cover",
-                      filter: isCenter ? "brightness(0.78)" : "brightness(0.5) saturate(0.7)",
-                      transition: "filter .6s ease",
-                    }}
-                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
-
-                  {/* Role color dot — top-left */}
-                  <span style={{
-                    position: "absolute", top: 14, left: 14, zIndex: 3,
-                    display: "inline-flex", alignItems: "center", gap: 6,
-                  }}>
-                    <span style={{
-                      width: isCenter ? 10 : 7, height: isCenter ? 10 : 7, borderRadius: "50%",
-                      background: accent,
-                      boxShadow: `0 0 0 2px rgba(0,0,0,0.5), 0 0 10px ${accent}88`,
-                    }} />
-                  </span>
-
-                  {/* Play icon overlay (center only) */}
-                  {isCenter && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.92 }}>
-                      <div style={{
-                        width: 72, height: 72, borderRadius: "50%",
-                        background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)",
-                        border: "1px solid var(--white-dim)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}>
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
-                      </div>
-                    </div>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Centered title + meta (below carousel) */}
-        {!playing && (
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={active.id}
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute left-0 right-0 flex flex-col items-center text-center px-6 z-10"
-              style={{ bottom: "5.5rem" }}>
-              <div className="flex items-center justify-center gap-3 mb-3 flex-wrap">
-                <RoleTag text={active.role} />
-                <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.3em", color: "var(--white-soft)" }}>
-                  {active.subEn.toUpperCase()}
-                </span>
-              </div>
-              <h2 className="font-display leading-none"
-                style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-                {active.title}
-              </h2>
-              {active.artist && (
-                <p className="font-mono-label mt-3" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--white-soft)" }}>
-                  by <span style={{ color: "var(--white-primary)" }}>{active.artist}</span>
-                </p>
-              )}
-            </motion.div>
-          </AnimatePresence>
-        )}
-
-        {/* Bottom: arrows + dots + counter */}
-        {!playing && (
-          <div className="absolute left-0 right-0 flex items-center justify-center gap-4 z-10"
-            style={{ bottom: "1.6rem", opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
-            <button onClick={() => setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length)}
-              aria-label="Previous"
-              style={{
-                width: 38, height: 38, borderRadius: "50%",
-                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)",
-                border: "1px solid var(--white-dim)", cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "background .25s",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.85)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </button>
-
-            {/* Dots */}
-            <div className="flex items-center gap-1.5">
-              {featuredMVs.map((_, i) => (
-                <button key={i} onClick={() => setActiveIdx(i)} aria-label={`Go to slide ${i + 1}`}
-                  style={{
-                    width: i === activeIdx ? 22 : 5, height: 5, borderRadius: 999,
-                    background: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
-                    border: "none", cursor: "pointer", padding: 0,
-                    transition: "all .45s cubic-bezier(.16,1,.3,1)",
-                  }} />
-              ))}
-            </div>
-
-            <button onClick={() => setActiveIdx(i => (i + 1) % featuredMVs.length)}
-              aria-label="Next"
-              style={{
-                width: 38, height: 38, borderRadius: "50%",
-                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)",
-                border: "1px solid var(--white-dim)", cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "background .25s",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.85)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 6 15 12 9 18" />
-              </svg>
-            </button>
-
-            {/* Counter */}
-            <span className="font-mono-label ml-3 hidden md:inline" style={{ fontSize: 9, letterSpacing: "0.22em", color: "var(--white-soft)" }}>
-              {String(activeIdx + 1).padStart(2, "0")} / {String(featuredMVs.length).padStart(2, "0")}
-            </span>
-          </div>
-        )}
-
-        {/* Role legend — top right (subtle, explains color dots) */}
+        {/* Role legend — top right (subtle, explains color dots in lower carousels) */}
         {!playing && (
           <div className="absolute hidden md:flex items-center gap-3 z-10"
-            style={{ top: "5.5rem", right: "2rem", opacity: heroLoaded ? 0.7 : 0, transition: "opacity 1s ease .7s" }}>
+            style={{ top: "5.5rem", right: "2rem", opacity: heroLoaded ? 0.6 : 0, transition: "opacity 1s ease .7s" }}>
             {[
               { color: "#D4AF37", label: "DIR" },
               { color: "#7B9EAE", label: "DP" },
@@ -889,6 +753,151 @@ export default function WorkVideo() {
               </div>
             ))}
           </div>
+        )}
+
+        {/* Centered title block — vertically centered for impact */}
+        {!playing && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12 z-10"
+              style={{ paddingTop: 80, paddingBottom: 140 }}>
+
+              {/* Role color dot + role tag + subtitle */}
+              <div className="flex items-center justify-center gap-3 mb-5 flex-wrap">
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: roleAccent(active.role).color,
+                  boxShadow: `0 0 0 2px rgba(0,0,0,0.4), 0 0 12px ${roleAccent(active.role).color}aa`,
+                }} />
+                <RoleTag text={active.role} />
+                <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
+                  {active.subEn.toUpperCase()}
+                </span>
+              </div>
+
+              {/* Massive title */}
+              <h2 className="font-display leading-none mb-6"
+                style={{
+                  fontSize: "clamp(3rem, 9vw, 11rem)",
+                  color: "var(--text)", letterSpacing: "0.01em",
+                  textShadow: "0 4px 32px rgba(0,0,0,0.7)",
+                }}>
+                {active.title}
+              </h2>
+
+              {active.artist && (
+                <p className="font-mono-label mb-8" style={{ fontSize: 11, letterSpacing: "0.22em", color: "var(--white-soft)" }}>
+                  by <span style={{ color: "var(--white-primary)" }}>{active.artist}</span>
+                </p>
+              )}
+
+              {/* PLAY FULL button — big, centered */}
+              <button onClick={() => setPlaying(true)}
+                className="group flex items-center gap-3"
+                style={{
+                  background: "rgba(255,255,255,0.1)",
+                  backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+                  border: "1px solid var(--white-dim)",
+                  borderRadius: 999,
+                  padding: "14px 28px", cursor: "pointer",
+                  transition: "all .35s ease",
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(255,255,255,0.22)";
+                  el.style.borderColor = "var(--white-muted)";
+                  el.style.transform = "translateY(-2px)";
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "rgba(255,255,255,0.1)";
+                  el.style.borderColor = "var(--white-dim)";
+                  el.style.transform = "translateY(0)";
+                }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
+                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em", color: "var(--white-primary)" }}>PLAY FULL</span>
+                <span style={{ color: "var(--white-soft)", fontSize: 15 }}>↗</span>
+              </button>
+            </motion.div>
+          </AnimatePresence>
+        )}
+
+        {/* Bottom: arrows + dots + counter (proper spacing from bottom) */}
+        {!playing && (
+          <div className="absolute left-0 right-0 flex items-center justify-center gap-4 z-10"
+            style={{ bottom: "2.5rem", opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
+            <button onClick={() => setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length)}
+              aria-label="Previous"
+              style={{
+                width: 40, height: 40, borderRadius: "50%",
+                background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)",
+                border: "1px solid var(--white-dim)", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background .25s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.9)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.65)")}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+
+            {/* Dots */}
+            <div className="flex items-center gap-1.5">
+              {featuredMVs.map((_, i) => (
+                <button key={i} onClick={() => setActiveIdx(i)} aria-label={`Go to slide ${i + 1}`}
+                  style={{
+                    width: i === activeIdx ? 24 : 6, height: 6, borderRadius: 999,
+                    background: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
+                    border: "none", cursor: "pointer", padding: 0,
+                    transition: "all .45s cubic-bezier(.16,1,.3,1)",
+                  }} />
+              ))}
+            </div>
+
+            <button onClick={() => setActiveIdx(i => (i + 1) % featuredMVs.length)}
+              aria-label="Next"
+              style={{
+                width: 40, height: 40, borderRadius: "50%",
+                background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)",
+                border: "1px solid var(--white-dim)", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background .25s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.9)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.65)")}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 6 15 12 9 18" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* Touch swipe layer */}
+        {!playing && (
+          <div className="absolute inset-0 z-[5]"
+            style={{ pointerEvents: "auto" }}
+            onTouchStart={e => {
+              (window as unknown as { __vt: number }).__vt = e.touches[0].clientX;
+            }}
+            onTouchEnd={e => {
+              const start = (window as unknown as { __vt: number }).__vt || 0;
+              const dx = e.changedTouches[0].clientX - start;
+              if (dx > 50) setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length);
+              else if (dx < -50) setActiveIdx(i => (i + 1) % featuredMVs.length);
+            }}
+            onClick={e => {
+              // Only trigger play if NOT clicking on bottom controls
+              const target = e.target as HTMLElement;
+              if (target.closest("button")) return;
+              setPlaying(true);
+            }}
+          />
         )}
       </div>
 
