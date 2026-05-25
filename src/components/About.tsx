@@ -165,39 +165,45 @@ export default function About() {
           background: "linear-gradient(to right, rgba(0,0,0,0.35) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)",
         }} />
 
-        {/* Top label */}
-        <div className="absolute px-8 md:px-14" style={{ top: "5.5rem" }}>
-          <p className="font-mono-label text-[9px] tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
+        {/* Top label — centered */}
+        <div className="absolute left-0 right-0 flex justify-center" style={{ top: "5.5rem" }}>
+          <p className="font-mono-label text-[10px] tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
             01 — ABOUT · MINEH4O
           </p>
         </div>
 
-        {/* Bottom: name block */}
-        <div className="absolute bottom-0 left-0 right-0 px-8 md:px-14 pb-10 md:pb-14"
+        {/* Centered name block — vertically + horizontally centered */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12"
           style={{ animation: "fadeSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
+
+          {/* Subtitle above */}
+          <p className="font-mono-label text-[10px] md:text-[11px] tracking-[0.4em] mb-6"
+            style={{ color: "var(--white-soft)" }}>
+            DIRECTOR · DP · SCREENPLAY · PHOTOGRAPHY
+          </p>
+
+          {/* OSCAR — centered hero name */}
           <div className="relative inline-block"
             onMouseEnter={() => setCoverHover(true)}
             onMouseLeave={() => setCoverHover(false)}>
-            <h2 className="font-display leading-none mb-3"
-              style={{ fontSize: "clamp(5rem,20vw,24rem)", color: "var(--text)", letterSpacing: "0.01em", cursor: "default" }}>
+            <h2 className="font-display leading-none"
+              style={{ fontSize: "clamp(5rem,18vw,22rem)", color: "var(--text)", letterSpacing: "0.01em", cursor: "default" }}>
               OSCAR
             </h2>
             {/* Quote tooltip */}
             <div style={{
-              position: "absolute", bottom: "calc(100% + 8px)", left: 0,
+              position: "absolute", bottom: "calc(100% + 12px)", left: "50%", transform: coverHover ? "translateX(-50%) translateY(0) scale(1)" : "translateX(-50%) translateY(6px) scale(0.98)",
               pointerEvents: "none",
               opacity: coverHover ? 1 : 0,
-              transform: coverHover ? "translateY(0) scale(1)" : "translateY(6px) scale(0.98)",
               transition: "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
-              background: "rgba(0,0,0,0.72)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-              border: "1px solid var(--white-ghost)", padding: "14px 20px", maxWidth: 300, zIndex: 50,
+              background: "rgba(0,0,0,0.78)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+              border: "1px solid var(--white-ghost)", borderRadius: 12, padding: "14px 22px", maxWidth: 320, zIndex: 50,
+              textAlign: "center",
             }}>
-              <div style={{ height: 1, background: "var(--white-ghost)", marginBottom: 12, transformOrigin: "left",
-                transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s" }} />
               {q.lines.map((line, i) => (
                 <p key={i} style={{
                   fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                  fontSize: "0.88rem", fontWeight: 300, color: "var(--white-primary)",
+                  fontSize: "0.82rem", fontWeight: 300, color: "var(--white-primary)",
                   letterSpacing: "0.02em", lineHeight: 1.7, marginBottom: i < q.lines.length - 1 ? 2 : 0,
                   opacity: coverHover ? 1 : 0, transform: coverHover ? "translateY(0)" : "translateY(6px)",
                   transition: `opacity 0.4s ease ${0.06 + i * 0.08}s, transform 0.4s ease ${0.06 + i * 0.08}s`,
@@ -208,42 +214,42 @@ export default function About() {
                   letterSpacing: "0.25em", color: "var(--white-muted)", marginTop: 10,
                   opacity: coverHover ? 1 : 0, transition: "opacity 0.4s ease 0.3s" }}>{q.attr}</p>
               )}
-              <div style={{ height: 1, background: "var(--white-ghost)", marginTop: 12, transformOrigin: "right",
-                transform: coverHover ? "scaleX(1)" : "scaleX(0)", transition: "transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.2s" }} />
             </div>
           </div>
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
-            <div>
-              <p className="font-mono-label text-[11px] tracking-[0.22em]" style={{ color: "var(--white-secondary)" }}>
-                賴明宏 Lai Ming-Hong
-              </p>
-              <p className="font-mono-label text-[9px] tracking-[0.22em] mt-0.5" style={{ color: "var(--white-soft)" }}>
-                Director · DP · Screenplay · Photography
-              </p>
-            </div>
-            <div className="flex gap-3 md:gap-4">
-              <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-                className="font-mono-label text-[8px] tracking-[0.25em]"
-                style={{ color: "var(--white-primary)" }}>
-                @minehoooo.arw
-              </a>
-              <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
-                className="font-mono-label text-[8px] tracking-[0.25em]"
-                style={{ color: "var(--white-soft)" }}>
-                @minehoooo
-              </a>
-            </div>
+
+          {/* Chinese name below */}
+          <p className="font-mono-label text-[11px] md:text-[12px] tracking-[0.32em] mt-6"
+            style={{ color: "var(--white-secondary)" }}>
+            賴明宏 Lai Ming-Hong
+          </p>
+
+          {/* IG handle pills — centered */}
+          <div className="flex gap-3 mt-7 flex-wrap justify-center">
+            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+              className="font-mono-label text-[10px] tracking-[0.22em] px-4 py-2 transition-all duration-300"
+              style={{ color: "var(--white-primary)", background: "var(--white-ghost)", border: "1px solid var(--white-dim)", borderRadius: 999, backdropFilter: "blur(12px)" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--white-dim)"; e.currentTarget.style.borderColor = "var(--white-muted)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.borderColor = "var(--white-dim)"; }}>
+              @minehoooo.arw
+            </a>
+            <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
+              className="font-mono-label text-[10px] tracking-[0.22em] px-4 py-2 transition-all duration-300"
+              style={{ color: "var(--white-soft)", background: "var(--white-ghost)", border: "1px solid var(--white-ghost)", borderRadius: 999, backdropFilter: "blur(12px)" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "var(--white-dim)"; e.currentTarget.style.color = "var(--white-primary)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.color = "var(--white-soft)"; }}>
+              @minehoooo
+            </a>
           </div>
         </div>
 
-        {/* Scroll indicator — right side */}
-        <div className="absolute hidden md:flex flex-col items-center gap-2"
-          style={{ bottom: "2.5rem", right: "3.5rem" }}>
+        {/* Scroll indicator — bottom center */}
+        <div className="absolute hidden md:flex flex-col items-center gap-2 left-1/2 -translate-x-1/2"
+          style={{ bottom: "2.5rem" }}>
           <span className="font-mono-label text-[7px] tracking-[0.35em]"
-            style={{ color: "var(--white-muted)", writingMode: "vertical-rl" }}>
+            style={{ color: "var(--white-muted)" }}>
             SCROLL
           </span>
-          <div style={{ width: 1, height: 48, background: "var(--white-dim)", position: "relative", overflow: "hidden" }}>
+          <div style={{ width: 1, height: 36, background: "var(--white-dim)", position: "relative", overflow: "hidden" }}>
             <div style={{
               position: "absolute", inset: 0,
               background: "var(--white-secondary)",
