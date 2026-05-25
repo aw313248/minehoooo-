@@ -167,6 +167,27 @@ function RoleTag({ text }: { text: string }) {
   );
 }
 
+/* ─── Role → accent color (DIR=gold, DP=cool blue, OTHER=neutral) ─── */
+function roleAccent(role: string): { color: string; label: string } {
+  const r = role.toUpperCase();
+  if (r.includes("DIR")) return { color: "#D4AF37", label: "DIRECTOR" };       // gold
+  if (r.includes("DP"))  return { color: "#7B9EAE", label: "CINEMATOGRAPHY" }; // cool blue
+  return { color: "#9CA0A6", label: "OTHER" };                                  // neutral gray
+}
+
+/* ─── Role color dot (top-left of thumbnail) ─── */
+function RoleDot({ role, size = 8 }: { role: string; size?: number }) {
+  const { color, label } = roleAccent(role);
+  return (
+    <span aria-label={label} title={label} style={{
+      display: "inline-block",
+      width: size, height: size, borderRadius: "50%",
+      background: color,
+      boxShadow: `0 0 0 2px rgba(0,0,0,0.4), 0 0 8px ${color}66`,
+    }} />
+  );
+}
+
 /* ─── Hover preview wrapper ─── */
 function HoverPreview({ id, aspectRatio = "16/9", children }: {
   id: string; aspectRatio?: string; children: React.ReactNode;
@@ -623,29 +644,25 @@ export default function WorkVideo() {
   return (
     <section style={{ background: "#000", minHeight: "100vh" }}>
 
-      {/* ── CINEMATIC HERO — fullscreen featured MV ── */}
-      <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+      {/* ── CINEMATIC HERO — featured MV with center-big, sides-faded peek carousel ── */}
+      <div ref={pRef} style={{ position: "relative", height: "100vh", overflow: "hidden", background: "#000" }}>
 
-        {/* Thumbnail crossfade (no autoplay iframe for perf) */}
-        {!playing && (
-          <AnimatePresence mode="sync">
-            <motion.img
-              key={active.id}
-              src={`https://img.youtube.com/vi/${active.id}/maxresdefault.jpg`}
-              alt={`${active.artist} ${active.title} MV 影像作品 - 在地影像工作者 MINEH4O`}
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%",
-                objectFit: "cover", pointerEvents: "none",
-                filter: "brightness(0.55)",
-              }}
-              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
-            />
-          </AnimatePresence>
-        )}
+        {/* Top: centered section label */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
+          padding: "2rem 3rem 1.4rem",
+          background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
+          opacity: heroLoaded ? 1 : 0, transition: "opacity .6s ease",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
+        }}>
+          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
+            03 — VIDEO
+          </span>
+          <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
+          <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
+            FEATURED · {featuredMVs.length} WORKS
+          </span>
+        </div>
 
         {/* Full-screen player overlay (with sound, on demand) */}
         {playing && (
@@ -656,122 +673,213 @@ export default function WorkVideo() {
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen style={{ border: "none" }}
             />
+            <button onClick={() => setPlaying(false)}
+              className="font-mono-label"
+              style={{ position: "absolute", top: "5.5rem", right: "3rem", zIndex: 16,
+                fontSize: 9, letterSpacing: "0.3em", color: "var(--white-primary)",
+                border: "1px solid var(--white-muted)", borderRadius: 999, padding: "8px 18px",
+                background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)", cursor: "pointer" }}>
+              ✕ STOP
+            </button>
           </div>
         )}
 
-        {/* Gradient overlays */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-          background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.35) 100%)" }} />
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
-          background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, transparent 60%)" }} />
+        {/* Carousel — 3-card peek (left dim · big center · right dim) */}
+        {!playing && (
+          <div className="absolute inset-0 flex items-center justify-center overflow-hidden"
+            style={{ paddingTop: 80, paddingBottom: 220 }}
+            onTouchStart={e => {
+              (window as unknown as { __t: number }).__t = e.touches[0].clientX;
+            }}
+            onTouchEnd={e => {
+              const start = (window as unknown as { __t: number }).__t || 0;
+              const dx = e.changedTouches[0].clientX - start;
+              if (dx > 50) setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length);
+              else if (dx < -50) setActiveIdx(i => (i + 1) % featuredMVs.length);
+            }}>
+            {featuredMVs.map((v, i) => {
+              const offset = ((i - activeIdx + featuredMVs.length) % featuredMVs.length);
+              // Map: 0=center, 1=right, len-1=left, else far (hidden)
+              const len = featuredMVs.length;
+              let pos: "center" | "left" | "right" | "far" = "far";
+              if (offset === 0) pos = "center";
+              else if (offset === 1) pos = "right";
+              else if (offset === len - 1) pos = "left";
 
-        {/* Top: section label + MV switcher */}
-        <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
-          padding: "2.2rem 3rem", display: "flex", justifyContent: "space-between", alignItems: "center",
-          background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%)",
-          opacity: heroLoaded ? 1 : 0, transition: "opacity .6s ease",
-        }}>
-          <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.35em", color: "var(--white-soft)" }}>
-            03 — VIDEO
-          </span>
-          <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-            {featuredMVs.map((v, i) => (
-              <button key={v.id} onClick={() => { setActiveIdx(i); setPlaying(false); }}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: "4px 0" }}>
-                <span className="font-mono-label" style={{
-                  fontSize: 8, letterSpacing: "0.28em",
-                  color: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
-                  borderBottom: i === activeIdx ? "1px solid var(--white-soft)" : "1px solid transparent",
-                  paddingBottom: 3, transition: "color .3s, border-color .3s",
-                }}>
-                  {String(i + 1).padStart(2, "0")} {i === activeIdx ? `· ${v.subEn.split("·")[0].trim()}` : ""}
-                </span>
-              </button>
-            ))}
+              const isCenter = pos === "center";
+              const visible  = pos !== "far";
+              const accent   = roleAccent(v.role).color;
+
+              return (
+                <button key={v.id}
+                  onClick={() => {
+                    if (isCenter) setPlaying(true);
+                    else setActiveIdx(i);
+                  }}
+                  aria-label={`${v.title} — ${roleAccent(v.role).label}`}
+                  style={{
+                    position: "absolute",
+                    width: isCenter ? "min(78vw, 1080px)" : "min(40vw, 460px)",
+                    aspectRatio: "16/9",
+                    transform: pos === "center" ? "translateX(0) scale(1)"
+                             : pos === "left"   ? "translateX(-62%) scale(0.78)"
+                             : pos === "right"  ? "translateX(62%) scale(0.78)"
+                             : "translateX(0) scale(0.4)",
+                    opacity: pos === "center" ? 1 : pos === "far" ? 0 : 0.32,
+                    pointerEvents: visible ? "auto" : "none",
+                    zIndex: isCenter ? 5 : 2,
+                    borderRadius: 18,
+                    overflow: "hidden",
+                    border: `1px solid ${isCenter ? "var(--white-dim)" : "var(--white-ghost)"}`,
+                    background: "#0a0a0a",
+                    cursor: isCenter ? "pointer" : "pointer",
+                    transition: "transform .85s cubic-bezier(.16,1,.3,1), opacity .65s ease, border-color .4s",
+                    padding: 0,
+                  }}>
+                  {/* Thumbnail */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                    alt={`${v.artist} ${v.title} MV - 在地影像工作者 MINEH4O`}
+                    style={{
+                      width: "100%", height: "100%", objectFit: "cover",
+                      filter: isCenter ? "brightness(0.78)" : "brightness(0.5) saturate(0.7)",
+                      transition: "filter .6s ease",
+                    }}
+                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
+
+                  {/* Role color dot — top-left */}
+                  <span style={{
+                    position: "absolute", top: 14, left: 14, zIndex: 3,
+                    display: "inline-flex", alignItems: "center", gap: 6,
+                  }}>
+                    <span style={{
+                      width: isCenter ? 10 : 7, height: isCenter ? 10 : 7, borderRadius: "50%",
+                      background: accent,
+                      boxShadow: `0 0 0 2px rgba(0,0,0,0.5), 0 0 10px ${accent}88`,
+                    }} />
+                  </span>
+
+                  {/* Play icon overlay (center only) */}
+                  {isCenter && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ opacity: 0.92 }}>
+                      <div style={{
+                        width: 72, height: 72, borderRadius: "50%",
+                        background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)",
+                        border: "1px solid var(--white-dim)",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                      }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
+                      </div>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </div>
-        </div>
+        )}
 
-        {/* Bottom left: title block */}
+        {/* Centered title + meta (below carousel) */}
         {!playing && (
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
-              initial={{ opacity: 0, x: -24 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 16 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              style={{ position: "absolute", bottom: "3.5rem", left: "3rem", right: "3rem", zIndex: 10 }}>
-              <motion.div
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.05, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute left-0 right-0 flex flex-col items-center text-center px-6 z-10"
+              style={{ bottom: "5.5rem" }}>
+              <div className="flex items-center justify-center gap-3 mb-3 flex-wrap">
                 <RoleTag text={active.role} />
-                <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "var(--white-soft)" }}>
+                <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.3em", color: "var(--white-soft)" }}>
                   {active.subEn.toUpperCase()}
                 </span>
-              </motion.div>
-              <motion.h2
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.12, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display leading-none"
-                style={{ fontSize: "clamp(3.2rem, 10vw, 13rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+              </div>
+              <h2 className="font-display leading-none"
+                style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
                 {active.title}
-              </motion.h2>
+              </h2>
               {active.artist && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.28, duration: 0.6 }}
-                  className="font-mono-label"
-                  style={{ fontSize: 10, letterSpacing: "0.18em", marginTop: 14, color: "var(--white-soft)" }}>
-                  by <span style={{ color: "var(--white-secondary)" }}>{active.artist}</span>
-                </motion.p>
+                <p className="font-mono-label mt-3" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--white-soft)" }}>
+                  by <span style={{ color: "var(--white-primary)" }}>{active.artist}</span>
+                </p>
               )}
             </motion.div>
           </AnimatePresence>
         )}
 
-        {/* Bottom right: play / stop */}
-        <div style={{ position: "absolute", bottom: "3.5rem", right: "3rem", zIndex: 10,
-          opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
-          {!playing ? (
-            <button onClick={() => setPlaying(true)}
-              className="group flex items-center gap-2.5"
+        {/* Bottom: arrows + dots + counter */}
+        {!playing && (
+          <div className="absolute left-0 right-0 flex items-center justify-center gap-4 z-10"
+            style={{ bottom: "1.6rem", opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
+            <button onClick={() => setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length)}
+              aria-label="Previous"
               style={{
-                background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-                border: "1px solid var(--white-dim)", padding: "10px 20px", cursor: "pointer",
-                transition: "background .3s",
+                width: 38, height: 38, borderRadius: "50%",
+                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)",
+                border: "1px solid var(--white-dim)", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background .25s",
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-ghost)"; }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
-              <span style={{ color: "var(--white-soft)", fontSize: 14 }}>↗</span>
+              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.85)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
             </button>
-          ) : (
-            <button onClick={() => setPlaying(false)}
-              className="font-mono-label"
-              style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text-3)",
-                border: "1px solid var(--white-dim)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
-              ✕ STOP
-            </button>
-          )}
-        </div>
 
-        {/* Scroll hint */}
-        <div style={{
-          position: "absolute", bottom: "3.5rem", left: "50%", transform: "translateX(-50%)",
-          zIndex: 10, opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .7s",
-          display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-        }}>
-          <div style={{ width: 1, height: 36, background: "var(--white-dim)", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", inset: 0, background: "var(--white-secondary)", animation: "slideDown 1.6s ease-in-out infinite" }} />
+            {/* Dots */}
+            <div className="flex items-center gap-1.5">
+              {featuredMVs.map((_, i) => (
+                <button key={i} onClick={() => setActiveIdx(i)} aria-label={`Go to slide ${i + 1}`}
+                  style={{
+                    width: i === activeIdx ? 22 : 5, height: 5, borderRadius: 999,
+                    background: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
+                    border: "none", cursor: "pointer", padding: 0,
+                    transition: "all .45s cubic-bezier(.16,1,.3,1)",
+                  }} />
+              ))}
+            </div>
+
+            <button onClick={() => setActiveIdx(i => (i + 1) % featuredMVs.length)}
+              aria-label="Next"
+              style={{
+                width: 38, height: 38, borderRadius: "50%",
+                background: "rgba(0,0,0,0.55)", backdropFilter: "blur(12px)",
+                border: "1px solid var(--white-dim)", cursor: "pointer",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                transition: "background .25s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.85)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 6 15 12 9 18" />
+              </svg>
+            </button>
+
+            {/* Counter */}
+            <span className="font-mono-label ml-3 hidden md:inline" style={{ fontSize: 9, letterSpacing: "0.22em", color: "var(--white-soft)" }}>
+              {String(activeIdx + 1).padStart(2, "0")} / {String(featuredMVs.length).padStart(2, "0")}
+            </span>
           </div>
-          <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>SCROLL</span>
-        </div>
+        )}
+
+        {/* Role legend — top right (subtle, explains color dots) */}
+        {!playing && (
+          <div className="absolute hidden md:flex items-center gap-3 z-10"
+            style={{ top: "5.5rem", right: "2rem", opacity: heroLoaded ? 0.7 : 0, transition: "opacity 1s ease .7s" }}>
+            {[
+              { color: "#D4AF37", label: "DIR" },
+              { color: "#7B9EAE", label: "DP" },
+              { color: "#9CA0A6", label: "OTHER" },
+            ].map(t => (
+              <div key={t.label} className="flex items-center gap-1.5">
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: t.color, boxShadow: `0 0 6px ${t.color}88` }} />
+                <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.28em", color: "var(--white-muted)" }}>{t.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ── 01 · DIRECTOR WORKS ── */}
