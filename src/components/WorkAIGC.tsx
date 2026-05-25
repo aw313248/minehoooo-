@@ -103,7 +103,7 @@ export default function WorkAIGC() {
         <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
           background: "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(80,30,160,0.18) 0%, transparent 70%)" }} />
 
-        {/* Top: cinematic section header */}
+        {/* Top: section label — centered */}
         <div style={{
           position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
           padding: "2rem 3rem 1.4rem",
@@ -111,87 +111,97 @@ export default function WorkAIGC() {
           opacity: heroLoaded ? 1 : 0,
           transition: "opacity .6s ease",
         }}>
-          {/* Gradient rule */}
-          <div style={{ height: 1, background: "linear-gradient(to right, rgba(255,255,255,0.18), rgba(255,255,255,0.04) 60%, transparent)", marginBottom: 10 }} />
-          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-              <span className="font-display leading-none" style={{ fontSize: "clamp(1.6rem,3vw,2.8rem)", color: "var(--white-ghost)", letterSpacing: "0.02em" }}>04</span>
-              <span className="font-display leading-none" style={{ fontSize: "clamp(1rem,2vw,1.8rem)", color: "var(--white-secondary)", letterSpacing: "0.04em" }}>AIGC</span>
-            </div>
-            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>AI GENERATED · HYBRID</span>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+            <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
+              04 — AIGC
+            </span>
+            <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
+            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
+              AI GENERATED · HYBRID
+            </span>
           </div>
         </div>
 
-        {/* Bottom left: title + info */}
+        {/* Centered title + info — vertical + horizontal centered */}
         {!playing && (
-          <div style={{ position: "absolute", bottom: "3.5rem", left: "3rem", right: "3rem", zIndex: 10 }}>
-            <div style={{
-              display: "flex", alignItems: "center", gap: 10, marginBottom: 14,
-              opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateX(0)" : "translateX(-20px)",
-              transition: "opacity .7s ease .1s, transform .7s cubic-bezier(.16,1,.3,1) .1s",
-            }}>
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12 z-10">
+
+            {/* Role tag + subtitle */}
+            <div className="flex items-center justify-center gap-3 mb-7 flex-wrap"
+              style={{
+                opacity: heroLoaded ? 1 : 0,
+                transform: heroLoaded ? "translateY(0)" : "translateY(-10px)",
+                transition: "opacity .7s ease .1s, transform .7s cubic-bezier(.16,1,.3,1) .1s",
+              }}>
               <span style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 7, letterSpacing: "0.2em",
-                color: "var(--white-secondary)",
-                background: "rgba(80,30,160,0.25)",
-                border: "1px solid rgba(120,60,220,0.4)",
-                padding: "3px 8px", borderRadius: 6,
+                fontSize: 9, letterSpacing: "0.24em",
+                color: "var(--white-primary)",
+                background: "rgba(80,30,160,0.3)",
+                border: "1px solid rgba(120,60,220,0.5)",
+                padding: "5px 12px", borderRadius: 999,
+                backdropFilter: "blur(8px)",
               }}>DIR · DP · AI</span>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.28em", color: "var(--white-soft)" }}>
+              <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
                 AI GENERATED · SHORT FILM
               </span>
             </div>
 
+            {/* AIGC big title — centered */}
             <h2 className="font-display leading-none" style={{
-              fontSize: "clamp(3.2rem, 10vw, 13rem)",
-              color: "var(--text)", letterSpacing: "0.01em",
+              fontSize: "clamp(4rem, 14vw, 16rem)",
+              color: "var(--text)", letterSpacing: "0.02em",
               opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateX(0)" : "translateX(-28px)",
+              transform: heroLoaded ? "translateY(0) scale(1)" : "translateY(20px) scale(0.96)",
               transition: "opacity .9s cubic-bezier(.16,1,.3,1) .18s, transform .9s cubic-bezier(.16,1,.3,1) .18s",
             }}>
               AIGC
             </h2>
 
-            <p className="font-mono-label" style={{
-              fontSize: 10, letterSpacing: "0.18em", marginTop: 14,
+            {/* Credit */}
+            <p className="font-mono-label mt-7" style={{
+              fontSize: 11, letterSpacing: "0.2em",
               color: "var(--white-soft)",
               opacity: heroLoaded ? 1 : 0,
-              transform: heroLoaded ? "translateX(0)" : "translateX(-16px)",
+              transform: heroLoaded ? "translateY(0)" : "translateY(10px)",
               transition: "opacity .7s ease .32s, transform .7s cubic-bezier(.16,1,.3,1) .32s",
             }}>
-              Created by <span style={{ color: "var(--white-secondary)" }}>MINEH4O / Oscar Lai</span>
+              Created by <span style={{ color: "var(--white-primary)" }}>MINEH4O / Oscar Lai</span>
             </p>
+
+            {/* PLAY FULL — centered below title */}
+            <button onClick={() => setPlaying(true)}
+              className="group flex items-center gap-2.5 mt-10"
+              style={{
+                background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                border: "1px solid var(--white-dim)", padding: "12px 24px",
+                borderRadius: 999,
+                cursor: "pointer",
+                opacity: heroLoaded ? 1 : 0,
+                transform: heroLoaded ? "translateY(0)" : "translateY(10px)",
+                transition: "background .3s, opacity .7s ease .45s, transform .7s cubic-bezier(.16,1,.3,1) .45s, border-color .3s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--white-muted)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-ghost)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--white-dim)"; }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
+              <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.32em", color: "var(--text)" }}>PLAY FULL</span>
+              <span style={{ color: "var(--white-soft)", fontSize: 15, marginLeft: 2 }}>↗</span>
+            </button>
           </div>
         )}
 
-        {/* Bottom right: play / stop */}
-        <div style={{ position: "absolute", bottom: "3.5rem", right: "3rem", zIndex: 10,
-          opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
-          {!playing ? (
-            <button onClick={() => setPlaying(true)}
-              className="group flex items-center gap-2.5"
-              style={{
-                background: "var(--white-ghost)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-                border: "1px solid var(--white-dim)", padding: "10px 20px", cursor: "pointer",
-                transition: "background .3s",
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-dim)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)"; }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text)" }}>PLAY FULL</span>
-              <span style={{ color: "var(--white-soft)", fontSize: 14 }}>↗</span>
-            </button>
-          ) : (
+        {/* Stop button when playing — top right */}
+        {playing && (
+          <div style={{ position: "absolute", top: "5.5rem", right: "3rem", zIndex: 16 }}>
             <button onClick={() => setPlaying(false)}
               className="font-mono-label"
-              style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--text-3)",
-                border: "1px solid var(--white-dim)", padding: "8px 16px", background: "none", cursor: "pointer" }}>
+              style={{ fontSize: 9, letterSpacing: "0.3em", color: "var(--white-primary)",
+                border: "1px solid var(--white-muted)", borderRadius: 999, padding: "8px 18px",
+                background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)", cursor: "pointer" }}>
               ✕ STOP
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Scroll hint */}
         <div style={{
