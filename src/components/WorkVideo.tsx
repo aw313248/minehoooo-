@@ -58,7 +58,7 @@ const colorCredits = [
 // 劇情短片 — 全部統一（包含在片/幕後）
 const narrativeShorts = [
   { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "金穗獎最佳劇情片" },
-  { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "2025 金馬影展入選" },
+  { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "第48屆金穗獎 最佳美術 · 最佳攝影 · 評審團特別獎 · 金馬影展入選" },
   { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · DP · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
   { id: "raIh2Qlj5YY", title: "孩子們需要超人", artist: "社會議題短片",                      role: "DIR · EDIT",     cat: "SHORT FILM" },
 ];
@@ -578,15 +578,25 @@ function GridCard({ id, title, artist, role, cat, award }: {
           onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }} />
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.15)", transition: "background .4s" }} />
         {(cat || award) && (
-          <div className="absolute top-2 left-2">
-            {award ? (
-              <span className="font-mono-label text-[7px] tracking-wider px-2 py-0.5"
-                style={{ background: "rgba(255,220,80,0.15)", border: "1px solid rgba(255,220,80,0.3)", color: "rgba(255,220,80,0.9)", backdropFilter: "blur(8px)" }}>
+          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5">
+            {award && (
+              <span className="font-mono-label text-[10px] md:text-[11px] tracking-[0.18em] px-3 py-1.5"
+                style={{
+                  background: "rgba(255,210,70,0.18)",
+                  border: "1px solid rgba(255,210,70,0.55)",
+                  color: "rgba(255,225,140,0.98)",
+                  backdropFilter: "blur(10px)",
+                  borderRadius: 8,
+                  boxShadow: "0 2px 18px rgba(255,210,70,0.18)",
+                  fontWeight: 500,
+                  lineHeight: 1.35,
+                }}>
                 ★ {award}
               </span>
-            ) : (
-              <span className="font-mono-label text-[6px] tracking-widest px-1.5 py-0.5"
-                style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "var(--white-secondary)" }}>
+            )}
+            {cat && !award && (
+              <span className="font-mono-label text-[7px] tracking-widest px-2 py-1"
+                style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "var(--white-secondary)", borderRadius: 6 }}>
                 {cat}
               </span>
             )}

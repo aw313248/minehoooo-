@@ -3,21 +3,23 @@
 import { useState, useEffect } from "react";
 import { useLang } from "@/contexts/LangContext";
 
-// 0=Hero, 1=About, 2=Photography, 3=Video, 4=AIGC, 5=Contact
+// 0=Hero, 1=About, 2=Photography, 3=Video, 4=AIGC, 5=Projects, 6=Contact
 const desktopLinks = [
-  { label: "PHOTO",   labelZh: "攝影",   page: 2 },
-  { label: "VIDEO",   labelZh: "影像",   page: 3 },
-  { label: "AIGC",    labelZh: "AIGC",   page: 4 },
-  { label: "ABOUT",   labelZh: "關於",   page: 1 },
-  { label: "CONTACT", labelZh: "聯絡",   page: 5 },
+  { label: "PHOTO",    labelZh: "攝影",   page: 2 },
+  { label: "VIDEO",    labelZh: "影像",   page: 3 },
+  { label: "AIGC",     labelZh: "AIGC",   page: 4 },
+  { label: "PROJECTS", labelZh: "專案",   page: 5 },
+  { label: "ABOUT",    labelZh: "關於",   page: 1 },
+  { label: "CONTACT",  labelZh: "聯絡",   page: 6 },
 ];
 
 const mobileLinks = [
   { label: "PHOTOGRAPHY", labelZh: "攝影",   page: 2 },
   { label: "VIDEO",        labelZh: "影像",   page: 3 },
   { label: "AIGC",         labelZh: "AIGC",   page: 4 },
+  { label: "PROJECTS",     labelZh: "專案",   page: 5 },
   { label: "ABOUT",        labelZh: "關於",   page: 1 },
-  { label: "CONTACT",      labelZh: "聯絡",   page: 5 },
+  { label: "CONTACT",      labelZh: "聯絡",   page: 6 },
 ];
 
 function goto(page: number) {
@@ -54,7 +56,7 @@ export default function Navbar() {
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "var(--white-ghost)" }}>
         <div style={{
           height: "100%",
-          width: `${(activePage / 5) * 100}%`,
+          width: `${(activePage / 6) * 100}%`,
           background: "linear-gradient(to right, rgba(255,255,255,0.35), rgba(255,255,255,0.12))",
           transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
         }} />

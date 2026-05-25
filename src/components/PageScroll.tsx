@@ -8,6 +8,7 @@ const LABELS = [
   "PHOTOGRAPHY",
   "VIDEO",
   "AIGC",
+  "PROJECTS",
   "CONTACT",
 ];
 

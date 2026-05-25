@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const SECTIONS = ["HERO", "ABOUT", "PHOTO", "VIDEO", "AIGC", "CONTACT"];
+const SECTIONS = ["HERO", "ABOUT", "PHOTO", "VIDEO", "AIGC", "PROJECTS", "CONTACT"];
 
 function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));

@@ -8,6 +8,7 @@ const TITLES = [
   "Photography — MINEH4O",
   "Video — MINEH4O",
   "AIGC — MINEH4O",
+  "Projects — MINEH4O",
   "Contact — MINEH4O",
 ];
 
