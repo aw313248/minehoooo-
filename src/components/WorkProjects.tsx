@@ -10,10 +10,14 @@ interface Project {
   title:        string;
   subEn:        string;
   subZh:        string;
+  taglineZh:    string;
+  taglineEn:    string;
   descEn:       string;
   descZh:       string;
+  features:     { iconChar: string; titleZh: string; titleEn: string; descZh: string; descEn: string }[];
   url:          string;
   domain:       string;
+  ogImage:      string;
   tags:         string[];
   status?:      string;
   accentColor?: string;
@@ -21,21 +25,28 @@ interface Project {
 
 const projects: Project[] = [
   {
-    id:    "carecub",
-    title: "CareCub · 小析守護",
-    subEn: "AI Content Guardian for Kids' YouTube",
-    subZh: "AI 為家長把關 YouTube 兒童內容",
+    id:        "carecub",
+    title:     "CareCub · 小析守護",
+    subEn:     "AI Content Guardian for Kids' YouTube",
+    subZh:     "不監控，幫媽媽查證",
+    taglineZh: "YouTube 給孩子？先讓 CareCub 看一遍",
+    taglineEn: "YouTube for your kid? Let CareCub check first.",
     descEn:
-      "Built for parents who want a sanity check before handing their kid a phone. " +
-      "Paste any YouTube channel and CareCub's AI returns a 20-second safety report — " +
-      "free, no signup, optional Bear Mode for hand-curated channels.",
+      "Built for parents who want a sanity check before handing their kid a phone. Paste any YouTube channel and CareCub's AI returns a 20-second safety report. Free, no signup, " +
+      "with an optional Bear Mode for hand-curated channels.",
     descZh:
-      "為家長設計：把小孩想看的 YouTube 頻道丟進來，AI 在 20 秒內回傳安全分析報告。" +
-      "免費、不用註冊，還有「熊熊模式」提供人工精選頻道清單。",
-    url:    "https://child-safety-radar.vercel.app",
-    domain: "child-safety-radar.vercel.app",
-    tags:   ["AI", "Next.js", "YouTube API", "Parenting Tech"],
-    status: "LIVE · 2026",
+      "偽裝成兒童卡通的「艾莎門」影片越來越多 — CareCub 用 AI 20 秒掃描 YouTube 頻道，看穿是否藏有暴力、恐怖、成人梗等危險內容。給家有「皮」小孩的爸媽用，免費、不用註冊。",
+    features: [
+      { iconChar: "⚡", titleZh: "20 秒分析",        titleEn: "20-sec scan",     descZh: "AI 拆解頻道內容，快速生成安全報告", descEn: "AI breaks down channel content, fast safety report" },
+      { iconChar: "🆓", titleZh: "免費 · 不用註冊",  titleEn: "Free · no signup", descZh: "每月免費 2 次，不蒐集資料",         descEn: "2 free scans per month, no data collection" },
+      { iconChar: "🐻", titleZh: "熊熊模式",         titleEn: "Bear Mode",        descZh: "人工精選頻道清單 + 黑名單管理",     descEn: "Hand-curated whitelist + blacklist manager" },
+      { iconChar: "🛡", titleZh: "不監控",           titleEn: "No tracking",      descZh: "查證導向，不是監視小孩的工具",       descEn: "Verification-first, not a surveillance app" },
+    ],
+    url:     "https://child-safety-radar.vercel.app",
+    domain:  "child-safety-radar.vercel.app",
+    ogImage: "https://child-safety-radar.vercel.app/opengraph-image",
+    tags:    ["AI", "Next.js", "YouTube API", "Parenting Tech"],
+    status:  "LIVE · 2026",
     accentColor: "#F2B84B",
   },
 ];
@@ -55,15 +66,53 @@ function TagPill({ text }: { text: string }) {
   );
 }
 
+/* ─── Feature card ─── */
+function FeatureCard({ icon, title, desc, accent, inView, delay }: {
+  icon: string; title: string; desc: string; accent: string; inView: boolean; delay: number;
+}) {
+  return (
+    <div style={{
+      background: "rgba(255,255,255,0.04)",
+      border: "1px solid var(--white-ghost)",
+      borderRadius: 14,
+      padding: "16px 18px",
+      backdropFilter: "blur(8px)",
+      opacity: inView ? 1 : 0,
+      transform: inView ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity .7s ease ${delay}s, transform .7s cubic-bezier(.16,1,.3,1) ${delay}s, background .25s ease, border-color .25s ease`,
+    }}
+    onMouseEnter={e => {
+      e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+      e.currentTarget.style.borderColor = `${accent}66`;
+    }}
+    onMouseLeave={e => {
+      e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+      e.currentTarget.style.borderColor = "var(--white-ghost)";
+    }}>
+      <div className="flex items-start gap-3 text-left">
+        <span style={{ fontSize: 22, lineHeight: 1, marginTop: 2 }}>{icon}</span>
+        <div>
+          <p className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--white-primary)", marginBottom: 4, fontWeight: 500 }}>
+            {title}
+          </p>
+          <p style={{ fontSize: 11, lineHeight: 1.6, color: "var(--white-soft)" }}>
+            {desc}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function WorkProjects() {
   const [activeIdx] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const { ref, inView } = useInView(0.05);
+  const { ref, inView } = useInView(0.04);
   const { lang } = useLang();
   const active = projects[activeIdx];
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 150);
+    const t = setTimeout(() => setLoaded(true), 120);
     return () => clearTimeout(t);
   }, []);
 
@@ -73,12 +122,12 @@ export default function WorkProjects() {
 
       {/* Ambient gradient bg */}
       <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
-        background: `radial-gradient(ellipse 60% 50% at 50% 35%, ${active.accentColor}11 0%, transparent 70%), radial-gradient(ellipse 80% 60% at 50% 100%, rgba(80,30,160,0.08) 0%, transparent 70%)`,
+        background: `radial-gradient(ellipse 60% 50% at 50% 30%, ${active.accentColor}0F 0%, transparent 70%), radial-gradient(ellipse 80% 60% at 50% 100%, rgba(80,30,160,0.06) 0%, transparent 70%)`,
       }} />
 
       {/* Top: centered section label */}
       <div style={{
-        padding: "2rem 3rem 1.4rem",
+        padding: "2rem 3rem 1rem",
         background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
         opacity: loaded ? 1 : 0, transition: "opacity .6s ease",
         display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
@@ -88,169 +137,208 @@ export default function WorkProjects() {
         </span>
         <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
         <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
-          {lang === "zh" ? "工作室專案 · WEB BUILDS" : "STUDIO BUILDS · WEB"}
+          {lang === "zh" ? "工作室專案 · STUDIO BUILDS" : "STUDIO BUILDS · WEB"}
         </span>
       </div>
 
-      {/* Main centered content */}
-      <div className="flex-1 flex flex-col items-center justify-center text-center px-6 md:px-12 py-8 z-10">
+      {/* ── Main grid: left text + right preview ── */}
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-6 md:px-12 py-8 z-10 max-w-7xl mx-auto w-full">
 
-        {/* Status badge */}
-        {active.status && (
-          <span className="font-mono-label mb-6" style={{
-            fontSize: 9, letterSpacing: "0.32em",
-            color: "rgba(74,222,128,0.95)",
-            background: "rgba(74,222,128,0.08)",
-            border: "1px solid rgba(74,222,128,0.3)",
-            borderRadius: 999,
-            padding: "5px 14px",
-            opacity: inView ? 1 : 0, transition: "opacity .8s ease .1s",
-          }}>
-            ● {active.status}
-          </span>
-        )}
+        {/* LEFT — text column */}
+        <div className="flex-1 flex flex-col items-start text-left max-w-xl">
 
-        {/* Title */}
-        <h2 className="font-display leading-none mb-4"
+          {/* Status badge */}
+          {active.status && (
+            <span className="font-mono-label mb-5" style={{
+              fontSize: 9, letterSpacing: "0.32em",
+              color: "rgba(74,222,128,0.95)",
+              background: "rgba(74,222,128,0.08)",
+              border: "1px solid rgba(74,222,128,0.3)",
+              borderRadius: 999,
+              padding: "5px 14px",
+              opacity: inView ? 1 : 0, transition: "opacity .8s ease .1s",
+            }}>
+              ● {active.status}
+            </span>
+          )}
+
+          {/* Title */}
+          <h2 className="font-display leading-tight mb-3"
+            style={{
+              fontSize: "clamp(2rem, 4.5vw, 3.6rem)",
+              color: "var(--text)", letterSpacing: "0em",
+              opacity: inView ? 1 : 0,
+              transform: inView ? "translateY(0)" : "translateY(16px)",
+              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
+            }}>
+            {active.title}
+          </h2>
+
+          {/* Subtitle */}
+          <p className="font-mono-label mb-4"
+            style={{
+              fontSize: 10, letterSpacing: "0.28em",
+              color: "var(--white-soft)",
+              opacity: inView ? 1 : 0, transition: "opacity .8s ease .22s",
+            }}>
+            {(lang === "zh" ? active.subZh : active.subEn).toUpperCase()}
+          </p>
+
+          {/* Tagline (quote-like) */}
+          <p className="mb-5"
+            style={{
+              fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
+              lineHeight: 1.4,
+              color: "var(--white-primary)",
+              fontWeight: 500,
+              fontStyle: "italic",
+              borderLeft: `3px solid ${active.accentColor}`,
+              paddingLeft: 14,
+              opacity: inView ? 1 : 0, transition: "opacity .8s ease .3s",
+            }}>
+            {lang === "zh" ? `「${active.taglineZh}」` : `"${active.taglineEn}"`}
+          </p>
+
+          {/* Description */}
+          <p className="leading-relaxed mb-6"
+            style={{
+              fontSize: 13.5, lineHeight: 1.75,
+              color: "var(--white-secondary)",
+              opacity: inView ? 1 : 0, transition: "opacity .8s ease .38s",
+            }}>
+            {lang === "zh" ? active.descZh : active.descEn}
+          </p>
+
+          {/* Feature grid 2x2 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full mb-6">
+            {active.features.map((f, i) => (
+              <FeatureCard key={f.titleEn}
+                icon={f.iconChar}
+                title={lang === "zh" ? f.titleZh : f.titleEn}
+                desc={lang === "zh" ? f.descZh : f.descEn}
+                accent={active.accentColor || "#fff"}
+                inView={inView}
+                delay={0.45 + i * 0.08}
+              />
+            ))}
+          </div>
+
+          {/* Tech tags */}
+          <div className="flex flex-wrap gap-2 mb-6"
+            style={{ opacity: inView ? 1 : 0, transition: "opacity .8s ease .8s" }}>
+            {active.tags.map(t => <TagPill key={t} text={t} />)}
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-col items-start gap-2"
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? "translateY(0)" : "translateY(14px)",
+              transition: "opacity .8s ease .88s, transform .8s cubic-bezier(.16,1,.3,1) .88s",
+            }}>
+            <a href={active.url} target="_blank" rel="noopener noreferrer"
+              className="group inline-flex items-center gap-4"
+              style={{
+                background: `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`,
+                backdropFilter: "blur(20px)",
+                border: `1px solid ${active.accentColor}88`,
+                borderRadius: 14,
+                padding: "14px 28px",
+                transition: "all .35s ease",
+                boxShadow: `0 4px 30px ${active.accentColor}33`,
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = `linear-gradient(135deg, ${active.accentColor}44, ${active.accentColor}22)`;
+                el.style.transform = "translateY(-2px)";
+                el.style.boxShadow = `0 8px 40px ${active.accentColor}55`;
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`;
+                el.style.transform = "translateY(0)";
+                el.style.boxShadow = `0 4px 30px ${active.accentColor}33`;
+              }}>
+              <div className="flex flex-col items-start">
+                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
+                  {lang === "zh" ? "前往網站" : "VISIT SITE"}
+                </span>
+                <span className="font-mono-label" style={{ fontSize: 13, letterSpacing: "0.08em", color: "var(--white-primary)", fontWeight: 500 }}>
+                  {active.domain}
+                </span>
+              </div>
+              <span style={{ color: active.accentColor, fontSize: 22 }}>↗</span>
+            </a>
+            <p className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)", marginTop: 4 }}>
+              {lang === "zh" ? "免費使用 · 不用註冊" : "FREE · NO SIGNUP"}
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT — preview card (OG image, NOT iframe — site blocks iframe) */}
+        <div className="flex-shrink-0 w-full md:w-[44%] max-w-lg"
           style={{
-            fontSize: "clamp(2.4rem, 6vw, 5.2rem)",
-            color: "var(--text)", letterSpacing: "0.01em",
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
-          }}>
-          {active.title}
-        </h2>
-
-        {/* Subtitle */}
-        <p className="font-mono-label mb-3"
-          style={{
-            fontSize: 12, letterSpacing: "0.22em",
-            color: "var(--white-soft)",
-            opacity: inView ? 1 : 0, transition: "opacity .8s ease .26s",
-          }}>
-          {(lang === "zh" ? active.subZh : active.subEn).toUpperCase()}
-        </p>
-
-        {/* Description */}
-        <p className="leading-relaxed mb-8"
-          style={{
-            fontSize: "13px", lineHeight: 1.7, maxWidth: 560,
-            color: "var(--white-secondary)",
-            opacity: inView ? 1 : 0, transition: "opacity .8s ease .35s",
-          }}>
-          {lang === "zh" ? active.descZh : active.descEn}
-        </p>
-
-        {/* Preview frame — embedded site (lazy load via iframe) */}
-        <div className="w-full max-w-3xl mb-8 relative overflow-hidden"
-          style={{
-            borderRadius: 18,
-            border: "1px solid var(--white-dim)",
-            background: "#0a0a0a",
-            boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${active.accentColor}22`,
-            aspectRatio: "16/10",
             opacity: inView ? 1 : 0,
             transform: inView ? "translateY(0) scale(1)" : "translateY(28px) scale(0.97)",
             transition: "opacity 1s ease .4s, transform 1s cubic-bezier(.16,1,.3,1) .4s",
           }}>
-          <iframe
-            src={active.url}
-            title={active.title}
-            loading="lazy"
-            style={{
-              width: "100%", height: "100%", border: "none",
-              background: "#fff",
-            }}
-            sandbox="allow-scripts allow-same-origin"
-          />
-          {/* Click-through overlay (iframe absorbs scroll, this lets users click site) */}
           <a href={active.url} target="_blank" rel="noopener noreferrer"
-            aria-label={`Open ${active.title} in new tab`}
-            className="absolute top-3 right-3 flex items-center gap-2"
+            className="block relative overflow-hidden group"
             style={{
-              background: "rgba(0,0,0,0.65)",
-              backdropFilter: "blur(12px)",
+              borderRadius: 18,
               border: "1px solid var(--white-dim)",
-              borderRadius: 999,
-              padding: "6px 14px",
-              color: "var(--white-primary)",
-              transition: "all .25s ease",
-              zIndex: 5,
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.85)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.65)"; }}>
-            <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.28em" }}>OPEN</span>
-            <span style={{ fontSize: 13 }}>↗</span>
-          </a>
-        </div>
-
-        {/* Tech tags */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8"
-          style={{ opacity: inView ? 1 : 0, transition: "opacity .8s ease .5s" }}>
-          {active.tags.map(t => <TagPill key={t} text={t} />)}
-        </div>
-
-        {/* CTA — primary VISIT SITE */}
-        <div className="flex flex-col items-center gap-3"
-          style={{
-            opacity: inView ? 1 : 0,
-            transform: inView ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity .8s ease .58s, transform .8s cubic-bezier(.16,1,.3,1) .58s",
-          }}>
-          <a href={active.url} target="_blank" rel="noopener noreferrer"
-            className="group inline-flex items-center gap-4"
-            style={{
-              background: `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`,
-              backdropFilter: "blur(20px)",
-              border: `1px solid ${active.accentColor}88`,
-              borderRadius: 14,
-              padding: "16px 32px",
-              transition: "all .35s ease",
-              boxShadow: `0 4px 30px ${active.accentColor}33`,
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = `linear-gradient(135deg, ${active.accentColor}44, ${active.accentColor}22)`;
-              el.style.transform = "translateY(-2px)";
-              el.style.boxShadow = `0 8px 40px ${active.accentColor}55`;
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`;
-              el.style.transform = "translateY(0)";
-              el.style.boxShadow = `0 4px 30px ${active.accentColor}33`;
+              boxShadow: `0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px ${active.accentColor}22`,
+              aspectRatio: "1200/630",
+              background: "#0a0a0a",
             }}>
-            <div className="flex flex-col items-start">
-              <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
-                {lang === "zh" ? "前往網站" : "VISIT SITE"}
-              </span>
-              <span className="font-mono-label" style={{ fontSize: 13, letterSpacing: "0.08em", color: "var(--white-primary)", fontWeight: 500 }}>
-                {active.domain}
-              </span>
+            {/* OG image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={active.ogImage}
+              alt={`${active.title} 預覽`}
+              loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Hover overlay */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }}>
+              <div className="flex items-center gap-2 px-5 py-3"
+                style={{
+                  background: "rgba(0,0,0,0.7)", border: `1px solid ${active.accentColor}88`,
+                  borderRadius: 999, color: "var(--white-primary)",
+                }}>
+                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em" }}>OPEN SITE</span>
+                <span style={{ fontSize: 14, color: active.accentColor }}>↗</span>
+              </div>
             </div>
-            <span style={{ color: active.accentColor, fontSize: 22 }}>↗</span>
+            {/* Top-right "OPEN" badge (always visible) */}
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5"
+              style={{
+                background: "rgba(0,0,0,0.65)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid var(--white-dim)",
+                borderRadius: 999,
+                color: "var(--white-primary)",
+              }}>
+              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em" }}>LIVE</span>
+              <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px rgba(74,222,128,0.7)" }} />
+            </div>
           </a>
-
-          {/* Sub note */}
-          <p className="font-mono-label" style={{
-            fontSize: 8, letterSpacing: "0.32em",
-            color: "var(--white-dim)",
-            marginTop: 4,
-          }}>
-            {lang === "zh" ? "免費使用 · 不用註冊" : "FREE · NO SIGNUP"}
+          {/* Caption below preview */}
+          <p className="font-mono-label mt-3 text-center" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--white-dim)" }}>
+            ↑ {lang === "zh" ? "點擊開啟網站" : "CLICK TO OPEN"}
           </p>
         </div>
+      </div>
 
-        {/* Footer note — placeholder for future projects */}
-        <div className="mt-12 flex items-center gap-3 opacity-50"
-          style={{ opacity: inView ? 0.45 : 0, transition: "opacity 1s ease .8s" }}>
-          <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
-          <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
-            {lang === "zh" ? "更多專案準備中" : "MORE BUILDS IN PROGRESS"}
-          </span>
-          <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
-        </div>
+      {/* Footer note — placeholder for future projects */}
+      <div className="pb-8 flex items-center justify-center gap-3"
+        style={{ opacity: inView ? 0.45 : 0, transition: "opacity 1s ease .9s" }}>
+        <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
+        <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
+          {lang === "zh" ? "更多專案準備中" : "MORE BUILDS IN PROGRESS"}
+        </span>
+        <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
       </div>
     </section>
   );
