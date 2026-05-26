@@ -5,6 +5,7 @@ import { useLang } from "@/contexts/LangContext";
 
 // 0=Hero, 1=About, 2=Photography, 3=Video, 4=AIGC, 5=Projects, 6=Contact
 const desktopLinks = [
+  { label: "HOME",     labelZh: "首頁",   page: 0 },
   { label: "PHOTO",    labelZh: "攝影",   page: 2 },
   { label: "VIDEO",    labelZh: "影像",   page: 3 },
   { label: "AIGC",     labelZh: "AIGC",   page: 4 },
@@ -14,6 +15,7 @@ const desktopLinks = [
 ];
 
 const mobileLinks = [
+  { label: "HOME",         labelZh: "首頁",   page: 0 },
   { label: "PHOTOGRAPHY", labelZh: "攝影",   page: 2 },
   { label: "VIDEO",        labelZh: "影像",   page: 3 },
   { label: "AIGC",         labelZh: "AIGC",   page: 4 },

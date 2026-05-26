@@ -297,7 +297,7 @@ function HScrollStrip({ items, inView }: {
             <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`} alt={`${v.artist} ${v.title} MV - 在地影像工作者 MINEH4O`}
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`; }} />
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)" }} />
             {v.cat && (
               <div className="absolute top-2 left-2">
@@ -365,7 +365,7 @@ function SeriesPanel({ video, index, inView, seriesLabel = "TRILOGY", creditLabe
             transform: hovered ? "scale(1.04)" : "scale(1)",
             transition: "transform 1.4s cubic-bezier(.16,1,.3,1)",
           }}
-          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`; }} />
+          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${video.id}/mqdefault.jpg`; }} />
       )}
 
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none",
@@ -593,7 +593,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
         <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={`${artist ? artist + " " : ""}${title} - 在地影像工作者 MINEH4O`}
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`; }} />
+          onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/mqdefault.jpg`; }} />
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.15)", transition: "background .4s" }} />
         {(cat || award) && (
           <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5">
@@ -691,7 +691,7 @@ export default function WorkVideo() {
                 objectFit: "cover", pointerEvents: "none",
                 filter: "brightness(0.62)",
               }}
-              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/hqdefault.jpg`; }}
+              onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${active.id}/mqdefault.jpg`; }}
             />
           </AnimatePresence>
         )}
@@ -1111,7 +1111,7 @@ export default function WorkVideo() {
               <a href={`https://youtube.com/shorts/${s.id}`} target="_blank" rel="noopener noreferrer" className="group block">
                 <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 12, background: "#080808" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${s.id}/hqdefault.jpg`} alt={s.title}
+                  <img src={`https://img.youtube.com/vi/${s.id}/mqdefault.jpg`} alt={s.title}
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 flex items-end pb-2 pl-2">

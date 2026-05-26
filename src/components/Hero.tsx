@@ -10,6 +10,16 @@ function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));
 }
 
+/* Diagonal accent line — decorative element used throughout hero */
+function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" }: {
+  width?: number; rotation?: number; color?: string;
+}) {
+  return (
+    <span aria-hidden="true" className="block"
+      style={{ width, height: 1, background: color, transform: `rotate(${rotation}deg)` }} />
+  );
+}
+
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -27,8 +37,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black"
-      style={{ fontFamily: "var(--font-readex), 'Readex Pro', system-ui, sans-serif" }}>
+    <section className="relative h-screen w-full overflow-hidden bg-black">
 
       {/* ── Fullscreen background — YouTube iframe muted loop ── */}
       <div className="absolute inset-0" style={{
@@ -40,7 +49,7 @@ export default function Hero() {
           {iframeReady && (
             <iframe
               src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
-              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.55) saturate(0.95)" }}
+              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.5) saturate(0.95)" }}
               allow="autoplay; encrypted-media"
               title="MINEH4O reel background"
             />
@@ -48,26 +57,36 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Bottom gradient — fades into black so text reads + smooth section transition */}
+      {/* Gradient layers for legibility */}
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-72"
-        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.45) 35%, #000 100%)" }} />
-      {/* Top gradient — soft fade behind navbar */}
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.5) 35%, #000 100%)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-44"
-        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55), transparent)" }} />
-
-      {/* Subtle radial vignette around edges */}
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
+        style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 38%, rgba(0,0,0,0.55) 100%)" }} />
+
+      {/* ── Decorative diagonal accent lines (scattered) ── */}
+      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
+        style={{ left: "44%", top: "9%", opacity: loaded ? 0.6 : 0, transition: "opacity 1.4s ease .5s" }}>
+        <DiagLine width={140} rotation={-20} />
+      </div>
+      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
+        style={{ right: "12%", top: "63%", opacity: loaded ? 0.5 : 0, transition: "opacity 1.4s ease .8s" }}>
+        <DiagLine width={120} rotation={20} />
+      </div>
+      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
+        style={{ left: "38%", bottom: "22%", opacity: loaded ? 0.4 : 0, transition: "opacity 1.4s ease 1.1s" }}>
+        <DiagLine width={180} rotation={-20} color="rgba(255,255,255,0.22)" />
+      </div>
 
       {/* ── Foreground content ── */}
       <div className="relative h-full w-full">
 
-        {/* ── DIRECTOR — top, smaller (supporting role label) ── */}
-        <h1 className="hero-title absolute text-white font-medium select-none"
+        {/* ── DIRECTOR — top-left, LARGE ── */}
+        <h1 className="hero-title absolute text-white select-none"
           style={{
-            fontSize: "clamp(3rem, 8.5vw, 9rem)",
-            left: "1.5rem", top: "13%",
-            letterSpacing: "-0.015em",
+            fontSize: "clamp(5rem, 14vw, 16rem)",
+            left: "1.5rem", top: "12%",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
             transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
@@ -75,13 +94,11 @@ export default function Hero() {
           DIRECTOR
         </h1>
 
-        {/* ── DP · PHOTO — middle-right, smallest (secondary) ── */}
-        <h1 className="hero-title absolute text-white font-normal select-none text-right"
+        {/* ── DP · PHOTO — middle-right, LARGE ── */}
+        <h1 className="hero-title absolute text-white select-none text-right"
           style={{
-            fontSize: "clamp(2.4rem, 7vw, 7rem)",
+            fontSize: "clamp(5rem, 14vw, 16rem)",
             right: "1.5rem", top: "32%",
-            letterSpacing: "0em",
-            color: "rgba(255,255,255,0.78)",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
             transition: "opacity .9s cubic-bezier(.16,1,.3,1) .26s, transform .9s cubic-bezier(.16,1,.3,1) .26s",
@@ -89,47 +106,42 @@ export default function Hero() {
           DP · PHOTO
         </h1>
 
-        {/* ── OSCAR — focal, LARGEST (the name = identity) ── */}
-        <div className="absolute select-none"
+        {/* ── OSCAR — bottom-left-center, LARGE (focal — biggest) ── */}
+        <h1 className="hero-title absolute text-white select-none"
           style={{
-            left: "8%", bottom: "26%",
+            fontSize: "clamp(6rem, 17vw, 20rem)",
+            left: "16%", top: "54%",
+            letterSpacing: "0.02em",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
             transition: "opacity 1s cubic-bezier(.16,1,.3,1) .4s, transform 1s cubic-bezier(.16,1,.3,1) .4s",
           }}>
-          {/* Ghost outline behind */}
-          <h1 className="hero-title hero-title-ghost absolute font-medium select-none pointer-events-none"
-            style={{
-              fontSize: "clamp(5.5rem, 16vw, 18rem)",
-              top: 8, left: 8,
-              letterSpacing: "-0.02em",
-            }}>
-            OSCAR
-          </h1>
-          {/* Main focal */}
-          <h1 className="hero-title hero-title-focal relative text-white font-medium"
-            style={{
-              fontSize: "clamp(5.5rem, 16vw, 18rem)",
-              letterSpacing: "-0.02em",
-            }}>
-            OSCAR
-          </h1>
-        </div>
+          OSCAR
+        </h1>
 
-        {/* ── Description — left, near DP · PHOTO ── */}
-        <p className="absolute max-w-[280px] z-[8]"
+        {/* ── TAICHUNG badge — left side, highlighted ── */}
+        <div className="absolute z-[8]"
           style={{
             left: "1.5rem", top: "44%",
-            fontSize: 13.5, lineHeight: 1.65,
-            color: "rgba(255,255,255,0.82)",
-            fontWeight: 300,
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(10px)",
             transition: "opacity .8s ease .55s, transform .8s ease .55s",
           }}>
-          image and motion crafted in taichung —<br />
-          director · DP · screenplay · photo · AIGC
-        </p>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
+              FROM
+            </span>
+            <div className="flex items-center gap-3">
+              <div style={{ width: 6, height: 6, background: "#fff", borderRadius: 999, boxShadow: "0 0 14px rgba(255,255,255,0.65)" }} />
+              <span className="hero-title text-white" style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)", letterSpacing: "0.06em" }}>
+                TAICHUNG
+              </span>
+            </div>
+            <span className="text-[10px] uppercase tracking-[0.3em] pl-5" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
+              SINCE 2019
+            </span>
+          </div>
+        </div>
 
         {/* ── Stat: TOP-RIGHT ── */}
         <div className="absolute z-[8]"
@@ -140,14 +152,14 @@ export default function Hero() {
             transition: "opacity .8s ease .7s, transform .8s ease .7s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(20deg)" }} />
-            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+            <DiagLine width={64} rotation={20} />
+            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               +150K
             </span>
           </div>
-          <p className="text-[10px] md:text-[11px] mt-1 text-right uppercase tracking-[0.22em]"
-            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
-            views across reels
+          <p className="text-[10px] mt-1 text-right uppercase tracking-[0.24em]"
+            style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
+            VIEWS
           </p>
         </div>
 
@@ -160,14 +172,14 @@ export default function Hero() {
             transition: "opacity .8s ease .82s, transform .8s ease .82s",
           }}>
           <div className="flex items-center gap-3">
-            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               +50
             </span>
-            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
+            <DiagLine width={64} rotation={-20} />
           </div>
-          <p className="text-[10px] md:text-[11px] mt-1 uppercase tracking-[0.22em]"
-            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
-            mv · doc · ad productions
+          <p className="text-[10px] mt-1 uppercase tracking-[0.24em]"
+            style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
+            PRODUCTIONS
           </p>
         </div>
 
@@ -180,14 +192,14 @@ export default function Hero() {
             transition: "opacity .8s ease .92s, transform .8s ease .92s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
-            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+            <DiagLine width={64} rotation={-20} />
+            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
               +7YR
             </span>
           </div>
-          <p className="text-[10px] md:text-[11px] mt-1 text-right uppercase tracking-[0.22em]"
-            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
-            on set since 2019
+          <p className="text-[10px] mt-1 text-right uppercase tracking-[0.24em]"
+            style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
+            ON SET
           </p>
         </div>
 
@@ -196,23 +208,18 @@ export default function Hero() {
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.05s" }}>
 
           {/* Left: handle */}
-          <div className="flex flex-col">
-            <span className="text-[10px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
-              TAICHUNG · TAIWAN
-            </span>
-            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-              className="text-[12px] md:text-[13px] hover:text-white transition-colors mt-1"
-              style={{ color: "rgba(255,255,255,0.78)", fontWeight: 400 }}>
-              @minehoooo.arw ↗
-            </a>
-          </div>
+          <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+            className="text-[12px] md:text-[13px] hover:text-white transition-colors uppercase tracking-[0.18em]"
+            style={{ color: "rgba(255,255,255,0.78)", fontWeight: 500 }}>
+            @MINEHOOOO.ARW ↗
+          </a>
 
           {/* Center: scroll hint */}
           <button onClick={() => goto(1)}
             className="hidden md:flex flex-col items-center gap-1.5 group"
             style={{ background: "none", border: "none", cursor: "pointer" }}
             aria-label="Scroll to About">
-            <span className="text-[9px] tracking-[0.4em] uppercase group-hover:text-white/85 transition-colors" style={{ color: "rgba(255,255,255,0.5)" }}>
+            <span className="text-[9px] tracking-[0.4em] uppercase group-hover:text-white/85 transition-colors" style={{ color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
               SCROLL
             </span>
             <div style={{ width: 1, height: 30, background: "rgba(255,255,255,0.25)", position: "relative", overflow: "hidden" }}>
@@ -226,8 +233,8 @@ export default function Hero() {
             style={{
               background: "#fff",
               color: "#000",
-              fontSize: 12, fontWeight: 500,
-              letterSpacing: "0.04em",
+              fontSize: 12, fontWeight: 600,
+              letterSpacing: "0.08em",
               borderRadius: 999,
               padding: "10px 22px",
               border: "none",

@@ -45,7 +45,7 @@ const projects: Project[] = [
     url:     "https://child-safety-radar.vercel.app",
     domain:  "child-safety-radar.vercel.app",
     ogImage: "https://child-safety-radar.vercel.app/opengraph-image",
-    tags:    ["AI", "Next.js", "YouTube API", "Parenting Tech"],
+    tags:    ["AI", "Next.js", "YouTube API", "親子科技"],
     status:  "LIVE · 2026",
     accentColor: "#F2B84B",
   },
@@ -133,11 +133,11 @@ export default function WorkProjects() {
         display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
       }}>
         <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
-          05 — PROJECTS
+          05 — 專案
         </span>
         <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
         <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
-          {lang === "zh" ? "工作室專案 · STUDIO BUILDS" : "STUDIO BUILDS · WEB"}
+          {lang === "zh" ? "工作室作品集" : "STUDIO BUILDS"}
         </span>
       </div>
 
@@ -150,7 +150,7 @@ export default function WorkProjects() {
           {/* Status badge */}
           {active.status && (
             <span className="font-mono-label mb-5" style={{
-              fontSize: 9, letterSpacing: "0.32em",
+              fontSize: 10, letterSpacing: "0.28em",
               color: "rgba(74,222,128,0.95)",
               background: "rgba(74,222,128,0.08)",
               border: "1px solid rgba(74,222,128,0.3)",
@@ -158,7 +158,7 @@ export default function WorkProjects() {
               padding: "5px 14px",
               opacity: inView ? 1 : 0, transition: "opacity .8s ease .1s",
             }}>
-              ● {active.status}
+              ● {lang === "zh" ? "已上線 · 2026" : "LIVE · 2026"}
             </span>
           )}
 
@@ -229,7 +229,7 @@ export default function WorkProjects() {
             {active.tags.map(t => <TagPill key={t} text={t} />)}
           </div>
 
-          {/* CTA */}
+          {/* CTA — primary Chinese action */}
           <div className="flex flex-col items-start gap-2"
             style={{
               opacity: inView ? 1 : 0,
@@ -237,13 +237,13 @@ export default function WorkProjects() {
               transition: "opacity .8s ease .88s, transform .8s cubic-bezier(.16,1,.3,1) .88s",
             }}>
             <a href={active.url} target="_blank" rel="noopener noreferrer"
-              className="group inline-flex items-center gap-4"
+              className="group inline-flex items-center gap-3"
               style={{
-                background: `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`,
+                background: `linear-gradient(135deg, ${active.accentColor}28, ${active.accentColor}11)`,
                 backdropFilter: "blur(20px)",
-                border: `1px solid ${active.accentColor}88`,
+                border: `1px solid ${active.accentColor}aa`,
                 borderRadius: 14,
-                padding: "14px 28px",
+                padding: "16px 32px",
                 transition: "all .35s ease",
                 boxShadow: `0 4px 30px ${active.accentColor}33`,
               }}
@@ -251,25 +251,24 @@ export default function WorkProjects() {
                 const el = e.currentTarget as HTMLAnchorElement;
                 el.style.background = `linear-gradient(135deg, ${active.accentColor}44, ${active.accentColor}22)`;
                 el.style.transform = "translateY(-2px)";
-                el.style.boxShadow = `0 8px 40px ${active.accentColor}55`;
+                el.style.boxShadow = `0 8px 40px ${active.accentColor}66`;
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLAnchorElement;
-                el.style.background = `linear-gradient(135deg, ${active.accentColor}22, ${active.accentColor}11)`;
+                el.style.background = `linear-gradient(135deg, ${active.accentColor}28, ${active.accentColor}11)`;
                 el.style.transform = "translateY(0)";
                 el.style.boxShadow = `0 4px 30px ${active.accentColor}33`;
               }}>
-              <div className="flex flex-col items-start">
-                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
-                  {lang === "zh" ? "前往網站" : "VISIT SITE"}
-                </span>
-                <span className="font-mono-label" style={{ fontSize: 13, letterSpacing: "0.08em", color: "var(--white-primary)", fontWeight: 500 }}>
-                  {active.domain}
-                </span>
-              </div>
-              <span style={{ color: active.accentColor, fontSize: 22 }}>↗</span>
+              <span style={{ fontSize: 18 }}>🐻</span>
+              <span style={{
+                fontSize: 15, letterSpacing: "0.04em",
+                color: "var(--white-primary)", fontWeight: 500,
+              }}>
+                {lang === "zh" ? "開始守護小朋友" : "Start Protecting Kids"}
+              </span>
+              <span style={{ color: active.accentColor, fontSize: 20, marginLeft: 4 }}>→</span>
             </a>
-            <p className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)", marginTop: 4 }}>
+            <p className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.28em", color: "var(--white-dim)", marginTop: 4 }}>
               {lang === "zh" ? "免費使用 · 不用註冊" : "FREE · NO SIGNUP"}
             </p>
           </div>
@@ -304,14 +303,16 @@ export default function WorkProjects() {
               style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(6px)" }}>
               <div className="flex items-center gap-2 px-5 py-3"
                 style={{
-                  background: "rgba(0,0,0,0.7)", border: `1px solid ${active.accentColor}88`,
+                  background: "rgba(0,0,0,0.78)", border: `1px solid ${active.accentColor}aa`,
                   borderRadius: 999, color: "var(--white-primary)",
                 }}>
-                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em" }}>OPEN SITE</span>
-                <span style={{ fontSize: 14, color: active.accentColor }}>↗</span>
+                <span style={{ fontSize: 14, fontWeight: 500, letterSpacing: "0.04em" }}>
+                  {lang === "zh" ? "按此進入網站" : "OPEN SITE"}
+                </span>
+                <span style={{ fontSize: 16, color: active.accentColor }}>→</span>
               </div>
             </div>
-            {/* Top-right "OPEN" badge (always visible) */}
+            {/* Top-right "LIVE" badge (always visible) */}
             <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5"
               style={{
                 background: "rgba(0,0,0,0.65)",
@@ -320,13 +321,15 @@ export default function WorkProjects() {
                 borderRadius: 999,
                 color: "var(--white-primary)",
               }}>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.3em" }}>LIVE</span>
+              <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.3em" }}>
+                {lang === "zh" ? "上線中" : "LIVE"}
+              </span>
               <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px rgba(74,222,128,0.7)" }} />
             </div>
           </a>
           {/* Caption below preview */}
-          <p className="font-mono-label mt-3 text-center" style={{ fontSize: 8, letterSpacing: "0.3em", color: "var(--white-dim)" }}>
-            ↑ {lang === "zh" ? "點擊開啟網站" : "CLICK TO OPEN"}
+          <p className="font-mono-label mt-3 text-center" style={{ fontSize: 10, letterSpacing: "0.25em", color: "var(--white-dim)" }}>
+            ↑ {lang === "zh" ? "按此進入網站" : "CLICK TO OPEN SITE"}
           </p>
         </div>
       </div>
@@ -335,8 +338,8 @@ export default function WorkProjects() {
       <div className="pb-8 flex items-center justify-center gap-3"
         style={{ opacity: inView ? 0.45 : 0, transition: "opacity 1s ease .9s" }}>
         <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
-        <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-muted)" }}>
-          {lang === "zh" ? "更多專案準備中" : "MORE BUILDS IN PROGRESS"}
+        <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.28em", color: "var(--white-muted)" }}>
+          {lang === "zh" ? "更多作品準備中" : "MORE BUILDS IN PROGRESS"}
         </span>
         <span style={{ width: 24, height: 1, background: "var(--white-muted)" }} />
       </div>
