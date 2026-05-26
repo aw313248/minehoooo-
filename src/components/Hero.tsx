@@ -130,37 +130,51 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </div>
         </div>
 
-        {/* Center hero — alternating left-right layout (DIRECTOR left, OSCAR right & MASSIVE) */}
+        {/* Center hero — LEFT-aligned (original) + parallax "layer" feel on page transition */}
         <div className="flex-1 flex flex-col justify-center relative">
 
-          {/* DIRECTOR — LEFT aligned, smaller */}
-          <h2 className="hero-title text-white text-left"
+          {/* DIRECTOR — left aligned */}
+          <h2 className="hero-title text-white"
             style={{
               fontSize: "clamp(2.4rem, 11vw, 4rem)",
               lineHeight: 1,
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateX(0)" : "translateX(-20px)",
-              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .2s, transform .9s cubic-bezier(.16,1,.3,1) .2s",
+              // Layer parallax: while parent page scales away during transition,
+              // counter-scale ourselves so visually the text "stays in place".
+              opacity: loaded ? (isActive ? 1 : 0) : 0,
+              transform: loaded
+                ? (isActive ? "translateY(0) scale(1)" : "translateY(-12px) scale(1.10)")
+                : "translateY(20px) scale(1)",
+              transition: isActive
+                ? "opacity .9s cubic-bezier(.16,1,.3,1) .2s, transform .9s cubic-bezier(.16,1,.3,1) .2s"
+                : "opacity 1.6s ease .35s, transform 1.6s cubic-bezier(.16,1,.3,1) .35s",
+              transformOrigin: "left center",
+              willChange: "transform, opacity",
             }}>
             DIRECTOR
           </h2>
 
-          {/* OSCAR — RIGHT aligned, MASSIVE (allowed to overflow right edge for drama) */}
-          <h1 className="hero-title text-white text-right"
+          {/* OSCAR — left aligned, big (original 26vw) */}
+          <h1 className="hero-title text-white"
             style={{
-              fontSize: "clamp(6rem, 33vw, 12rem)",
-              lineHeight: 0.88,
-              letterSpacing: "0.01em",
+              fontSize: "clamp(5rem, 26vw, 9rem)",
+              lineHeight: 0.92,
+              letterSpacing: "0.02em",
               marginTop: "0.4rem",
-              marginRight: "-1.5rem",  // overflow right edge for dramatic crop
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateX(0)" : "translateX(20px)",
-              transition: "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s",
+              // Same layer parallax — text lingers as page recedes
+              opacity: loaded ? (isActive ? 1 : 0) : 0,
+              transform: loaded
+                ? (isActive ? "translateY(0) scale(1)" : "translateY(-16px) scale(1.12)")
+                : "translateY(20px) scale(1)",
+              transition: isActive
+                ? "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s"
+                : "opacity 1.8s ease .4s, transform 1.8s cubic-bezier(.16,1,.3,1) .4s",
+              transformOrigin: "left center",
+              willChange: "transform, opacity",
             }}>
             OSCAR
           </h1>
 
-          {/* Role inline — LEFT aligned (matches DIRECTOR) */}
+          {/* Role inline — left aligned (matches DIRECTOR) */}
           <div className="flex items-center gap-2 mt-5"
             style={{
               opacity: loaded ? 1 : 0,
@@ -173,11 +187,11 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             </span>
           </div>
 
-          {/* QUOTE overlay — shows once on first entry, fades out after 6s */}
+          {/* QUOTE overlay — shows once on first entry, fades out after 6s. Right side, doesn't block OSCAR */}
           <div aria-hidden={!quoteVisible}
             className="absolute pointer-events-none"
             style={{
-              right: 0, top: "-1.5rem",
+              right: 0, top: "-2rem",
               maxWidth: 200,
               opacity: quoteVisible ? 1 : 0,
               transform: quoteVisible ? "translateY(0)" : "translateY(-8px)",
