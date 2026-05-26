@@ -1,335 +1,199 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CharReveal } from "@/components/WordReveal";
 
-const TAGLINE      = ["Director", "·", "DP", "·", "Screenplay", "·", "Photography"];
+/* Featured background video (YouTube embed muted+loop) */
+const HERO_VIDEO_ID = "d9_EuYkmfzM"; // 愚人節 ALL FOOL'S DAY — Jon Chen
+const HERO_VIDEO_START = 4;
 
-const QUOTES = [
-  { lines: ["人一定是", "在作品之前"], attr: null },
-  { lines: ["莽撞的開始，拙劣的完成", "好過心懷完美", "不開始行動"], attr: null },
-  { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
-];
-
-/* ─── Cinematic frame corner ─── */
-function CornerBracket({ pos, delay, loaded }: { pos: "tl"|"tr"|"bl"|"br"; delay: number; loaded: boolean }) {
-  const t = pos.startsWith("t") ? "1.8rem" : undefined;
-  const b = pos.startsWith("b") ? "5.2rem" : undefined;
-  const l = pos.endsWith("l") ? "1.8rem" : undefined;
-  const r = pos.endsWith("r") ? "1.8rem" : undefined;
-  const c = "var(--white-primary)";
-  return (
-    <div className="absolute pointer-events-none hidden md:block"
-      style={{ top: t, bottom: b, left: l, right: r, width: 26, height: 26,
-        opacity: loaded ? 0.25 : 0, transition: `opacity 1.2s ease ${delay}s` }}>
-      {/* Horizontal arm */}
-      <div style={{ position: "absolute", [pos.endsWith("l") ? "left" : "right"]: 0, [pos.startsWith("t") ? "top" : "bottom"]: 0, width: "100%", height: 1, background: c }} />
-      {/* Vertical arm */}
-      <div style={{ position: "absolute", [pos.endsWith("l") ? "left" : "right"]: 0, [pos.startsWith("t") ? "top" : "bottom"]: 0, width: 1, height: "100%", background: c }} />
-    </div>
-  );
+function goto(page: number) {
+  window.dispatchEvent(new CustomEvent("navto", { detail: page }));
 }
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [isActive, setIsActive] = useState(true);
-  const [quoteIdx, setQuoteIdx] = useState(0);
-  const [showScroll, setShowScroll] = useState(false);
-  const [count, setCount] = useState(0);
-  const q = QUOTES[quoteIdx];
+  const [iframeReady, setIframeReady] = useState(false);
 
   useEffect(() => {
-    setQuoteIdx(Math.floor(Math.random() * QUOTES.length));
-    const t  = setTimeout(() => setLoaded(true), 180);
-    const t2 = setTimeout(() => setShowScroll(true), 3000);
-    const t3 = setTimeout(() => setShowScroll(false), 7500);
+    const t  = setTimeout(() => setLoaded(true), 120);
+    const t2 = setTimeout(() => setIframeReady(true), 600);
     const onPageChange = (e: Event) => setIsActive((e as CustomEvent<number>).detail === 0);
     window.addEventListener("pagechange", onPageChange);
-    return () => { clearTimeout(t); clearTimeout(t2); clearTimeout(t3); window.removeEventListener("pagechange", onPageChange); };
+    return () => {
+      clearTimeout(t); clearTimeout(t2);
+      window.removeEventListener("pagechange", onPageChange);
+    };
   }, []);
 
-  // Count-up 0 → 150 after loaded
-  useEffect(() => {
-    if (!loaded) return;
-    let n = 0;
-    const timer = setInterval(() => {
-      n += 4;
-      if (n >= 150) { setCount(150); clearInterval(timer); }
-      else setCount(n);
-    }, 14);
-    return () => clearInterval(timer);
-  }, [loaded]);
-
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden" style={{ background: "#000" }}>
+    <section className="relative h-screen w-full overflow-hidden bg-black"
+      style={{ fontFamily: "var(--font-readex), 'Readex Pro', system-ui, sans-serif" }}>
 
-      {/* ── Ambient floating orbs ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        <div style={{
-          position: "absolute", top: "8%", right: "18%",
-          width: 700, height: 700, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(80,100,160,0.055) 0%, transparent 65%)",
-          animation: "float 22s ease-in-out infinite",
-          willChange: "transform",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "15%", left: "12%",
-          width: 500, height: 500, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(60,60,90,0.07) 0%, transparent 65%)",
-          animation: "float 30s ease-in-out infinite reverse",
-          willChange: "transform",
-        }} />
-        <div style={{
-          position: "absolute", top: "45%", left: "50%",
-          width: 350, height: 350, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(100,80,160,0.04) 0%, transparent 65%)",
-          animation: "float 18s ease-in-out 4s infinite",
-          willChange: "transform",
-        }} />
-      </div>
-
-      {/* ── Large "2026" background watermark ── */}
-      <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden" aria-hidden="true">
-        <span className="font-display select-none"
-          style={{
-            fontSize: "clamp(20rem, 68vw, 96rem)",
-            color: "rgba(255,255,255,0.016)",
-            letterSpacing: "0.02em",
-            lineHeight: 1,
-            paddingRight: "2%",
-            userSelect: "none",
-          }}>
-          2026
-        </span>
-      </div>
-
-      {/* ── Cinematic corner brackets ── */}
-      <CornerBracket pos="tl" delay={0.4} loaded={loaded && isActive} />
-      <CornerBracket pos="tr" delay={0.5} loaded={loaded && isActive} />
-      <CornerBracket pos="bl" delay={0.6} loaded={loaded && isActive} />
-      <CornerBracket pos="br" delay={0.7} loaded={loaded && isActive} />
-
-      {/* ── REC indicator (top right) ── */}
-      <div aria-hidden="true" className="absolute hidden md:flex items-center gap-2 pointer-events-none"
-        style={{
-          top: "2rem", right: "2.5rem", zIndex: 10,
-          opacity: loaded && isActive ? 1 : 0, transition: "opacity 1.2s ease 2.2s",
-        }}>
-        <div style={{
-          width: 6, height: 6, borderRadius: "50%",
-          background: "rgba(220,50,50,0.85)",
-          boxShadow: "0 0 10px rgba(220,50,50,0.5)",
-          animation: "pulse-slow 1.8s ease-in-out infinite",
-        }} />
-        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>
-          REC
-        </span>
-        <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.15em", color: "var(--white-dim)" }}>
-          2026
-        </span>
-      </div>
-
-      {/* Frosted ambient glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: "radial-gradient(ellipse 80% 50% at 55% 50%, rgba(255,255,255,0.022) 0%, transparent 70%)",
-      }} />
-
-      {/* (left vertical labels removed — was breaking centered composition) */}
-
-      {/* Main content — fully centered */}
-      <div className="flex-1 flex flex-col justify-center items-center text-center px-6 md:px-12" style={{ paddingTop: "80px" }}>
-
-        {/* Handle */}
-        <div style={{
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? "translateY(0)" : "translateY(10px)",
-          transition: "opacity .7s ease .05s, transform .7s ease .05s",
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 12,
-        }}>
-          <span className="font-mono-label text-[10px] tracking-[0.35em]" style={{ color: "var(--text-3)" }}>
-            @minehoooo
-          </span>
-          <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-dim)" }}>
-            · @minehoooo.arw
-          </span>
-        </div>
-
-        {/* MINEH4O — character reveal + glitch layers, centered */}
-        <div className="relative inline-block" style={{ overflow: "hidden" }}>
-          <h1 className="font-display leading-none select-none mt-3"
-            style={{ fontSize: "clamp(6.5rem, 23vw, 30rem)", color: "var(--text)", cursor: "default" }}>
-            <CharReveal text="MINEH4O" inView={loaded} baseDelay={0.12} stagger={0.048} />
-          </h1>
-          {/* Glitch layer 1 — cyan tint, clips top portion */}
-          <span aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
-            style={{
-              fontSize: "clamp(6.5rem, 23vw, 30rem)",
-              color: "rgba(80,220,255,0.9)",
-              cursor: "default",
-              animation: "heroGlitch1 9s ease-in-out 4s infinite",
-              opacity: 0,
-            }}>
-            MINEH4O
-          </span>
-          {/* Glitch layer 2 — red tint, clips bottom portion */}
-          <span aria-hidden="true" className="font-display leading-none select-none mt-3 absolute inset-0 pointer-events-none"
-            style={{
-              fontSize: "clamp(6.5rem, 23vw, 30rem)",
-              color: "rgba(255,60,80,0.85)",
-              cursor: "default",
-              animation: "heroGlitch2 9s ease-in-out 4s infinite",
-              opacity: 0,
-            }}>
-            MINEH4O
-          </span>
-        </div>
-
-        {/* Tagline — glass pills, centered */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-          {TAGLINE.map((word, i) => (
-            word === "·" ? (
-              <span key={i} style={{
-                color: "var(--white-dim)", fontSize: 10, lineHeight: 1,
-                opacity: loaded ? 1 : 0,
-                transition: `opacity .6s ease ${0.88 + i * 0.07}s`,
-              }}>·</span>
-            ) : (
-              <span key={i} className="font-mono-label text-[10px] tracking-[0.22em]"
-                style={{
-                  background: "var(--white-ghost)",
-                  backdropFilter: "blur(16px)",
-                  WebkitBackdropFilter: "blur(16px)",
-                  border: "1px solid var(--white-ghost)",
-                  borderRadius: 999,
-                  padding: "6px 14px",
-                  color: "var(--white-secondary)",
-                  opacity: loaded ? 1 : 0,
-                  transform: loaded ? "translateY(0)" : "translateY(14px)",
-                  transition: `opacity .65s ease ${0.88 + i * 0.07}s, transform .65s cubic-bezier(.16,1,.3,1) ${0.88 + i * 0.07}s`,
-                }}>
-                {word}
-              </span>
-            )
-          ))}
-        </div>
-
-        {/* Location */}
-        <p className="font-mono-label text-[9px] tracking-[0.35em] mt-4"
-          style={{ color: "var(--text-3)", opacity: loaded ? 1 : 0, transition: "opacity .8s ease 1.4s" }}>
-          TAIWAN · TAICHUNG
-        </p>
-
-      </div>
-
-      {/* Bottom strip — VIEWS · centered quote · IG DM */}
-      <div className="border-t px-6 md:px-12 py-4 grid items-center gap-4"
-        style={{
-          borderColor: "var(--white-ghost)",
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(40px)",
-          WebkitBackdropFilter: "blur(40px)",
-          opacity: loaded ? 1 : 0,
-          transition: "opacity 1s ease 1.6s",
-          gridTemplateColumns: "1fr auto 1fr",
-        }}>
-
-        {/* Visitor stat — left */}
-        <div className="hidden md:flex flex-col items-start gap-0.5 shrink-0">
-          <span className="font-display leading-none" style={{ fontSize: "1.4rem", color: "var(--white-secondary)", letterSpacing: "0.02em" }}>
-            {count}K+
-          </span>
-          <span className="font-mono-label text-[7px] tracking-[0.32em]" style={{ color: "var(--white-dim)" }}>
-            VIEWS
-          </span>
-        </div>
-        {/* Mobile spacer */}
-        <div className="md:hidden" />
-
-        {/* Quote — centered, smaller */}
-        <div className="flex flex-col items-center text-center shrink min-w-0">
-          {q.lines.map((line, i) => (
-            <span key={i} style={{
-              fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-              fontSize: "0.52rem",
-              fontWeight: 300,
-              color: "var(--white-muted)",
-              letterSpacing: "0.05em",
-              lineHeight: 1.7,
-              whiteSpace: "nowrap",
-              display: "block",
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(6px)",
-              transition: `opacity .55s ease ${1.75 + i * 0.14}s, transform .55s ease ${1.75 + i * 0.14}s`,
-            }}>{line}</span>
-          ))}
-          {q.attr && (
-            <span style={{
-              fontFamily: "var(--font-space-mono), monospace",
-              fontSize: "0.42rem",
-              letterSpacing: "0.22em",
-              color: "var(--white-dim)",
-              marginTop: 4,
-            }}>{q.attr}</span>
+      {/* ── Fullscreen background — YouTube iframe muted loop ── */}
+      <div className="absolute inset-0" style={{
+        opacity: iframeReady && isActive ? 1 : 0,
+        transition: "opacity 1.4s ease",
+        pointerEvents: "none",
+      }}>
+        <div style={{ position: "absolute", inset: "-8%", width: "116%", height: "116%" }}>
+          {iframeReady && (
+            <iframe
+              src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
+              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.62)" }}
+              allow="autoplay; encrypted-media"
+              title="MINEH4O reel background"
+            />
           )}
         </div>
+      </div>
 
-        {/* IG DM — right */}
-        <div className="flex justify-end">
-          <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-            className="shrink-0 flex items-center gap-2 font-mono-label text-[9px] tracking-[0.25em]"
+      {/* Bottom gradient — fades into black so text reads + smooth section transition */}
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-64"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 40%, #000 100%)" }} />
+      {/* Top gradient — soft fade behind navbar */}
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-40"
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)" }} />
+
+      {/* ── Foreground content ── */}
+      <div className="relative h-full w-full">
+
+        {/* ── Headline words — staggered lowercase ── */}
+        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none"
+          style={{
+            left: "1rem", top: "16%",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
+            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
+          }}>
+          <span className="hidden md:inline pl-10">director</span>
+          <span className="md:hidden">director</span>
+        </h1>
+
+        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none text-right"
+          style={{
+            right: "1rem", top: "36%",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
+            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .24s, transform .9s cubic-bezier(.16,1,.3,1) .24s",
+          }}>
+          <span className="hidden md:inline pr-10">DP · photo</span>
+          <span className="md:hidden">DP · photo</span>
+        </h1>
+
+        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none"
+          style={{
+            left: "18%", top: "56%",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
+            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .36s, transform .9s cubic-bezier(.16,1,.3,1) .36s",
+          }}>
+          oscar
+        </h1>
+
+        {/* ── Description paragraph — left of "DP · photo" headline ── */}
+        <p className="absolute max-w-[260px] text-[13px] md:text-[15px] leading-snug text-white/90 z-[8]"
+          style={{
+            left: "1.5rem", top: "44%",
+            fontWeight: 300,
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity .8s ease .55s, transform .8s ease .55s",
+          }}>
+          image and motion crafted in taichung —<br />
+          director · DP · screenplay · photo · AIGC
+        </p>
+
+        {/* ── Stat block: TOP-RIGHT ── */}
+        <div className="absolute z-[8]"
+          style={{
+            right: "1.5rem", top: "13%",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(-12px)",
+            transition: "opacity .8s ease .7s, transform .8s ease .7s",
+          }}>
+          <div className="flex items-center gap-3 justify-end">
+            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(20deg)" }} />
+            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+150k</span>
+          </div>
+          <p className="text-[11px] md:text-sm text-white/70 mt-1 text-right" style={{ fontWeight: 300 }}>
+            views across reels
+          </p>
+        </div>
+
+        {/* ── Stat block: BOTTOM-LEFT ── */}
+        <div className="absolute z-[8]"
+          style={{
+            left: "1.5rem", bottom: "5.5rem",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity .8s ease .82s, transform .8s ease .82s",
+          }}>
+          <div className="flex items-center gap-3">
+            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+50</span>
+            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
+          </div>
+          <p className="text-[11px] md:text-sm text-white/70 mt-1" style={{ fontWeight: 300 }}>
+            mv · doc · ad productions
+          </p>
+        </div>
+
+        {/* ── Stat block: BOTTOM-RIGHT ── */}
+        <div className="absolute z-[8]"
+          style={{
+            right: "1.5rem", bottom: "5rem",
+            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity .8s ease .92s, transform .8s ease .92s",
+          }}>
+          <div className="flex items-center gap-3 justify-end">
+            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
+            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+7yr</span>
+          </div>
+          <p className="text-[11px] md:text-sm text-white/70 mt-1 text-right" style={{ fontWeight: 300 }}>
+            on set since 2019
+          </p>
+        </div>
+
+        {/* ── Bottom strip: handle · scroll · DM ── */}
+        <div className="absolute bottom-0 left-0 right-0 z-[9] px-6 md:px-10 pb-4 flex items-end justify-between gap-4"
+          style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.05s" }}>
+
+          {/* Left: handle */}
+          <div className="flex flex-col">
+            <span className="text-[10px] tracking-[0.32em] text-white/45" style={{ fontWeight: 400 }}>
+              TAICHUNG · TAIWAN
+            </span>
+            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+              className="text-[12px] md:text-[13px] text-white/80 hover:text-white transition-colors mt-1"
+              style={{ fontWeight: 400 }}>
+              @minehoooo.arw ↗
+            </a>
+          </div>
+
+          {/* Center: scroll hint */}
+          <button onClick={() => goto(1)}
+            className="hidden md:flex flex-col items-center gap-1.5 group"
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+            aria-label="Scroll to About">
+            <span className="text-[9px] tracking-[0.4em] text-white/50 group-hover:text-white/80 transition-colors">
+              SCROLL
+            </span>
+            <div style={{ width: 1, height: 30, background: "rgba(255,255,255,0.25)", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.85)", animation: "slideDown 1.6s ease-in-out infinite" }} />
+            </div>
+          </button>
+
+          {/* Right: quick CTA */}
+          <button onClick={() => goto(6)}
+            className="hover:bg-neutral-200 transition-colors"
             style={{
-              background: "var(--white-ghost)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              border: "1px solid var(--white-ghost)",
+              background: "#fff",
+              color: "#000",
+              fontSize: 13, fontWeight: 500,
               borderRadius: 999,
-              padding: "8px 18px",
-              color: "var(--white-soft)",
-              transition: "all .3s ease",
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = "var(--white-dim)";
-              el.style.borderColor = "var(--white-muted)";
-              el.style.color = "var(--white-primary)";
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLAnchorElement;
-              el.style.background = "var(--white-ghost)";
-              el.style.borderColor = "var(--white-ghost)";
-              el.style.color = "var(--white-soft)";
+              padding: "10px 22px",
+              border: "none",
+              cursor: "pointer",
+              letterSpacing: "-0.01em",
             }}>
-            DM @minehoooo.arw ↗
-          </a>
+            let&apos;s work →
+          </button>
         </div>
       </div>
-
-      {/* Scroll-down hint — desktop, auto-fades */}
-      <div className="hidden md:flex flex-col items-center gap-2 absolute pointer-events-none"
-        style={{
-          bottom: "5.5rem", left: "50%", transform: "translateX(-50%)",
-          opacity: showScroll && isActive ? 1 : 0,
-          transition: "opacity 1s ease",
-          zIndex: 10,
-        }}>
-        <span className="font-mono-label text-[7px] tracking-[0.4em]" style={{ color: "var(--white-dim)" }}>
-          SCROLL
-        </span>
-        <div style={{ width: 1, height: 36, background: "var(--white-ghost)", position: "relative", overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "var(--white-secondary)", animation: "slideDown 1.4s ease-in-out infinite" }} />
-        </div>
-      </div>
-
-      {/* Frosted bottom gradient — half-glass fade into the strip */}
-      <div aria-hidden="true" className="absolute bottom-0 left-0 right-0 pointer-events-none"
-        style={{
-          height: "45%",
-          background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          maskImage: "linear-gradient(to top, black 20%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to top, black 20%, transparent 100%)",
-        }} />
     </section>
   );
 }

@@ -7,7 +7,6 @@ import { useLang } from "@/contexts/LangContext";
 
 const IG_ACCOUNTS = [
   { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Main · Director / DP / Photo" },
-  { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · MV · Reels" },
   { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
 ];
 

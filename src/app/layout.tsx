@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Space_Mono, Bebas_Neue } from "next/font/google";
+import { Geist, Space_Mono, Bebas_Neue, Readex_Pro } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -20,6 +20,12 @@ const spaceMono = Space_Mono({
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas",
   weight: "400",
+  subsets: ["latin"],
+});
+
+const readexPro = Readex_Pro({
+  variable: "--font-readex",
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -89,7 +95,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MINEH4O — Oscar Lai | Director · DP",
     description: "台灣影像創作者 · 導演 · 攝影師 · AIGC 創作",
-    creator: "@minehoooo",
+    creator: "@minehoooo.arw",
   },
   robots: {
     index: true,
@@ -583,7 +589,6 @@ const personJsonLd = {
   },
   sameAs: [
     "https://instagram.com/minehoooo.arw",
-    "https://instagram.com/minehoooo",
     "https://instagram.com/mlpon6",
     "https://www.youtube.com/@BigCataw313248",
     "https://minehoooo.xyz",
@@ -695,7 +700,7 @@ const faqJsonLd = {
       name: "如何聯絡 MINEH4O 合作？",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "可透過 Instagram @minehoooo 傳送私訊，或寄信至 minehoooo@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
+        text: "可透過 Instagram @minehoooo.arw 傳送私訊，或寄信至 minehoooo@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
       },
     },
     {
@@ -751,7 +756,7 @@ const faqJsonLd = {
       name: "minehoooo 的 Instagram 是什麼？",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "賴明宏 Oscar Lai（MINEH4O）的 Instagram 帳號為 @minehoooo（影像作品、導演日常）及 @minehoooo.arw（攝影作品集）。",
+        text: "賴明宏 Oscar Lai（MINEH4O）的主要 Instagram 帳號為 @minehoooo.arw（影像 / 導演 / 攝影作品）。",
       },
     },
   ],
@@ -771,9 +776,8 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="zh-TW" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="en" href="https://minehoooo.xyz" />
         <link rel="alternate" hrefLang="x-default" href="https://minehoooo.xyz" />
-        {/* rel="me" — identity verification for Google Knowledge Panel (.arw 為主帳號) */}
+        {/* rel="me" — identity verification for Google Knowledge Panel */}
         <link rel="me" href="https://instagram.com/minehoooo.arw" />
-        <link rel="me" href="https://instagram.com/minehoooo" />
         <link rel="me" href="https://www.youtube.com/@BigCataw313248" />
         {/* Preload critical above-fold assets */}
         <link rel="preload" href="/profile.png" as="image" />
@@ -787,7 +791,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" />
       </head>
       <body
-        className={`${geistSans.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased`}
+        className={`${geistSans.variable} ${spaceMono.variable} ${bebasNeue.variable} ${readexPro.variable} antialiased`}
       >
         <Script id="person-ld" type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />

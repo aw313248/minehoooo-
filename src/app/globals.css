@@ -45,6 +45,13 @@
   --radius-pill: 999px; /* 圓 pill 按鈕 */
 }
 
+/* Securify-style hero title — tight letter spacing for editorial impact */
+.hero-title {
+  font-family: var(--font-readex), "Readex Pro", system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
 html {
   background: var(--bg);
   /* prevent iOS bounce that fights with PageScroll */

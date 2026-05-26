@@ -223,7 +223,7 @@ export default function About() {
             賴明宏 Lai Ming-Hong
           </p>
 
-          {/* IG handle pills — centered */}
+          {/* IG handle pill — centered */}
           <div className="flex gap-3 mt-7 flex-wrap justify-center">
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
               className="font-mono-label text-[10px] tracking-[0.22em] px-4 py-2 transition-all duration-300"
@@ -231,13 +231,6 @@ export default function About() {
               onMouseEnter={e => { e.currentTarget.style.background = "var(--white-dim)"; e.currentTarget.style.borderColor = "var(--white-muted)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.borderColor = "var(--white-dim)"; }}>
               @minehoooo.arw
-            </a>
-            <a href="https://instagram.com/minehoooo" target="_blank" rel="noopener noreferrer"
-              className="font-mono-label text-[10px] tracking-[0.22em] px-4 py-2 transition-all duration-300"
-              style={{ color: "var(--white-soft)", background: "var(--white-ghost)", border: "1px solid var(--white-ghost)", borderRadius: 999, backdropFilter: "blur(12px)" }}
-              onMouseEnter={e => { e.currentTarget.style.background = "var(--white-dim)"; e.currentTarget.style.color = "var(--white-primary)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.color = "var(--white-soft)"; }}>
-              @minehoooo
             </a>
           </div>
         </div>
@@ -390,7 +383,6 @@ export default function About() {
             </p>
             {[
               { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Main · Director / DP / Photo" },
-              { handle: "@minehoooo",     href: "https://instagram.com/minehoooo",     desc: "Video · Reels" },
               { handle: "@mlpon6",        href: "https://instagram.com/mlpon6",         desc: "Personal" },
             ].map(s => (
               <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"
@@ -432,7 +424,6 @@ export default function About() {
             <div className="flex gap-4 flex-wrap">
               {[
                 { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw" },
-                { handle: "@minehoooo",     href: "https://instagram.com/minehoooo" },
                 { handle: "@mlpon6",        href: "https://instagram.com/mlpon6" },
               ].map(s => (
                 <a key={s.handle} href={s.href} target="_blank" rel="noopener noreferrer"

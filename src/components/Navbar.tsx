@@ -43,95 +43,119 @@ export default function Navbar() {
     };
   }, []);
 
+  // Securify-style floating pill navbar — always transparent header, pills do the visual lift
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: scrolled || activePage > 0 ? "rgba(0,0,0,0.82)" : "transparent",
-        backdropFilter: scrolled || activePage > 0 ? "blur(20px) saturate(1.8)" : "none",
-        borderBottom: scrolled || activePage > 0 ? "1px solid var(--white-ghost)" : "none",
+        background: "transparent",
+        fontFamily: "var(--font-readex), 'Readex Pro', system-ui, sans-serif",
       }}
     >
-      {/* Progress line */}
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 1, background: "var(--white-ghost)" }}>
+      {/* Top progress line — very subtle */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "rgba(255,255,255,0.04)" }}>
         <div style={{
           height: "100%",
           width: `${(activePage / 6) * 100}%`,
-          background: "linear-gradient(to right, rgba(255,255,255,0.35), rgba(255,255,255,0.12))",
+          background: "linear-gradient(to right, rgba(255,255,255,0.5), rgba(255,255,255,0.15))",
           transition: "width 0.6s cubic-bezier(0.16,1,0.3,1)",
         }} />
       </div>
 
-      <nav className="flex items-center justify-between px-6 md:px-10 py-4">
-        {/* Logo */}
+      <nav className="flex items-center justify-between gap-4 px-6 md:px-10 pt-5">
+
+        {/* ── LEFT PILL: logo + brand ── */}
         <button
           onClick={() => goto(0)}
-          className="font-display text-lg tracking-widest transition-opacity duration-300"
-          style={{ color: "#f5f5f7", background: "none", border: "none", cursor: "pointer",
-            opacity: activePage === 0 ? 0.5 : 1 }}
-        >
-          MINEH4O
+          className="flex items-center gap-2.5 hover:bg-neutral-800/90 transition-colors"
+          aria-label="Home"
+          style={{
+            background: "rgba(23,23,23,0.85)",
+            backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 999,
+            paddingLeft: 16, paddingRight: 22,
+            paddingTop: 11, paddingBottom: 11,
+            cursor: "pointer",
+            opacity: scrolled || activePage > 0 ? 1 : 0.95,
+          }}>
+          {/* Logo mark — four-square M */}
+          <svg className="h-5 w-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" fill="#ffffff"/>
+          </svg>
+          <span className="text-white text-sm" style={{ fontWeight: 400, letterSpacing: "-0.01em" }}>
+            minehoooo
+          </span>
         </button>
 
-        {/* Desktop — pill-style nav */}
-        <ul className="hidden md:flex items-center gap-2">
+        {/* ── CENTER PILL: nav links ── */}
+        <ul className="hidden md:flex items-center gap-1"
+          style={{
+            background: "rgba(23,23,23,0.85)",
+            backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 999,
+            padding: "6px 8px",
+          }}>
           {desktopLinks.map((l) => {
             const active = activePage === l.page;
             return (
               <li key={l.page}>
                 <button
                   onClick={() => goto(l.page)}
-                  className="relative"
+                  className="transition-colors"
                   style={{
-                    background: active ? "var(--white-dim)" : "transparent",
-                    border: `1px solid ${active ? "var(--white-soft)" : "transparent"}`,
+                    background: active ? "rgba(255,255,255,0.08)" : "transparent",
+                    color: active ? "#fff" : "rgba(255,255,255,0.65)",
+                    fontSize: 13, fontWeight: 400,
+                    letterSpacing: "-0.005em",
                     borderRadius: 999,
-                    cursor: "pointer",
                     padding: "8px 16px",
-                    transition: "background .3s ease, border-color .3s ease, transform .2s ease",
+                    border: "none", cursor: "pointer",
                   }}
-                  onMouseEnter={e => {
-                    if (!active) {
-                      e.currentTarget.style.background = "var(--white-ghost)";
-                      e.currentTarget.style.borderColor = "var(--white-ghost)";
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (!active) {
-                      e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.borderColor = "transparent";
-                    }
-                  }}
+                  onMouseEnter={e => { if (!active) e.currentTarget.style.color = "#fff"; }}
+                  onMouseLeave={e => { if (!active) e.currentTarget.style.color = "rgba(255,255,255,0.65)"; }}
                 >
-                  <span
-                    className="font-mono-label text-[11px] tracking-[0.28em] transition-colors duration-300"
-                    style={{ color: active ? "var(--white-primary)" : "var(--white-soft)" }}
-                  >
-                    {lang === "zh" ? l.labelZh : l.label}
-                  </span>
+                  {(lang === "zh" ? l.labelZh : l.label).toLowerCase()}
                 </button>
               </li>
             );
           })}
-
-          {/* Language toggle — pill */}
-          <li className="ml-2">
+          {/* Language toggle — separator + tiny */}
+          <li style={{ width: 1, height: 18, background: "rgba(255,255,255,0.1)", margin: "0 4px" }} aria-hidden="true" />
+          <li>
             <button onClick={toggle}
-              className="font-mono-label text-[10px] tracking-[0.22em] px-3.5 py-2"
+              className="transition-colors"
               style={{
-                border: "1px solid var(--white-dim)",
+                fontSize: 12, fontWeight: 400,
+                color: "rgba(255,255,255,0.55)",
+                background: "transparent",
                 borderRadius: 999,
-                color: "var(--white-soft)",
-                background: "var(--white-ghost)", cursor: "pointer",
-                transition: "all .25s ease",
-                letterSpacing: "0.18em",
+                padding: "8px 12px",
+                border: "none", cursor: "pointer",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--white-primary)"; e.currentTarget.style.borderColor = "var(--white-soft)"; e.currentTarget.style.background = "var(--white-dim)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "var(--white-soft)"; e.currentTarget.style.borderColor = "var(--white-dim)"; e.currentTarget.style.background = "var(--white-ghost)"; }}>
-              {lang === "zh" ? "EN" : "中文"}
+              onMouseEnter={e => { e.currentTarget.style.color = "#fff"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.55)"; }}>
+              {lang === "zh" ? "en" : "中"}
             </button>
           </li>
         </ul>
+
+        {/* ── RIGHT: get-started style CTA ── */}
+        <button
+          onClick={() => goto(6)}
+          className="hidden md:block hover:bg-neutral-200 transition-colors"
+          style={{
+            background: "#fff",
+            color: "#000",
+            fontSize: 13, fontWeight: 500,
+            borderRadius: 999,
+            padding: "11px 22px",
+            border: "none", cursor: "pointer",
+            letterSpacing: "-0.005em",
+          }}>
+          {lang === "zh" ? "聯絡合作" : "let's work"}
+        </button>
 
         {/* Mobile hamburger */}
         <button
