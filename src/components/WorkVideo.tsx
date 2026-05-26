@@ -778,10 +778,10 @@ export default function WorkVideo() {
                 </span>
               </div>
 
-              {/* Massive title */}
-              <h2 className="font-display leading-none mb-6"
+              {/* Massive title — smaller on mobile to fit phone screen */}
+              <h2 className="font-display leading-none mb-4 md:mb-6 px-2"
                 style={{
-                  fontSize: "clamp(3rem, 9vw, 11rem)",
+                  fontSize: "clamp(2.2rem, 10vw, 11rem)",
                   color: "var(--text)", letterSpacing: "0.01em",
                   textShadow: "0 4px 32px rgba(0,0,0,0.7)",
                 }}>
@@ -789,20 +789,20 @@ export default function WorkVideo() {
               </h2>
 
               {active.artist && (
-                <p className="font-mono-label mb-8" style={{ fontSize: 11, letterSpacing: "0.22em", color: "var(--white-soft)" }}>
+                <p className="font-mono-label mb-6 md:mb-8" style={{ fontSize: 11, letterSpacing: "0.22em", color: "var(--white-soft)" }}>
                   by <span style={{ color: "var(--white-primary)" }}>{active.artist}</span>
                 </p>
               )}
 
-              {/* PLAY FULL button — big, centered */}
+              {/* PLAY FULL button — bigger touch target on mobile */}
               <button onClick={() => setPlaying(true)}
-                className="group flex items-center gap-3"
+                className="group flex items-center gap-3 active:scale-[0.97]"
                 style={{
                   background: "rgba(255,255,255,0.1)",
                   backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
                   border: "1px solid var(--white-dim)",
                   borderRadius: 999,
-                  padding: "14px 28px", cursor: "pointer",
+                  padding: "16px 32px", cursor: "pointer",
                   transition: "all .35s ease",
                 }}
                 onMouseEnter={e => {
@@ -818,39 +818,39 @@ export default function WorkVideo() {
                   el.style.transform = "translateY(0)";
                 }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
-                <span className="font-mono-label" style={{ fontSize: 10, letterSpacing: "0.32em", color: "var(--white-primary)" }}>PLAY FULL</span>
+                <span className="font-mono-label" style={{ fontSize: 11, letterSpacing: "0.32em", color: "var(--white-primary)" }}>PLAY FULL</span>
                 <span style={{ color: "var(--white-soft)", fontSize: 15 }}>↗</span>
               </button>
             </motion.div>
           </AnimatePresence>
         )}
 
-        {/* Bottom: arrows + dots + counter (proper spacing from bottom) */}
+        {/* Bottom: arrows + dots + counter (bigger touch targets on mobile) */}
         {!playing && (
-          <div className="absolute left-0 right-0 flex items-center justify-center gap-4 z-10"
-            style={{ bottom: "2.5rem", opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
+          <div className="absolute left-0 right-0 flex items-center justify-center gap-3 md:gap-4 z-10 px-4"
+            style={{ bottom: "2rem", opacity: heroLoaded ? 1 : 0, transition: "opacity .7s ease .5s" }}>
             <button onClick={() => setActiveIdx(i => (i - 1 + featuredMVs.length) % featuredMVs.length)}
               aria-label="Previous"
+              className="active:scale-95 transition-transform shrink-0"
               style={{
-                width: 40, height: 40, borderRadius: "50%",
+                width: 48, height: 48, borderRadius: "50%",
                 background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)",
                 border: "1px solid var(--white-dim)", cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "background .25s",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.9)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.65)")}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="15 18 9 12 15 6" />
               </svg>
             </button>
 
-            {/* Dots */}
-            <div className="flex items-center gap-1.5">
+            {/* Dots — slightly bigger on mobile, scrollable container */}
+            <div className="flex items-center gap-1.5 overflow-x-auto"
+              style={{ scrollbarWidth: "none", maxWidth: "60%" } as React.CSSProperties}>
               {featuredMVs.map((_, i) => (
                 <button key={i} onClick={() => setActiveIdx(i)} aria-label={`Go to slide ${i + 1}`}
+                  className="shrink-0"
                   style={{
-                    width: i === activeIdx ? 24 : 6, height: 6, borderRadius: 999,
+                    width: i === activeIdx ? 28 : 7, height: 7, borderRadius: 999,
                     background: i === activeIdx ? "var(--white-primary)" : "var(--white-muted)",
                     border: "none", cursor: "pointer", padding: 0,
                     transition: "all .45s cubic-bezier(.16,1,.3,1)",
@@ -860,16 +860,14 @@ export default function WorkVideo() {
 
             <button onClick={() => setActiveIdx(i => (i + 1) % featuredMVs.length)}
               aria-label="Next"
+              className="active:scale-95 transition-transform shrink-0"
               style={{
-                width: 40, height: 40, borderRadius: "50%",
+                width: 48, height: 48, borderRadius: "50%",
                 background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)",
                 border: "1px solid var(--white-dim)", cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                transition: "background .25s",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.9)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.65)")}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="9 6 15 12 9 18" />
               </svg>
             </button>
@@ -900,7 +898,7 @@ export default function WorkVideo() {
       </div>
 
       {/* ── 01 · DIRECTOR WORKS ── */}
-      <div ref={mvRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={mvRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={directorMVs.length} note="DIRECTOR WORKS" />
           <Carousel
@@ -920,7 +918,7 @@ export default function WorkVideo() {
 
       {/* ── 光與景三部曲 ── */}
       <div ref={trRef} className="border-b" style={{ borderColor: "var(--border)" }}>
-        <div className="px-8 md:px-14 py-6 border-b flex items-center justify-between"
+        <div className="px-4 md:px-14 py-6 border-b flex items-center justify-between"
           style={{ borderColor: "var(--border)", opacity: trIn ? 1 : 0, transition: "opacity .8s ease" }}>
           <div>
             <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
@@ -944,7 +942,7 @@ export default function WorkVideo() {
         {/* Feathered top edge — gradient feather instead of hard border */}
         <div aria-hidden="true" style={{ height: 80, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 60%, #000)" }} />
 
-        <div className="px-8 md:px-14 py-8 flex items-center justify-between"
+        <div className="px-4 md:px-14 py-8 flex items-center justify-between"
           style={{ opacity: lrIn ? 1 : 0, transition: "opacity .8s ease" }}>
           <div>
             <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
@@ -959,8 +957,8 @@ export default function WorkVideo() {
           </div>
         </div>
 
-        {/* 4 portrait poster cards in a row */}
-        <div className="px-8 md:px-14 pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+        {/* 4 portrait poster cards: 2-col on mobile (balanced), 4-col on desktop */}
+        <div className="px-4 md:px-14 pb-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
           {lilRadSeries.map((v, i) => (
             <a key={v.id}
               href={`https://www.youtube.com/watch?v=${v.id}`}
@@ -1057,7 +1055,7 @@ export default function WorkVideo() {
       </div>
 
       {/* ── 02 · MUSIC VIDEO · COLOR WORK ── */}
-      <div ref={wRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={wRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="02" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="COLOR GRADING · DP" />
           <Carousel
@@ -1080,7 +1078,7 @@ export default function WorkVideo() {
         {/* Feathered top edge */}
         <div aria-hidden="true" style={{ height: 70, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 60%, #000)" }} />
 
-        <div className="px-8 md:px-14 py-6" style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
+        <div className="px-4 md:px-14 py-6" style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
 
           {/* Editorial magazine masthead */}
           <div className="flex items-end justify-between mb-8 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
@@ -1324,7 +1322,7 @@ export default function WorkVideo() {
       </div>
 
       {/* ── 04 · LIVE · DOCUMENTARY · EVENT ── */}
-      <div ref={leRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={leRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: leIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="04" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
 
@@ -1364,7 +1362,7 @@ export default function WorkVideo() {
       </div>
 
       {/* ── 05 · AIGC SHORT FILM ── */}
-      <div ref={aigcRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={aigcRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: aigcIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="05" label="AIGC SHORT FILM" count={aigcWorks.length} note="GENERATIVE AI · DIR" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
@@ -1384,7 +1382,7 @@ export default function WorkVideo() {
       </div>
 
       {/* ── 06 · YOUTUBE SHORTS ── */}
-      <div ref={sRef} className="px-8 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
+      <div ref={sRef} className="px-4 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
           <SubLabel label="YOUTUBE SHORTS" />
         </div>
@@ -1415,12 +1413,12 @@ export default function WorkVideo() {
       {/* ── 07 · IG REELS ── */}
       <div ref={igRef} className="border-t" style={{ borderColor: "var(--border)" }}>
 
-        <div className="px-8 md:px-14 pt-10 pb-2"
+        <div className="px-4 md:px-14 pt-10 pb-2"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
           <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw · @mlpon6" />
         </div>
 
-        <div className="px-8 md:px-14 pb-6">
+        <div className="px-4 md:px-14 pb-6">
           <div className="flex gap-4 overflow-x-auto pb-4" style={{ scrollbarWidth: "none", WebkitOverflowScrolling: "touch" } as React.CSSProperties}>
             {igReelsData.map((reel, i) => (
               <a key={reel.code}
@@ -1504,7 +1502,7 @@ export default function WorkVideo() {
         </div>
 
         {/* Follow CTA */}
-        <div className="px-8 md:px-14 pb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        <div className="px-4 md:px-14 pb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .8s ease .4s" }}>
           <p className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>
             More work lives on Instagram — updated continuously
