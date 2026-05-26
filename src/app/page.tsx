@@ -13,6 +13,7 @@ import MobileNav       from "@/components/MobileNav";
 import PageTitle       from "@/components/PageTitle";
 import AudioPlayer     from "@/components/AudioPlayer";
 import AutoPlay        from "@/components/AutoPlay";
+import VersionBadge    from "@/components/VersionBadge";
 import { LangProvider } from "@/contexts/LangContext";
 
 export default function Home() {
@@ -32,6 +33,7 @@ export default function Home() {
       <MobileNav />
       <AudioPlayer />
       <AutoPlay />
+      <VersionBadge />
     </LangProvider>
   );
 }
