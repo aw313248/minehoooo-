@@ -9,15 +9,15 @@ import { useInView } from "@/hooks/useInView";
 
 // Hero rotation — 精選輪播
 const featuredMVs = [
-  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · DP",      tags: ["MUSIC VIDEO", "DIR", "DP"] },
-  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · DP · AI", tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
-  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP",            tags: ["MUSIC VIDEO", "DP"] },
-  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DP · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "DP",            tags: ["MUSIC VIDEO", "DP"] },
+  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "DIR", "DP"] },
+  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · D.P. · AI", tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
+  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P. · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P.",            tags: ["MUSIC VIDEO", "DP"] },
+  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P. · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "D.P.",            tags: ["MUSIC VIDEO", "DP"] },
   { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type", subEn: "Music Video",          subZh: "音樂錄影帶",                 role: "COLOR",         tags: ["MUSIC VIDEO", "COLOR"] },
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",   tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
 ];
@@ -25,23 +25,23 @@ const featuredMVs = [
 // 導演作品
 const directorMVs = [
   { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
-  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · DP",            cat: "MUSIC VIDEO" },
-  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "",       role: "DIR · DP · AI 50%",   cat: "MUSIC VIDEO" },
+  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · D.P.",            cat: "MUSIC VIDEO" },
+  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "",       role: "DIR · D.P. · AI 50%",   cat: "MUSIC VIDEO" },
 ];
 
 // 光與景三部曲
 const trilogy = [
-  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
-  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
-  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
+  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
+  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
 ];
 
 // Lil RAD × Coy6oi — 獨立系列，陳卓三部曲同款呈現
 const lilRadSeries = [
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",                      ep: "Ⅰ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not",           ep: "Ⅱ", artist: "Lil RAD & Coy6oi",           role: "DP"         },
-  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All",         ep: "Ⅲ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",              ep: "Ⅳ", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP"        },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                      ep: "Ⅰ", artist: "Lil RAD & Coy6oi",           role: "D.P. · COLOR" },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not",           ep: "Ⅱ", artist: "Lil RAD & Coy6oi",           role: "D.P."         },
+  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All",         ep: "Ⅲ", artist: "Lil RAD & Coy6oi",           role: "D.P. · COLOR" },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",              ep: "Ⅳ", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "D.P."        },
 ];
 
 // COLOR WORK — 流量高排前面，Lil RAD 已獨立成專區
@@ -57,9 +57,9 @@ const colorCredits = [
 
 // 劇情短片 — 全部統一（包含在片/幕後）
 const narrativeShorts = [
-  { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "金穗獎最佳劇情片" },
+  { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "2024 台北電影節最佳短片 · 金穗獎最佳劇情片 · 最佳演員獎 · ifva 亞洲新力量銀獎" },
   { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "第48屆金穗獎 最佳美術 · 最佳攝影 · 評審團特別獎 · 金馬影展入選" },
-  { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · DP · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
+  { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · D.P. · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
   { id: "raIh2Qlj5YY", title: "孩子們需要超人", artist: "社會議題短片",                      role: "DIR · EDIT",     cat: "SHORT FILM" },
 ];
 
@@ -75,23 +75,23 @@ const otherOnSet = [
 ];
 
 const commercial = [
-  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · DP",         cat: "COMMERCIAL" },
+  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · D.P.",         cat: "COMMERCIAL" },
   { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "",           role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
 ];
 
 // 紀錄片 — 規模大的先排
 const liveDoc = [
-  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",    artist: "TEDxNTHU · 清大",    role: "DIR · DP", cat: "DOCUMENTARY" },
-  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》", artist: "Taiwolf × 中華職棒",  role: "DIR · DP", cat: "DOCUMENTARY" },
-  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",          artist: "",                   role: "DIR · DP", cat: "LIVE"        },
-  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",        artist: "",                   role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",    artist: "TEDxNTHU · 清大",    role: "DIR · D.P.", cat: "DOCUMENTARY" },
+  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》", artist: "Taiwolf × 中華職棒",  role: "DIR · D.P.", cat: "DOCUMENTARY" },
+  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",          artist: "",                   role: "DIR · D.P.", cat: "LIVE"        },
+  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",        artist: "",                   role: "DIR · D.P.", cat: "DOCUMENTARY" },
 ];
 
 // 活動記錄 — 知名度高的先排
 const eventRec = [
-  { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
-  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
-  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · D.P.", cat: "EVENT" },
+  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · D.P.", cat: "EVENT" },
+  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · D.P.", cat: "EVENT" },
 ];
 
 // AIGC YouTube 作品
@@ -939,10 +939,13 @@ export default function WorkVideo() {
         ))}
       </div>
 
-      {/* ── Lil RAD × Coy6oi SERIES ── */}
-      <div ref={lrRef} className="border-b" style={{ borderColor: "var(--border)" }}>
-        <div className="px-8 md:px-14 py-6 border-b flex items-center justify-between"
-          style={{ borderColor: "var(--border)", opacity: lrIn ? 1 : 0, transition: "opacity .8s ease" }}>
+      {/* ── Lil RAD × Coy6oi SERIES — 4-card vertical poster wall ── */}
+      <div ref={lrRef} style={{ position: "relative" }}>
+        {/* Feathered top edge — gradient feather instead of hard border */}
+        <div aria-hidden="true" style={{ height: 80, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 60%, #000)" }} />
+
+        <div className="px-8 md:px-14 py-8 flex items-center justify-between"
+          style={{ opacity: lrIn ? 1 : 0, transition: "opacity .8s ease" }}>
           <div>
             <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
             <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
@@ -950,14 +953,107 @@ export default function WorkVideo() {
             </h2>
           </div>
           <div className="hidden md:block text-right">
-            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>DP</p>
+            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>D.P.</p>
             <p className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--text-2)" }}>Lil RAD & Coy6oi</p>
-            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>DP · COLOR · 4 MUSIC VIDEOS</p>
+            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>D.P. · COLOR · 4 MUSIC VIDEOS</p>
           </div>
         </div>
-        {lilRadSeries.map((v, i) => (
-          <SeriesPanel key={v.id} video={v} index={i} inView={lrIn} seriesLabel="LIL RAD SERIES" creditLabel="by" />
-        ))}
+
+        {/* 4 portrait poster cards in a row */}
+        <div className="px-8 md:px-14 pb-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+          {lilRadSeries.map((v, i) => (
+            <a key={v.id}
+              href={`https://www.youtube.com/watch?v=${v.id}`}
+              target="_blank" rel="noopener noreferrer"
+              className="group relative block overflow-hidden"
+              style={{
+                aspectRatio: "9/14",
+                borderRadius: 14,
+                background: "#050505",
+                border: "1px solid var(--white-ghost)",
+                opacity: lrIn ? 1 : 0,
+                transform: lrIn ? "translateY(0)" : "translateY(28px)",
+                transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${0.1 + i * 0.08}s, transform .8s cubic-bezier(.16,1,.3,1) ${0.1 + i * 0.08}s, border-color .3s ease`,
+              }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white-muted)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
+
+              {/* Thumbnail — 16:9 source, cropped to portrait */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                alt={`${v.artist} ${v.title}`}
+                loading="lazy"
+                style={{
+                  position: "absolute", inset: 0,
+                  width: "100%", height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  filter: "brightness(0.85)",
+                  transition: "transform 1.2s cubic-bezier(.16,1,.3,1), filter .5s",
+                }}
+                className="group-hover:scale-105 group-hover:brightness-100"
+                onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
+
+              {/* Cinematic gradient overlay (bottom heavy, like movie poster) */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 38%, transparent 60%, rgba(0,0,0,0.4) 100%)",
+              }} />
+
+              {/* Episode number — top-left, big */}
+              <div className="absolute top-3 left-3 z-[2]">
+                <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "var(--white-muted)" }}>
+                  EP {v.ep}
+                </span>
+              </div>
+
+              {/* Series label — top-right */}
+              <div className="absolute top-3 right-3 z-[2]">
+                <span className="font-mono-label text-[7px] tracking-[0.3em] px-2 py-1"
+                  style={{ background: "rgba(0,0,0,0.55)", border: "1px solid var(--white-ghost)", borderRadius: 999, color: "var(--white-secondary)" }}>
+                  {v.role}
+                </span>
+              </div>
+
+              {/* Title block — bottom, magazine cover style */}
+              <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 z-[2]">
+                {/* Episode big numeral, ghosted */}
+                <div style={{
+                  position: "absolute", right: 8, bottom: -8,
+                  fontFamily: "var(--font-bebas), sans-serif",
+                  fontSize: "clamp(3rem, 6vw, 5rem)",
+                  color: "rgba(255,255,255,0.1)",
+                  lineHeight: 1,
+                  pointerEvents: "none",
+                }}>
+                  {v.ep}
+                </div>
+                {/* Title */}
+                <h3 className="font-display leading-tight mb-1.5"
+                  style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.5rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+                  {v.title}
+                </h3>
+                <p className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-soft)" }}>
+                  by {v.artist}
+                </p>
+              </div>
+
+              {/* Hover: play button center */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3] pointer-events-none">
+                <div style={{
+                  width: 54, height: 54, borderRadius: "50%",
+                  background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)",
+                  border: "1px solid var(--white-dim)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {/* Feathered bottom edge */}
+        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
       </div>
 
       {/* ── 02 · MUSIC VIDEO · COLOR WORK ── */}
@@ -979,24 +1075,209 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 03 · NARRATIVE SHORT FILM + ON SET ── */}
-      <div ref={evRef} className="px-8 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
+      {/* ── 03 · NARRATIVE SHORT FILM — editorial magazine layout ── */}
+      <div ref={evRef} className="relative">
+        {/* Feathered top edge */}
+        <div aria-hidden="true" style={{ height: 70, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 60%, #000)" }} />
 
-          {/* Narrative Shorts */}
-          <CatHeader num="03" label="NARRATIVE SHORT FILM" count={narrativeShorts.length} note="DRAMA · FESTIVAL WORKS" />
-          <Carousel
-            items={narrativeShorts}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={"award" in v ? v.award : undefined} />
-              </div>
-            )}
-          />
+        <div className="px-8 md:px-14 py-6" style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
+
+          {/* Editorial magazine masthead */}
+          <div className="flex items-end justify-between mb-8 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
+            <div>
+              <p className="font-mono-label text-[9px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>
+                ISSUE 03 · FILM
+              </p>
+              <h2 className="font-display leading-none"
+                style={{ fontSize: "clamp(2.4rem, 5.5vw, 5rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
+                NARRATIVE
+              </h2>
+              <p className="font-mono-label text-[10px] tracking-[0.32em] mt-2" style={{ color: "var(--text-3)" }}>
+                短片 / SHORT FILMS · 2023 — 2024
+              </p>
+            </div>
+            <div className="text-right hidden md:block">
+              <p className="font-mono-label text-[9px] tracking-[0.32em] mb-1" style={{ color: "var(--white-soft)" }}>
+                FEATURED THIS ISSUE
+              </p>
+              <p className="font-mono-label text-[11px] tracking-[0.18em]" style={{ color: "var(--text-2)" }}>
+                {narrativeShorts.length} WORKS · FESTIVAL CIRCUIT
+              </p>
+            </div>
+          </div>
+
+          {/* Magazine asymmetric grid: 1 feature + 3 side stack */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+
+            {/* ─── FEATURE CARD (回收場的夏天 — most awards) ─── */}
+            {(() => {
+              const feature = narrativeShorts[0];
+              return (
+                <a key={feature.id}
+                  href={`https://www.youtube.com/watch?v=${feature.id}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="md:col-span-7 group relative block overflow-hidden"
+                  style={{
+                    aspectRatio: "4/5",
+                    borderRadius: 16,
+                    background: "#050505",
+                    border: "1px solid var(--white-ghost)",
+                    opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(28px)",
+                    transition: "opacity .9s cubic-bezier(.16,1,.3,1) .1s, transform .9s cubic-bezier(.16,1,.3,1) .1s, border-color .3s",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,210,70,0.5)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
+
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://img.youtube.com/vi/${feature.id}/maxresdefault.jpg`}
+                    alt={`${feature.title} - 在地影像工作者 MINEH4O`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+                    style={{ filter: "brightness(0.78)" }}
+                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${feature.id}/mqdefault.jpg`; }} />
+
+                  {/* Film grain overlay */}
+                  <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
+                    backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                    backgroundSize: "180px 180px",
+                    opacity: 0.06,
+                    mixBlendMode: "overlay",
+                  }} />
+
+                  {/* Bottom gradient — heavy, magazine cover style */}
+                  <div className="absolute inset-0 pointer-events-none" style={{
+                    background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 30%, transparent 55%, rgba(0,0,0,0.35) 100%)",
+                  }} />
+
+                  {/* Top-left: editorial meta */}
+                  <div className="absolute top-5 left-5 right-5 z-[2] flex justify-between items-start">
+                    <div>
+                      <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "rgba(255,210,70,0.85)" }}>
+                        ★ FEATURED FILM
+                      </span>
+                      <p className="font-mono-label text-[8px] tracking-[0.28em] mt-1" style={{ color: "var(--white-soft)" }}>
+                        {feature.role} · {feature.cat}
+                      </p>
+                    </div>
+                    <span className="font-mono-label text-[8px] tracking-[0.32em] px-2.5 py-1"
+                      style={{ background: "rgba(0,0,0,0.5)", border: "1px solid var(--white-ghost)", borderRadius: 999, color: "var(--white-secondary)" }}>
+                      2024
+                    </span>
+                  </div>
+
+                  {/* Award badge — prominent on feature card */}
+                  {feature.award && (
+                    <div className="absolute top-20 left-5 right-5 z-[2]">
+                      <span className="inline-block font-mono-label leading-relaxed"
+                        style={{
+                          fontSize: 11,
+                          letterSpacing: "0.16em",
+                          padding: "8px 14px",
+                          background: "rgba(255,210,70,0.18)",
+                          border: "1px solid rgba(255,210,70,0.55)",
+                          color: "rgba(255,225,140,0.98)",
+                          borderRadius: 8,
+                          backdropFilter: "blur(10px)",
+                          boxShadow: "0 2px 22px rgba(255,210,70,0.22)",
+                          fontWeight: 500,
+                          maxWidth: "100%",
+                        }}>
+                        ★ {feature.award}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Bottom: title block magazine cover style */}
+                  <div className="absolute bottom-0 left-0 right-0 px-6 md:px-8 pb-6 md:pb-8 z-[2]">
+                    <h3 className="font-display leading-none mb-2"
+                      style={{ fontSize: "clamp(2.4rem, 5vw, 4.4rem)", color: "var(--text)", letterSpacing: "0.01em", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
+                      {feature.title}
+                    </h3>
+                    <p className="font-mono-label text-[10px] tracking-[0.22em] mt-3" style={{ color: "var(--white-soft)" }}>
+                      {feature.artist}
+                    </p>
+                  </div>
+
+                  {/* Play hover */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3] pointer-events-none">
+                    <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)", border: "1px solid var(--white-dim)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
+                    </div>
+                  </div>
+                </a>
+              );
+            })()}
+
+            {/* ─── SIDE STACK — 3 smaller cards ─── */}
+            <div className="md:col-span-5 grid grid-cols-1 gap-4 md:gap-5">
+              {narrativeShorts.slice(1).map((v, i) => (
+                <a key={v.id}
+                  href={`https://www.youtube.com/watch?v=${v.id}`}
+                  target="_blank" rel="noopener noreferrer"
+                  className="group relative block overflow-hidden"
+                  style={{
+                    aspectRatio: "16/9",
+                    borderRadius: 12,
+                    background: "#050505",
+                    border: "1px solid var(--white-ghost)",
+                    opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                    transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${0.2 + i * 0.1}s, transform .8s cubic-bezier(.16,1,.3,1) ${0.2 + i * 0.1}s, border-color .3s`,
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white-muted)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
+
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+                    alt={`${v.title} - MINEH4O`}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    style={{ filter: "brightness(0.8)" }}
+                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
+
+                  <div className="absolute inset-0 pointer-events-none" style={{
+                    background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)",
+                  }} />
+
+                  {/* Top right: year/issue marker */}
+                  <div className="absolute top-3 right-3 z-[2]">
+                    <span className="font-mono-label text-[7px] tracking-[0.3em] px-2 py-0.5"
+                      style={{ background: "rgba(0,0,0,0.6)", color: "var(--white-secondary)", borderRadius: 999, border: "1px solid var(--white-ghost)" }}>
+                      0{i + 2}
+                    </span>
+                  </div>
+
+                  {/* Award badge if exists */}
+                  {"award" in v && v.award && (
+                    <div className="absolute top-3 left-3 right-12 z-[2]">
+                      <span className="inline-block font-mono-label"
+                        style={{
+                          fontSize: 9, letterSpacing: "0.14em",
+                          padding: "4px 10px",
+                          background: "rgba(255,210,70,0.18)",
+                          border: "1px solid rgba(255,210,70,0.5)",
+                          color: "rgba(255,225,140,0.95)",
+                          borderRadius: 6, backdropFilter: "blur(8px)",
+                          fontWeight: 500, lineHeight: 1.3,
+                        }}>
+                        ★ {v.award}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Bottom: title + meta */}
+                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 z-[2]">
+                    <h4 className="font-display leading-tight mb-1"
+                      style={{ fontSize: "clamp(1.2rem, 1.6vw, 1.6rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+                      {v.title}
+                    </h4>
+                    <p className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-soft)" }}>
+                      {v.role} · {v.artist}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
 
           {/* On Set — MV Credits (grouped by artist) */}
           <SubLabel label="ON SET · MV PRODUCTION" />
@@ -1038,6 +1319,8 @@ export default function WorkVideo() {
             ))}
           </div>
         </div>
+        {/* Feathered bottom edge */}
+        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
       </div>
 
       {/* ── 04 · LIVE · DOCUMENTARY · EVENT ── */}

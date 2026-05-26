@@ -6,6 +6,18 @@ import { useEffect, useState } from "react";
 const HERO_VIDEO_ID = "d9_EuYkmfzM"; // 愚人節 ALL FOOL'S DAY — Jon Chen
 const HERO_VIDEO_START = 4;
 
+/* Past roles / departments — listed on right side */
+const PAST_ROLES = [
+  "DIRECTOR",
+  "D.P.",
+  "SCREENPLAY",
+  "COLOR",
+  "EDITOR",
+  "ART DEPT",
+  "AIGC",
+  "LIGHTING",
+];
+
 function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));
 }
@@ -63,30 +75,26 @@ export default function Hero() {
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-44"
         style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.6), transparent)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 38%, rgba(0,0,0,0.55) 100%)" }} />
+        style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 38%, rgba(0,0,0,0.5) 100%)" }} />
 
-      {/* ── Decorative diagonal accent lines (scattered) ── */}
+      {/* ── Decorative diagonal accent lines ── */}
       <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
-        style={{ left: "44%", top: "9%", opacity: loaded ? 0.6 : 0, transition: "opacity 1.4s ease .5s" }}>
-        <DiagLine width={140} rotation={-20} />
+        style={{ left: "46%", top: "8%", opacity: loaded ? 0.55 : 0, transition: "opacity 1.4s ease .5s" }}>
+        <DiagLine width={160} rotation={-20} />
       </div>
       <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
-        style={{ right: "12%", top: "63%", opacity: loaded ? 0.5 : 0, transition: "opacity 1.4s ease .8s" }}>
-        <DiagLine width={120} rotation={20} />
-      </div>
-      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
-        style={{ left: "38%", bottom: "22%", opacity: loaded ? 0.4 : 0, transition: "opacity 1.4s ease 1.1s" }}>
-        <DiagLine width={180} rotation={-20} color="rgba(255,255,255,0.22)" />
+        style={{ left: "30%", bottom: "26%", opacity: loaded ? 0.45 : 0, transition: "opacity 1.4s ease .9s" }}>
+        <DiagLine width={200} rotation={-20} color="rgba(255,255,255,0.22)" />
       </div>
 
       {/* ── Foreground content ── */}
       <div className="relative h-full w-full">
 
-        {/* ── DIRECTOR — top-left, LARGE ── */}
+        {/* ═══════ DIRECTOR — HUGE top-left ═══════ */}
         <h1 className="hero-title absolute text-white select-none"
           style={{
-            fontSize: "clamp(5rem, 14vw, 16rem)",
-            left: "1.5rem", top: "12%",
+            fontSize: "clamp(6rem, 18vw, 22rem)",
+            left: "1.5rem", top: "10%",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
             transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
@@ -94,66 +102,99 @@ export default function Hero() {
           DIRECTOR
         </h1>
 
-        {/* ── DP · PHOTO — middle-right, LARGE ── */}
-        <h1 className="hero-title absolute text-white select-none text-right"
+        {/* ═══════ Intro paragraph — left, below DIRECTOR ═══════ */}
+        <div className="absolute z-[8] max-w-sm"
           style={{
-            fontSize: "clamp(5rem, 14vw, 16rem)",
-            right: "1.5rem", top: "32%",
+            left: "1.5rem", top: "32%",
             opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(28px)",
-            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .26s, transform .9s cubic-bezier(.16,1,.3,1) .26s",
+            transform: loaded ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity .9s ease .42s, transform .9s ease .42s",
           }}>
-          DP · PHOTO
-        </h1>
+          <div className="flex items-center gap-3 mb-3">
+            <DiagLine width={28} rotation={20} color="rgba(255,255,255,0.45)" />
+            <span className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
+              IN-HOUSE IMAGE STUDIO
+            </span>
+          </div>
+          <p className="text-[14px] md:text-[15px] leading-relaxed mb-3"
+            style={{ color: "rgba(255,255,255,0.9)", fontWeight: 400 }}>
+            台中在地影像工作者。<br/>
+            從現場到後製，做能說話的畫面。
+          </p>
+          <p className="text-[12px] leading-relaxed"
+            style={{ color: "rgba(255,255,255,0.7)", fontWeight: 300 }}>
+            合作 / 陳卓 Jon Chen · Lil RAD · Kolli · 梁承煜 · 2026 TEDxNTHU · 中華職棒 Taiwolf · 公視學生劇展
+          </p>
+        </div>
 
-        {/* ── OSCAR — bottom-left-center, LARGE (focal — biggest) ── */}
+        {/* ═══════ TAICHUNG · SINCE 2019 — anchor below intro ═══════ */}
+        <div className="absolute z-[8]"
+          style={{
+            left: "1.5rem", top: "52%",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(10px)",
+            transition: "opacity .8s ease .58s, transform .8s ease .58s",
+          }}>
+          <div className="flex items-center gap-3">
+            <div style={{ width: 7, height: 7, background: "#fff", borderRadius: 999, boxShadow: "0 0 14px rgba(255,255,255,0.7)" }} />
+            <span className="hero-title text-white" style={{ fontSize: "clamp(1.4rem, 2.6vw, 2rem)", letterSpacing: "0.08em" }}>
+              FROM TAICHUNG
+            </span>
+          </div>
+          <span className="text-[10px] uppercase tracking-[0.3em] pl-5 mt-1 block" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
+            SINCE 2019
+          </span>
+        </div>
+
+        {/* ═══════ OSCAR — MASSIVE bottom-left (focal) ═══════ */}
         <h1 className="hero-title absolute text-white select-none"
           style={{
-            fontSize: "clamp(6rem, 17vw, 20rem)",
-            left: "16%", top: "54%",
+            fontSize: "clamp(7rem, 22vw, 28rem)",
+            left: "12%", bottom: "8%",
             letterSpacing: "0.02em",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
-            transition: "opacity 1s cubic-bezier(.16,1,.3,1) .4s, transform 1s cubic-bezier(.16,1,.3,1) .4s",
+            transition: "opacity 1s cubic-bezier(.16,1,.3,1) .26s, transform 1s cubic-bezier(.16,1,.3,1) .26s",
           }}>
           OSCAR
         </h1>
 
-        {/* ── TAICHUNG badge — left side, highlighted ── */}
-        <div className="absolute z-[8]"
+        {/* ═══════ Past roles list — vertical, right side (replaces big DP·PHOTO) ═══════ */}
+        <div className="absolute z-[8] hidden md:flex flex-col items-end gap-1.5"
           style={{
-            left: "1.5rem", top: "44%",
+            right: "1.5rem", top: "28%",
             opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(10px)",
-            transition: "opacity .8s ease .55s, transform .8s ease .55s",
+            transform: loaded ? "translateX(0)" : "translateX(20px)",
+            transition: "opacity .9s ease .55s, transform .9s ease .55s",
           }}>
-          <div className="flex flex-col gap-1.5">
-            <span className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
-              FROM
+          <span className="text-[9px] uppercase tracking-[0.4em] mb-2" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 500 }}>
+            ROLES / 曾任
+          </span>
+          {PAST_ROLES.map((role, i) => (
+            <span key={role}
+              className="hero-title text-white block text-right"
+              style={{
+                fontSize: i < 2 ? "clamp(1.5rem, 3vw, 2.4rem)" : "clamp(1.1rem, 2.2vw, 1.7rem)",
+                opacity: i < 2 ? 1 : 0.6,
+                letterSpacing: "0.04em",
+                lineHeight: 1.05,
+              }}>
+              {role}
             </span>
-            <div className="flex items-center gap-3">
-              <div style={{ width: 6, height: 6, background: "#fff", borderRadius: 999, boxShadow: "0 0 14px rgba(255,255,255,0.65)" }} />
-              <span className="hero-title text-white" style={{ fontSize: "clamp(1.6rem, 3.2vw, 2.6rem)", letterSpacing: "0.06em" }}>
-                TAICHUNG
-              </span>
-            </div>
-            <span className="text-[10px] uppercase tracking-[0.3em] pl-5" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
-              SINCE 2019
-            </span>
-          </div>
+          ))}
         </div>
 
-        {/* ── Stat: TOP-RIGHT ── */}
+        {/* ═══════ Stat: TOP-RIGHT ═══════ */}
         <div className="absolute z-[8]"
           style={{
-            right: "1.5rem", top: "13%",
+            right: "1.5rem", top: "10%",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(-12px)",
             transition: "opacity .8s ease .7s, transform .8s ease .7s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <DiagLine width={64} rotation={20} />
-            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
+            <DiagLine width={56} rotation={20} />
+            <span className="hero-title text-white" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}>
               +150K
             </span>
           </div>
@@ -163,54 +204,34 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ── Stat: BOTTOM-LEFT ── */}
-        <div className="absolute z-[8]"
-          style={{
-            left: "1.5rem", bottom: "6.5rem",
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity .8s ease .82s, transform .8s ease .82s",
-          }}>
-          <div className="flex items-center gap-3">
-            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
-              +50
-            </span>
-            <DiagLine width={64} rotation={-20} />
-          </div>
-          <p className="text-[10px] mt-1 uppercase tracking-[0.24em]"
-            style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
-            PRODUCTIONS
-          </p>
-        </div>
-
-        {/* ── Stat: BOTTOM-RIGHT ── */}
+        {/* ═══════ Stat: BOTTOM-RIGHT ═══════ */}
         <div className="absolute z-[8]"
           style={{
             right: "1.5rem", bottom: "6rem",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity .8s ease .92s, transform .8s ease .92s",
+            transition: "opacity .8s ease .82s, transform .8s ease .82s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <DiagLine width={64} rotation={-20} />
-            <span className="hero-title text-white" style={{ fontSize: "clamp(2rem, 3.6vw, 3rem)" }}>
-              +7YR
+            <DiagLine width={56} rotation={-20} />
+            <span className="hero-title text-white" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}>
+              +50
             </span>
           </div>
           <p className="text-[10px] mt-1 text-right uppercase tracking-[0.24em]"
             style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
-            ON SET
+            PRODUCTIONS · +7YR
           </p>
         </div>
 
-        {/* ── Bottom strip: handle · scroll · DM ── */}
+        {/* ═══════ Bottom strip: handle · scroll · CTA ═══════ */}
         <div className="absolute bottom-0 left-0 right-0 z-[9] px-6 md:px-10 pb-4 flex items-end justify-between gap-4"
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.05s" }}>
 
-          {/* Left: handle */}
+          {/* Left: handle (subtle, doesn't fight OSCAR) */}
           <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-            className="text-[12px] md:text-[13px] hover:text-white transition-colors uppercase tracking-[0.18em]"
-            style={{ color: "rgba(255,255,255,0.78)", fontWeight: 500 }}>
+            className="text-[11px] hover:text-white transition-colors uppercase tracking-[0.22em]"
+            style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
             @MINEHOOOO.ARW ↗
           </a>
 
