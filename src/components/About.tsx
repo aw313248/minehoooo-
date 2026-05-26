@@ -190,8 +190,8 @@ export default function About() {
               style={{ fontSize: "clamp(5rem,18vw,22rem)", color: "var(--text)", letterSpacing: "0.01em", cursor: "default" }}>
               OSCAR
             </h2>
-            {/* Quote tooltip */}
-            <div style={{
+            {/* Quote tooltip — desktop-only (hidden on mobile, ghost-tap rendering looks broken) */}
+            <div className="hidden md:block" style={{
               position: "absolute", bottom: "calc(100% + 12px)", left: "50%", transform: coverHover ? "translateX(-50%) translateY(0) scale(1)" : "translateX(-50%) translateY(6px) scale(0.98)",
               pointerEvents: "none",
               opacity: coverHover ? 1 : 0,
@@ -312,8 +312,8 @@ export default function About() {
               <h2 className="font-display leading-none mb-1.5" style={{ fontSize: "clamp(2.5rem,5vw,5rem)", color: "var(--text)", cursor: "default" }}>
                 OSCAR
               </h2>
-              {/* Quote tooltip */}
-              <div style={{
+              {/* Quote tooltip — desktop-only */}
+              <div className="hidden md:block" style={{
                 position: "absolute", top: "calc(100% + 8px)", left: 0,
                 pointerEvents: "none",
                 opacity: panelHover ? 1 : 0,

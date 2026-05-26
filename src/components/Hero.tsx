@@ -18,6 +18,13 @@ const PAST_ROLES = [
   "LIGHTING",
 ];
 
+/* Mottos / quotes — rotated randomly, shown briefly on mobile first entry */
+const QUOTES = [
+  { lines: ["人一定是", "在作品之前"], attr: null },
+  { lines: ["莽撞的開始，拙劣的完成", "好過心懷完美", "不開始行動"], attr: null },
+  { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
+];
+
 function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));
 }
@@ -38,6 +45,18 @@ function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" 
 function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
+  // Pick a random quote once + auto-hide after 6s so it only shows on first entry
+  const [quoteIdx]      = useState(() => Math.floor(Math.random() * QUOTES.length));
+  const [quoteVisible, setQuoteVisible] = useState(false);
+  const q = QUOTES[quoteIdx];
+
+  useEffect(() => {
+    if (!loaded) return;
+    const t1 = setTimeout(() => setQuoteVisible(true),  400);   // fade in
+    const t2 = setTimeout(() => setQuoteVisible(false), 6500);  // fade out
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [loaded]);
+
   return (
     <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
@@ -111,36 +130,37 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </div>
         </div>
 
-        {/* Center hero — OSCAR + role + tagline (more breathing room between blocks) */}
-        <div className="flex-1 flex flex-col justify-center">
+        {/* Center hero — alternating left-right layout (DIRECTOR left, OSCAR right & MASSIVE) */}
+        <div className="flex-1 flex flex-col justify-center relative">
 
-          {/* DIRECTOR small label */}
-          <h2 className="hero-title text-white"
+          {/* DIRECTOR — LEFT aligned, smaller */}
+          <h2 className="hero-title text-white text-left"
             style={{
               fontSize: "clamp(2.4rem, 11vw, 4rem)",
               lineHeight: 1,
               opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transform: loaded ? "translateX(0)" : "translateX(-20px)",
               transition: "opacity .9s cubic-bezier(.16,1,.3,1) .2s, transform .9s cubic-bezier(.16,1,.3,1) .2s",
             }}>
             DIRECTOR
           </h2>
 
-          {/* OSCAR huge */}
-          <h1 className="hero-title text-white"
+          {/* OSCAR — RIGHT aligned, MASSIVE (allowed to overflow right edge for drama) */}
+          <h1 className="hero-title text-white text-right"
             style={{
-              fontSize: "clamp(5rem, 26vw, 9rem)",
-              lineHeight: 0.92,
-              letterSpacing: "0.02em",
-              marginTop: "0.5rem",
+              fontSize: "clamp(6rem, 33vw, 12rem)",
+              lineHeight: 0.88,
+              letterSpacing: "0.01em",
+              marginTop: "0.4rem",
+              marginRight: "-1.5rem",  // overflow right edge for dramatic crop
               opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transform: loaded ? "translateX(0)" : "translateX(20px)",
               transition: "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s",
             }}>
             OSCAR
           </h1>
 
-          {/* Role inline */}
+          {/* Role inline — LEFT aligned (matches DIRECTOR) */}
           <div className="flex items-center gap-2 mt-5"
             style={{
               opacity: loaded ? 1 : 0,
@@ -151,6 +171,50 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             <span className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>
               {PAST_ROLES.slice(0, 3).join(" · ")}
             </span>
+          </div>
+
+          {/* QUOTE overlay — shows once on first entry, fades out after 6s */}
+          <div aria-hidden={!quoteVisible}
+            className="absolute pointer-events-none"
+            style={{
+              right: 0, top: "-1.5rem",
+              maxWidth: 200,
+              opacity: quoteVisible ? 1 : 0,
+              transform: quoteVisible ? "translateY(0)" : "translateY(-8px)",
+              transition: "opacity 1.2s ease, transform 1.2s ease",
+              textAlign: "right",
+            }}>
+            <div className="flex flex-col items-end gap-0.5"
+              style={{
+                background: "rgba(0,0,0,0.45)",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                borderRadius: 12,
+                padding: "10px 14px",
+              }}>
+              {q.lines.map((line, i) => (
+                <span key={i} style={{
+                  fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
+                  fontSize: 11, fontWeight: 300, lineHeight: 1.55,
+                  letterSpacing: "0.04em",
+                  color: "rgba(255,255,255,0.88)",
+                  whiteSpace: "nowrap",
+                }}>
+                  {line}
+                </span>
+              ))}
+              {q.attr && (
+                <span style={{
+                  fontFamily: "var(--font-space-mono), monospace",
+                  fontSize: 8, letterSpacing: "0.22em",
+                  color: "rgba(255,255,255,0.45)",
+                  marginTop: 4,
+                }}>
+                  {q.attr}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Tagline */}
