@@ -26,7 +26,7 @@ const extraVideos: Array<{
     id: "eI1O_9jBHU0",
     title: "BRING ME YOUR LOVELY",
     sub: "Kolli (NN) · MV · AI Hybrid",
-    role: "DIR · DP · AI",
+    role: "DIR · D.P. · AI",
   },
 ];
 
@@ -141,7 +141,7 @@ export default function WorkAIGC() {
                 border: "1px solid rgba(120,60,220,0.5)",
                 padding: "5px 12px", borderRadius: 999,
                 backdropFilter: "blur(8px)",
-              }}>DIR · DP · AI</span>
+              }}>DIR · D.P. · AI</span>
               <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.32em", color: "var(--white-soft)" }}>
                 AI GENERATED · SHORT FILM
               </span>
@@ -274,7 +274,7 @@ export default function WorkAIGC() {
               <AnimLine key={v.igCode ?? v.id} delay={0.1 + i * 0.14} inView={moreIn}>
                 <a href={href} target="_blank" rel="noopener noreferrer" className="group block">
                   <div className="relative overflow-hidden mb-3"
-                    style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 12, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
+                    style={{ aspectRatio: isIg ? "9/16" : "16/9", borderRadius: 18, background: "#050505", maxHeight: isIg ? 320 : undefined }}>
                     {isIg ? (
                       /* IG reel — local thumbnail from public/reels/ */
                       // eslint-disable-next-line @next/next/no-img-element

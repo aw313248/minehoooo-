@@ -55,12 +55,11 @@ const colorCredits = [
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",   artist: "帝仰 tiang",                       role: "DIR · COLOR", cat: "COLOR"    },
 ];
 
-// 劇情短片 — 全部統一（包含在片/幕後）
+// 劇情短片 — 只放真正的短片作品（孩子們需要超人是 Reels，已移除）
 const narrativeShorts = [
   { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "2024 台北電影節最佳短片 · 金穗獎最佳劇情片 · 最佳演員獎 · ifva 亞洲新力量銀獎" },
   { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "第48屆金穗獎 最佳美術 · 最佳攝影 · 評審團特別獎 · 金馬影展入選" },
   { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · D.P. · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
-  { id: "raIh2Qlj5YY", title: "孩子們需要超人", artist: "社會議題短片",                      role: "DIR · EDIT",     cat: "SHORT FILM" },
 ];
 
 // 陳芳語 Kimberley Chen — 獨立歌手群組
@@ -100,6 +99,7 @@ const aigcWorks = [
 ];
 
 const ytShorts = [
+  { id: "raIh2Qlj5YY", title: "孩子們需要超人",              tags: ["#社會議題", "#Reels"] },
   { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
   { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓",     tags: ["#AIGC", "#台灣"]   },
   { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",           tags: ["#器材", "#DJI"]   },
@@ -197,7 +197,7 @@ function HoverPreview({ id, aspectRatio = "16/9", children }: {
 
   return (
     <div className="relative overflow-hidden"
-      style={{ aspectRatio, borderRadius: 12, background: "#050505" }}
+      style={{ aspectRatio, borderRadius: 18, background: "#050505" }}
       onMouseEnter={() => { timer.current = setTimeout(() => setActive(true), 700); }}
       onMouseLeave={() => { clearTimeout(timer.current); setActive(false); }}>
       {children}
@@ -604,7 +604,7 @@ function GridCard({ id, title, artist, role, cat, award }: {
                   border: "1px solid rgba(255,210,70,0.55)",
                   color: "rgba(255,225,140,0.98)",
                   backdropFilter: "blur(10px)",
-                  borderRadius: 8,
+                  borderRadius: 14,
                   boxShadow: "0 2px 18px rgba(255,210,70,0.18)",
                   fontWeight: 500,
                   lineHeight: 1.35,
@@ -968,7 +968,7 @@ export default function WorkVideo() {
               className="group relative block overflow-hidden"
               style={{
                 aspectRatio: "9/14",
-                borderRadius: 14,
+                borderRadius: 20,
                 background: "#050505",
                 border: "1px solid var(--white-ghost)",
                 opacity: lrIn ? 1 : 0,
@@ -1106,7 +1106,7 @@ export default function WorkVideo() {
             </div>
           </div>
 
-          {/* Magazine asymmetric grid: 1 feature + 3 side stack */}
+          {/* Magazine asymmetric grid: 1 feature + 2 side stack — balanced proportions */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
 
             {/* ─── FEATURE CARD (回收場的夏天 — most awards) ─── */}
@@ -1116,10 +1116,10 @@ export default function WorkVideo() {
                 <a key={feature.id}
                   href={`https://www.youtube.com/watch?v=${feature.id}`}
                   target="_blank" rel="noopener noreferrer"
-                  className="md:col-span-7 group relative block overflow-hidden"
+                  className="md:col-span-6 group relative block overflow-hidden"
                   style={{
-                    aspectRatio: "4/5",
-                    borderRadius: 16,
+                    aspectRatio: "16/11",
+                    borderRadius: 22,
                     background: "#050505",
                     border: "1px solid var(--white-ghost)",
                     opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(28px)",
@@ -1176,7 +1176,7 @@ export default function WorkVideo() {
                           background: "rgba(255,210,70,0.18)",
                           border: "1px solid rgba(255,210,70,0.55)",
                           color: "rgba(255,225,140,0.98)",
-                          borderRadius: 8,
+                          borderRadius: 14,
                           backdropFilter: "blur(10px)",
                           boxShadow: "0 2px 22px rgba(255,210,70,0.22)",
                           fontWeight: 500,
@@ -1208,8 +1208,8 @@ export default function WorkVideo() {
               );
             })()}
 
-            {/* ─── SIDE STACK — 3 smaller cards ─── */}
-            <div className="md:col-span-5 grid grid-cols-1 gap-4 md:gap-5">
+            {/* ─── SIDE STACK — 2 cards, larger to match feature height ─── */}
+            <div className="md:col-span-6 grid grid-cols-1 gap-5 md:gap-6">
               {narrativeShorts.slice(1).map((v, i) => (
                 <a key={v.id}
                   href={`https://www.youtube.com/watch?v=${v.id}`}
@@ -1217,7 +1217,7 @@ export default function WorkVideo() {
                   className="group relative block overflow-hidden"
                   style={{
                     aspectRatio: "16/9",
-                    borderRadius: 12,
+                    borderRadius: 18,
                     background: "#050505",
                     border: "1px solid var(--white-ghost)",
                     opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
@@ -1392,7 +1392,7 @@ export default function WorkVideo() {
           {ytShorts.map((s, i) => (
             <div key={s.id} className="shrink-0" style={{ width: 120, opacity: sIn ? 1 : 0, transform: sIn ? "translateY(0)" : "translateY(20px)", transition: `opacity .6s ease ${i * .1}s, transform .6s ease ${i * .1}s` }}>
               <a href={`https://youtube.com/shorts/${s.id}`} target="_blank" rel="noopener noreferrer" className="group block">
-                <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 12, background: "#080808" }}>
+                <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 18, background: "#080808" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`https://img.youtube.com/vi/${s.id}/mqdefault.jpg`} alt={s.title}
                     loading="lazy"

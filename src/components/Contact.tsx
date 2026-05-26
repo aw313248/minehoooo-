@@ -26,7 +26,7 @@ export default function Contact() {
   }, []);
 
   function copyEmail() {
-    navigator.clipboard.writeText("minehoooo@gmail.com").then(() => {
+    navigator.clipboard.writeText("cyuttkengineer@gmail.com").then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
@@ -65,7 +65,7 @@ export default function Contact() {
     submit:       lang === "zh" ? "送出" : "SEND",
     sending:      lang === "zh" ? "送出中⋯" : "SENDING…",
     sent:         lang === "zh" ? "已送出 ✓ 我會盡快回覆！" : "Sent ✓ I'll get back to you soon!",
-    errMsg:       lang === "zh" ? "發生錯誤，請直接寄信至 minehoooo@gmail.com" : "Something went wrong. Email me directly at minehoooo@gmail.com",
+    errMsg:       lang === "zh" ? "發生錯誤，請直接寄信至 cyuttkengineer@gmail.com" : "Something went wrong. Email me directly at cyuttkengineer@gmail.com",
   };
 
   return (
@@ -141,7 +141,7 @@ export default function Contact() {
             marginBottom: "1.6rem",
             display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap",
           }}>
-            <a href="mailto:minehoooo@gmail.com"
+            <a href="mailto:cyuttkengineer@gmail.com"
               className="inline-flex items-center gap-3 font-mono-label text-[13px] md:text-[15px] tracking-[0.18em]"
               style={{ color: "var(--white-secondary)", transition: "color .3s" }}
               onMouseEnter={e => (e.currentTarget.style.color = "var(--white-primary)")}
@@ -150,7 +150,7 @@ export default function Contact() {
                 <rect x="2" y="2" width="20" height="16" rx="2"/>
                 <polyline points="2,2 12,11 22,2"/>
               </svg>
-              minehoooo@gmail.com
+              cyuttkengineer@gmail.com
             </a>
             <button onClick={copyEmail}
               aria-label="複製在地影像工作者 MINEH4O 的聯繫信箱"
@@ -185,7 +185,7 @@ export default function Contact() {
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
                 border: "1px solid var(--white-dim)",
-                borderRadius: 14,
+                borderRadius: 20,
                 padding: "18px 36px",
                 transition: "all .35s ease",
               }}
@@ -225,7 +225,7 @@ export default function Contact() {
                 style={{
                   color: showForm ? "var(--white-primary)" : "var(--white-soft)",
                   background: showForm ? "var(--white-ghost)" : "transparent",
-                  borderRadius: 10,
+                  borderRadius: 16,
                   border: "1px solid var(--white-ghost)",
                   cursor: "pointer",
                   transition: "all .25s ease",
@@ -257,7 +257,7 @@ export default function Contact() {
                             className="w-full font-mono-label text-[11px] tracking-wide px-3 py-2.5"
                             style={{
                               background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
-                              borderRadius: 8,
+                              borderRadius: 14,
                               color: "var(--white-primary)", outline: "none",
                             }} />
                         </div>
@@ -271,7 +271,7 @@ export default function Contact() {
                             className="w-full font-mono-label text-[11px] tracking-wide px-3 py-2.5"
                             style={{
                               background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
-                              borderRadius: 8,
+                              borderRadius: 14,
                               color: "var(--white-primary)", outline: "none",
                             }} />
                         </div>
@@ -286,7 +286,7 @@ export default function Contact() {
                           className="w-full font-mono-label text-[11px] tracking-wide px-3 py-2.5 resize-none"
                           style={{
                             background: "var(--white-ghost)", border: "1px solid var(--white-ghost)",
-                            borderRadius: 8,
+                            borderRadius: 14,
                             color: "var(--white-primary)", outline: "none",
                           }} />
                       </div>
@@ -301,7 +301,7 @@ export default function Contact() {
                       style={{
                         background: "var(--white-dim)",
                         border: "1px solid var(--white-muted)",
-                        borderRadius: 10,
+                        borderRadius: 16,
                         color: formState === "sending" ? "var(--white-soft)" : "var(--white-primary)",
                         cursor: formState === "sending" ? "default" : "pointer",
                         transition: "all .25s ease",

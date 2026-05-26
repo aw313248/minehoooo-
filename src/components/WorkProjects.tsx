@@ -74,7 +74,7 @@ function FeatureCard({ icon, title, desc, accent, inView, delay }: {
     <div style={{
       background: "rgba(255,255,255,0.04)",
       border: "1px solid var(--white-ghost)",
-      borderRadius: 14,
+      borderRadius: 20,
       padding: "16px 18px",
       backdropFilter: "blur(8px)",
       opacity: inView ? 1 : 0,
@@ -242,7 +242,7 @@ export default function WorkProjects() {
                 background: `linear-gradient(135deg, ${active.accentColor}28, ${active.accentColor}11)`,
                 backdropFilter: "blur(20px)",
                 border: `1px solid ${active.accentColor}aa`,
-                borderRadius: 14,
+                borderRadius: 20,
                 padding: "16px 32px",
                 transition: "all .35s ease",
                 boxShadow: `0 4px 30px ${active.accentColor}33`,

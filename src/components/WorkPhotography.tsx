@@ -192,7 +192,7 @@ function PhotoCarousel({
                       key={f}
                       onClick={() => onSelect(fileIdx)}
                       className="relative overflow-hidden group flex-1 min-w-0 active:scale-[0.98]"
-                      style={{ aspectRatio, borderRadius: 12, transition: "transform .2s ease" }}
+                      style={{ aspectRatio, borderRadius: 18, transition: "transform .2s ease" }}
                       aria-label={`Open photo ${fileIdx + 1}`}>
                       <Image
                         src={src}

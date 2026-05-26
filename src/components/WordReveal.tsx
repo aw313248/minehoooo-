@@ -50,6 +50,8 @@ export function CharReveal({ text, inView, baseDelay = 0, className, stagger = 0
           key={i}
           style={{
             display: "inline-block",
+            // Spaces collapse to 0 width inside inline-block; preserve as nbsp
+            whiteSpace: char === " " ? "pre" : undefined,
             opacity: inView ? 1 : 0,
             transform: inView ? "translateY(0) skewY(0deg)" : "translateY(30%) skewY(4deg)",
             filter: inView ? "blur(0)" : "blur(5px)",
@@ -58,7 +60,7 @@ export function CharReveal({ text, inView, baseDelay = 0, className, stagger = 0
                          filter 0.5s ease ${baseDelay + i * stagger}s`,
           }}
         >
-          {char}
+          {char === " " ? " " : char}
         </span>
       ))}
     </span>

@@ -613,17 +613,17 @@ const personJsonLd = {
     { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
   ],
-  email: "minehoooo@gmail.com",
+  email: "cyuttkengineer@gmail.com",
   contactPoint: {
     "@type": "ContactPoint",
-    email: "minehoooo@gmail.com",
+    email: "cyuttkengineer@gmail.com",
     contactType: "business inquiries",
     availableLanguage: ["zh-TW", "en"],
   },
   potentialAction: {
     "@type": "ContactAction",
     name: "聯絡合作 / Contact Oscar Lai",
-    target: "mailto:minehoooo@gmail.com",
+    target: "mailto:cyuttkengineer@gmail.com",
   },
 };
 
@@ -700,7 +700,7 @@ const faqJsonLd = {
       name: "如何聯絡 MINEH4O 合作？",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "可透過 Instagram @minehoooo.arw 傳送私訊，或寄信至 minehoooo@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
+        text: "可透過 Instagram @minehoooo.arw 傳送私訊，或寄信至 cyuttkengineer@gmail.com 與 Oscar Lai 討論合作提案。接受 Music Video、商業攝影、AIGC、活動紀錄等合作。",
       },
     },
     {
@@ -716,7 +716,7 @@ const faqJsonLd = {
       name: "台灣 MV 導演推薦？台中拍 MV 找誰？",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "賴明宏 Oscar Lai（MINEH4O）是台灣台中的 MV 導演與攝影師，擅長音樂錄影帶導演、攝影、AIGC 混合影像等類型。代表作品為陳卓《愚人節》《光與景三部曲》。接洽請寄信至 minehoooo@gmail.com。",
+        text: "賴明宏 Oscar Lai（MINEH4O）是台灣台中的 MV 導演與攝影師，擅長音樂錄影帶導演、攝影、AIGC 混合影像等類型。代表作品為陳卓《愚人節》《光與景三部曲》。接洽請寄信至 cyuttkengineer@gmail.com。",
       },
     },
     {
