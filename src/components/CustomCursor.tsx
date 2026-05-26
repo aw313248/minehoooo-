@@ -8,6 +8,7 @@ export default function CustomCursor() {
   const dotRef   = useRef<HTMLDivElement>(null);
   const ringRef  = useRef<HTMLDivElement>(null);
   const [flashes, setFlashes] = useState<Flash[]>([]);
+  const [hasFinePointer, setHasFinePointer] = useState(false);
 
   const addFlash = useCallback((x: number, y: number) => {
     const id = Date.now() + Math.random();
@@ -15,8 +16,14 @@ export default function CustomCursor() {
     setTimeout(() => setFlashes(p => p.filter(f => f.id !== id)), 500);
   }, []);
 
+  // Detect once on mount whether device has a fine pointer (mouse / trackpad)
+  // Touch devices (mobile / tablet) won't render anything — fixes "ghost dot top-left"
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
+    setHasFinePointer(window.matchMedia("(pointer: fine)").matches);
+  }, []);
+
+  useEffect(() => {
+    if (!hasFinePointer) return;
 
     let mx = 0, my = 0;
     let rx = 0, ry = 0;
@@ -62,7 +69,10 @@ export default function CustomCursor() {
       document.removeEventListener("mouseover",  onOver);
       document.removeEventListener("mousedown",  onDown);
     };
-  }, [addFlash]);
+  }, [addFlash, hasFinePointer]);
+
+  // Render nothing on touch devices — no ghost dot in top-left
+  if (!hasFinePointer) return null;
 
   return (
     <>

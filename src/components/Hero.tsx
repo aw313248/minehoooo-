@@ -188,22 +188,32 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             </button>
           </div>
 
-          {/* CTA — compact, transparent glass pill */}
+          {/* CTA — tiny grainy frosted glass pill, bottom-center */}
           <button onClick={() => goto(6)}
-            className="active:scale-[0.98] transition-all uppercase mx-auto"
+            className="active:scale-[0.96] transition-all uppercase mx-auto relative overflow-hidden"
             style={{
-              background: "rgba(255,255,255,0.78)",
-              backdropFilter: "blur(20px)",
-              WebkitBackdropFilter: "blur(20px)",
-              color: "#000",
-              fontSize: 12, fontWeight: 600,
-              letterSpacing: "0.12em",
+              background: "rgba(255,255,255,0.12)",
+              backdropFilter: "blur(24px) saturate(1.4)",
+              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
+              color: "rgba(255,255,255,0.92)",
+              fontSize: 10, fontWeight: 500,
+              letterSpacing: "0.22em",
               borderRadius: 999,
-              padding: "11px 28px",
-              border: "1px solid rgba(255,255,255,0.5)",
+              padding: "9px 22px",
+              border: "1px solid rgba(255,255,255,0.18)",
               cursor: "pointer",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 20px rgba(0,0,0,0.25)",
             }}>
-            LET&apos;S WORK →
+            {/* Granular noise overlay for frosted-glass texture */}
+            <span aria-hidden="true" style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E\")",
+              backgroundSize: "140px 140px",
+              opacity: 0.4,
+              mixBlendMode: "overlay",
+              borderRadius: 999,
+            }} />
+            <span className="relative">LET&apos;S WORK →</span>
           </button>
         </div>
       </div>
