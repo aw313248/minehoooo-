@@ -21,6 +21,45 @@ const PAST_ROLES = [
 /* Mobile top-left categories — list of work types Oscar does */
 const MOBILE_CATEGORIES = ["MV", "COMMERCIAL", "PHOTO", "AIGC"];
 
+/* ───────── Helper: layered parallax style
+   - Active: fast smooth entry
+   - Inactive: 1.6-1.8s slow exit + delay + counter-scale to feel like a floating layer
+*/
+function layerStyle(loaded: boolean, isActive: boolean, delay = 0): React.CSSProperties {
+  return {
+    opacity: loaded ? (isActive ? 1 : 0) : 0,
+    transform: loaded
+      ? (isActive ? "translateY(0) scale(1)" : "translateY(-10px) scale(1.08)")
+      : "translateY(14px) scale(1)",
+    transition: isActive
+      ? `opacity .9s cubic-bezier(.16,1,.3,1) ${delay}s, transform .9s cubic-bezier(.16,1,.3,1) ${delay}s`
+      : `opacity 1.6s ease ${delay + 0.05}s, transform 1.6s cubic-bezier(.16,1,.3,1) ${delay + 0.05}s`,
+    transformOrigin: "left center",
+    willChange: "transform, opacity",
+  };
+}
+
+/* ───────── Helper: count-up animation for stats
+   Starts when `enabled` (loaded) becomes true. Eases out cubic. */
+function useCounter(target: number, duration: number, enabled: boolean): number {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!enabled) { setValue(0); return; }
+    let raf = 0;
+    let startTime: number | null = null;
+    const tick = (t: number) => {
+      if (startTime === null) startTime = t;
+      const progress = Math.min(1, (t - startTime) / duration);
+      const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setValue(Math.round(target * eased));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, duration, enabled]);
+  return value;
+}
+
 function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));
 }
@@ -41,6 +80,11 @@ function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" 
 function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
+  // Counter values — start animating when loaded
+  const views    = useCounter(150, 1800, loaded);   // +150K views
+  const works    = useCounter(50,  1600, loaded);   // +50 productions
+  const years    = useCounter(7,   1400, loaded);   // +7 years
+
   return (
     <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
@@ -86,15 +130,10 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
       {/* Content stack — top padding tight so left list sits high near status bar */}
       <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "3.5rem", paddingBottom: "2rem" }}>
 
-        {/* Top section — left categories list, right small REC badge */}
-        <div className="flex items-start justify-between gap-3"
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(-8px)",
-            transition: "opacity .7s ease .1s, transform .7s ease .1s",
-          }}>
+        {/* Top section — left categories list, right small REC badge — both with layer parallax */}
+        <div className="flex items-start justify-between gap-3">
           {/* Left: 4 categories stacked vertically */}
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5" style={layerStyle(loaded, isActive, 0.1)}>
             {MOBILE_CATEGORIES.map((cat, i) => (
               <div key={cat} className="flex items-center gap-2">
                 <DiagLine width={i === 0 ? 16 : 8} rotation={20} color="rgba(255,255,255,0.4)" />
@@ -106,7 +145,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             ))}
           </div>
           {/* Right: small REC badge */}
-          <div className="flex items-center gap-1.5 mt-0.5">
+          <div className="flex items-center gap-1.5 mt-0.5" style={layerStyle(loaded, isActive, 0.15)}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(220,50,50,0.85)", boxShadow: "0 0 8px rgba(220,50,50,0.5)", animation: "pulse-slow 1.8s ease-in-out infinite" }} />
             <span className="text-[8px] uppercase tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
               REC · 2026
@@ -117,106 +156,94 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
         {/* Center hero — LEFT-aligned (original) + parallax "layer" feel on page transition */}
         <div className="flex-1 flex flex-col justify-center relative">
 
-          {/* DIRECTOR — left aligned */}
+          {/* DIRECTOR — layer parallax */}
           <h2 className="hero-title text-white"
             style={{
               fontSize: "clamp(2.4rem, 11vw, 4rem)",
               lineHeight: 1,
-              // Layer parallax: while parent page scales away during transition,
-              // counter-scale ourselves so visually the text "stays in place".
-              opacity: loaded ? (isActive ? 1 : 0) : 0,
-              transform: loaded
-                ? (isActive ? "translateY(0) scale(1)" : "translateY(-12px) scale(1.10)")
-                : "translateY(20px) scale(1)",
-              transition: isActive
-                ? "opacity .9s cubic-bezier(.16,1,.3,1) .2s, transform .9s cubic-bezier(.16,1,.3,1) .2s"
-                : "opacity 1.6s ease .35s, transform 1.6s cubic-bezier(.16,1,.3,1) .35s",
-              transformOrigin: "left center",
-              willChange: "transform, opacity",
+              ...layerStyle(loaded, isActive, 0.2),
             }}>
             DIRECTOR
           </h2>
 
-          {/* OSCAR — left aligned, big (original 26vw) */}
+          {/* OSCAR — layer parallax (more dramatic) */}
           <h1 className="hero-title text-white"
             style={{
               fontSize: "clamp(5rem, 26vw, 9rem)",
               lineHeight: 0.92,
               letterSpacing: "0.02em",
               marginTop: "0.4rem",
-              // Same layer parallax — text lingers as page recedes
-              opacity: loaded ? (isActive ? 1 : 0) : 0,
+              ...layerStyle(loaded, isActive, 0.3),
+              // Override scale for stronger drift on OSCAR
               transform: loaded
                 ? (isActive ? "translateY(0) scale(1)" : "translateY(-16px) scale(1.12)")
                 : "translateY(20px) scale(1)",
-              transition: isActive
-                ? "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s"
-                : "opacity 1.8s ease .4s, transform 1.8s cubic-bezier(.16,1,.3,1) .4s",
-              transformOrigin: "left center",
-              willChange: "transform, opacity",
             }}>
             OSCAR
           </h1>
 
-          {/* Role inline — left aligned (matches DIRECTOR) */}
+          {/* Role inline — layer parallax */}
           <div className="flex items-center gap-2 mt-5"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateY(0)" : "translateY(10px)",
-              transition: "opacity .7s ease .45s, transform .7s ease .45s",
-            }}>
+            style={layerStyle(loaded, isActive, 0.45)}>
             <div style={{ width: 6, height: 6, background: "#fff", borderRadius: 999, boxShadow: "0 0 12px rgba(255,255,255,0.7)" }} />
             <span className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>
               {PAST_ROLES.slice(0, 3).join(" · ")}
             </span>
           </div>
 
-          {/* QUOTE overlay removed per request */}
-
-          {/* Tagline */}
+          {/* Tagline — layer parallax */}
           <p className="mt-6 leading-relaxed"
             style={{
               fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 300,
               maxWidth: 280,
-              opacity: loaded ? 1 : 0,
-              transition: "opacity .8s ease .6s",
+              ...layerStyle(loaded, isActive, 0.55),
             }}>
             台中在地影像工作者。<br/>從現場到後製，做能說話的畫面。
           </p>
 
-          {/* Stats — pushed to bottom of center area, separated */}
-          <div className="mt-8 flex items-center gap-2 flex-wrap"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transition: "opacity .8s ease .72s",
-            }}>
-            <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+150K</span>
-            <span className="text-[10px] uppercase tracking-[0.22em] mr-2" style={{ color: "rgba(255,255,255,0.55)" }}>VIEWS</span>
-            <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.25)" }} />
-            <span className="hero-title text-white ml-2" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+50</span>
-            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.55)" }}>WORKS</span>
-            <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.25)" }} />
-            <span className="hero-title text-white ml-2" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+7YR</span>
+          {/* Stats — 3-col grid with count-up animated numbers + clear labels below */}
+          <div className="mt-8 grid grid-cols-3 gap-2"
+            style={{ ...layerStyle(loaded, isActive, 0.7), maxWidth: 320 }}>
+            <div className="flex flex-col">
+              <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6.5vw, 2.4rem)" }}>
+                +{views}K
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
+                VIEWS
+              </span>
+            </div>
+            <div className="flex flex-col items-center border-l border-r"
+              style={{ borderColor: "rgba(255,255,255,0.15)" }}>
+              <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6.5vw, 2.4rem)" }}>
+                +{works}
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
+                PRODUCTIONS
+              </span>
+            </div>
+            <div className="flex flex-col items-end">
+              <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6.5vw, 2.4rem)" }}>
+                +{years}
+              </span>
+              <span className="text-[9px] uppercase tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
+                YEARS ON SET
+              </span>
+            </div>
           </div>
 
-          {/* TAICHUNG anchor */}
-          <p className="mt-3 text-[10px] uppercase tracking-[0.32em]"
+          {/* TAICHUNG anchor — layer parallax */}
+          <p className="mt-4 text-[10px] uppercase tracking-[0.32em]"
             style={{
               color: "rgba(255,255,255,0.55)", fontWeight: 500,
-              opacity: loaded ? 1 : 0,
-              transition: "opacity .8s ease .82s",
+              ...layerStyle(loaded, isActive, 0.82),
             }}>
             FROM TAICHUNG · SINCE 2019
           </p>
         </div>
 
-        {/* Bottom: extra spacing between info row and CTA */}
+        {/* Bottom: extra spacing between info row and CTA — layer parallax */}
         <div className="flex flex-col gap-5"
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity .9s ease .95s, transform .9s ease .95s",
-          }}>
+          style={layerStyle(loaded, isActive, 0.95)}>
           {/* Info row — handle left only (SCROLL removed: redundant + caused overlap with YT UI bottom-right) */}
           <div className="flex items-center justify-between">
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
