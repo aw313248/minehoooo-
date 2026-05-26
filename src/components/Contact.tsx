@@ -42,9 +42,14 @@ export default function Contact() {
       text:  "在地影像工作者 · Director · D.P. · Photo · AIGC",
       url:   "https://minehoooo.vercel.app",
     };
+    if (typeof navigator === "undefined") return;
+    // Cast once — TS narrows oddly across try/catch on Navigator interface
+    const nav = navigator as Navigator & {
+      share?: (data: { title?: string; text?: string; url?: string }) => Promise<void>;
+    };
     try {
-      if (typeof navigator !== "undefined" && "share" in navigator) {
-        await navigator.share(shareData);
+      if (typeof nav.share === "function") {
+        await nav.share(shareData);
         haptic.success();
         return;
       }
@@ -54,10 +59,12 @@ export default function Contact() {
     }
     // Fallback: copy URL
     try {
-      await navigator.clipboard.writeText(shareData.url);
-      setCopied(true);
-      haptic.success();
-      setTimeout(() => setCopied(false), 2000);
+      if (nav.clipboard) {
+        await nav.clipboard.writeText(shareData.url);
+        setCopied(true);
+        haptic.success();
+        setTimeout(() => setCopied(false), 2000);
+      }
     } catch { /* clipboard denied — silent */ }
   }
 

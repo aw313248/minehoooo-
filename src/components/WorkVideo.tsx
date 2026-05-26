@@ -878,6 +878,17 @@ function GridCard({ id, title, artist, role, award }: {
               }}>★</span>
             {/* Desktop: verbose badge */}
             <div className="hidden md:flex absolute top-3 left-3 right-3 flex-wrap gap-1.5">
+              <span className="font-mono-label text-[11px] tracking-[0.18em] px-3 py-1.5"
+                style={{
+                  background: "rgba(255,210,70,0.18)",
+                  border: "1px solid rgba(255,210,70,0.55)",
+                  color: "rgba(255,225,140,0.98)",
+                  backdropFilter: "blur(10px)",
+                  borderRadius: 14,
+                  boxShadow: "0 2px 18px rgba(255,210,70,0.18)",
+                  fontWeight: 500,
+                  lineHeight: 1.35,
+                }}>
                 ★ {award}
               </span>
             </div>
