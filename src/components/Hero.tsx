@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const HERO_VIDEO_ID = "d9_EuYkmfzM"; // 愚人節 ALL FOOL'S DAY — Jon Chen
 const HERO_VIDEO_START = 4;
 
-/* Past roles / departments — listed on right side */
+/* Past roles / departments — listed on right side (desktop only) */
 const PAST_ROLES = [
   "DIRECTOR",
   "D.P.",
@@ -32,26 +32,192 @@ function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" 
   );
 }
 
-export default function Hero() {
-  const [loaded, setLoaded] = useState(false);
-  const [isActive, setIsActive] = useState(true);
-  const [iframeReady, setIframeReady] = useState(false);
-
-  useEffect(() => {
-    const t  = setTimeout(() => setLoaded(true), 120);
-    const t2 = setTimeout(() => setIframeReady(true), 600);
-    const onPageChange = (e: Event) => setIsActive((e as CustomEvent<number>).detail === 0);
-    window.addEventListener("pagechange", onPageChange);
-    return () => {
-      clearTimeout(t); clearTimeout(t2);
-      window.removeEventListener("pagechange", onPageChange);
-    };
-  }, []);
-
+/* ════════════════════════════════════════════════
+   MOBILE HERO — single column, designed for phone
+   ════════════════════════════════════════════════ */
+function HeroMobile({ loaded, iframeReady, isActive }: {
+  loaded: boolean; iframeReady: boolean; isActive: boolean;
+}) {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
+    <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
-      {/* ── Fullscreen background — YouTube iframe muted loop ── */}
+      {/* Background video — same as desktop */}
+      <div className="absolute inset-0" style={{
+        opacity: iframeReady && isActive ? 1 : 0,
+        transition: "opacity 1.4s ease",
+        pointerEvents: "none",
+      }}>
+        <div style={{ position: "absolute", inset: "-10%", width: "120%", height: "120%" }}>
+          {iframeReady && (
+            <iframe
+              src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
+              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.45) saturate(0.9)" }}
+              allow="autoplay; encrypted-media"
+              title="MINEH4O reel background"
+            />
+          )}
+        </div>
+      </div>
+
+      {/* Gradients — stronger top/bottom for legibility on smaller screen */}
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-32"
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.75), transparent)" }} />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-64"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 30%, #000 100%)" }} />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 75% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)" }} />
+
+      {/* Content stack */}
+      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "5.5rem", paddingBottom: "1.5rem" }}>
+
+        {/* Top intro label */}
+        <div style={{
+          opacity: loaded ? 1 : 0,
+          transform: loaded ? "translateY(0)" : "translateY(-8px)",
+          transition: "opacity .7s ease .1s, transform .7s ease .1s",
+        }}>
+          <div className="flex items-center gap-2">
+            <DiagLine width={22} rotation={20} color="rgba(255,255,255,0.5)" />
+            <span className="text-[9px] uppercase tracking-[0.36em]" style={{ color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>
+              IN-HOUSE IMAGE STUDIO
+            </span>
+          </div>
+        </div>
+
+        {/* Center hero — OSCAR + role + tagline */}
+        <div className="flex-1 flex flex-col justify-center">
+
+          {/* DIRECTOR small label */}
+          <h2 className="hero-title text-white"
+            style={{
+              fontSize: "clamp(2.4rem, 11vw, 4rem)",
+              lineHeight: 1,
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity .9s cubic-bezier(.16,1,.3,1) .2s, transform .9s cubic-bezier(.16,1,.3,1) .2s",
+            }}>
+            DIRECTOR
+          </h2>
+
+          {/* OSCAR huge */}
+          <h1 className="hero-title text-white"
+            style={{
+              fontSize: "clamp(5rem, 26vw, 9rem)",
+              lineHeight: 0.92,
+              letterSpacing: "0.02em",
+              marginTop: "0.4rem",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s",
+            }}>
+            OSCAR
+          </h1>
+
+          {/* Role inline */}
+          <div className="flex items-center gap-2 mt-3"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(10px)",
+              transition: "opacity .7s ease .45s, transform .7s ease .45s",
+            }}>
+            <div style={{ width: 6, height: 6, background: "#fff", borderRadius: 999, boxShadow: "0 0 12px rgba(255,255,255,0.7)" }} />
+            <span className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>
+              {PAST_ROLES.slice(0, 3).join(" · ")}
+            </span>
+          </div>
+
+          {/* Tagline */}
+          <p className="mt-5 leading-relaxed"
+            style={{
+              fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 300,
+              maxWidth: 280,
+              opacity: loaded ? 1 : 0,
+              transition: "opacity .8s ease .6s",
+            }}>
+            台中在地影像工作者。<br/>從現場到後製，做能說話的畫面。
+          </p>
+
+          {/* Single combined stat row */}
+          <div className="mt-6 flex items-center gap-2 flex-wrap"
+            style={{
+              opacity: loaded ? 1 : 0,
+              transition: "opacity .8s ease .72s",
+            }}>
+            <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+150K</span>
+            <span className="text-[10px] uppercase tracking-[0.22em] mr-2" style={{ color: "rgba(255,255,255,0.55)" }}>VIEWS</span>
+            <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.25)" }} />
+            <span className="hero-title text-white ml-2" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+50</span>
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: "rgba(255,255,255,0.55)" }}>WORKS</span>
+            <span style={{ width: 1, height: 16, background: "rgba(255,255,255,0.25)" }} />
+            <span className="hero-title text-white ml-2" style={{ fontSize: "clamp(1.5rem, 6vw, 2.2rem)" }}>+7YR</span>
+          </div>
+
+          {/* TAICHUNG anchor */}
+          <p className="mt-4 text-[10px] uppercase tracking-[0.32em]"
+            style={{
+              color: "rgba(255,255,255,0.55)", fontWeight: 500,
+              opacity: loaded ? 1 : 0,
+              transition: "opacity .8s ease .82s",
+            }}>
+            FROM TAICHUNG · SINCE 2019
+          </p>
+        </div>
+
+        {/* Bottom: handle + big CTA */}
+        <div className="flex flex-col gap-3"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(14px)",
+            transition: "opacity .9s ease .95s, transform .9s ease .95s",
+          }}>
+          <button onClick={() => goto(6)}
+            className="active:bg-neutral-200 transition-colors uppercase w-full"
+            style={{
+              background: "#fff",
+              color: "#000",
+              fontSize: 14, fontWeight: 600,
+              letterSpacing: "0.1em",
+              borderRadius: 999,
+              padding: "16px 22px",
+              border: "none",
+              cursor: "pointer",
+              boxShadow: "0 4px 24px rgba(255,255,255,0.15)",
+            }}>
+            LET&apos;S WORK →
+          </button>
+
+          <div className="flex items-center justify-between">
+            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+              className="text-[11px] uppercase tracking-[0.2em]"
+              style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
+              @MINEHOOOO.ARW ↗
+            </a>
+            <button onClick={() => goto(1)}
+              className="flex items-center gap-2"
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+              aria-label="Scroll down">
+              <span className="text-[9px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
+                SCROLL
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>↓</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ════════════════════════════════════════════════
+   DESKTOP HERO — original editorial composition
+   ════════════════════════════════════════════════ */
+function HeroDesktop({ loaded, iframeReady, isActive }: {
+  loaded: boolean; iframeReady: boolean; isActive: boolean;
+}) {
+  return (
+    <section className="hidden md:block relative h-screen w-full overflow-hidden bg-black">
+
+      {/* Fullscreen background — YouTube iframe muted loop */}
       <div className="absolute inset-0" style={{
         opacity: iframeReady && isActive ? 1 : 0,
         transition: "opacity 1.4s ease",
@@ -69,7 +235,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Gradient layers for legibility */}
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-72"
         style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.5) 35%, #000 100%)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-44"
@@ -77,20 +242,17 @@ export default function Hero() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 38%, rgba(0,0,0,0.5) 100%)" }} />
 
-      {/* ── Decorative diagonal accent lines ── */}
-      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
+      <div aria-hidden="true" className="absolute pointer-events-none"
         style={{ left: "46%", top: "8%", opacity: loaded ? 0.55 : 0, transition: "opacity 1.4s ease .5s" }}>
         <DiagLine width={160} rotation={-20} />
       </div>
-      <div aria-hidden="true" className="absolute pointer-events-none hidden md:block"
+      <div aria-hidden="true" className="absolute pointer-events-none"
         style={{ left: "30%", bottom: "26%", opacity: loaded ? 0.45 : 0, transition: "opacity 1.4s ease .9s" }}>
         <DiagLine width={200} rotation={-20} color="rgba(255,255,255,0.22)" />
       </div>
 
-      {/* ── Foreground content ── */}
       <div className="relative h-full w-full">
 
-        {/* ═══════ DIRECTOR — HUGE top-left ═══════ */}
         <h1 className="hero-title absolute text-white select-none"
           style={{
             fontSize: "clamp(6rem, 18vw, 22rem)",
@@ -102,7 +264,6 @@ export default function Hero() {
           DIRECTOR
         </h1>
 
-        {/* ═══════ Intro paragraph — left, below DIRECTOR ═══════ */}
         <div className="absolute z-[8] max-w-sm"
           style={{
             left: "1.5rem", top: "32%",
@@ -127,7 +288,6 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ═══════ TAICHUNG · SINCE 2019 — anchor below intro ═══════ */}
         <div className="absolute z-[8]"
           style={{
             left: "1.5rem", top: "52%",
@@ -146,7 +306,6 @@ export default function Hero() {
           </span>
         </div>
 
-        {/* ═══════ OSCAR — MASSIVE bottom-left (focal) ═══════ */}
         <h1 className="hero-title absolute text-white select-none"
           style={{
             fontSize: "clamp(7rem, 22vw, 28rem)",
@@ -159,8 +318,7 @@ export default function Hero() {
           OSCAR
         </h1>
 
-        {/* ═══════ Past roles list — vertical, right side (replaces big DP·PHOTO) ═══════ */}
-        <div className="absolute z-[8] hidden md:flex flex-col items-end gap-1.5"
+        <div className="absolute z-[8] flex flex-col items-end gap-1.5"
           style={{
             right: "1.5rem", top: "28%",
             opacity: loaded ? 1 : 0,
@@ -184,7 +342,6 @@ export default function Hero() {
           ))}
         </div>
 
-        {/* ═══════ Stat: TOP-RIGHT ═══════ */}
         <div className="absolute z-[8]"
           style={{
             right: "1.5rem", top: "10%",
@@ -204,7 +361,6 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ═══════ Stat: BOTTOM-RIGHT ═══════ */}
         <div className="absolute z-[8]"
           style={{
             right: "1.5rem", bottom: "6rem",
@@ -224,20 +380,17 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* ═══════ Bottom strip: handle · scroll · CTA ═══════ */}
-        <div className="absolute bottom-0 left-0 right-0 z-[9] px-6 md:px-10 pb-4 flex items-end justify-between gap-4"
+        <div className="absolute bottom-0 left-0 right-0 z-[9] px-10 pb-4 flex items-end justify-between gap-4"
           style={{ opacity: loaded ? 1 : 0, transition: "opacity 1s ease 1.05s" }}>
 
-          {/* Left: handle (subtle, doesn't fight OSCAR) */}
           <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
             className="text-[11px] hover:text-white transition-colors uppercase tracking-[0.22em]"
             style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
             @MINEHOOOO.ARW ↗
           </a>
 
-          {/* Center: scroll hint */}
           <button onClick={() => goto(1)}
-            className="hidden md:flex flex-col items-center gap-1.5 group"
+            className="flex flex-col items-center gap-1.5 group"
             style={{ background: "none", border: "none", cursor: "pointer" }}
             aria-label="Scroll to About">
             <span className="text-[9px] tracking-[0.4em] uppercase group-hover:text-white/85 transition-colors" style={{ color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
@@ -248,7 +401,6 @@ export default function Hero() {
             </div>
           </button>
 
-          {/* Right: quick CTA */}
           <button onClick={() => goto(6)}
             className="hover:bg-neutral-200 transition-colors uppercase"
             style={{
@@ -266,5 +418,32 @@ export default function Hero() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ════════════════════════════════════════════════
+   HERO — switch by viewport
+   ════════════════════════════════════════════════ */
+export default function Hero() {
+  const [loaded, setLoaded] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [iframeReady, setIframeReady] = useState(false);
+
+  useEffect(() => {
+    const t  = setTimeout(() => setLoaded(true), 120);
+    const t2 = setTimeout(() => setIframeReady(true), 600);
+    const onPageChange = (e: Event) => setIsActive((e as CustomEvent<number>).detail === 0);
+    window.addEventListener("pagechange", onPageChange);
+    return () => {
+      clearTimeout(t); clearTimeout(t2);
+      window.removeEventListener("pagechange", onPageChange);
+    };
+  }, []);
+
+  return (
+    <>
+      <HeroMobile  loaded={loaded} iframeReady={iframeReady} isActive={isActive} />
+      <HeroDesktop loaded={loaded} iframeReady={iframeReady} isActive={isActive} />
+    </>
   );
 }
