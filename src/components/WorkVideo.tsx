@@ -488,11 +488,11 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
           transition: "transform 0.85s cubic-bezier(.16,1,.3,1)",
         }}>
           {items.map((item, i) => {
-            // Cards adjacent to viewport edges get reduced opacity for depth
+            // Side cards keep same size, only opacity fades for cylinder feel.
+            // Mask gradient at container edges does the visual 3D rotation work.
             const distFromCenter = Math.abs(i - (idx + perView / 2 - 0.5));
             const visibleEdge = distFromCenter > perView / 2 - 0.5 && distFromCenter < perView / 2 + 0.6;
-            const sideOpacity = visibleEdge ? 0.55 : 1;
-            const sideScale   = visibleEdge ? 0.94 : 1;
+            const sideOpacity = visibleEdge ? 0.7 : 1;
             return (
               <div key={getKey(item, i)} style={{
                 width: `${100 / items.length}%`,
@@ -500,9 +500,7 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
                 boxSizing: "border-box",
                 minWidth: 0,
                 opacity: sideOpacity,
-                transform: `scale(${sideScale})`,
-                transformOrigin: "center center",
-                transition: "opacity .65s ease, transform .65s cubic-bezier(.16,1,.3,1)",
+                transition: "opacity .65s ease",
               }}>
                 {renderItem(item, i)}
               </div>

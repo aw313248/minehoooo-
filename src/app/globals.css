@@ -45,11 +45,35 @@
   --radius-pill: 999px; /* 圓 pill 按鈕 */
 }
 
-/* Securify-style hero title — tight letter spacing for editorial impact */
+/* Hero title — uppercase editorial display
+   - letter-spacing pulled in for tight headline look but loose enough to breathe
+   - line-height 1.02 for vertical room
+   - drop shadow for legibility on bg video + soft halo for depth
+*/
 .hero-title {
   font-family: var(--font-readex), "Readex Pro", system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-transform: uppercase;
+  text-shadow:
+    0 2px 24px rgba(0,0,0,0.55),
+    0 0 60px rgba(255,255,255,0.08);
+}
+
+/* Hero accent — large focal word (OSCAR) gets soft glow ring */
+.hero-title-focal {
+  text-shadow:
+    0 4px 32px rgba(0,0,0,0.65),
+    0 0 80px rgba(255,255,255,0.12),
+    0 0 140px rgba(120,80,40,0.18);
+}
+
+/* Outlined ghost — shown behind the focal word for depth effect */
+.hero-title-ghost {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.22);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-shadow: none;
 }
 
 html {

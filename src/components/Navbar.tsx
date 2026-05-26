@@ -83,8 +83,8 @@ export default function Navbar() {
           <svg className="h-5 w-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" fill="#ffffff"/>
           </svg>
-          <span className="text-white text-sm" style={{ fontWeight: 400, letterSpacing: "-0.01em" }}>
-            minehoooo
+          <span className="text-white text-sm uppercase" style={{ fontWeight: 500, letterSpacing: "0.04em" }}>
+            MINEHOOOO
           </span>
         </button>
 
@@ -103,20 +103,20 @@ export default function Navbar() {
               <li key={l.page}>
                 <button
                   onClick={() => goto(l.page)}
-                  className="transition-colors"
+                  className="transition-colors uppercase"
                   style={{
                     background: active ? "rgba(255,255,255,0.08)" : "transparent",
                     color: active ? "#fff" : "rgba(255,255,255,0.65)",
-                    fontSize: 13, fontWeight: 400,
-                    letterSpacing: "-0.005em",
+                    fontSize: 11, fontWeight: 500,
+                    letterSpacing: "0.18em",
                     borderRadius: 999,
-                    padding: "8px 16px",
+                    padding: "8px 14px",
                     border: "none", cursor: "pointer",
                   }}
                   onMouseEnter={e => { if (!active) e.currentTarget.style.color = "#fff"; }}
                   onMouseLeave={e => { if (!active) e.currentTarget.style.color = "rgba(255,255,255,0.65)"; }}
                 >
-                  {(lang === "zh" ? l.labelZh : l.label).toLowerCase()}
+                  {lang === "zh" ? l.labelZh : l.label}
                 </button>
               </li>
             );
@@ -125,9 +125,10 @@ export default function Navbar() {
           <li style={{ width: 1, height: 18, background: "rgba(255,255,255,0.1)", margin: "0 4px" }} aria-hidden="true" />
           <li>
             <button onClick={toggle}
-              className="transition-colors"
+              className="transition-colors uppercase"
               style={{
-                fontSize: 12, fontWeight: 400,
+                fontSize: 10, fontWeight: 500,
+                letterSpacing: "0.2em",
                 color: "rgba(255,255,255,0.55)",
                 background: "transparent",
                 borderRadius: 999,
@@ -136,7 +137,7 @@ export default function Navbar() {
               }}
               onMouseEnter={e => { e.currentTarget.style.color = "#fff"; }}
               onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.55)"; }}>
-              {lang === "zh" ? "en" : "中"}
+              {lang === "zh" ? "EN" : "中"}
             </button>
           </li>
         </ul>
@@ -144,17 +145,17 @@ export default function Navbar() {
         {/* ── RIGHT: get-started style CTA ── */}
         <button
           onClick={() => goto(6)}
-          className="hidden md:block hover:bg-neutral-200 transition-colors"
+          className="hidden md:block hover:bg-neutral-200 transition-colors uppercase"
           style={{
             background: "#fff",
             color: "#000",
-            fontSize: 13, fontWeight: 500,
+            fontSize: 12, fontWeight: 500,
             borderRadius: 999,
             padding: "11px 22px",
             border: "none", cursor: "pointer",
-            letterSpacing: "-0.005em",
+            letterSpacing: "0.05em",
           }}>
-          {lang === "zh" ? "聯絡合作" : "let's work"}
+          {lang === "zh" ? "聯絡合作" : "LET'S WORK"}
         </button>
 
         {/* Mobile hamburger */}

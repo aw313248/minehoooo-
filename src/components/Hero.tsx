@@ -40,7 +40,7 @@ export default function Hero() {
           {iframeReady && (
             <iframe
               src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
-              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.62)" }}
+              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.55) saturate(0.95)" }}
               allow="autoplay; encrypted-media"
               title="MINEH4O reel background"
             />
@@ -49,101 +49,144 @@ export default function Hero() {
       </div>
 
       {/* Bottom gradient — fades into black so text reads + smooth section transition */}
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-64"
-        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.4) 40%, #000 100%)" }} />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-72"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.45) 35%, #000 100%)" }} />
       {/* Top gradient — soft fade behind navbar */}
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-40"
-        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.5), transparent)" }} />
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-44"
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.55), transparent)" }} />
+
+      {/* Subtle radial vignette around edges */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 85% 70% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
 
       {/* ── Foreground content ── */}
       <div className="relative h-full w-full">
 
-        {/* ── Headline words — staggered lowercase ── */}
-        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none"
+        {/* ── DIRECTOR — top, smaller (supporting role label) ── */}
+        <h1 className="hero-title absolute text-white font-medium select-none"
           style={{
-            left: "1rem", top: "16%",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
+            fontSize: "clamp(3rem, 8.5vw, 9rem)",
+            left: "1.5rem", top: "13%",
+            letterSpacing: "-0.015em",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(28px)",
             transition: "opacity .9s cubic-bezier(.16,1,.3,1) .12s, transform .9s cubic-bezier(.16,1,.3,1) .12s",
           }}>
-          <span className="hidden md:inline pl-10">director</span>
-          <span className="md:hidden">director</span>
+          DIRECTOR
         </h1>
 
-        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none text-right"
+        {/* ── DP · PHOTO — middle-right, smallest (secondary) ── */}
+        <h1 className="hero-title absolute text-white font-normal select-none text-right"
           style={{
-            right: "1rem", top: "36%",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
-            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .24s, transform .9s cubic-bezier(.16,1,.3,1) .24s",
+            fontSize: "clamp(2.4rem, 7vw, 7rem)",
+            right: "1.5rem", top: "32%",
+            letterSpacing: "0em",
+            color: "rgba(255,255,255,0.78)",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(28px)",
+            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .26s, transform .9s cubic-bezier(.16,1,.3,1) .26s",
           }}>
-          <span className="hidden md:inline pr-10">DP · photo</span>
-          <span className="md:hidden">DP · photo</span>
+          DP · PHOTO
         </h1>
 
-        <h1 className="hero-title absolute text-white font-medium text-[16vw] md:text-[13vw] select-none"
+        {/* ── OSCAR — focal, LARGEST (the name = identity) ── */}
+        <div className="absolute select-none"
           style={{
-            left: "18%", top: "56%",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(28px)",
-            transition: "opacity .9s cubic-bezier(.16,1,.3,1) .36s, transform .9s cubic-bezier(.16,1,.3,1) .36s",
+            left: "8%", bottom: "26%",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(28px)",
+            transition: "opacity 1s cubic-bezier(.16,1,.3,1) .4s, transform 1s cubic-bezier(.16,1,.3,1) .4s",
           }}>
-          oscar
-        </h1>
+          {/* Ghost outline behind */}
+          <h1 className="hero-title hero-title-ghost absolute font-medium select-none pointer-events-none"
+            style={{
+              fontSize: "clamp(5.5rem, 16vw, 18rem)",
+              top: 8, left: 8,
+              letterSpacing: "-0.02em",
+            }}>
+            OSCAR
+          </h1>
+          {/* Main focal */}
+          <h1 className="hero-title hero-title-focal relative text-white font-medium"
+            style={{
+              fontSize: "clamp(5.5rem, 16vw, 18rem)",
+              letterSpacing: "-0.02em",
+            }}>
+            OSCAR
+          </h1>
+        </div>
 
-        {/* ── Description paragraph — left of "DP · photo" headline ── */}
-        <p className="absolute max-w-[260px] text-[13px] md:text-[15px] leading-snug text-white/90 z-[8]"
+        {/* ── Description — left, near DP · PHOTO ── */}
+        <p className="absolute max-w-[280px] z-[8]"
           style={{
             left: "1.5rem", top: "44%",
+            fontSize: 13.5, lineHeight: 1.65,
+            color: "rgba(255,255,255,0.82)",
             fontWeight: 300,
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(10px)",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(10px)",
             transition: "opacity .8s ease .55s, transform .8s ease .55s",
           }}>
           image and motion crafted in taichung —<br />
           director · DP · screenplay · photo · AIGC
         </p>
 
-        {/* ── Stat block: TOP-RIGHT ── */}
+        {/* ── Stat: TOP-RIGHT ── */}
         <div className="absolute z-[8]"
           style={{
             right: "1.5rem", top: "13%",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(-12px)",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(-12px)",
             transition: "opacity .8s ease .7s, transform .8s ease .7s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(20deg)" }} />
-            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+150k</span>
+            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(20deg)" }} />
+            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+              +150K
+            </span>
           </div>
-          <p className="text-[11px] md:text-sm text-white/70 mt-1 text-right" style={{ fontWeight: 300 }}>
+          <p className="text-[10px] md:text-[11px] mt-1 text-right uppercase tracking-[0.22em]"
+            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
             views across reels
           </p>
         </div>
 
-        {/* ── Stat block: BOTTOM-LEFT ── */}
+        {/* ── Stat: BOTTOM-LEFT ── */}
         <div className="absolute z-[8]"
           style={{
-            left: "1.5rem", bottom: "5.5rem",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(12px)",
+            left: "1.5rem", bottom: "6.5rem",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(12px)",
             transition: "opacity .8s ease .82s, transform .8s ease .82s",
           }}>
           <div className="flex items-center gap-3">
-            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+50</span>
-            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
+            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+              +50
+            </span>
+            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
           </div>
-          <p className="text-[11px] md:text-sm text-white/70 mt-1" style={{ fontWeight: 300 }}>
+          <p className="text-[10px] md:text-[11px] mt-1 uppercase tracking-[0.22em]"
+            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
             mv · doc · ad productions
           </p>
         </div>
 
-        {/* ── Stat block: BOTTOM-RIGHT ── */}
+        {/* ── Stat: BOTTOM-RIGHT ── */}
         <div className="absolute z-[8]"
           style={{
-            right: "1.5rem", bottom: "5rem",
-            opacity: loaded ? 1 : 0, transform: loaded ? "translateY(0)" : "translateY(12px)",
+            right: "1.5rem", bottom: "6rem",
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(12px)",
             transition: "opacity .8s ease .92s, transform .8s ease .92s",
           }}>
           <div className="flex items-center gap-3 justify-end">
-            <span aria-hidden="true" className="hidden md:block h-px w-24 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
-            <span className="hero-title text-3xl md:text-5xl font-medium text-white">+7yr</span>
+            <span aria-hidden="true" className="hidden md:block h-px w-20 bg-white/40" style={{ transform: "rotate(-20deg)" }} />
+            <span className="hero-title text-3xl md:text-[2.4rem] font-medium text-white" style={{ letterSpacing: "-0.02em" }}>
+              +7YR
+            </span>
           </div>
-          <p className="text-[11px] md:text-sm text-white/70 mt-1 text-right" style={{ fontWeight: 300 }}>
+          <p className="text-[10px] md:text-[11px] mt-1 text-right uppercase tracking-[0.22em]"
+            style={{ color: "rgba(255,255,255,0.6)", fontWeight: 400 }}>
             on set since 2019
           </p>
         </div>
@@ -154,12 +197,12 @@ export default function Hero() {
 
           {/* Left: handle */}
           <div className="flex flex-col">
-            <span className="text-[10px] tracking-[0.32em] text-white/45" style={{ fontWeight: 400 }}>
+            <span className="text-[10px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
               TAICHUNG · TAIWAN
             </span>
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-              className="text-[12px] md:text-[13px] text-white/80 hover:text-white transition-colors mt-1"
-              style={{ fontWeight: 400 }}>
+              className="text-[12px] md:text-[13px] hover:text-white transition-colors mt-1"
+              style={{ color: "rgba(255,255,255,0.78)", fontWeight: 400 }}>
               @minehoooo.arw ↗
             </a>
           </div>
@@ -169,7 +212,7 @@ export default function Hero() {
             className="hidden md:flex flex-col items-center gap-1.5 group"
             style={{ background: "none", border: "none", cursor: "pointer" }}
             aria-label="Scroll to About">
-            <span className="text-[9px] tracking-[0.4em] text-white/50 group-hover:text-white/80 transition-colors">
+            <span className="text-[9px] tracking-[0.4em] uppercase group-hover:text-white/85 transition-colors" style={{ color: "rgba(255,255,255,0.5)" }}>
               SCROLL
             </span>
             <div style={{ width: 1, height: 30, background: "rgba(255,255,255,0.25)", position: "relative", overflow: "hidden" }}>
@@ -179,18 +222,18 @@ export default function Hero() {
 
           {/* Right: quick CTA */}
           <button onClick={() => goto(6)}
-            className="hover:bg-neutral-200 transition-colors"
+            className="hover:bg-neutral-200 transition-colors uppercase"
             style={{
               background: "#fff",
               color: "#000",
-              fontSize: 13, fontWeight: 500,
+              fontSize: 12, fontWeight: 500,
+              letterSpacing: "0.04em",
               borderRadius: 999,
               padding: "10px 22px",
               border: "none",
               cursor: "pointer",
-              letterSpacing: "-0.01em",
             }}>
-            let&apos;s work →
+            LET&apos;S WORK →
           </button>
         </div>
       </div>
