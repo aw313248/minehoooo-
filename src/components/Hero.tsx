@@ -41,50 +41,77 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
   return (
     <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
-      {/* Background video — same as desktop */}
-      <div className="absolute inset-0" style={{
+      {/* Background video — TRUE FULL-BLEED cover (iframe sized so 16:9 always fills viewport, overflows on long axis) */}
+      <div className="absolute inset-0 overflow-hidden" style={{
         opacity: iframeReady && isActive ? 1 : 0,
         transition: "opacity 1.4s ease",
         pointerEvents: "none",
       }}>
-        <div style={{ position: "absolute", inset: "-10%", width: "120%", height: "120%" }}>
-          {iframeReady && (
-            <iframe
-              src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
-              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.45) saturate(0.9)" }}
-              allow="autoplay; encrypted-media"
-              title="MINEH4O reel background"
-            />
-          )}
-        </div>
+        {iframeReady && (
+          <iframe
+            src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1&start=${HERO_VIDEO_START}`}
+            style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              // Cover behavior: max of (100vw, 16:9-of-height) wins; same for height
+              width: "max(100vw, calc(100dvh * 16 / 9))",
+              height: "max(100dvh, calc(100vw * 9 / 16))",
+              border: "none",
+              filter: "brightness(0.5) saturate(0.95)",
+            }}
+            allow="autoplay; encrypted-media"
+            title="MINEH4O reel background"
+          />
+        )}
+        {/* YouTube UI suppressor: covers bottom-right corner where YouTube logo / share menu can leak */}
+        <div aria-hidden="true" style={{
+          position: "absolute", right: 0, bottom: 0, width: 120, height: 80,
+          background: "linear-gradient(225deg, #000 0%, rgba(0,0,0,0.85) 50%, transparent 100%)",
+          pointerEvents: "none",
+        }} />
       </div>
 
       {/* Gradients — stronger top/bottom for legibility on smaller screen */}
-      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-32"
+      <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-36"
         style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.75), transparent)" }} />
-      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-64"
-        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 30%, #000 100%)" }} />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-72"
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 30%, #000 100%)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 75% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)" }} />
 
       {/* Content stack */}
-      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "5.5rem", paddingBottom: "1.5rem" }}>
+      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "5rem", paddingBottom: "2rem" }}>
 
-        {/* Top intro label */}
-        <div style={{
-          opacity: loaded ? 1 : 0,
-          transform: loaded ? "translateY(0)" : "translateY(-8px)",
-          transition: "opacity .7s ease .1s, transform .7s ease .1s",
-        }}>
-          <div className="flex items-center gap-2">
-            <DiagLine width={22} rotation={20} color="rgba(255,255,255,0.5)" />
-            <span className="text-[9px] uppercase tracking-[0.36em]" style={{ color: "rgba(255,255,255,0.6)", fontWeight: 500 }}>
-              IN-HOUSE IMAGE STUDIO
+        {/* Top section — left fills with intro, right has a small badge */}
+        <div className="flex items-start justify-between gap-3"
+          style={{
+            opacity: loaded ? 1 : 0,
+            transform: loaded ? "translateY(0)" : "translateY(-8px)",
+            transition: "opacity .7s ease .1s, transform .7s ease .1s",
+          }}>
+          {/* Left: intro label + 2nd line */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center gap-2">
+              <DiagLine width={22} rotation={20} color="rgba(255,255,255,0.5)" />
+              <span className="text-[9px] uppercase tracking-[0.36em]" style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
+                IN-HOUSE IMAGE STUDIO
+              </span>
+            </div>
+            <span className="text-[9px] uppercase tracking-[0.32em] pl-7" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
+              MV · COMMERCIAL · PHOTO · AIGC
+            </span>
+          </div>
+          {/* Right: small REC badge */}
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(220,50,50,0.85)", boxShadow: "0 0 8px rgba(220,50,50,0.5)", animation: "pulse-slow 1.8s ease-in-out infinite" }} />
+            <span className="text-[8px] uppercase tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
+              REC · 2026
             </span>
           </div>
         </div>
 
-        {/* Center hero — OSCAR + role + tagline */}
+        {/* Center hero — OSCAR + role + tagline (more breathing room between blocks) */}
         <div className="flex-1 flex flex-col justify-center">
 
           {/* DIRECTOR small label */}
@@ -105,7 +132,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
               fontSize: "clamp(5rem, 26vw, 9rem)",
               lineHeight: 0.92,
               letterSpacing: "0.02em",
-              marginTop: "0.4rem",
+              marginTop: "0.5rem",
               opacity: loaded ? 1 : 0,
               transform: loaded ? "translateY(0)" : "translateY(20px)",
               transition: "opacity 1s cubic-bezier(.16,1,.3,1) .3s, transform 1s cubic-bezier(.16,1,.3,1) .3s",
@@ -114,7 +141,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </h1>
 
           {/* Role inline */}
-          <div className="flex items-center gap-2 mt-3"
+          <div className="flex items-center gap-2 mt-5"
             style={{
               opacity: loaded ? 1 : 0,
               transform: loaded ? "translateY(0)" : "translateY(10px)",
@@ -127,7 +154,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </div>
 
           {/* Tagline */}
-          <p className="mt-5 leading-relaxed"
+          <p className="mt-6 leading-relaxed"
             style={{
               fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 300,
               maxWidth: 280,
@@ -137,8 +164,8 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             台中在地影像工作者。<br/>從現場到後製，做能說話的畫面。
           </p>
 
-          {/* Single combined stat row */}
-          <div className="mt-6 flex items-center gap-2 flex-wrap"
+          {/* Stats — pushed to bottom of center area, separated */}
+          <div className="mt-8 flex items-center gap-2 flex-wrap"
             style={{
               opacity: loaded ? 1 : 0,
               transition: "opacity .8s ease .72s",
@@ -153,7 +180,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </div>
 
           {/* TAICHUNG anchor */}
-          <p className="mt-4 text-[10px] uppercase tracking-[0.32em]"
+          <p className="mt-3 text-[10px] uppercase tracking-[0.32em]"
             style={{
               color: "rgba(255,255,255,0.55)", fontWeight: 500,
               opacity: loaded ? 1 : 0,
@@ -163,53 +190,44 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </p>
         </div>
 
-        {/* Bottom: handle row first, then SMALLER lower CTA */}
-        <div className="flex flex-col gap-3"
+        {/* Bottom: extra spacing between info row and CTA */}
+        <div className="flex flex-col gap-5"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(14px)",
             transition: "opacity .9s ease .95s, transform .9s ease .95s",
           }}>
-          {/* Handle + scroll row (above CTA now) */}
-          <div className="flex items-center justify-between mb-1">
+          {/* Info row — handle left only (SCROLL removed: redundant + caused overlap with YT UI bottom-right) */}
+          <div className="flex items-center justify-between">
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
               className="text-[11px] uppercase tracking-[0.2em]"
-              style={{ color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>
+              style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
               @MINEHOOOO.ARW ↗
             </a>
-            <button onClick={() => goto(1)}
-              className="flex items-center gap-2"
-              style={{ background: "none", border: "none", cursor: "pointer" }}
-              aria-label="Scroll down">
-              <span className="text-[9px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 500 }}>
-                SCROLL
-              </span>
-              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>↓</span>
-            </button>
           </div>
 
-          {/* CTA — tiny grainy frosted glass pill, bottom-center */}
+          {/* CTA — bigger touch target + more opaque white (frosted but visible) */}
           <button onClick={() => goto(6)}
             className="active:scale-[0.96] transition-all uppercase mx-auto relative overflow-hidden"
             style={{
-              background: "rgba(255,255,255,0.12)",
-              backdropFilter: "blur(24px) saturate(1.4)",
-              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-              color: "rgba(255,255,255,0.92)",
-              fontSize: 10, fontWeight: 500,
+              background: "rgba(255,255,255,0.28)",
+              backdropFilter: "blur(28px) saturate(1.6)",
+              WebkitBackdropFilter: "blur(28px) saturate(1.6)",
+              color: "#fff",
+              fontSize: 11, fontWeight: 600,
               letterSpacing: "0.22em",
               borderRadius: 999,
-              padding: "9px 22px",
-              border: "1px solid rgba(255,255,255,0.18)",
+              padding: "12px 28px",
+              border: "1px solid rgba(255,255,255,0.45)",
               cursor: "pointer",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12), 0 4px 20px rgba(0,0,0,0.25)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.35), 0 4px 24px rgba(0,0,0,0.35)",
             }}>
             {/* Granular noise overlay for frosted-glass texture */}
             <span aria-hidden="true" style={{
               position: "absolute", inset: 0, pointerEvents: "none",
               backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E\")",
               backgroundSize: "140px 140px",
-              opacity: 0.4,
+              opacity: 0.35,
               mixBlendMode: "overlay",
               borderRadius: 999,
             }} />
