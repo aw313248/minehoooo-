@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "@/hooks/useInView";
 import { CharReveal } from "@/components/WordReveal";
 import { useLang } from "@/contexts/LangContext";
+import { haptic } from "@/lib/haptic";
 
 const IG_ACCOUNTS = [
   { handle: "@minehoooo.arw", href: "https://instagram.com/minehoooo.arw", desc: "Main · Director / DP / Photo" },
@@ -28,8 +29,36 @@ export default function Contact() {
   function copyEmail() {
     navigator.clipboard.writeText("cyuttkengineer@gmail.com").then(() => {
       setCopied(true);
+      haptic.success();
       setTimeout(() => setCopied(false), 2000);
     });
+  }
+
+  // Web Share API — opens native iOS share sheet, falls back to copy-link
+  async function sharePortfolio() {
+    haptic.tap();
+    const shareData = {
+      title: "MINEH4O — 賴明宏 Oscar Lai",
+      text:  "在地影像工作者 · Director · D.P. · Photo · AIGC",
+      url:   "https://minehoooo.vercel.app",
+    };
+    try {
+      if (typeof navigator !== "undefined" && "share" in navigator) {
+        await navigator.share(shareData);
+        haptic.success();
+        return;
+      }
+    } catch {
+      // user cancelled — silent
+      return;
+    }
+    // Fallback: copy URL
+    try {
+      await navigator.clipboard.writeText(shareData.url);
+      setCopied(true);
+      haptic.success();
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* clipboard denied — silent */ }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -192,6 +221,7 @@ export default function Contact() {
             transition: "opacity .8s ease .3s, transform .8s cubic-bezier(.16,1,.3,1) .3s",
           }}>
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
+              onClick={() => haptic.tap()}
               className="group inline-flex items-center gap-5"
               style={{
                 background: "var(--white-ghost)",
@@ -231,9 +261,9 @@ export default function Contact() {
               <span style={{ color: "var(--white-secondary)", fontSize: 22, marginLeft: 6 }}>↗</span>
             </a>
 
-            {/* Toggle: show contact form */}
-            <div style={{ marginTop: 24 }}>
-              <button onClick={() => { setShowForm(v => !v); setFormState("idle"); }}
+            {/* Toggle: show contact form + Share button row */}
+            <div className="flex items-center gap-3 flex-wrap justify-center" style={{ marginTop: 24 }}>
+              <button onClick={() => { haptic.tap(); setShowForm(v => !v); setFormState("idle"); }}
                 className="font-mono-label text-[10px] md:text-[11px] tracking-[0.28em] px-4 py-2"
                 style={{
                   color: showForm ? "var(--white-primary)" : "var(--white-soft)",
@@ -246,6 +276,29 @@ export default function Contact() {
                 onMouseEnter={e => { if (!showForm) (e.currentTarget as HTMLButtonElement).style.background = "var(--white-ghost)"; }}
                 onMouseLeave={e => { if (!showForm) (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}>
                 {showForm ? "↑ CLOSE" : `↓ ${t.formBtn}`}
+              </button>
+
+              {/* Share portfolio — opens iOS native share sheet */}
+              <button onClick={sharePortfolio}
+                className="font-mono-label text-[10px] md:text-[11px] tracking-[0.28em] px-4 py-2 inline-flex items-center gap-2"
+                style={{
+                  color: "var(--white-soft)",
+                  background: "transparent",
+                  borderRadius: 16,
+                  border: "1px solid var(--white-ghost)",
+                  cursor: "pointer",
+                  transition: "all .25s ease",
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--white-ghost)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
+                aria-label="Share this portfolio">
+                {/* iOS-style share glyph */}
+                <svg width="11" height="13" viewBox="0 0 12 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 1v9"/>
+                  <path d="M3 4l3-3 3 3"/>
+                  <rect x="1.25" y="6.5" width="9.5" height="6.5" rx="1" />
+                </svg>
+                <span>{lang === "zh" ? "分享給朋友" : "SHARE"}</span>
               </button>
             </div>
 

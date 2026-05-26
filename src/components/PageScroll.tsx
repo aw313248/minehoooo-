@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, Children } from "react";
+import { haptic } from "@/lib/haptic";
 
 const LABELS = [
   "HERO",
@@ -125,6 +126,7 @@ export default function PageScroll({ children }: Props) {
       const next = p + dir;
       if (next < 0 || next >= total) return p;
       setTrans(true);
+      haptic.bump();   // page-flip haptic feedback
       setTimeout(() => setTrans(false), 950);
       return next;
     });

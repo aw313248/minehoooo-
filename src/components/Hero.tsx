@@ -1,6 +1,78 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { haptic } from "@/lib/haptic";
+
+/* ───────── Hook: device orientation tilt parallax
+   - Returns { x, y } in -1..1 range (multiplied later for translate)
+   - Handles iOS 13+ requestPermission flow (silent: needs user gesture)
+   - Returns zeros on desktop / unsupported devices
+*/
+function useTilt(): { x: number; y: number } {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    // Only touch devices
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+
+    type DOEWithPermission = typeof DeviceOrientationEvent & {
+      requestPermission?: () => Promise<"granted" | "denied">;
+    };
+    const DOE = DeviceOrientationEvent as unknown as DOEWithPermission;
+
+    let raf = 0;
+    let pendingX = 0, pendingY = 0;
+    let started = false;
+
+    const handler = (e: DeviceOrientationEvent) => {
+      const beta  = e.beta  ?? 0; // front-back (-180..180), 0=flat
+      const gamma = e.gamma ?? 0; // left-right (-90..90)
+      // Normalize: gamma ±20° → x ±1, beta (30°=neutral hand-hold) ±15° → y ±1
+      pendingX = Math.max(-1, Math.min(1, gamma / 20));
+      pendingY = Math.max(-1, Math.min(1, (beta - 30) / 15));
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          setTilt({ x: pendingX, y: pendingY });
+          raf = 0;
+        });
+      }
+    };
+
+    const start = () => {
+      if (started) return;
+      started = true;
+      window.addEventListener("deviceorientation", handler);
+    };
+
+    const stop = () => {
+      window.removeEventListener("deviceorientation", handler);
+      if (raf) cancelAnimationFrame(raf);
+    };
+
+    if (typeof DOE.requestPermission === "function") {
+      // iOS — request on first user tap (silent if denied)
+      const onTap = async () => {
+        try {
+          const perm = await DOE.requestPermission!();
+          if (perm === "granted") start();
+        } catch { /* denied — silent */ }
+        document.removeEventListener("touchend", onTap);
+      };
+      document.addEventListener("touchend", onTap, { once: true });
+      return () => {
+        document.removeEventListener("touchend", onTap);
+        stop();
+      };
+    } else {
+      // Android / direct support
+      start();
+      return stop;
+    }
+  }, []);
+
+  return tilt;
+}
 
 /* Featured background video (YouTube embed muted+loop) */
 const HERO_VIDEO_ID = "d9_EuYkmfzM"; // 愚人節 ALL FOOL'S DAY — Jon Chen
@@ -85,6 +157,9 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
   const works    = useCounter(50,  1600, loaded);   // +50 productions
   const years    = useCounter(7,   1400, loaded);   // +7 years
 
+  // Tilt parallax — phone gyroscope produces subtle depth
+  const tilt = useTilt();
+
   return (
     <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
@@ -100,12 +175,14 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             style={{
               position: "absolute",
               top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              // Cover behavior: max of (100vw, 16:9-of-height) wins; same for height
+              // Cover + tilt parallax: shift up to ±18px on each axis based on phone tilt
+              transform: `translate(-50%, -50%) translate(${tilt.x * 18}px, ${tilt.y * 18}px)`,
+              transition: "transform .4s cubic-bezier(.16,1,.3,1)",
               width: "max(100vw, calc(100dvh * 16 / 9))",
               height: "max(100dvh, calc(100vw * 9 / 16))",
               border: "none",
               filter: "brightness(0.5) saturate(0.95)",
+              willChange: "transform",
             }}
             allow="autoplay; encrypted-media"
             title="MINEH4O reel background"
@@ -127,8 +204,13 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 75% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)" }} />
 
-      {/* Content stack — top padding tight so left list sits high near status bar */}
-      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "3.5rem", paddingBottom: "2rem" }}>
+      {/* Content stack — text shifts OPPOSITE to bg for parallax depth */}
+      <div className="relative h-full w-full flex flex-col px-5" style={{
+        paddingTop: "3.5rem", paddingBottom: "2rem",
+        transform: `translate(${tilt.x * -6}px, ${tilt.y * -6}px)`,
+        transition: "transform .4s cubic-bezier(.16,1,.3,1)",
+        willChange: "transform",
+      }}>
 
         {/* Top section — left categories list, right small REC badge — both with layer parallax */}
         <div className="flex items-start justify-between gap-3">
@@ -254,7 +336,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </div>
 
           {/* CTA — bigger touch target + more opaque white (frosted but visible) */}
-          <button onClick={() => goto(6)}
+          <button onClick={() => { haptic.tap(); goto(6); }}
             className="active:scale-[0.96] transition-all uppercase mx-auto relative overflow-hidden"
             style={{
               background: "rgba(255,255,255,0.28)",
