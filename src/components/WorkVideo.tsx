@@ -3,6 +3,263 @@
 import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
+import { haptic } from "@/lib/haptic";
+
+/* ─── Narrative feature card with mobile-friendly award handling ─── */
+function NarrativeFeatureCard({ feature, evIn }: {
+  feature: { id: string; title: string; artist: string; role: string; cat: string; award?: string };
+  evIn: boolean;
+}) {
+  const [awardOpen, setAwardOpen] = useState(false);
+  return (
+    <>
+    <a key={feature.id}
+      href={`https://www.youtube.com/watch?v=${feature.id}`}
+      target="_blank" rel="noopener noreferrer"
+      className="md:col-span-6 group relative block overflow-hidden"
+      onContextMenu={e => {
+        if (!feature.award) return;
+        e.preventDefault();
+        haptic.bump();
+        setAwardOpen(true);
+      }}
+      style={{
+        aspectRatio: "16/11",
+        borderRadius: 22,
+        background: "#050505",
+        border: "1px solid var(--white-ghost)",
+        opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(28px)",
+        transition: "opacity .9s cubic-bezier(.16,1,.3,1) .1s, transform .9s cubic-bezier(.16,1,.3,1) .1s, border-color .3s",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,210,70,0.5)")}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`https://img.youtube.com/vi/${feature.id}/maxresdefault.jpg`}
+        alt={`${feature.title} - 在地影像工作者 MINEH4O`}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
+        style={{ filter: "brightness(0.78)" }}
+        onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${feature.id}/mqdefault.jpg`; }} />
+
+      {/* Film grain overlay */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        backgroundSize: "180px 180px",
+        opacity: 0.06,
+        mixBlendMode: "overlay",
+      }} />
+
+      {/* Bottom gradient — heavy, magazine cover style */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 30%, transparent 55%, rgba(0,0,0,0.35) 100%)",
+      }} />
+
+      {/* Top-left: editorial meta */}
+      <div className="absolute top-4 left-4 right-4 md:top-5 md:left-5 md:right-5 z-[2] flex justify-between items-start">
+        <div>
+          <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "rgba(255,210,70,0.85)" }}>
+            ★ FEATURED FILM
+          </span>
+          <p className="font-mono-label text-[8px] tracking-[0.28em] mt-1" style={{ color: "var(--white-soft)" }}>
+            {feature.role} · {feature.cat}
+          </p>
+        </div>
+        <span className="font-mono-label text-[8px] tracking-[0.32em] px-2.5 py-1"
+          style={{ background: "rgba(0,0,0,0.5)", border: "1px solid var(--white-ghost)", borderRadius: 999, color: "var(--white-secondary)" }}>
+          2024
+        </span>
+      </div>
+
+      {/* Award badge — desktop verbose, mobile just compact ★ icon top-right */}
+      {feature.award && (
+        <>
+          {/* Desktop: full verbose award text */}
+          <div className="hidden md:block absolute top-20 left-5 right-5 z-[2]">
+            <span className="inline-block font-mono-label leading-relaxed"
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.16em",
+                padding: "8px 14px",
+                background: "rgba(255,210,70,0.18)",
+                border: "1px solid rgba(255,210,70,0.55)",
+                color: "rgba(255,225,140,0.98)",
+                borderRadius: 14,
+                backdropFilter: "blur(10px)",
+                boxShadow: "0 2px 22px rgba(255,210,70,0.22)",
+                fontWeight: 500,
+                maxWidth: "100%",
+              }}>
+              ★ {feature.award}
+            </span>
+          </div>
+          {/* Mobile: small ★ chip with hint — long press to expand */}
+          <div className="md:hidden absolute top-16 right-4 z-[3] flex items-center gap-1.5"
+            style={{
+              padding: "5px 10px",
+              background: "rgba(255,210,70,0.22)",
+              border: "1px solid rgba(255,210,70,0.6)",
+              color: "rgba(255,225,140,1)",
+              backdropFilter: "blur(8px)",
+              borderRadius: 999,
+              boxShadow: "0 2px 14px rgba(255,210,70,0.3)",
+            }}>
+            <span style={{ fontSize: 13, fontWeight: 500 }}>★</span>
+            <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.22em" }}>長按看獎項</span>
+          </div>
+        </>
+      )}
+
+      {/* Bottom: title block magazine cover style */}
+      <div className="absolute bottom-0 left-0 right-0 px-5 md:px-8 pb-5 md:pb-8 z-[2]">
+        <h3 className="font-display leading-none mb-2"
+          style={{ fontSize: "clamp(2rem, 5vw, 4.4rem)", color: "var(--text)", letterSpacing: "0.01em", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
+          {feature.title}
+        </h3>
+        <p className="font-mono-label text-[10px] tracking-[0.22em] mt-2 md:mt-3" style={{ color: "var(--white-soft)" }}>
+          {feature.artist}
+        </p>
+      </div>
+
+      {/* Play hover */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3] pointer-events-none">
+        <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)", border: "1px solid var(--white-dim)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
+        </div>
+      </div>
+    </a>
+    <AwardOverlay text={awardOpen ? (feature.award ?? null) : null} onClose={() => setAwardOpen(false)} />
+    </>
+  );
+}
+
+/* ─── Narrative side card with award long-press support ─── */
+interface SideCardItem { id: string; title: string; artist: string; role: string; cat: string; award?: string }
+function NarrativeSideCard({ v, index, evIn }: { v: SideCardItem; index: number; evIn: boolean }) {
+  const [awardOpen, setAwardOpen] = useState(false);
+  return (
+    <>
+    <a key={v.id}
+      href={`https://www.youtube.com/watch?v=${v.id}`}
+      target="_blank" rel="noopener noreferrer"
+      className="group relative block overflow-hidden"
+      onContextMenu={e => {
+        if (!v.award) return;
+        e.preventDefault();
+        haptic.bump();
+        setAwardOpen(true);
+      }}
+      style={{
+        aspectRatio: "16/9",
+        borderRadius: 18,
+        background: "#050505",
+        border: "1px solid var(--white-ghost)",
+        opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${0.2 + index * 0.1}s, transform .8s cubic-bezier(.16,1,.3,1) ${0.2 + index * 0.1}s, border-color .3s`,
+      }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white-muted)")}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
+        alt={`${v.title} - MINEH4O`}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+        style={{ filter: "brightness(0.8)" }}
+        onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
+
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)",
+      }} />
+
+      {/* Top right: year/issue marker */}
+      <div className="absolute top-3 right-3 z-[2]">
+        <span className="font-mono-label text-[7px] tracking-[0.3em] px-2 py-0.5"
+          style={{ background: "rgba(0,0,0,0.6)", color: "var(--white-secondary)", borderRadius: 999, border: "1px solid var(--white-ghost)" }}>
+          0{index + 2}
+        </span>
+      </div>
+
+      {/* Award badge — desktop verbose, mobile compact ★ */}
+      {v.award && (
+        <>
+          <div className="hidden md:block absolute top-3 left-3 right-12 z-[2]">
+            <span className="inline-block font-mono-label"
+              style={{
+                fontSize: 9, letterSpacing: "0.14em",
+                padding: "4px 10px",
+                background: "rgba(255,210,70,0.18)",
+                border: "1px solid rgba(255,210,70,0.5)",
+                color: "rgba(255,225,140,0.95)",
+                borderRadius: 6, backdropFilter: "blur(8px)",
+                fontWeight: 500, lineHeight: 1.3,
+              }}>
+              ★ {v.award}
+            </span>
+          </div>
+          <span aria-label="Award winner — long press for details"
+            className="md:hidden absolute top-2.5 left-2.5 inline-flex items-center justify-center"
+            style={{
+              width: 26, height: 26, borderRadius: "50%",
+              background: "rgba(255,210,70,0.22)",
+              border: "1px solid rgba(255,210,70,0.6)",
+              color: "rgba(255,225,140,1)",
+              backdropFilter: "blur(8px)",
+              fontSize: 12, fontWeight: 500,
+              boxShadow: "0 2px 12px rgba(255,210,70,0.3)",
+              zIndex: 3,
+            }}>★</span>
+        </>
+      )}
+
+      {/* Bottom: title + meta */}
+      <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 z-[2]">
+        <h4 className="font-display leading-tight mb-1"
+          style={{ fontSize: "clamp(1.2rem, 1.6vw, 1.6rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+          {v.title}
+        </h4>
+        <p className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-soft)" }}>
+          {v.role} · {v.artist}
+        </p>
+      </div>
+    </a>
+    <AwardOverlay text={awardOpen ? (v.award ?? null) : null} onClose={() => setAwardOpen(false)} />
+    </>
+  );
+}
+
+/* ─── Award overlay — opens via long-press on mobile cards ─── */
+function AwardOverlay({ text, onClose }: { text: string | null; onClose: () => void }) {
+  if (!text) return null;
+  return (
+    <div className="md:hidden fixed inset-0 z-[200] flex items-center justify-center p-6"
+      style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
+      onClick={onClose}
+      onTouchEnd={onClose}>
+      <div className="max-w-md text-center relative"
+        style={{
+          background: "linear-gradient(135deg, rgba(255,210,70,0.18), rgba(255,210,70,0.08))",
+          border: "1px solid rgba(255,210,70,0.55)",
+          borderRadius: 20,
+          padding: "24px 24px 20px",
+          boxShadow: "0 10px 60px rgba(255,210,70,0.25)",
+        }}
+        onClick={(e) => e.stopPropagation()}>
+        <span className="block text-[10px] tracking-[0.32em] mb-3" style={{ color: "rgba(255,225,140,0.7)" }}>
+          ★ AWARDS
+        </span>
+        <p className="text-[14px] leading-relaxed font-medium" style={{ color: "rgba(255,235,180,0.98)" }}>
+          {text}
+        </p>
+        <button className="font-mono-label text-[9px] tracking-[0.32em] mt-5 px-4 py-1.5"
+          style={{ color: "rgba(255,225,140,0.6)", background: "none", border: "1px solid rgba(255,210,70,0.3)", borderRadius: 999, cursor: "pointer" }}
+          onClick={onClose}>
+          TAP TO CLOSE
+        </button>
+      </div>
+    </div>
+  );
+}
 
 
 /* ─── Data ─── */
@@ -583,11 +840,20 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
 }
 
 /* ─── Grid card ─── */
-function GridCard({ id, title, artist, role, cat, award }: {
+function GridCard({ id, title, artist, role, award }: {
   id: string; title: string; artist?: string; role: string; cat?: string; award?: string;
 }) {
+  const [awardOpen, setAwardOpen] = useState(false);
   return (
-    <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="group block">
+    <>
+    <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer"
+      className="group block"
+      onContextMenu={e => {
+        if (!award) return;
+        e.preventDefault();
+        haptic.bump();
+        setAwardOpen(true);
+      }}>
       <HoverPreview id={id}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={`https://img.youtube.com/vi/${id}/maxresdefault.jpg`} alt={`${artist ? artist + " " : ""}${title} - 在地影像工作者 MINEH4O`}
@@ -595,30 +861,27 @@ function GridCard({ id, title, artist, role, cat, award }: {
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${id}/mqdefault.jpg`; }} />
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.15)", transition: "background .4s" }} />
-        {(cat || award) && (
-          <div className="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5">
-            {award && (
-              <span className="font-mono-label text-[10px] md:text-[11px] tracking-[0.18em] px-3 py-1.5"
-                style={{
-                  background: "rgba(255,210,70,0.18)",
-                  border: "1px solid rgba(255,210,70,0.55)",
-                  color: "rgba(255,225,140,0.98)",
-                  backdropFilter: "blur(10px)",
-                  borderRadius: 14,
-                  boxShadow: "0 2px 18px rgba(255,210,70,0.18)",
-                  fontWeight: 500,
-                  lineHeight: 1.35,
-                }}>
+        {/* Cat label (MUSIC VIDEO etc) removed entirely per user feedback — redundant */}
+        {award && (
+          <>
+            {/* Mobile: tiny ★ icon top-right only — long-press to expand */}
+            <span aria-label="Award winner — long press for details"
+              className="md:hidden absolute top-2.5 right-2.5 inline-flex items-center justify-center"
+              style={{
+                width: 28, height: 28, borderRadius: "50%",
+                background: "rgba(255,210,70,0.22)",
+                border: "1px solid rgba(255,210,70,0.6)",
+                color: "rgba(255,225,140,1)",
+                backdropFilter: "blur(8px)",
+                fontSize: 13, fontWeight: 500,
+                boxShadow: "0 2px 14px rgba(255,210,70,0.3)",
+              }}>★</span>
+            {/* Desktop: verbose badge */}
+            <div className="hidden md:flex absolute top-3 left-3 right-3 flex-wrap gap-1.5">
                 ★ {award}
               </span>
-            )}
-            {cat && !award && (
-              <span className="font-mono-label text-[7px] tracking-widest px-2 py-1"
-                style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", color: "var(--white-secondary)", borderRadius: 6 }}>
-                {cat}
-              </span>
-            )}
-          </div>
+            </div>
+          </>
         )}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-9 h-9 rounded-full flex items-center justify-center"
@@ -633,6 +896,8 @@ function GridCard({ id, title, artist, role, cat, award }: {
         <div className="mt-1.5"><RoleTag text={role} /></div>
       </div>
     </a>
+    <AwardOverlay text={awardOpen ? (award ?? null) : null} onClose={() => setAwardOpen(false)} />
+    </>
   );
 }
 
@@ -1108,171 +1373,12 @@ export default function WorkVideo() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
 
             {/* ─── FEATURE CARD (回收場的夏天 — most awards) ─── */}
-            {(() => {
-              const feature = narrativeShorts[0];
-              return (
-                <a key={feature.id}
-                  href={`https://www.youtube.com/watch?v=${feature.id}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="md:col-span-6 group relative block overflow-hidden"
-                  style={{
-                    aspectRatio: "16/11",
-                    borderRadius: 22,
-                    background: "#050505",
-                    border: "1px solid var(--white-ghost)",
-                    opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(28px)",
-                    transition: "opacity .9s cubic-bezier(.16,1,.3,1) .1s, transform .9s cubic-bezier(.16,1,.3,1) .1s, border-color .3s",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,210,70,0.5)")}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
-
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${feature.id}/maxresdefault.jpg`}
-                    alt={`${feature.title} - 在地影像工作者 MINEH4O`}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-105"
-                    style={{ filter: "brightness(0.78)" }}
-                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${feature.id}/mqdefault.jpg`; }} />
-
-                  {/* Film grain overlay */}
-                  <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
-                    backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-                    backgroundSize: "180px 180px",
-                    opacity: 0.06,
-                    mixBlendMode: "overlay",
-                  }} />
-
-                  {/* Bottom gradient — heavy, magazine cover style */}
-                  <div className="absolute inset-0 pointer-events-none" style={{
-                    background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 30%, transparent 55%, rgba(0,0,0,0.35) 100%)",
-                  }} />
-
-                  {/* Top-left: editorial meta */}
-                  <div className="absolute top-5 left-5 right-5 z-[2] flex justify-between items-start">
-                    <div>
-                      <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "rgba(255,210,70,0.85)" }}>
-                        ★ FEATURED FILM
-                      </span>
-                      <p className="font-mono-label text-[8px] tracking-[0.28em] mt-1" style={{ color: "var(--white-soft)" }}>
-                        {feature.role} · {feature.cat}
-                      </p>
-                    </div>
-                    <span className="font-mono-label text-[8px] tracking-[0.32em] px-2.5 py-1"
-                      style={{ background: "rgba(0,0,0,0.5)", border: "1px solid var(--white-ghost)", borderRadius: 999, color: "var(--white-secondary)" }}>
-                      2024
-                    </span>
-                  </div>
-
-                  {/* Award badge — prominent on feature card */}
-                  {feature.award && (
-                    <div className="absolute top-20 left-5 right-5 z-[2]">
-                      <span className="inline-block font-mono-label leading-relaxed"
-                        style={{
-                          fontSize: 11,
-                          letterSpacing: "0.16em",
-                          padding: "8px 14px",
-                          background: "rgba(255,210,70,0.18)",
-                          border: "1px solid rgba(255,210,70,0.55)",
-                          color: "rgba(255,225,140,0.98)",
-                          borderRadius: 14,
-                          backdropFilter: "blur(10px)",
-                          boxShadow: "0 2px 22px rgba(255,210,70,0.22)",
-                          fontWeight: 500,
-                          maxWidth: "100%",
-                        }}>
-                        ★ {feature.award}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Bottom: title block magazine cover style */}
-                  <div className="absolute bottom-0 left-0 right-0 px-6 md:px-8 pb-6 md:pb-8 z-[2]">
-                    <h3 className="font-display leading-none mb-2"
-                      style={{ fontSize: "clamp(2.4rem, 5vw, 4.4rem)", color: "var(--text)", letterSpacing: "0.01em", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
-                      {feature.title}
-                    </h3>
-                    <p className="font-mono-label text-[10px] tracking-[0.22em] mt-3" style={{ color: "var(--white-soft)" }}>
-                      {feature.artist}
-                    </p>
-                  </div>
-
-                  {/* Play hover */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3] pointer-events-none">
-                    <div style={{ width: 64, height: 64, borderRadius: "50%", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)", border: "1px solid var(--white-dim)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
-                    </div>
-                  </div>
-                </a>
-              );
-            })()}
+            <NarrativeFeatureCard feature={narrativeShorts[0]} evIn={evIn} />
 
             {/* ─── SIDE STACK — 2 cards, larger to match feature height ─── */}
             <div className="md:col-span-6 grid grid-cols-1 gap-5 md:gap-6">
               {narrativeShorts.slice(1).map((v, i) => (
-                <a key={v.id}
-                  href={`https://www.youtube.com/watch?v=${v.id}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="group relative block overflow-hidden"
-                  style={{
-                    aspectRatio: "16/9",
-                    borderRadius: 18,
-                    background: "#050505",
-                    border: "1px solid var(--white-ghost)",
-                    opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                    transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${0.2 + i * 0.1}s, transform .8s cubic-bezier(.16,1,.3,1) ${0.2 + i * 0.1}s, border-color .3s`,
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white-muted)")}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
-
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
-                    alt={`${v.title} - MINEH4O`}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    style={{ filter: "brightness(0.8)" }}
-                    onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
-
-                  <div className="absolute inset-0 pointer-events-none" style={{
-                    background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)",
-                  }} />
-
-                  {/* Top right: year/issue marker */}
-                  <div className="absolute top-3 right-3 z-[2]">
-                    <span className="font-mono-label text-[7px] tracking-[0.3em] px-2 py-0.5"
-                      style={{ background: "rgba(0,0,0,0.6)", color: "var(--white-secondary)", borderRadius: 999, border: "1px solid var(--white-ghost)" }}>
-                      0{i + 2}
-                    </span>
-                  </div>
-
-                  {/* Award badge if exists */}
-                  {"award" in v && v.award && (
-                    <div className="absolute top-3 left-3 right-12 z-[2]">
-                      <span className="inline-block font-mono-label"
-                        style={{
-                          fontSize: 9, letterSpacing: "0.14em",
-                          padding: "4px 10px",
-                          background: "rgba(255,210,70,0.18)",
-                          border: "1px solid rgba(255,210,70,0.5)",
-                          color: "rgba(255,225,140,0.95)",
-                          borderRadius: 6, backdropFilter: "blur(8px)",
-                          fontWeight: 500, lineHeight: 1.3,
-                        }}>
-                        ★ {v.award}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Bottom: title + meta */}
-                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 z-[2]">
-                    <h4 className="font-display leading-tight mb-1"
-                      style={{ fontSize: "clamp(1.2rem, 1.6vw, 1.6rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-                      {v.title}
-                    </h4>
-                    <p className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-soft)" }}>
-                      {v.role} · {v.artist}
-                    </p>
-                  </div>
-                </a>
+                <NarrativeSideCard key={v.id} v={v} index={i} evIn={evIn} />
               ))}
             </div>
           </div>
