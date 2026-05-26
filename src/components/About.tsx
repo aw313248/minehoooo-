@@ -142,10 +142,10 @@ export default function About() {
           COVER — full viewport, photo + name
       ═══════════════════════════════════════ */}
       <div style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
-        {/* Background photo — Ken Burns slow zoom */}
+        {/* Background photo — Oscar portrait, Ken Burns slow zoom */}
         <Image
-          src="/profile.png"
-          alt="Oscar Lai — minehoooo"
+          src="/oscar-portrait.jpg"
+          alt="Oscar Lai — 賴明宏 MINEH4O 影像工作者大頭照"
           fill
           priority
           className="object-cover"
@@ -436,7 +436,7 @@ export default function About() {
 
           {/* Mobile photo banner — before bio */}
           <div className="md:hidden -mx-8 relative overflow-hidden mb-2" style={{ height: "52vw" }}>
-            <Image src="/profile.png" alt="Oscar" fill className="object-cover" style={{ objectPosition: "center 15%" }} />
+            <Image src="/oscar-portrait.jpg" alt="Oscar Lai — 賴明宏 大頭照" fill className="object-cover" style={{ objectPosition: "center 15%" }} />
             <div style={{
               position: "absolute", inset: 0,
               background: "linear-gradient(to bottom, rgba(10,10,11,0.1) 0%, rgba(10,10,11,0.96) 100%)",
