@@ -163,45 +163,48 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           </p>
         </div>
 
-        {/* Bottom: handle + big CTA */}
+        {/* Bottom: handle row first, then SMALLER lower CTA */}
         <div className="flex flex-col gap-3"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(14px)",
             transition: "opacity .9s ease .95s, transform .9s ease .95s",
           }}>
-          <button onClick={() => goto(6)}
-            className="active:bg-neutral-200 transition-colors uppercase w-full"
-            style={{
-              background: "#fff",
-              color: "#000",
-              fontSize: 14, fontWeight: 600,
-              letterSpacing: "0.1em",
-              borderRadius: 999,
-              padding: "16px 22px",
-              border: "none",
-              cursor: "pointer",
-              boxShadow: "0 4px 24px rgba(255,255,255,0.15)",
-            }}>
-            LET&apos;S WORK →
-          </button>
-
-          <div className="flex items-center justify-between">
+          {/* Handle + scroll row (above CTA now) */}
+          <div className="flex items-center justify-between mb-1">
             <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
               className="text-[11px] uppercase tracking-[0.2em]"
-              style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
+              style={{ color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>
               @MINEHOOOO.ARW ↗
             </a>
             <button onClick={() => goto(1)}
               className="flex items-center gap-2"
               style={{ background: "none", border: "none", cursor: "pointer" }}
               aria-label="Scroll down">
-              <span className="text-[9px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>
+              <span className="text-[9px] tracking-[0.32em] uppercase" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 500 }}>
                 SCROLL
               </span>
-              <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 12 }}>↓</span>
+              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: 12 }}>↓</span>
             </button>
           </div>
+
+          {/* CTA — compact, transparent glass pill */}
+          <button onClick={() => goto(6)}
+            className="active:scale-[0.98] transition-all uppercase mx-auto"
+            style={{
+              background: "rgba(255,255,255,0.78)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+              color: "#000",
+              fontSize: 12, fontWeight: 600,
+              letterSpacing: "0.12em",
+              borderRadius: 999,
+              padding: "11px 28px",
+              border: "1px solid rgba(255,255,255,0.5)",
+              cursor: "pointer",
+            }}>
+            LET&apos;S WORK →
+          </button>
         </div>
       </div>
     </section>

@@ -64,29 +64,30 @@ export default function Navbar() {
         }} />
       </div>
 
-      <nav className="flex items-center justify-between gap-4 px-6 md:px-10 pt-5">
+      <nav className="flex items-center justify-between gap-4 px-4 md:px-10 pt-3 md:pt-5">
 
-        {/* ── LEFT PILL: logo + brand ── */}
+        {/* ── LEFT PILL: logo + brand (compact on mobile) ── */}
         <button
           onClick={() => goto(0)}
-          className="flex items-center gap-2.5 hover:bg-neutral-800/90 transition-colors"
+          className="flex items-center gap-2 md:gap-2.5 hover:bg-neutral-800/90 transition-colors"
           aria-label="Home"
           style={{
-            background: "rgba(23,23,23,0.85)",
+            background: "rgba(23,23,23,0.78)",
             backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
             border: "1px solid rgba(255,255,255,0.06)",
             borderRadius: 999,
-            paddingLeft: 16, paddingRight: 22,
-            paddingTop: 11, paddingBottom: 11,
             cursor: "pointer",
-            opacity: scrolled || activePage > 0 ? 1 : 0.95,
+            opacity: scrolled || activePage > 0 ? 1 : 0.9,
           }}>
-          {/* Logo mark — four-square M */}
-          <svg className="h-5 w-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" fill="#ffffff"/>
-          </svg>
-          <span className="text-white text-sm uppercase" style={{ fontWeight: 500, letterSpacing: "0.04em" }}>
-            MINEHOOOO
+          {/* Logo mark — four-square M (smaller on mobile) */}
+          <span className="flex items-center pl-3 md:pl-4 pr-1.5 md:pr-2 py-2 md:py-2.5">
+            <svg className="h-3.5 w-3.5 md:h-5 md:w-5" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 128 L 64 128 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z M 128 64 L 128 128 L 64.5 128 L 32 95 L 0 64 L 0 0 L 64 0 Z M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 128 0 L 192 0 Z" fill="#ffffff"/>
+            </svg>
+          </span>
+          <span className="text-white uppercase pr-4 md:pr-5 py-2 md:py-2.5" style={{ fontWeight: 500, letterSpacing: "0.04em", fontSize: "11px" }}>
+            <span className="hidden md:inline" style={{ fontSize: "14px" }}>MINEHOOOO</span>
+            <span className="md:hidden">MINEHOOOO</span>
           </span>
         </button>
 
