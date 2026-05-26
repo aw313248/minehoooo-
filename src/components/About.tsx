@@ -35,14 +35,14 @@ const skills = [
 ];
 
 const credits = [
-  { text: "古林睿煬 — 2024 CPBL MVP · 日職北海道火腿鬥士", highlight: true  },
-  { text: "陳卓 Jon Chen 光與景三部曲 + 愚人節 — DIR · DP", highlight: true  },
-  { text: "Kolli — MV DIR · DP",                            highlight: true  },
-  { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · DP",     highlight: true  },
-  { text: "明星賽紀實：逐夢之路 Taiwolf — DIR · DP",        highlight: true  },
-  { text: "多位知名音樂人 MV 攝影 · 調色",                  highlight: false },
-  { text: "「紅箱子」入圍 2023 放視大賞",                   highlight: false },
-  { text: "傳播藝術系 27th 系學會副會長",                   highlight: false },
+  { text: "陳卓《愚人節 ALL FOOL'S DAY》五週年紀念 — DIR · D.P.", highlight: true  },
+  { text: "中華職棒明星賽紀實《精銳》Taiwolf — DIR · D.P.",       highlight: true  },
+  { text: "Lil RAD × Coy6oi ft.斑恩 Ben《早知道一個人也過得很好》— D.P.", highlight: true },
+  { text: "89教科書《愛你真的梅辦法》— COLOR",                    highlight: true  },
+  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · D.P.",              highlight: true  },
+  { text: "Kolli《BRING ME YOUR LOVELY》— DIR · D.P. · AI 混合", highlight: true  },
+  { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · D.P.",         highlight: false },
+  { text: "古林睿煬 — 2024 CPBL MVP · 日職北海道火腿鬥士",          highlight: false },
 ];
 
 
@@ -343,11 +343,27 @@ export default function About() {
             </p>
           </div>
 
-          {/* Details */}
+          {/* ── Featured stat — monthly social reach ── */}
+          <div className="border-l-2 pl-4 py-2"
+            style={{ borderColor: "rgba(255,210,70,0.65)", background: "linear-gradient(90deg, rgba(255,210,70,0.06), transparent)" }}>
+            <p className="font-mono-label text-[10px] tracking-[0.32em] mb-1"
+              style={{ color: "rgba(255,225,140,0.85)" }}>
+              MONTHLY PEAK · 月觀看高峰
+            </p>
+            <p className="font-display leading-none"
+              style={{ fontSize: "clamp(2rem, 4vw, 2.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+              500萬+
+            </p>
+            <p className="font-mono-label text-[10px] mt-2" style={{ color: "var(--text-2)" }}>
+              Threads · Instagram · 短影音曝光
+            </p>
+          </div>
+
+          {/* Details — simplified per user feedback (education condensed, in-school items removed) */}
           <div className="space-y-5">
             {[
-              { label: "ROLE / 職稱",       value: "Director · DP · Screenplay\n導演 · 攝影師 · 編劇" },
-              { label: "EDUCATION / 學歷",  value: "朝陽科技大學\n傳播藝術系 · 電影組" },
+              { label: "ROLE / 職稱",       value: "Director · D.P. · Screenplay" },
+              { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系" },
               { label: "BASED IN / 所在地", value: "Taiwan · Taichung · GMT+8" },
               { label: "TOOLS / 工具",      value: "Premiere Pro · DaVinci Resolve\nAfter Effects · Lightroom" },
               { label: "SINCE / 起始年",    value: "2019 — NOW" },
@@ -356,21 +372,21 @@ export default function About() {
                 <p className="font-mono-label text-[10px] tracking-[0.28em] mb-1.5" style={{ color: "var(--text-3)" }}>
                   {item.label}
                 </p>
-                <p className="font-mono-label text-[12px] leading-relaxed whitespace-pre-line" style={{ color: "var(--text-2)" }}>
+                <p className="font-mono-label text-[13px] leading-relaxed whitespace-pre-line" style={{ color: "var(--text)" }}>
                   {item.value}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Credits */}
-          <div className="border-t pt-6 space-y-2.5" style={{ borderColor: "var(--border)" }}>
-            <p className="font-mono-label text-[10px] tracking-[0.28em] mb-3.5" style={{ color: "var(--text-3)" }}>
-              SELECTED CREDITS / 部分合作
+          {/* Credits — text size + opacity bumped per user, focus on highest-viewed works */}
+          <div className="border-t pt-6 space-y-3" style={{ borderColor: "var(--border)" }}>
+            <p className="font-mono-label text-[10px] tracking-[0.28em] mb-4" style={{ color: "var(--white-soft)" }}>
+              SELECTED CREDITS / 代表作品
             </p>
             {credits.map(c => (
-              <p key={c.text} className="font-mono-label text-[11px] leading-relaxed"
-                style={{ color: c.highlight ? "var(--text-2)" : "var(--text-3)" }}>
+              <p key={c.text} className="font-mono-label text-[12px] leading-relaxed"
+                style={{ color: c.highlight ? "var(--text)" : "var(--text-2)" }}>
                 — {c.text}
               </p>
             ))}
@@ -402,23 +418,38 @@ export default function About() {
 
           {/* Mobile identity block */}
           <div className="md:hidden space-y-5 border-b pb-8" style={{ borderColor: "var(--border)" }}>
+            {/* Featured monthly reach stat */}
+            <div className="border-l-2 pl-3 py-2"
+              style={{ borderColor: "rgba(255,210,70,0.65)", background: "linear-gradient(90deg, rgba(255,210,70,0.06), transparent)" }}>
+              <p className="font-mono-label text-[9px] tracking-[0.3em] mb-1"
+                style={{ color: "rgba(255,225,140,0.85)" }}>
+                月觀看高峰
+              </p>
+              <p className="font-display leading-none"
+                style={{ fontSize: "2rem", color: "var(--text)", letterSpacing: "0.01em" }}>
+                500萬+
+              </p>
+              <p className="font-mono-label text-[9px] mt-1.5" style={{ color: "var(--text-2)" }}>
+                Threads · IG · 短影音
+              </p>
+            </div>
             <div className="space-y-4">
               {[
-                { label: "ROLE / 職稱",       value: "Director · DP · Screenplay" },
-                { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系 · 電影組" },
+                { label: "ROLE / 職稱",       value: "Director · D.P. · Screenplay" },
+                { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系" },
                 { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
               ].map(item => (
                 <div key={item.label}>
-                  <p className="font-mono-label text-[8px] tracking-[0.3em] mb-1" style={{ color: "var(--text-3)" }}>{item.label}</p>
-                  <p className="font-mono-label text-[10px]" style={{ color: "var(--text-2)" }}>{item.value}</p>
+                  <p className="font-mono-label text-[9px] tracking-[0.3em] mb-1" style={{ color: "var(--text-3)" }}>{item.label}</p>
+                  <p className="font-mono-label text-[11px]" style={{ color: "var(--text)" }}>{item.value}</p>
                 </div>
               ))}
             </div>
-            <div className="space-y-1.5">
-              <p className="font-mono-label text-[8px] tracking-[0.3em] mb-2" style={{ color: "var(--text-3)" }}>SELECTED CREDITS</p>
+            <div className="space-y-2">
+              <p className="font-mono-label text-[9px] tracking-[0.3em] mb-2" style={{ color: "var(--white-soft)" }}>SELECTED CREDITS / 代表作品</p>
               {credits.map(c => (
-                <p key={c.text} className="font-mono-label text-[8px]"
-                  style={{ color: c.highlight ? "var(--text-2)" : "var(--text-3)" }}>— {c.text}</p>
+                <p key={c.text} className="font-mono-label text-[10px] leading-relaxed"
+                  style={{ color: c.highlight ? "var(--text)" : "var(--text-2)" }}>— {c.text}</p>
               ))}
             </div>
             <div className="flex gap-4 flex-wrap">

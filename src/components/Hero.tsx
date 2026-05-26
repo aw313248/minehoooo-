@@ -153,7 +153,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
   // Counter values — start animating when loaded
-  const views    = useCounter(150, 1800, loaded);   // +150K views
+  const reach    = useCounter(500, 2000, loaded);   // 500萬 peak monthly reach (Threads + IG)
   const works    = useCounter(50,  1600, loaded);   // +50 productions
   const years    = useCounter(7,   1400, loaded);   // +7 years
 
@@ -210,11 +210,11 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
         willChange: "transform",
       }}>
 
-        {/* Top: single-line categories, clean */}
-        <div className="flex items-center gap-2" style={layerStyle(loaded, isActive, 0.1)}>
-          <DiagLine width={16} rotation={20} color="rgba(255,255,255,0.4)" />
-          <span className="text-[9px] uppercase tracking-[0.32em]"
-            style={{ color: "rgba(255,255,255,0.78)", fontWeight: 500 }}>
+        {/* Top: single-line categories — smaller + tighter for cleaner look */}
+        <div className="flex items-center gap-1.5" style={layerStyle(loaded, isActive, 0.1)}>
+          <DiagLine width={12} rotation={20} color="rgba(255,255,255,0.35)" />
+          <span className="text-[8px] uppercase tracking-[0.22em]"
+            style={{ color: "rgba(255,255,255,0.65)", fontWeight: 500 }}>
             {MOBILE_CATEGORIES.join(" · ")}
           </span>
         </div>
@@ -279,10 +279,10 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             style={{ ...layerStyle(loaded, isActive, 0.7), maxWidth: 320 }}>
             <div className="flex flex-col">
               <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6.5vw, 2.4rem)" }}>
-                +{views}K
+                {reach}萬+
               </span>
               <span className="text-[9px] uppercase tracking-[0.22em] mt-0.5" style={{ color: "rgba(255,255,255,0.55)" }}>
-                VIEWS
+                月觀看高峰
               </span>
             </div>
             <div className="flex flex-col items-center border-l border-r"
@@ -494,12 +494,12 @@ function HeroDesktop({ loaded, iframeReady, isActive }: {
           <div className="flex items-center gap-3 justify-end">
             <DiagLine width={56} rotation={20} />
             <span className="hero-title text-white" style={{ fontSize: "clamp(1.8rem, 3.2vw, 2.6rem)" }}>
-              +150K
+              500萬+
             </span>
           </div>
           <p className="text-[10px] mt-1 text-right uppercase tracking-[0.24em]"
             style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
-            VIEWS
+            月觀看高峰 · PEAK MONTHLY
           </p>
         </div>
 
