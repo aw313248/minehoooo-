@@ -112,23 +112,31 @@ function layerStyle(loaded: boolean, isActive: boolean, delay = 0): React.CSSPro
 }
 
 /* ───────── Helper: count-up animation for stats
-   Starts when `enabled` (loaded) becomes true. Eases out cubic. */
-function useCounter(target: number, duration: number, enabled: boolean): number {
+   - enabled: when true, start animation
+   - startDelay: ms to wait before starting (lets you stagger when multiple counters exist)
+   - duration: total animation time
+   Eases out cubic so it slows toward the end (good for "settling" feel). */
+function useCounter(target: number, duration: number, enabled: boolean, startDelay: number = 0): number {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!enabled) { setValue(0); return; }
     let raf = 0;
     let startTime: number | null = null;
-    const tick = (t: number) => {
-      if (startTime === null) startTime = t;
-      const progress = Math.min(1, (t - startTime) / duration);
-      const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-      setValue(Math.round(target * eased));
-      if (progress < 1) raf = requestAnimationFrame(tick);
+    const delayTimer = setTimeout(() => {
+      const tick = (t: number) => {
+        if (startTime === null) startTime = t;
+        const progress = Math.min(1, (t - startTime) / duration);
+        const eased    = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        setValue(Math.round(target * eased));
+        if (progress < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, startDelay);
+    return () => {
+      clearTimeout(delayTimer);
+      if (raf) cancelAnimationFrame(raf);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, duration, enabled]);
+  }, [target, duration, enabled, startDelay]);
   return value;
 }
 
@@ -153,9 +161,11 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
   // Counter values — start animating when loaded
-  const reach    = useCounter(500, 2000, loaded);   // 500萬 peak monthly reach (Threads + IG)
-  const works    = useCounter(50,  1600, loaded);   // +50 productions
-  const years    = useCounter(7,   1400, loaded);   // +7 years
+  // reach (the hero number) intentionally starts 1.5s LATER and runs longer (4s)
+  // so it's the very last element to settle — eye naturally lands on it
+  const works    = useCounter(50,  1600, loaded);             // +50 productions
+  const years    = useCounter(7,   1400, loaded);             // +7 years
+  const reach    = useCounter(500, 4000, loaded, 1500);       // 500萬 — delayed start + slow climb
 
   // Tilt parallax — phone gyroscope produces subtle depth
   const tilt = useTilt();
