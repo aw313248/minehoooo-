@@ -196,13 +196,11 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
         }} />
       </div>
 
-      {/* Gradients — stronger top/bottom for legibility on smaller screen */}
+      {/* Gradients — top/bottom only (vignette removed per user, was too dark) */}
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-36"
-        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.75), transparent)" }} />
+        style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.7), transparent)" }} />
       <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 h-72"
-        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 30%, #000 100%)" }} />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0"
-        style={{ background: "radial-gradient(ellipse 75% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)" }} />
+        style={{ background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 30%, #000 100%)" }} />
 
       {/* Content stack — text shifts OPPOSITE to bg for parallax depth */}
       <div className="relative h-full w-full flex flex-col px-5" style={{
@@ -212,41 +210,41 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
         willChange: "transform",
       }}>
 
-        {/* Top section — left categories list, right small REC badge — both with layer parallax */}
-        <div className="flex items-start justify-between gap-3">
-          {/* Left: 4 categories stacked vertically */}
-          <div className="flex flex-col gap-1.5" style={layerStyle(loaded, isActive, 0.1)}>
-            {MOBILE_CATEGORIES.map((cat, i) => (
-              <div key={cat} className="flex items-center gap-2">
-                <DiagLine width={i === 0 ? 16 : 8} rotation={20} color="rgba(255,255,255,0.4)" />
-                <span className="text-[9px] uppercase tracking-[0.32em]"
-                  style={{ color: i === 0 ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.55)", fontWeight: 500 }}>
-                  {cat}
-                </span>
-              </div>
-            ))}
-          </div>
-          {/* Right: small REC badge */}
-          <div className="flex items-center gap-1.5 mt-0.5" style={layerStyle(loaded, isActive, 0.15)}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(220,50,50,0.85)", boxShadow: "0 0 8px rgba(220,50,50,0.5)", animation: "pulse-slow 1.8s ease-in-out infinite" }} />
-            <span className="text-[8px] uppercase tracking-[0.32em]" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
-              REC · 2026
-            </span>
-          </div>
+        {/* Top: single-line categories, clean */}
+        <div className="flex items-center gap-2" style={layerStyle(loaded, isActive, 0.1)}>
+          <DiagLine width={16} rotation={20} color="rgba(255,255,255,0.4)" />
+          <span className="text-[9px] uppercase tracking-[0.32em]"
+            style={{ color: "rgba(255,255,255,0.78)", fontWeight: 500 }}>
+            {MOBILE_CATEGORIES.join(" · ")}
+          </span>
         </div>
 
         {/* Center hero — LEFT-aligned (original) + parallax "layer" feel on page transition */}
         <div className="flex-1 flex flex-col justify-center relative">
 
-          {/* DIRECTOR — layer parallax */}
-          <h2 className="hero-title text-white"
-            style={{
-              fontSize: "clamp(2.4rem, 11vw, 4rem)",
-              lineHeight: 1,
-              ...layerStyle(loaded, isActive, 0.2),
-            }}>
-            DIRECTOR
-          </h2>
+          {/* DIRECTOR + RED REC DOT to its right */}
+          <div className="flex items-center gap-3" style={layerStyle(loaded, isActive, 0.2)}>
+            <h2 className="hero-title text-white"
+              style={{
+                fontSize: "clamp(2.4rem, 11vw, 4rem)",
+                lineHeight: 1,
+              }}>
+              DIRECTOR
+            </h2>
+            {/* Pulsing red REC dot — moved from top-right per user */}
+            <div className="flex items-center gap-1.5">
+              <div style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: "rgba(220,50,50,0.9)",
+                boxShadow: "0 0 12px rgba(220,50,50,0.6)",
+                animation: "pulse-slow 1.8s ease-in-out infinite",
+              }} />
+              <span className="text-[8px] uppercase tracking-[0.32em]"
+                style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>
+                2026
+              </span>
+            </div>
+          </div>
 
           {/* OSCAR — layer parallax (more dramatic) */}
           <h1 className="hero-title text-white"
@@ -256,7 +254,6 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
               letterSpacing: "0.02em",
               marginTop: "0.4rem",
               ...layerStyle(loaded, isActive, 0.3),
-              // Override scale for stronger drift on OSCAR
               transform: loaded
                 ? (isActive ? "translateY(0) scale(1)" : "translateY(-16px) scale(1.12)")
                 : "translateY(20px) scale(1)",
@@ -264,27 +261,21 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             OSCAR
           </h1>
 
-          {/* Role inline — layer parallax */}
-          <div className="flex items-center gap-2 mt-5"
-            style={layerStyle(loaded, isActive, 0.45)}>
-            <div style={{ width: 6, height: 6, background: "#fff", borderRadius: 999, boxShadow: "0 0 12px rgba(255,255,255,0.7)" }} />
-            <span className="text-[11px] uppercase tracking-[0.28em]" style={{ color: "rgba(255,255,255,0.85)", fontWeight: 500 }}>
-              {PAST_ROLES.slice(0, 3).join(" · ")}
+          {/* Tiny 「臺中」 stamp — small, under OSCAR */}
+          <div className="mt-3 inline-flex items-center gap-1.5"
+            style={layerStyle(loaded, isActive, 0.5)}>
+            <span style={{
+              fontFamily: "var(--font-geist-sans), 'PingFang TC', sans-serif",
+              fontSize: 13, fontWeight: 400,
+              letterSpacing: "0.18em",
+              color: "rgba(255,255,255,0.7)",
+            }}>
+              臺中
             </span>
           </div>
 
-          {/* Tagline — layer parallax */}
-          <p className="mt-6 leading-relaxed"
-            style={{
-              fontSize: 14, color: "rgba(255,255,255,0.85)", fontWeight: 300,
-              maxWidth: 280,
-              ...layerStyle(loaded, isActive, 0.55),
-            }}>
-            台中在地影像工作者。<br/>從現場到後製，做能說話的畫面。
-          </p>
-
           {/* Stats — 3-col grid with count-up animated numbers + clear labels below */}
-          <div className="mt-8 grid grid-cols-3 gap-2"
+          <div className="mt-7 grid grid-cols-3 gap-2"
             style={{ ...layerStyle(loaded, isActive, 0.7), maxWidth: 320 }}>
             <div className="flex flex-col">
               <span className="hero-title text-white" style={{ fontSize: "clamp(1.5rem, 6.5vw, 2.4rem)" }}>
@@ -312,15 +303,6 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
               </span>
             </div>
           </div>
-
-          {/* TAICHUNG anchor — layer parallax */}
-          <p className="mt-4 text-[10px] uppercase tracking-[0.32em]"
-            style={{
-              color: "rgba(255,255,255,0.55)", fontWeight: 500,
-              ...layerStyle(loaded, isActive, 0.82),
-            }}>
-            FROM TAICHUNG · SINCE 2019
-          </p>
         </div>
 
         {/* Bottom: extra spacing between info row and CTA — layer parallax */}
