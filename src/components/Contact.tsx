@@ -72,7 +72,7 @@ export default function Contact() {
     <section id="contact" style={{ background: "#000", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
       {/* ── Top label ── */}
-      <div className="border-b px-8 md:px-14 py-3 flex items-center justify-between"
+      <div className="border-b px-4 md:px-14 py-3 flex items-center justify-between"
         style={{ borderColor: "var(--white-ghost)" }}>
         <span className="font-mono-label text-[9px] tracking-[0.35em]" style={{ color: "var(--white-muted)" }}>
           05 — CONTACT
@@ -83,7 +83,7 @@ export default function Contact() {
       </div>
 
       {/* ── Main CTA — fully centered ── */}
-      <div ref={ref} className="flex-1 flex flex-col justify-center items-center text-center px-6 md:px-14 py-16 md:py-24 relative overflow-hidden">
+      <div ref={ref} className="flex-1 flex flex-col justify-center items-center text-center px-4 md:px-14 py-12 md:py-24 relative overflow-hidden">
 
         {/* Watermark */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
@@ -117,10 +117,23 @@ export default function Contact() {
             {t.subtitle}
           </p>
 
-          {/* Heading — bigger, centered */}
+          {/* Heading — bigger, centered. Stack to 2 lines on mobile so it doesn't overflow */}
           <h2 className="font-display leading-none mb-8 text-center"
-            style={{ fontSize: "clamp(4rem, 14vw, 16rem)", color: "var(--text)", letterSpacing: "0.01em", whiteSpace: "nowrap" }}>
-            <CharReveal text="LET'S WORK" inView={inView} baseDelay={0.1} stagger={0.042} />
+            style={{
+              fontSize: "clamp(3rem, 14vw, 16rem)",
+              color: "var(--text)",
+              letterSpacing: "0.01em",
+              whiteSpace: "nowrap",
+            }}>
+            <span className="block md:hidden">
+              <CharReveal text="LET'S" inView={inView} baseDelay={0.1} stagger={0.042} />
+            </span>
+            <span className="block md:hidden">
+              <CharReveal text="WORK" inView={inView} baseDelay={0.32} stagger={0.042} />
+            </span>
+            <span className="hidden md:inline">
+              <CharReveal text="LET'S WORK" inView={inView} baseDelay={0.1} stagger={0.042} />
+            </span>
           </h2>
 
           <p className="font-mono-label text-[12px] md:text-[14px] tracking-[0.2em] mb-12 leading-relaxed text-center"
@@ -354,7 +367,7 @@ export default function Contact() {
       </div>
 
       {/* ── Footer strip ── */}
-      <div className="border-t px-8 md:px-14 py-4 flex items-center justify-between flex-wrap gap-3"
+      <div className="border-t px-4 md:px-14 py-4 flex items-center justify-between flex-wrap gap-3"
         style={{ borderColor: "var(--white-ghost)", background: "var(--white-ghost)" }}>
         <span className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-dim)" }}>
           © {year} MINEH4O · 賴明宏 Oscar Lai
