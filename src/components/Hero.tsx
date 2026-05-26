@@ -18,12 +18,8 @@ const PAST_ROLES = [
   "LIGHTING",
 ];
 
-/* Mottos / quotes — rotated randomly, shown briefly on mobile first entry */
-const QUOTES = [
-  { lines: ["人一定是", "在作品之前"], attr: null },
-  { lines: ["莽撞的開始，拙劣的完成", "好過心懷完美", "不開始行動"], attr: null },
-  { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
-];
+/* Mobile top-left categories — list of work types Oscar does */
+const MOBILE_CATEGORIES = ["MV", "COMMERCIAL", "PHOTO", "AIGC"];
 
 function goto(page: number) {
   window.dispatchEvent(new CustomEvent("navto", { detail: page }));
@@ -45,18 +41,6 @@ function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" 
 function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
-  // Pick a random quote once + auto-hide after 6s so it only shows on first entry
-  const [quoteIdx]      = useState(() => Math.floor(Math.random() * QUOTES.length));
-  const [quoteVisible, setQuoteVisible] = useState(false);
-  const q = QUOTES[quoteIdx];
-
-  useEffect(() => {
-    if (!loaded) return;
-    const t1 = setTimeout(() => setQuoteVisible(true),  400);   // fade in
-    const t2 = setTimeout(() => setQuoteVisible(false), 6500);  // fade out
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [loaded]);
-
   return (
     <section className="md:hidden relative w-full overflow-hidden bg-black" style={{ minHeight: "100dvh", height: "100dvh" }}>
 
@@ -99,27 +83,27 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(ellipse 75% 50% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)" }} />
 
-      {/* Content stack */}
-      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "5rem", paddingBottom: "2rem" }}>
+      {/* Content stack — top padding tight so left list sits high near status bar */}
+      <div className="relative h-full w-full flex flex-col px-5" style={{ paddingTop: "3.5rem", paddingBottom: "2rem" }}>
 
-        {/* Top section — left fills with intro, right has a small badge */}
+        {/* Top section — left categories list, right small REC badge */}
         <div className="flex items-start justify-between gap-3"
           style={{
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(-8px)",
             transition: "opacity .7s ease .1s, transform .7s ease .1s",
           }}>
-          {/* Left: intro label + 2nd line */}
+          {/* Left: 4 categories stacked vertically */}
           <div className="flex flex-col gap-1.5">
-            <div className="flex items-center gap-2">
-              <DiagLine width={22} rotation={20} color="rgba(255,255,255,0.5)" />
-              <span className="text-[9px] uppercase tracking-[0.36em]" style={{ color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
-                IN-HOUSE IMAGE STUDIO
-              </span>
-            </div>
-            <span className="text-[9px] uppercase tracking-[0.32em] pl-7" style={{ color: "rgba(255,255,255,0.45)", fontWeight: 400 }}>
-              MV · COMMERCIAL · PHOTO · AIGC
-            </span>
+            {MOBILE_CATEGORIES.map((cat, i) => (
+              <div key={cat} className="flex items-center gap-2">
+                <DiagLine width={i === 0 ? 16 : 8} rotation={20} color="rgba(255,255,255,0.4)" />
+                <span className="text-[9px] uppercase tracking-[0.32em]"
+                  style={{ color: i === 0 ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.55)", fontWeight: 500 }}>
+                  {cat}
+                </span>
+              </div>
+            ))}
           </div>
           {/* Right: small REC badge */}
           <div className="flex items-center gap-1.5 mt-0.5">
@@ -187,49 +171,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
             </span>
           </div>
 
-          {/* QUOTE overlay — shows once on first entry, fades out after 6s. Right side, doesn't block OSCAR */}
-          <div aria-hidden={!quoteVisible}
-            className="absolute pointer-events-none"
-            style={{
-              right: 0, top: "-2rem",
-              maxWidth: 200,
-              opacity: quoteVisible ? 1 : 0,
-              transform: quoteVisible ? "translateY(0)" : "translateY(-8px)",
-              transition: "opacity 1.2s ease, transform 1.2s ease",
-              textAlign: "right",
-            }}>
-            <div className="flex flex-col items-end gap-0.5"
-              style={{
-                background: "rgba(0,0,0,0.45)",
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
-                border: "1px solid rgba(255,255,255,0.12)",
-                borderRadius: 12,
-                padding: "10px 14px",
-              }}>
-              {q.lines.map((line, i) => (
-                <span key={i} style={{
-                  fontFamily: "var(--font-geist-sans), 'PingFang TC', 'Noto Sans TC', sans-serif",
-                  fontSize: 11, fontWeight: 300, lineHeight: 1.55,
-                  letterSpacing: "0.04em",
-                  color: "rgba(255,255,255,0.88)",
-                  whiteSpace: "nowrap",
-                }}>
-                  {line}
-                </span>
-              ))}
-              {q.attr && (
-                <span style={{
-                  fontFamily: "var(--font-space-mono), monospace",
-                  fontSize: 8, letterSpacing: "0.22em",
-                  color: "rgba(255,255,255,0.45)",
-                  marginTop: 4,
-                }}>
-                  {q.attr}
-                </span>
-              )}
-            </div>
-          </div>
+          {/* QUOTE overlay removed per request */}
 
           {/* Tagline */}
           <p className="mt-6 leading-relaxed"
