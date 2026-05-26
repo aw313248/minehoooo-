@@ -166,8 +166,8 @@ export default function About() {
         }} />
 
         {/* Top label — centered */}
-        <div className="absolute left-0 right-0 flex justify-center" style={{ top: "5.5rem" }}>
-          <p className="font-mono-label text-[10px] tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
+        <div className="absolute left-0 right-0 flex justify-center px-4" style={{ top: "5rem" }}>
+          <p className="font-mono-label text-[9px] md:text-[10px] tracking-[0.35em] md:tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
             01 — ABOUT · MINEH4O
           </p>
         </div>
@@ -176,10 +176,10 @@ export default function About() {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 md:px-12"
           style={{ animation: "fadeSlideUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both" }}>
 
-          {/* Subtitle above */}
-          <p className="font-mono-label text-[10px] md:text-[11px] tracking-[0.4em] mb-6"
-            style={{ color: "var(--white-soft)" }}>
-            DIRECTOR · DP · SCREENPLAY · PHOTOGRAPHY
+          {/* Subtitle above — wraps on mobile, single line on desktop */}
+          <p className="font-mono-label text-[9px] md:text-[11px] tracking-[0.32em] md:tracking-[0.4em] mb-6 leading-relaxed"
+            style={{ color: "var(--white-soft)", maxWidth: 480 }}>
+            DIRECTOR · D.P. · SCREENPLAY · PHOTOGRAPHY
           </p>
 
           {/* OSCAR — centered hero name */}

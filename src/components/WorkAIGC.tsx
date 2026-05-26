@@ -104,18 +104,18 @@ export default function WorkAIGC() {
           background: "radial-gradient(ellipse 80% 60% at 60% 40%, rgba(80,30,160,0.18) 0%, transparent 70%)" }} />
 
         {/* Top: section label — centered */}
-        <div style={{
+        <div className="px-4 md:px-12" style={{
           position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
-          padding: "2rem 3rem 1.4rem",
+          paddingTop: "2rem", paddingBottom: "1.4rem",
           background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
           opacity: heroLoaded ? 1 : 0,
           transition: "opacity .6s ease",
         }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
+          <div className="flex items-center justify-center flex-wrap" style={{ gap: 10 }}>
             <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
               04 — AIGC
             </span>
-            <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
+            <span className="hidden md:inline" style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
             <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
               AI GENERATED · HYBRID
             </span>

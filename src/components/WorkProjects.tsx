@@ -126,23 +126,23 @@ export default function WorkProjects() {
       }} />
 
       {/* Top: centered section label */}
-      <div style={{
-        padding: "2rem 3rem 1rem",
+      <div className="px-4 md:px-12 flex items-center justify-center flex-wrap" style={{
+        paddingTop: "2rem", paddingBottom: "1rem",
         background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)",
         opacity: loaded ? 1 : 0, transition: "opacity .6s ease",
-        display: "flex", alignItems: "center", justifyContent: "center", gap: 14,
+        gap: 10,
       }}>
         <span className="font-mono-label" style={{ fontSize: 9, letterSpacing: "0.4em", color: "var(--white-soft)" }}>
           05 — 專案
         </span>
-        <span style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
+        <span className="hidden md:inline" style={{ width: 28, height: 1, background: "var(--white-dim)" }} />
         <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.32em", color: "var(--white-dim)" }}>
           {lang === "zh" ? "工作室作品集" : "STUDIO BUILDS"}
         </span>
       </div>
 
       {/* ── Main grid: left text + right preview ── */}
-      <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 px-6 md:px-12 py-8 z-10 max-w-7xl mx-auto w-full">
+      <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 px-4 md:px-12 py-6 md:py-8 z-10 max-w-7xl mx-auto w-full">
 
         {/* LEFT — text column */}
         <div className="flex-1 flex flex-col items-start text-left max-w-xl">
