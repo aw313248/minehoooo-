@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import FieldNoteNav from "@/components/FieldNoteNav";
 import FieldNoteClose from "@/components/FieldNoteClose";
+import ScrollUnlock from "@/components/ScrollUnlock";
 import { fieldNotes, getFieldNote } from "@/data/fieldNotes";
 import SeedanceAerialBody from "./articles/seedance-aerial";
 
@@ -39,20 +40,37 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
   const Body = BODY_BY_SLUG[slug];
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-white" style={{ overflowY: "auto" }}>
+      <ScrollUnlock />
 
-      {/* ── Top bar with back to home ── */}
+      {/* ── Top bar with breadcrumb — clearer path back to listing ── */}
       <header className="sticky top-0 z-30 px-5 md:px-10 py-4"
-        style={{ background: "rgba(0,0,0,0.78)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2"
-            style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}>
-            <span style={{ fontSize: 16 }}>←</span>
-            <span className="font-mono-label text-[10px] uppercase tracking-[0.32em]">MINEH4O</span>
-          </Link>
-          <Link href="/field-notes" className="font-mono-label text-[9px] uppercase tracking-[0.32em]"
-            style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
-            現場筆記 / NOTES
+        style={{ background: "rgba(0,0,0,0.82)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="max-w-3xl mx-auto flex items-center justify-between gap-3">
+          {/* Left: breadcrumb */}
+          <div className="flex items-center gap-2 min-w-0">
+            <Link href="/" className="font-mono-label text-[10px] uppercase tracking-[0.32em] shrink-0"
+              style={{ color: "rgba(255,255,255,0.55)", textDecoration: "none" }}>
+              MINEH4O
+            </Link>
+            <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 11 }}>›</span>
+            <Link href="/field-notes" className="font-mono-label text-[10px] uppercase tracking-[0.32em] shrink-0"
+              style={{ color: "rgba(255,255,255,0.85)", textDecoration: "none" }}>
+              現場筆記
+            </Link>
+          </div>
+          {/* Right: see all link */}
+          <Link href="/field-notes"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5"
+            style={{
+              background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: 999,
+              color: "rgba(255,255,255,0.85)",
+              textDecoration: "none",
+            }}>
+            <span className="font-mono-label text-[9px] uppercase tracking-[0.28em]">看全部文章</span>
+            <span style={{ fontSize: 11 }}>→</span>
           </Link>
         </div>
       </header>
