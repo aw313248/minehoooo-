@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import FieldNoteNav from "@/components/FieldNoteNav";
+import FieldNoteClose from "@/components/FieldNoteClose";
 import { fieldNotes, getFieldNote } from "@/data/fieldNotes";
 import SeedanceAerialBody from "./articles/seedance-aerial";
 
@@ -105,27 +106,8 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
         {/* ── Article body ── */}
         {Body ? <Body /> : <p>Content coming soon.</p>}
 
-        {/* ── BOTTOM nav strip ── */}
-        <FieldNoteNav position="bottom" />
-
-        {/* Final CTA */}
-        <div className="text-center mt-10 pt-8" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-          <p className="font-mono-label text-[10px] uppercase tracking-[0.32em] mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
-            喜歡這篇？追蹤一下吧
-          </p>
-          <div className="flex items-center justify-center gap-3 flex-wrap">
-            <a href="https://instagram.com/minehoooo.arw" target="_blank" rel="noopener noreferrer"
-              className="font-mono-label text-[11px] uppercase tracking-[0.22em] px-4 py-2"
-              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 999, color: "#fff", textDecoration: "none" }}>
-              @minehoooo.arw
-            </a>
-            <a href="mailto:cyuttkengineer@gmail.com"
-              className="font-mono-label text-[11px] uppercase tracking-[0.22em] px-4 py-2"
-              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: 999, color: "#fff", textDecoration: "none" }}>
-              EMAIL ME
-            </a>
-          </div>
-        </div>
+        {/* ── Warm closing block — invite reader to explore the rest ── */}
+        <FieldNoteClose />
       </article>
     </main>
   );
