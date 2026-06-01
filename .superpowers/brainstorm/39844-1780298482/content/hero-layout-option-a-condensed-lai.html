@@ -1,0 +1,39 @@
+<style>
+  .stage{display:grid;place-items:center;padding:20px 0}
+  .poster{position:relative;width:min(430px,100%);aspect-ratio:9/16;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.04) 54%,rgba(0,0,0,.88)),
+    radial-gradient(circle at 74% 35%,rgba(116,93,73,.7),transparent 37%),
+    linear-gradient(135deg,#17191a,#302b27 52%,#101111);
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .poster>*{position:absolute;z-index:1}
+  .safe{left:18px;right:18px;top:68px;height:1px;background:rgba(255,255,255,.2)}
+  .safe:after{content:"導覽列安全間距";position:absolute;right:0;top:7px;color:rgba(255,255,255,.4);font-size:7px;letter-spacing:.14em}
+  .eyebrow{left:18px;right:18px;top:92px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.68)}
+  .name{font-size:121px;font-weight:700;line-height:.73;letter-spacing:-.12em;text-transform:uppercase;white-space:nowrap}
+  .lai{right:8px;top:49%;font-size:116px;letter-spacing:-.15em;transform:scaleX(.78);transform-origin:right center}
+  .role{left:20px;bottom:132px;font-size:12px;font-weight:600;line-height:1.75;letter-spacing:.22em;color:#fff;text-transform:uppercase}
+  .zh{margin-top:7px;font-size:8px;font-weight:400;letter-spacing:.16em;color:rgba(255,255,255,.55)}
+  .footer{left:20px;right:20px;bottom:25px;display:flex;justify-content:space-between;align-items:end;border-top:1px solid rgba(255,255,255,.28);padding-top:12px;font-size:8px;letter-spacing:.18em;color:rgba(255,255,255,.78)}
+  .notes{margin-top:20px;display:grid;gap:10px}
+  .note{padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);font-size:14px}
+</style>
+
+<h2>A-2｜扁版 LAI</h2>
+<p class="subtitle">維持誇張尺度，但把 LAI 橫向壓縮。右側仍然貼邊，三個字母都完整留在畫面內。</p>
+
+<div class="stage">
+  <div class="poster">
+    <div class="safe"></div>
+    <div class="eyebrow"><span>OSCAR LAI</span><span>TAICHUNG · TAIWAN</span></div>
+    <div class="name" style="left:-19px;top:32%">OSCAR</div>
+    <div class="name lai">LAI</div>
+    <div class="role">DIRECTOR · DP<br>AIGC VISUAL CREATOR<div class="zh">導演 · 攝影指導 · AI 視覺創作</div></div>
+    <div class="footer"><span>VIEW SELECTED WORKS</span><span>SCROLL ↓</span></div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note"><strong>LAI：</strong>改成橫向壓縮字型比例，完整保留三個字母，但仍然有巨幅標題的張力。</div>
+  <div class="note"><strong>OSCAR：</strong>暫時保留原本略微超出版面的裁切，形成左右不完全對稱的工業海報感。</div>
+</div>

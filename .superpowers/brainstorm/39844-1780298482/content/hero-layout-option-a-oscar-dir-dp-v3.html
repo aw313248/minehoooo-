@@ -1,0 +1,44 @@
+<style>
+  .stage{display:grid;place-items:center;padding:20px 0}
+  .poster{position:relative;width:min(430px,100%);aspect-ratio:9/16;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.04) 54%,rgba(0,0,0,.9)),
+    radial-gradient(circle at 74% 35%,rgba(116,93,73,.7),transparent 37%),
+    linear-gradient(135deg,#17191a,#302b27 52%,#101111);
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .poster>*{position:absolute;z-index:1}
+  .name{left:20px;top:36%;font-size:118px;font-weight:700;line-height:.7;letter-spacing:-.16em;text-transform:uppercase;white-space:nowrap;transform:scaleY(.65);transform-origin:left center}
+  .signature{right:23px;top:51%;text-align:right;font-size:46px;font-weight:700;line-height:.78;letter-spacing:-.09em;text-transform:uppercase;transform:scaleY(.7);transform-origin:right center}
+  .aigc{right:24px;top:59%;font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.68);text-transform:uppercase}
+  .zh{right:24px;top:63%;font-size:8px;letter-spacing:.16em;color:rgba(255,255,255,.48)}
+  .metrics{left:22px;bottom:70px;display:flex;gap:17px;align-items:end}
+  .metric{padding-left:8px;border-left:1px solid rgba(255,255,255,.32)}
+  .metric strong{display:block;font-size:14px;line-height:1;font-weight:700;letter-spacing:-.03em;color:rgba(255,255,255,.92)}
+  .metric span{display:block;margin-top:6px;font-size:6px;line-height:1.4;letter-spacing:.19em;color:rgba(255,255,255,.5);text-transform:uppercase}
+  .footer{left:22px;right:22px;bottom:25px;display:flex;justify-content:space-between;align-items:end;border-top:1px solid rgba(255,255,255,.28);padding-top:12px;font-size:8px;letter-spacing:.18em;color:rgba(255,255,255,.78)}
+  .notes{margin-top:20px;display:grid;gap:10px}
+  .note{padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);font-size:14px}
+</style>
+
+<h2>A-7｜清空左上方，加入低調數據</h2>
+<p class="subtitle">左上方不再放任何資訊，保留給網站原有導覽。左下方加入少量信任數據，避免干擾主視覺。</p>
+
+<div class="stage">
+  <div class="poster">
+    <div class="name">OSCAR</div>
+    <div class="signature">DIR. · DP</div>
+    <div class="aigc">AIGC VISUAL CREATOR</div>
+    <div class="zh">導演 · 攝影指導 · AI 視覺創作</div>
+    <div class="metrics">
+      <div class="metric"><strong>5,000,000+</strong><span>Peak monthly<br>content views</span></div>
+      <div class="metric"><strong>50+</strong><span>Productions</span></div>
+      <div class="metric"><strong>7</strong><span>Years creating</span></div>
+    </div>
+    <div class="footer"><span>VIEW SELECTED WORKS</span><span>SCROLL ↓</span></div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note"><strong>左上方：</strong>完全清空。正式網站保留原有品牌導覽，不再疊加第二組文字。</div>
+  <div class="note"><strong>左下方：</strong>數據縮成一排低調註腳。作用是建立信任，不會搶走 OSCAR 的主視覺地位。</div>
+</div>

@@ -1,0 +1,51 @@
+<style>
+  .options-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+  .choice{cursor:pointer;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);transition:.2s ease}
+  .choice:hover{transform:translateY(-2px);border-color:#777}
+  .choice.selected{outline:2px solid #2788ff;outline-offset:2px}
+  .poster{position:relative;aspect-ratio:9/12;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.85)),
+    radial-gradient(circle at 70% 38%,#37414d,transparent 48%),#101214;
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.18;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .name{position:absolute;left:16px;top:38%;font-size:54px;font-weight:700;line-height:.7;letter-spacing:-.075em;transform:scaleY(.67);transform-origin:left center}
+  .role{position:absolute;right:16px;top:55%;font-size:25px;font-weight:700;line-height:.8;letter-spacing:-.04em;transform:scaleY(.74);transform-origin:right center}
+  .sub{position:absolute;right:17px;top:64%;font-size:6px;letter-spacing:.24em;color:rgba(255,255,255,.58)}
+  .body{padding:13px}.body h3{margin:0 0 6px;font-size:15px}.body p{margin:0;font-size:13px;line-height:1.55;color:var(--text-muted)}
+  .lowdot{display:inline-block;padding:0 .13em;font-size:.55em;vertical-align:.08em}
+  @media(max-width:850px){.options-grid{grid-template-columns:1fr}.poster{aspect-ratio:16/8}.name{font-size:68px}.role{font-size:32px}}
+</style>
+
+<h2>DIR. 與 DP 的區隔方式</h2>
+<p class="subtitle">兩者分別代表 Director 與 Director of Photography。區隔符號應該清楚，但不能搶走 OSCAR 的視覺焦點。</p>
+
+<div class="options-grid">
+  <div class="choice" data-choice="slash" onclick="toggleSelect(this)">
+    <div class="poster">
+      <div class="name">OSCAR</div>
+      <div class="role">DIR. / DP</div>
+      <div class="sub">AIGC VISUAL CREATOR</div>
+    </div>
+    <div class="body"><h3>A｜斜線</h3><p>最清楚、最專業。帶有片尾名單與製作履歷的語氣。</p></div>
+  </div>
+
+  <div class="choice" data-choice="low-dot" onclick="toggleSelect(this)">
+    <div class="poster">
+      <div class="name">OSCAR</div>
+      <div class="role">DIR.<span class="lowdot">.</span>DP</div>
+      <div class="sub">AIGC VISUAL CREATOR</div>
+    </div>
+    <div class="body"><h3>B｜低位小點</h3><p>小點落在基線附近，低調、工業感最強，也最接近你的描述。</p></div>
+  </div>
+
+  <div class="choice" data-choice="dash" onclick="toggleSelect(this)">
+    <div class="poster">
+      <div class="name">OSCAR</div>
+      <div class="role">DIR. — DP</div>
+      <div class="sub">AIGC VISUAL CREATOR</div>
+    </div>
+    <div class="body"><h3>C｜短橫線</h3><p>視覺張力強，但更像品牌標語，專業職稱的辨識稍弱。</p></div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:18px">我的推薦是 A：`DIR. / DP`。如果你希望保留更強烈的工業字卡氣質，再選 B。</p>

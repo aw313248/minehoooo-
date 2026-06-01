@@ -1,0 +1,76 @@
+<style>
+  .preview-grid{display:grid;grid-template-columns:minmax(0,410px) minmax(0,1fr);gap:24px;align-items:start;margin-top:22px}
+  .label{margin-bottom:9px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-muted)}
+  .poster{position:relative;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.04) 54%,rgba(0,0,0,.9)),
+    radial-gradient(circle at 74% 35%,rgba(116,93,73,.7),transparent 37%),
+    linear-gradient(135deg,#17191a,#302b27 52%,#101111);
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .poster>*{position:absolute;z-index:1}
+  .mobile{aspect-ratio:9/16}.desktop{aspect-ratio:16/9}
+  .name{font-weight:700;line-height:.7;letter-spacing:-.075em;text-transform:uppercase;white-space:nowrap;transform:scaleY(.67);transform-origin:left center}
+  .mobile .name{left:22px;top:35%;font-size:101px}
+  .desktop .name{left:6%;top:24%;font-size:clamp(92px,11.5vw,170px)}
+  .signature{text-align:right;font-weight:700;line-height:.78;letter-spacing:-.045em;text-transform:uppercase;transform:scaleY(.72);transform-origin:right center}
+  .mobile .signature{right:24px;top:52.5%;font-size:40px}
+  .desktop .signature{right:6%;top:47%;font-size:clamp(42px,5vw,75px)}
+  .aigc{letter-spacing:.28em;color:rgba(255,255,255,.64);text-transform:uppercase}
+  .zh{letter-spacing:.16em;color:rgba(255,255,255,.46)}
+  .mobile .aigc{right:25px;top:60.5%;font-size:8px}.mobile .zh{right:25px;top:64.5%;font-size:7px}
+  .desktop .aigc{right:6%;top:58%;font-size:8px}.desktop .zh{right:6%;top:63%;font-size:7px}
+  .metrics{display:grid;align-items:start}
+  .mobile .metrics{left:23px;bottom:71px;grid-template-columns:96px 59px 65px;column-gap:7px}
+  .desktop .metrics{left:6%;bottom:66px;grid-template-columns:92px 59px 64px;column-gap:8px}
+  .metric{min-height:42px;padding-left:7px;border-left:1px solid rgba(255,255,255,.28)}
+  .metric strong{display:flex;align-items:baseline;height:12px;line-height:12px;font-weight:700;letter-spacing:-.02em;color:rgba(255,255,255,.88)}
+  .metric .en{display:block;height:14px;margin-top:4px;line-height:1.35;letter-spacing:.15em;color:rgba(255,255,255,.43);text-transform:uppercase}
+  .metric .cn{display:block;margin-top:3px;line-height:1.2;letter-spacing:.09em;color:rgba(255,255,255,.58)}
+  .mobile .metric strong{font-size:12px}.mobile .metric .en{font-size:4.6px}.mobile .metric .cn{font-size:5.5px}
+  .desktop .metric strong{font-size:11px}.desktop .metric .en{font-size:4.4px}.desktop .metric .cn{font-size:5px}
+  .footer{display:flex;justify-content:space-between;align-items:end;border-top:1px solid rgba(255,255,255,.24);padding-top:10px;letter-spacing:.18em;color:rgba(255,255,255,.7)}
+  .mobile .footer{left:23px;right:23px;bottom:25px;font-size:7px}
+  .desktop .footer{left:6%;right:6%;bottom:24px;font-size:7px}
+  .notes{margin-top:20px;display:grid;gap:10px}
+  .note{padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);font-size:14px}
+  @media(max-width:900px){.preview-grid{grid-template-columns:1fr}.desktop{min-height:250px}.desktop .name{font-size:92px}}
+</style>
+
+<h2>A-12｜雙語數據格線</h2>
+<p class="subtitle">手機與桌機的數據統一使用固定欄寬。粗體數字對齊，英文與中文各自落在固定高度。</p>
+
+<div class="preview-grid">
+  <div>
+    <div class="label">Mobile · 手機版</div>
+    <div class="poster mobile">
+      <div class="name">OSCAR</div>
+      <div class="signature">DIR. / DP</div>
+      <div class="aigc">AIGC VISUAL CREATOR</div><div class="zh">導演 · 攝影指導 · AI 視覺創作</div>
+      <div class="metrics">
+        <div class="metric"><strong>5,000,000+</strong><span class="en">Peak monthly<br>content views</span><span class="cn">單月觀看高峰</span></div>
+        <div class="metric"><strong>50+</strong><span class="en">Productions</span><span class="cn">製作案件</span></div>
+        <div class="metric"><strong>7</strong><span class="en">Years creating</span><span class="cn">創作年資</span></div>
+      </div>
+      <div class="footer"><span>VIEW SELECTED WORKS</span><span>SCROLL ↓</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="label">Desktop · 網頁版</div>
+    <div class="poster desktop">
+      <div class="name">OSCAR</div>
+      <div class="signature">DIR. / DP</div>
+      <div class="aigc">AIGC VISUAL CREATOR</div><div class="zh">導演 · 攝影指導 · AI 視覺創作</div>
+      <div class="metrics">
+        <div class="metric"><strong>5,000,000+</strong><span class="en">Peak monthly<br>content views</span><span class="cn">單月觀看高峰</span></div>
+        <div class="metric"><strong>50+</strong><span class="en">Productions</span><span class="cn">製作案件</span></div>
+        <div class="metric"><strong>7</strong><span class="en">Years creating</span><span class="cn">創作年資</span></div>
+      </div>
+      <div class="footer"><span>VIEW SELECTED WORKS</span><span>SCROLL ↓</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note"><strong>數字：</strong>手機與桌機都使用固定高度與固定欄寬，三組粗體數字落在同一條基線。</div>
+  <div class="note"><strong>中文：</strong>新增短中文說明，不放太長的句子，維持角落註腳的視覺重量。</div>
+</div>

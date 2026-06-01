@@ -1,0 +1,71 @@
+<style>
+  .cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+  .poster{position:relative;aspect-ratio:9/15;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.08) 52%,rgba(0,0,0,.82)),
+    radial-gradient(circle at 74% 38%,rgba(116,93,73,.66),transparent 38%),
+    linear-gradient(135deg,#17191a,#302b27 52%,#101111);
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.22;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .poster>*{position:absolute;z-index:1}
+  .top{left:13px;right:13px;top:15px;display:flex;justify-content:space-between;font-size:6px;letter-spacing:.24em;color:rgba(255,255,255,.72)}
+  .role{font-size:8px;line-height:1.8;letter-spacing:.22em;color:#fff;text-transform:uppercase}
+  .name{font-size:39px;font-weight:700;line-height:.82;letter-spacing:-.09em;text-transform:uppercase}
+  .name.right{text-align:right}
+  .zh{font-size:6px;letter-spacing:.16em;color:rgba(255,255,255,.52)}
+  .footer{left:13px;right:13px;bottom:14px;display:flex;justify-content:space-between;align-items:end;border-top:1px solid rgba(255,255,255,.3);padding-top:8px;font-size:6px;letter-spacing:.16em;color:rgba(255,255,255,.75)}
+  .safe{position:absolute!important;left:12px;right:12px;top:35px;height:1px;background:rgba(255,255,255,.2)}
+  .safe:after{content:"導覽列安全間距";position:absolute;right:0;top:5px;color:rgba(255,255,255,.45);font-size:5px;letter-spacing:.14em}
+  @media(max-width:850px){.cards{grid-template-columns:1fr}.poster{aspect-ratio:9/12}.name{font-size:52px}}
+</style>
+
+<h2>Hero 排版：名字如何左右分離？</h2>
+<p class="subtitle">三種版本都會清空左上方，避免導覽列與文字重疊；OSCAR 和 LAI 使用完全相同的字體與重量。</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image poster">
+      <div class="top"><span>OSCAR LAI</span><span>TAICHUNG · TAIWAN</span></div>
+      <div class="safe"></div>
+      <div class="name" style="left:12px;top:34%">OSCAR</div>
+      <div class="name right" style="right:12px;top:48%">LAI</div>
+      <div class="role" style="left:14px;bottom:21%">DIRECTOR<br>DP · AIGC VISUAL CREATOR<div class="zh">導演 · 攝影指導 · AI 視覺創作</div></div>
+      <div class="footer"><span>SELECTED WORKS</span><span>01 / 03</span></div>
+    </div>
+    <div class="card-body">
+      <h3>A｜錯位海報式</h3>
+      <p>OSCAR 靠左、LAI 靠右，垂直錯開。最像電影海報，也保留影片呼吸空間。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image poster">
+      <div class="top"><span>OSCAR LAI</span><span>TAICHUNG · TAIWAN</span></div>
+      <div class="safe"></div>
+      <div class="role" style="left:14px;top:21%">DIRECTOR · DP<br>AIGC VISUAL CREATOR<div class="zh">導演 · 攝影指導 · AI 視覺創作</div></div>
+      <div class="name" style="left:12px;top:45%">OSCAR</div>
+      <div class="name right" style="right:12px;top:55%">LAI</div>
+      <div class="footer"><span>SELECTED WORKS</span><span>01 / 03</span></div>
+    </div>
+    <div class="card-body">
+      <h3>B｜職位先行式</h3>
+      <p>先看到你的職業，再看到姓名。商業辨識最快，但比較少一點神祕感。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image poster">
+      <div class="top"><span>OSCAR LAI</span><span>TAICHUNG · TAIWAN</span></div>
+      <div class="safe"></div>
+      <div class="name" style="left:12px;top:42%">OSCAR</div>
+      <div class="name right" style="right:12px;top:42%">LAI</div>
+      <div class="role" style="left:14px;bottom:21%">DIRECTOR · DP<br>AIGC VISUAL CREATOR<div class="zh">導演 · 攝影指導 · AI 視覺創作</div></div>
+      <div class="footer"><span>SELECTED WORKS</span><span>01 / 03</span></div>
+    </div>
+    <div class="card-body">
+      <h3>C｜水平對稱式</h3>
+      <p>名字同一水平線，最乾淨穩定；但戲劇感比較弱，容易接近一般作品集。</p>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:18px">我的建議是 A：保留你喜歡的工業海報感，但整體會更乾淨、更像刻意設計，而不是文字散落。</p>

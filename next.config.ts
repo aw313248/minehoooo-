@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_COMMIT_SHA: COMMIT,
     NEXT_PUBLIC_BUILD_TIME: BUILD_TIME,
   },
+  // Short redirects so IG/Threads bot can share shorter links
+  async redirects() {
+    return [
+      { source: "/seedance",   destination: "/field-notes/seedance-aerial", permanent: false },
+      { source: "/飛天小女警", destination: "/field-notes/seedance-aerial", permanent: false },
+      { source: "/notes",      destination: "/field-notes",                 permanent: true  },
+    ];
+  },
 };
 
 export default nextConfig;

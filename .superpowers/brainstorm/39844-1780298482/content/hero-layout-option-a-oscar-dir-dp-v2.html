@@ -1,0 +1,40 @@
+<style>
+  .stage{display:grid;place-items:center;padding:20px 0}
+  .poster{position:relative;width:min(430px,100%);aspect-ratio:9/16;overflow:hidden;background:
+    linear-gradient(180deg,rgba(0,0,0,.38),rgba(0,0,0,.04) 54%,rgba(0,0,0,.88)),
+    radial-gradient(circle at 74% 35%,rgba(116,93,73,.7),transparent 37%),
+    linear-gradient(135deg,#17191a,#302b27 52%,#101111);
+    color:#f4f1ea;font-family:Arial,sans-serif}
+  .poster:after{content:"";position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.09) 4px)}
+  .poster>*{position:absolute;z-index:1}
+  .safe{left:18px;right:18px;top:68px;height:1px;background:rgba(255,255,255,.2)}
+  .safe:after{content:"導覽列安全間距";position:absolute;right:0;top:7px;color:rgba(255,255,255,.4);font-size:7px;letter-spacing:.14em}
+  .eyebrow{left:22px;right:22px;top:92px;display:flex;justify-content:space-between;font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.68)}
+  .name{left:20px;top:36%;font-size:118px;font-weight:700;line-height:.7;letter-spacing:-.16em;text-transform:uppercase;white-space:nowrap;transform:scaleY(.65);transform-origin:left center}
+  .signature{right:23px;top:51%;text-align:right;font-size:46px;font-weight:700;line-height:.78;letter-spacing:-.09em;text-transform:uppercase;transform:scaleY(.7);transform-origin:right center}
+  .aigc{right:24px;top:59%;font-size:9px;letter-spacing:.28em;color:rgba(255,255,255,.68);text-transform:uppercase}
+  .zh{right:24px;top:63%;font-size:8px;letter-spacing:.16em;color:rgba(255,255,255,.48)}
+  .footer{left:22px;right:22px;bottom:25px;display:flex;justify-content:space-between;align-items:end;border-top:1px solid rgba(255,255,255,.28);padding-top:12px;font-size:8px;letter-spacing:.18em;color:rgba(255,255,255,.78)}
+  .notes{margin-top:20px;display:grid;gap:10px}
+  .note{padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);font-size:14px}
+</style>
+
+<h2>A-6｜OSCAR 字標強化</h2>
+<p class="subtitle">OSCAR 尺寸再放大，字距進一步收緊；保持上下壓扁與左右留白。DIR. · DP 繼續作為右側專業署名。</p>
+
+<div class="stage">
+  <div class="poster">
+    <div class="safe"></div>
+    <div class="eyebrow"><span>OSCAR LAI</span><span>TAICHUNG · TAIWAN</span></div>
+    <div class="name">OSCAR</div>
+    <div class="signature">DIR. · DP</div>
+    <div class="aigc">AIGC VISUAL CREATOR</div>
+    <div class="zh">導演 · 攝影指導 · AI 視覺創作</div>
+    <div class="footer"><span>VIEW SELECTED WORKS</span><span>SCROLL ↓</span></div>
+  </div>
+</div>
+
+<div class="notes">
+  <div class="note"><strong>OSCAR：</strong>字級放大、字距收緊、上下再壓扁一點，讓五個字母更像一個完整標誌。</div>
+  <div class="note"><strong>邊界：</strong>仍保留左右安全距離，畫面有張力但不會黏住螢幕。</div>
+</div>
