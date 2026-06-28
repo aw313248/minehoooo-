@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { FieldNote } from "@/data/fieldNotes";
 import { getRelatedNotes } from "@/data/fieldNotes";
-import type { Block, ImageItem } from "./types";
+import type { Block, ImageItem, NextStopCity } from "./types";
 
 /* ─────────────────────────────────────────────────────────────────
    TOC — auto-built from { type: "headline" } blocks
@@ -340,6 +340,101 @@ function FAQBlock({ items }: Extract<Block, { type: "faq" }>) {
   );
 }
 
+function VideoBlock({ src, placeholder, frame, caption }: Extract<Block, { type: "video" }>) {
+  const isWide  = frame === "wide" || frame === "full";
+  const isPhone = frame === "phone";
+
+  const content = src ? (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
+    <video src={src} autoPlay muted loop playsInline className="object-cover" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
+  ) : (
+    <div className="eb-vid-ph-inner">
+      <span className="eb-vid-icon" aria-hidden>▶</span>
+      {placeholder && <p className="eb-vid-label">{placeholder}</p>}
+      <span className="eb-vid-notice">需要補素材</span>
+    </div>
+  );
+
+  if (isPhone) {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-start", margin: "24px 0" }}>
+        <div className="eb-phone">
+          <div className="eb-phone-img eb-vid-ph-dark">{content}</div>
+          {caption && <p className="eb-phone-cap">{caption}</p>}
+        </div>
+        <style>{`
+          .eb-vid-ph-dark { background: #080809; }
+          .eb-vid-ph-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+          .eb-vid-icon { font-size: 22px; color: rgba(255,255,255,0.25); }
+          .eb-vid-label { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-align: center; margin: 0; padding: 0 12px; }
+          .eb-vid-notice { font-family: var(--font-space-mono),monospace; font-size: 7.5px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,225,140,0.5); }
+        `}</style>
+      </div>
+    );
+  }
+
+  return (
+    <div className={isWide ? "eb-img-wide" : "eb-img-normal"} style={{ margin: "24px 0" }}>
+      <div className="eb-img-wrap eb-vid-ph-dark" style={{ position: "relative" }}>
+        {content}
+      </div>
+      {caption && <p className="eb-img-cap">{caption}</p>}
+      <style>{`
+        .eb-vid-ph-dark { background: #080809; }
+        .eb-vid-ph-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+        .eb-vid-icon { font-size: 28px; color: rgba(255,255,255,0.18); }
+        .eb-vid-label { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.36em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-align: center; margin: 0; }
+        .eb-vid-notice { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,225,140,0.48); }
+      `}</style>
+    </div>
+  );
+}
+
+function NextStopBlock({ cities }: Extract<Block, { type: "next-stop" }>) {
+  return (
+    <div className="eb-ns">
+      <div className="eb-ns-grid">
+        {cities.map((city) => {
+          const inner = (
+            <div className="eb-ns-card">
+              <div className="eb-ns-img">
+                <div className="eb-ns-img-ph" />
+                <div className="eb-ns-overlay" />
+                <div className="eb-ns-content">
+                  {city.nameZh && <span className="eb-ns-zh">{city.nameZh}</span>}
+                  <p className="eb-ns-name">{city.name}</p>
+                  {city.year && <span className="eb-ns-year">{city.year}</span>}
+                </div>
+                <span className="eb-ns-badge">{city.slug ? "Field Notes →" : "即將推出"}</span>
+              </div>
+            </div>
+          );
+          return city.slug
+            ? <Link key={city.name} href={`/field-notes/${city.slug}`} className="eb-ns-link">{inner}</Link>
+            : <div key={city.name} className="eb-ns-link eb-ns-coming">{inner}</div>;
+        })}
+      </div>
+      <style>{`
+        .eb-ns { margin-top: 8px; }
+        .eb-ns-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+        .eb-ns-link { display: block; text-decoration: none; }
+        .eb-ns-coming { cursor: default; }
+        .eb-ns-card { border-radius: 10px; overflow: hidden; }
+        .eb-ns-img { position: relative; width: 100%; aspect-ratio: 3/4; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; overflow: hidden; }
+        .eb-ns-img-ph { position: absolute; inset: 0; background: linear-gradient(160deg, #0f0f13 0%, #16161c 60%, #0a0a0d 100%); }
+        .eb-ns-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%); }
+        .eb-ns-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 16px 14px 12px; }
+        .eb-ns-zh { display: block; font-family: var(--font-readex),sans-serif; font-size: 11px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+        .eb-ns-name { font-family: var(--font-readex),sans-serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: rgba(255,255,255,0.95); margin: 0; line-height: 1; }
+        .eb-ns-year { display: block; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.28em; color: rgba(255,255,255,0.35); margin-top: 6px; }
+        .eb-ns-badge { position: absolute; top: 10px; right: 10px; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,225,140,0.6); background: rgba(0,0,0,0.55); border: 1px solid rgba(255,225,140,0.2); border-radius: 3px; padding: 4px 7px; }
+        .eb-ns-link:hover .eb-ns-img { border-color: rgba(255,255,255,0.15); }
+        @media (max-width: 600px) { .eb-ns-grid { grid-template-columns: repeat(2, 1fr); } }
+      `}</style>
+    </div>
+  );
+}
+
 function RelatedBlock({ slugs }: Extract<Block, { type: "related" }>) {
   const notes = getRelatedNotes(slugs);
   if (!notes.length) return null;
@@ -386,6 +481,8 @@ function RenderBlock({ block }: { block: Block }) {
     case "image":       return <ImageBlock {...block} />;
     case "image-pair":  return <ImagePairBlock {...block} />;
     case "compare":     return <CompareBlock {...block} />;
+    case "video":       return <VideoBlock {...block} />;
+    case "next-stop":   return <NextStopBlock {...block} />;
     case "oscar-notes": return <OscarNotesBlock {...block} />;
     case "closing":     return <ClosingBlock {...block} />;
     case "faq":         return <FAQBlock {...block} />;
