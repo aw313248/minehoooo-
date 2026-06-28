@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useInView } from "@/hooks/useInView";
 import { AnimLine } from "@/components/AnimLine";
+import FieldNotesCTA from "@/components/FieldNotesCTA";
 
 const MAIN_VIDEO = "u5WaOT1m670";
 
@@ -213,6 +214,19 @@ export default function WorkAIGC() {
             <div style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.6)", animation: "slideDown 1.6s ease-in-out infinite" }} />
           </div>
           <span className="font-mono-label" style={{ fontSize: 7, letterSpacing: "0.35em", color: "var(--white-muted)" }}>SCROLL</span>
+        </div>
+      </div>
+
+      {/* ── FIELD NOTES editorial CTA ── */}
+      <div className="border-b" style={{ borderColor: "var(--border)" }}>
+        <div className="px-5 md:px-12 py-10 md:py-14 max-w-[1280px] mx-auto">
+          <div className="flex items-center gap-3 mb-5 md:mb-6">
+            <p className="font-mono-label text-[9px] tracking-[0.3em] shrink-0" style={{ color: "var(--text-3)" }}>
+              FIELD NOTES · AI WORKFLOW
+            </p>
+            <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+          </div>
+          <FieldNotesCTA />
         </div>
       </div>
 

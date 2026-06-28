@@ -309,6 +309,7 @@ const colorCredits = [
   { id: "0jyUrpj5Jiw", title: "DaLow",           artist: "大樓DaLow ft. C Grass",            role: "COLOR",       cat: "COLOR"    },
   { id: "J-BIhdj-4oM", title: "Badass Dance",     artist: "大樓DaLow ft. Aiken",              role: "LIGHTING",    cat: "LIGHTING" },
   { id: "BbDtN119tts", title: "DaLow",           artist: "大樓DaLow ft. C Grass",            role: "LIGHTING",    cat: "LIGHTING" },
+  { id: "xNg4Vupy8_0", title: "中部第一深情",     artist: "66 · 中部管轄區",                   role: "LIGHTING",    cat: "LIGHTING" },
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",   artist: "帝仰 tiang",                       role: "DIR · COLOR", cat: "COLOR"    },
 ];
 

@@ -1,27 +1,35 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useLang } from "@/contexts/LangContext";
 
 // 0=Hero, 1=About, 2=Photography, 3=Video, 4=AIGC, 5=Projects, 6=Contact
-const desktopLinks = [
+// Items with `href` are external routes (e.g. /field-notes); items with `page` page-flip.
+type NavItem =
+  | { label: string; labelZh: string; page: number; href?: undefined }
+  | { label: string; labelZh: string; href: string; page?: undefined };
+
+const desktopLinks: NavItem[] = [
   { label: "HOME",     labelZh: "首頁",   page: 0 },
   { label: "PHOTO",    labelZh: "攝影",   page: 2 },
   { label: "VIDEO",    labelZh: "影像",   page: 3 },
   { label: "AIGC",     labelZh: "AIGC",   page: 4 },
+  { label: "NOTES",    labelZh: "筆記",   href: "/field-notes" },
   { label: "PROJECTS", labelZh: "專案",   page: 5 },
   { label: "ABOUT",    labelZh: "關於",   page: 1 },
   { label: "CONTACT",  labelZh: "聯絡",   page: 6 },
 ];
 
-const mobileLinks = [
-  { label: "HOME",         labelZh: "首頁",   page: 0 },
+const mobileLinks: NavItem[] = [
+  { label: "HOME",        labelZh: "首頁",   page: 0 },
   { label: "PHOTOGRAPHY", labelZh: "攝影",   page: 2 },
-  { label: "VIDEO",        labelZh: "影像",   page: 3 },
-  { label: "AIGC",         labelZh: "AIGC",   page: 4 },
-  { label: "PROJECTS",     labelZh: "專案",   page: 5 },
-  { label: "ABOUT",        labelZh: "關於",   page: 1 },
-  { label: "CONTACT",      labelZh: "聯絡",   page: 6 },
+  { label: "VIDEO",       labelZh: "影像",   page: 3 },
+  { label: "AIGC",        labelZh: "AIGC",   page: 4 },
+  { label: "NOTES",       labelZh: "筆記",   href: "/field-notes" },
+  { label: "PROJECTS",    labelZh: "專案",   page: 5 },
+  { label: "ABOUT",       labelZh: "關於",   page: 1 },
+  { label: "CONTACT",     labelZh: "聯絡",   page: 6 },
 ];
 
 function goto(page: number) {
@@ -100,27 +108,43 @@ export default function Navbar() {
             borderRadius: 999,
             padding: "6px 8px",
           }}>
-          {desktopLinks.map((l) => {
-            const active = activePage === l.page;
+          {desktopLinks.map((l, i) => {
+            const active = typeof l.page === "number" && activePage === l.page;
+            const label = lang === "zh" ? l.labelZh : l.label;
+            const baseStyle: React.CSSProperties = {
+              background: active ? "rgba(255,255,255,0.08)" : "transparent",
+              color: active ? "#fff" : "rgba(255,255,255,0.65)",
+              fontSize: 11, fontWeight: 500,
+              letterSpacing: "0.18em",
+              borderRadius: 999,
+              padding: "8px 14px",
+              border: "none", cursor: "pointer",
+              textDecoration: "none",
+              display: "inline-block",
+            };
             return (
-              <li key={l.page}>
-                <button
-                  onClick={() => goto(l.page)}
-                  className="transition-colors uppercase"
-                  style={{
-                    background: active ? "rgba(255,255,255,0.08)" : "transparent",
-                    color: active ? "#fff" : "rgba(255,255,255,0.65)",
-                    fontSize: 11, fontWeight: 500,
-                    letterSpacing: "0.18em",
-                    borderRadius: 999,
-                    padding: "8px 14px",
-                    border: "none", cursor: "pointer",
-                  }}
-                  onMouseEnter={e => { if (!active) e.currentTarget.style.color = "#fff"; }}
-                  onMouseLeave={e => { if (!active) e.currentTarget.style.color = "rgba(255,255,255,0.65)"; }}
-                >
-                  {lang === "zh" ? l.labelZh : l.label}
-                </button>
+              <li key={`${l.label}-${i}`}>
+                {l.href ? (
+                  <Link
+                    href={l.href}
+                    className="transition-colors uppercase"
+                    style={baseStyle}
+                    onMouseEnter={e => { e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.65)"; }}
+                  >
+                    {label}
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => goto(l.page!)}
+                    className="transition-colors uppercase"
+                    style={baseStyle}
+                    onMouseEnter={e => { if (!active) e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={e => { if (!active) e.currentTarget.style.color = "rgba(255,255,255,0.65)"; }}
+                  >
+                    {label}
+                  </button>
+                )}
               </li>
             );
           })}
@@ -180,24 +204,40 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden px-6 py-6 border-t" style={{ background: "rgba(0,0,0,0.95)", borderColor: "rgba(255,255,255,0.07)" }}>
           <ul className="flex flex-col gap-5">
-            {mobileLinks.map((l) => {
-              const active = activePage === l.page;
+            {mobileLinks.map((l, i) => {
+              const active = typeof l.page === "number" && activePage === l.page;
+              const label = lang === "zh" ? l.labelZh : l.label;
+              const innerRow = (
+                <>
+                  <div style={{
+                    width: 4, height: 4, borderRadius: "50%",
+                    background: active ? "var(--white-primary)" : "var(--white-dim)",
+                    transition: "background .3s",
+                  }} />
+                  <span className="font-mono-label text-xs tracking-[0.3em]"
+                    style={{ color: active ? "#f5f5f7" : "var(--white-soft)" }}>
+                    {label}
+                  </span>
+                </>
+              );
               return (
-                <li key={l.page}>
-                  <button
-                    onClick={() => { goto(l.page); setMenuOpen(false); }}
-                    className="flex items-center gap-3"
-                    style={{ background: "none", border: "none", cursor: "pointer" }}>
-                    <div style={{
-                      width: 4, height: 4, borderRadius: "50%",
-                      background: active ? "var(--white-primary)" : "var(--white-dim)",
-                      transition: "background .3s",
-                    }} />
-                    <span className="font-mono-label text-xs tracking-[0.3em]"
-                      style={{ color: active ? "#f5f5f7" : "var(--white-soft)" }}>
-                      {lang === "zh" ? l.labelZh : l.label}
-                    </span>
-                  </button>
+                <li key={`${l.label}-${i}`}>
+                  {l.href ? (
+                    <Link
+                      href={l.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center gap-3"
+                      style={{ textDecoration: "none" }}>
+                      {innerRow}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={() => { goto(l.page!); setMenuOpen(false); }}
+                      className="flex items-center gap-3"
+                      style={{ background: "none", border: "none", cursor: "pointer" }}>
+                      {innerRow}
+                    </button>
+                  )}
                 </li>
               );
             })}

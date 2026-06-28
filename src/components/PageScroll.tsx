@@ -214,6 +214,37 @@ export default function PageScroll({ children }: Props) {
     if (cur) cur.scrollTop = 0;
   }, [page]);
 
+  // ── On mount: honor `?section=` query so links like /?section=video work ──
+  // photo→2, video→3, aigc→4, projects→4 (no dedicated projects page yet — falls back to AIGC)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get("section");
+    if (!section) return;
+    const map: Record<string, number> = {
+      hero: 0,
+      about: 1,
+      photo: 2,
+      photography: 2,
+      video: 3,
+      aigc: 4,
+      projects: 4,
+      contact: 5,
+    };
+    const target = map[section.toLowerCase()];
+    if (typeof target === "number" && target >= 0 && target < total) {
+      setPage(target);
+      // Strip the query so it doesn't override later in-app nav
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("section");
+        window.history.replaceState({}, "", url.toString());
+      } catch {}
+    }
+    // run once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div style={{ position: "fixed", inset: 0, overflow: "hidden", background: "#000" }}>
 
