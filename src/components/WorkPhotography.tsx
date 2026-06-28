@@ -58,7 +58,6 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
         }}
         onClick={e => e.stopPropagation()}>
 
-        {/* Prev chevron */}
         <button onClick={onPrev} aria-label="Previous photo"
           className="hidden md:flex items-center justify-center"
           style={{
@@ -76,16 +75,13 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           </svg>
         </button>
 
-        {/* Image */}
         <div className="relative">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={`MINEH4O Photography ${String(idx + 1).padStart(2,"0")} of ${total}`} className="max-w-[82vw] max-h-[85vh] object-contain" style={{ borderRadius: 14 }} />
-          {/* Counter */}
           <span className="absolute bottom-3 left-3 font-mono-label text-[8px] tracking-[0.2em]"
             style={{ color: "var(--white-soft)" }}>
             {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
           </span>
-          {/* Close */}
           <button onClick={onClose} aria-label="Close lightbox"
             className="absolute top-3 right-3 font-mono-label text-[9px] tracking-widest px-3 py-1.5"
             style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(8px)", color: "var(--white-secondary)", borderWidth: 1, borderStyle: "solid", borderColor: "rgba(255,255,255,0.12)" }}>
@@ -93,7 +89,6 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
           </button>
         </div>
 
-        {/* Next chevron */}
         <button onClick={onNext} aria-label="Next photo"
           className="hidden md:flex items-center justify-center"
           style={{
@@ -115,188 +110,233 @@ function Lightbox({ src, onClose, onPrev, onNext, hasPrev, hasNext, idx, total }
   );
 }
 
-/* ── Photo carousel — horizontal slide with arrows, dots, touch swipe ── */
-function PhotoCarousel({
+/* ── Horizontal full-bleed carousel — peek next/prev, glass arrows ── */
+function HorizontalCarousel({
   cat,
-  onSelect,
-  perViewDesktop = 2,
-  variant = "desktop",
+  onOpen,
+  active,
 }: {
   cat: PhotoCategory;
-  onSelect: (idx: number) => void;
-  perViewDesktop?: number;
-  variant?: "desktop" | "mobile";
+  onOpen: (idx: number) => void;
+  active: boolean;
 }) {
-  const [page, setPage]               = useState(0);
-  const [perView, setPerView]         = useState(variant === "mobile" ? 1 : perViewDesktop);
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const trackRef                      = useRef<HTMLDivElement>(null);
+  const [idx, setIdx]               = useState(0);
+  const [touchStartX, setTouchStart]= useState<number | null>(null);
+  const [hovered, setHovered]       = useState<number | null>(null);
+  const railRef                     = useRef<HTMLDivElement>(null);
 
+  // Reset on category change
+  useEffect(() => { setIdx(0); }, [cat.id]);
+
+  const total   = cat.files.length;
+  const canPrev = idx > 0;
+  const canNext = idx < total - 1;
+  const next    = () => canNext && setIdx(i => i + 1);
+  const prev    = () => canPrev && setIdx(i => i - 1);
+
+  // Keyboard — only while section visible
   useEffect(() => {
-    if (variant === "mobile") return;
-    const update = () => {
-      const w = window.innerWidth;
-      if (w >= 1280) setPerView(Math.min(perViewDesktop, 3));
-      else if (w >= 768) setPerView(Math.min(perViewDesktop, 2));
-      else setPerView(1);
+    if (!active) return;
+    const fn = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft"  && canPrev) prev();
+      if (e.key === "ArrowRight" && canNext) next();
     };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [perViewDesktop, variant]);
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, [active, canPrev, canNext]);
 
-  useEffect(() => { setPage(0); }, [cat.id, perView]);
-
-  const totalPages = Math.max(1, Math.ceil(cat.files.length / perView));
-  const canPrev    = page > 0;
-  const canNext    = page < totalPages - 1;
-  const next       = () => canNext && setPage(p => p + 1);
-  const prev       = () => canPrev && setPage(p => p - 1);
-
-  function onTouchStart(e: React.TouchEvent) { setTouchStartX(e.touches[0].clientX); }
+  function onTouchStart(e: React.TouchEvent) { setTouchStart(e.touches[0].clientX); }
   function onTouchEnd(e: React.TouchEvent) {
     if (touchStartX === null) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     if (dx > 50  && canPrev) prev();
     if (dx < -50 && canNext) next();
-    setTouchStartX(null);
+    setTouchStart(null);
   }
 
-  const aspectRatio = variant === "mobile" ? "4/5" : "4/3";
-
+  // Slide is 64% of rail width on desktop, 86% on mobile — but we treat them uniformly
+  // and use percentage so layout is fluid. Each slide block is 100% / (slides per view).
+  // We center current slide by translating the rail.
+  // Use CSS var so we can set responsive widths.
   return (
-    <div className="relative">
-      {/* Track */}
+    <div className="absolute inset-0 overflow-hidden"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      style={{ touchAction: "pan-y" }}>
+
+      {/* Rail */}
       <div
-        className="overflow-hidden"
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-        style={{ touchAction: "pan-y" }}>
-        <div
-          ref={trackRef}
-          className="flex"
-          style={{
-            transform: `translateX(-${page * 100}%)`,
-            transition: "transform .6s cubic-bezier(.16,1,.3,1)",
-          }}>
-          {Array.from({ length: totalPages }).map((_, pIdx) => {
-            const start = pIdx * perView;
-            const slice = cat.files.slice(start, start + perView);
-            return (
-              <div key={pIdx} className="shrink-0 flex gap-1.5" style={{ width: "100%" }}>
-                {slice.map((f, i) => {
-                  const fileIdx = start + i;
-                  const src     = encode(cat.id, f);
-                  return (
-                    <button
-                      key={f}
-                      onClick={() => onSelect(fileIdx)}
-                      className="relative overflow-hidden group flex-1 min-w-0 active:scale-[0.98]"
-                      style={{ aspectRatio, borderRadius: 18, transition: "transform .2s ease" }}
-                      aria-label={`Open photo ${fileIdx + 1}`}>
-                      <Image
-                        src={src}
-                        alt={`${cat.en} ${fileIdx + 1}`}
-                        fill
-                        loading="lazy"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes={variant === "mobile" ? "100vw" : "50vw"}
-                      />
-                      {/* Index pill */}
-                      <span className="absolute bottom-2 left-2 font-mono-label text-[8px] tracking-[0.2em] px-1.5 py-0.5"
-                        style={{ color: "var(--white-secondary)", background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}>
-                        {String(fileIdx + 1).padStart(2, "0")} / {String(cat.files.length).padStart(2, "0")}
+        ref={railRef}
+        className="flex items-center h-full"
+        style={{
+          // each slide width is set via inline below; translate to center current
+          // Center = 50% - (slideWidthPct / 2); we use 64% desktop, 86% mobile via media class trick
+          // To avoid media-query JS, we render two transforms — pick via tailwind responsive wrap
+          transform: `translate3d(calc(50% - (var(--slide-w) / 2) - (var(--slide-w) * ${idx})), 0, 0)`,
+          transition: "transform .8s cubic-bezier(.16,1,.3,1)",
+          ['--slide-w' as string]: "var(--slide-w-mobile, 86%)",
+        }}>
+        {cat.files.map((f, i) => {
+          const src      = encode(cat.id, f);
+          const isActive = i === idx;
+          const distance = Math.abs(i - idx);
+          // Peek styling
+          const scale    = isActive ? 1 : distance === 1 ? 0.86 : 0.78;
+          const opacity  = isActive ? 1 : distance === 1 ? 0.38 : 0.16;
+          return (
+            <div
+              key={f}
+              className="shrink-0 h-full flex items-center justify-center px-2 md:px-3"
+              style={{
+                width: "var(--slide-w)",
+              }}>
+              <button
+                onClick={() => isActive ? onOpen(i) : setIdx(i)}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(h => (h === i ? null : h))}
+                className="relative overflow-hidden block w-full h-full group"
+                style={{
+                  borderRadius: 22,
+                  transform: `scale(${scale})`,
+                  opacity,
+                  transition: "transform .8s cubic-bezier(.16,1,.3,1), opacity .6s ease",
+                  cursor: isActive ? "zoom-in" : "pointer",
+                  boxShadow: isActive
+                    ? "0 24px 60px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.08)"
+                    : "0 8px 24px -12px rgba(0,0,0,0.6)",
+                }}
+                aria-label={isActive ? `Open photo ${i + 1}` : `Go to photo ${i + 1}`}>
+                <Image
+                  src={src}
+                  alt={`${cat.en} ${i + 1}`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  priority={i <= 1}
+                  loading={i <= 1 ? undefined : "lazy"}
+                  sizes="(max-width: 768px) 88vw, 64vw"
+                />
+
+                {/* Soft grain on active slide */}
+                {isActive && (
+                  <div aria-hidden="true" style={{
+                    position: "absolute", inset: 0, pointerEvents: "none",
+                    backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+                    backgroundRepeat: "repeat",
+                    backgroundSize: "180px 180px",
+                    opacity: 0.05,
+                    mixBlendMode: "overlay",
+                  }} />
+                )}
+
+                {/* Index pill */}
+                <span
+                  className="absolute bottom-4 left-4 font-mono-label text-[9px] tracking-[0.3em] px-2.5 py-1"
+                  style={{
+                    color: "var(--white-primary)",
+                    background: "rgba(0,0,0,0.55)",
+                    backdropFilter: "blur(10px)",
+                    borderRadius: 999,
+                  }}>
+                  {String(i + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+                </span>
+
+                {/* OPEN hover pill — active only */}
+                {isActive && hovered === i && (
+                  <div className="absolute top-4 right-4 hidden md:block">
+                    <div style={{
+                      background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)",
+                      border: "1px solid var(--white-soft)", borderRadius: 999,
+                      padding: "8px 14px", display: "flex", alignItems: "center", gap: 8,
+                    }}>
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="var(--white-primary)" strokeWidth="1.5">
+                        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+                      </svg>
+                      <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "var(--white-primary)" }}>
+                        OPEN ↗
                       </span>
-                    </button>
-                  );
-                })}
-                {/* Fill blanks on last page so widths stay equal */}
-                {Array.from({ length: perView - slice.length }).map((_, k) => (
-                  <div key={`blank-${k}`} className="flex-1 min-w-0" style={{ aspectRatio }} />
-                ))}
-              </div>
-            );
-          })}
-        </div>
+                    </div>
+                  </div>
+                )}
+              </button>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Controls row */}
-      <div className="flex items-center justify-between mt-3 gap-3">
-        <button onClick={prev} disabled={!canPrev} aria-label="Previous"
-          className="flex items-center justify-center shrink-0"
-          style={{
-            width: 36, height: 36, borderRadius: 999,
-            background:  canPrev ? "var(--white-ghost)" : "transparent",
-            border:     `1px solid ${canPrev ? "var(--white-dim)" : "var(--white-ghost)"}`,
-            opacity:     canPrev ? 1 : 0.25,
-            cursor:      canPrev ? "pointer" : "default",
-            transition: "background .2s ease, opacity .2s ease",
-          }}
-          onMouseEnter={e => canPrev && (e.currentTarget.style.background = "var(--white-dim)")}
-          onMouseLeave={e => canPrev && (e.currentTarget.style.background = "var(--white-ghost)")}>
-          <svg width="7" height="12" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="7 1 1 7 7 13" />
-          </svg>
-        </button>
+      {/* Desktop arrows — floating glass */}
+      <button onClick={prev} disabled={!canPrev} aria-label="Previous photo"
+        className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-6 z-20"
+        style={{
+          width: 54, height: 54, borderRadius: 999,
+          background: "rgba(0,0,0,0.55)", backdropFilter: "blur(16px)",
+          border: `1px solid ${canPrev ? "var(--white-soft)" : "var(--white-ghost)"}`,
+          opacity: canPrev ? 1 : 0.2,
+          cursor: canPrev ? "pointer" : "default",
+          transition: "background .25s ease, opacity .25s ease, transform .2s ease",
+        }}
+        onMouseEnter={e => canPrev && (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
+        <svg width="10" height="16" viewBox="0 0 8 14" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="7 1 1 7 7 13" />
+        </svg>
+      </button>
 
-        {/* Dots */}
-        <div className="flex items-center gap-1.5 flex-1 justify-center flex-wrap">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button key={i} onClick={() => setPage(i)} aria-label={`Go to page ${i + 1}`}
+      <button onClick={next} disabled={!canNext} aria-label="Next photo"
+        className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-6 z-20"
+        style={{
+          width: 54, height: 54, borderRadius: 999,
+          background: "rgba(0,0,0,0.55)", backdropFilter: "blur(16px)",
+          border: `1px solid ${canNext ? "var(--white-soft)" : "var(--white-ghost)"}`,
+          opacity: canNext ? 1 : 0.2,
+          cursor: canNext ? "pointer" : "default",
+          transition: "background .25s ease, opacity .25s ease, transform .2s ease",
+        }}
+        onMouseEnter={e => canNext && (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}>
+        <svg width="10" height="16" viewBox="0 0 8 14" fill="none" stroke="var(--white-primary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="1 1 7 7 1 13" />
+        </svg>
+      </button>
+
+      {/* Bottom counter + dots */}
+      <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 z-20 px-4 py-2"
+        style={{
+          background: "rgba(0,0,0,0.45)",
+          backdropFilter: "blur(14px)",
+          borderRadius: 999,
+          border: "1px solid var(--white-ghost)",
+        }}>
+        <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--white-soft)" }}>
+          {String(idx + 1).padStart(2, "0")}
+        </span>
+        <div className="flex items-center gap-1.5 max-w-[180px] md:max-w-[280px] overflow-hidden">
+          {cat.files.map((_, i) => (
+            <button key={i} onClick={() => setIdx(i)} aria-label={`Go to photo ${i + 1}`}
               style={{
-                width:  i === page ? 16 : 4,
+                width:  i === idx ? 18 : 4,
                 height: 4, borderRadius: 2,
-                background: i === page ? "var(--white-primary)" : "var(--white-muted)",
-                transition: "all .4s ease",
+                background: i === idx ? "var(--white-primary)" : "var(--white-muted)",
+                transition: "all .35s ease",
                 cursor: "pointer",
+                flexShrink: 0,
               }} />
           ))}
         </div>
-
-        {/* Page count + Next */}
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "var(--text-3)" }}>
-            {String(page + 1).padStart(2, "0")} / {String(totalPages).padStart(2, "0")}
-          </span>
-          <button onClick={next} disabled={!canNext} aria-label="Next"
-            className="flex items-center justify-center"
-            style={{
-              width: 36, height: 36, borderRadius: 999,
-              background:  canNext ? "var(--white-ghost)" : "transparent",
-              border:     `1px solid ${canNext ? "var(--white-dim)" : "var(--white-ghost)"}`,
-              opacity:     canNext ? 1 : 0.25,
-              cursor:      canNext ? "pointer" : "default",
-              transition: "background .2s ease, opacity .2s ease",
-            }}
-            onMouseEnter={e => canNext && (e.currentTarget.style.background = "var(--white-dim)")}
-            onMouseLeave={e => canNext && (e.currentTarget.style.background = "var(--white-ghost)")}>
-            <svg width="7" height="12" viewBox="0 0 8 14" fill="none" stroke="var(--white-secondary)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="1 1 7 7 1 13" />
-            </svg>
-          </button>
-        </div>
+        <span className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--white-soft)" }}>
+          {String(total).padStart(2, "0")}
+        </span>
       </div>
     </div>
   );
 }
 
 export default function WorkPhotography() {
-  const [activeId, setActiveId]   = useState(photoCategories[0].id);
-  const [heroIdx, setHeroIdx]     = useState(0);
-  const [lightbox, setLightbox]   = useState<{ idx: number } | null>(null);
-  const { ref, inView }           = useInView(0.05);
-  const { lang }                  = useLang();
-  const cat = photoCategories.find(c => c.id === activeId)!;
-  const encodedFiles = cat.files.map(f => encode(cat.id, f));
-
-  useEffect(() => {
-    const startIdx = Math.floor(Math.random() * Math.min(cat.files.length, 6));
-    setHeroIdx(startIdx);
-    const t = setInterval(() => setHeroIdx(i => (i + 1) % Math.min(cat.files.length, 6)), 4000);
-    return () => clearInterval(t);
-  }, [activeId, cat.files.length]);
-
-  const heroSrc = encode(cat.id, cat.files[heroIdx]);
+  const [activeId, setActiveId] = useState(photoCategories[0].id);
+  const [lightbox, setLightbox] = useState<{ idx: number } | null>(null);
+  const { ref, inView }         = useInView(0.05);
+  const { lang }                = useLang();
+  const cat                     = photoCategories.find(c => c.id === activeId)!;
+  const encodedFiles            = cat.files.map(f => encode(cat.id, f));
 
   return (
     <>
@@ -313,181 +353,90 @@ export default function WorkPhotography() {
         />
       )}
 
-      <section style={{ background: "#000", minHeight: "100vh" }} className="md:h-screen md:overflow-hidden md:flex md:flex-row">
+      <section
+        ref={ref}
+        style={{
+          background: "#000",
+          minHeight: "100vh",
+          // Responsive slide width via CSS var (used by carousel rail transform)
+          ['--slide-w-mobile' as string]: "86%",
+        }}
+        className="md:h-screen md:overflow-hidden flex flex-col relative
+                   [--slide-w-mobile:86%] md:[--slide-w-mobile:64%]">
 
-        {/* ── PHOTO (desktop: right flex-1 | mobile: top portion) ── */}
-        <div className="relative overflow-hidden cursor-pointer order-first md:order-last md:flex-1"
-          style={{ height: "62vw", minHeight: 180 }}
-          onClick={() => setLightbox({ idx: heroIdx })}>
-
-          {/* Hero image (crossfade cycle) */}
-          <Image
-            src={heroSrc}
-            alt={cat.en}
-            fill
-            className="object-cover"
-            style={{ animation: "focusIn 1.2s cubic-bezier(.16,1,.3,1) forwards" }}
-            priority
-          />
-
-          {/* Film grain overlay */}
-          <div aria-hidden="true" style={{
-            position: "absolute", inset: 0, pointerEvents: "none", zIndex: 2,
-            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-            backgroundRepeat: "repeat",
-            backgroundSize: "180px 180px",
-            opacity: 0.055,
-            mixBlendMode: "overlay",
-            animation: "grainShift 0.18s steps(1) infinite",
-          }} />
-
-          {/* Gradient overlay: left vignette blends into left panel */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: "linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 40%, rgba(0,0,0,0.15) 100%)",
-          }} />
-
-          {/* Bottom info overlay */}
-          <div className="absolute bottom-0 left-0 right-0 px-8 py-6"
-            style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)", backdropFilter: "blur(0px)" }}>
-            <p className="font-mono-label text-[9px] tracking-[0.3em]" style={{ color: "var(--white-soft)" }}>
-              {cat.en.toUpperCase()} · MINEH4O · {String(heroIdx + 1).padStart(2, "0")} / {String(Math.min(cat.files.length, 6)).padStart(2, "0")}
-            </p>
-          </div>
-
-          {/* OPEN overlay — desktop hover */}
-          <div className="absolute inset-0 hidden md:flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <div style={{ background: "rgba(0,0,0,0.52)", backdropFilter: "blur(14px)", border: "1px solid var(--white-dim)", padding: "10px 22px", display: "flex", alignItems: "center", gap: 8 }}>
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-              <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "var(--white-primary)" }}>OPEN ↗</span>
+        {/* ── Header ── */}
+        <div className="shrink-0 px-5 md:px-12 pt-6 md:pt-10 pb-4 md:pb-5 relative z-10">
+          <div className="flex items-end justify-between flex-wrap gap-4 mb-4 md:mb-6">
+            <div>
+              <span className="font-mono-label text-[9px] md:text-[10px] tracking-[0.35em] block mb-2 md:mb-4"
+                style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
+                {lang === "zh" ? "02 — 攝影" : "02 — PHOTOGRAPHY"}
+              </span>
+              <h2 className="font-display leading-none"
+                style={{ fontSize: "clamp(2.4rem, 6vw, 5.5rem)", color: "var(--text)" }}>
+                <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />
+              </h2>
+            </div>
+            <div className="text-left md:text-right max-w-md">
+              <p className="font-mono-label text-[9px] tracking-wider mb-2" style={{ color: "var(--text-3)" }}>
+                {cat.files.length} works · {photoCategories.length} categories
+              </p>
+              <p className="text-[11px] md:text-[12px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+                {cat.desc}
+              </p>
             </div>
           </div>
 
-          {/* Dot progress */}
-          <div className="absolute top-6 right-6 flex gap-1.5">
-            {cat.files.slice(0, 6).map((_, i) => (
-              <div key={i}
-                onClick={e => { e.stopPropagation(); setHeroIdx(i); }}
-                style={{
-                  width: i === heroIdx ? 16 : 4, height: 4, borderRadius: 2, cursor: "pointer",
-                  background: i === heroIdx ? "var(--white-primary)" : "var(--white-muted)",
-                  transition: "all .4s ease",
-                }} />
-            ))}
-          </div>
-
-          {/* View label — desktop hover only */}
-          <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            <span className="font-mono-label text-[11px] tracking-[0.3em]"
-              style={{ color: "var(--white-primary)", textShadow: "0 0 20px rgba(0,0,0,0.8)" }}>
-              VIEW FULL
-            </span>
-          </div>
-        </div>
-
-        {/* ── CONTROLS (desktop: left 38% sticky | mobile: below photo, full scroll) ── */}
-        <div ref={ref} className="relative z-10 flex flex-col md:justify-between md:w-[38%] shrink-0 border-r md:p-12 md:overflow-y-auto"
-          style={{ borderColor: "var(--border)", background: "rgba(0,0,0,0.75)", backdropFilter: "blur(24px)" }}>
-
-          {/* ── Desktop title ── */}
-          <div className="hidden md:block">
-            <span className="font-mono-label text-[9px] tracking-[0.35em] block mb-5"
-              style={{ color: "var(--text-3)", opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
-              {lang === "zh" ? "02 — 攝影" : "02 — PHOTOGRAPHY"}
-            </span>
-            <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(3.5rem,8vw,9rem)", color: "var(--text)" }}>
-              <WordReveal text="Photo" inView={inView} baseDelay={0.08} stagger={0.05} />
-            </h2>
-            <p className="font-mono-label text-[9px] tracking-wider mb-8" style={{ color: "var(--text-3)" }}>
-              {cat.files.length} works · {photoCategories.length} categories
-            </p>
-          </div>
-
-          {/* ── Mobile: section label (tiny) ── */}
-          <div className="md:hidden px-4 pt-3 pb-1 flex items-center justify-between">
-            <span className="font-mono-label text-[8px] tracking-[0.3em]" style={{ color: "var(--text-3)" }}>
-              02 — PHOTOGRAPHY
-            </span>
-            <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>
-              {cat.files.length} works
-            </span>
-          </div>
-
-          {/* ── Mobile: horizontal pill categories ── */}
-          <div className="md:hidden flex gap-2 overflow-x-auto px-4 pb-2" style={{ scrollbarWidth: "none" }}>
-            {photoCategories.map((c) => {
+          {/* Category pills — horizontal scroll */}
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1"
+            style={{ scrollbarWidth: "none" }}>
+            {photoCategories.map((c, i) => {
               const isActive = c.id === activeId;
               return (
-              <button key={c.id} onClick={() => setActiveId(c.id)}
-                className="shrink-0 px-3 py-1.5 active:scale-95"
-                style={{
-                  background: isActive ? "var(--white-dim)" : "var(--white-ghost)",
-                  backdropFilter: "blur(8px)",
-                  border: isActive ? "1px solid var(--white-soft)" : "1px solid var(--white-ghost)",
-                  borderRadius: 999,
-                  transition: "background .2s ease, border-color .2s ease, transform .15s ease",
-                }}>
-                <span className="font-mono-label text-[9px] tracking-wider whitespace-nowrap"
-                  style={{ color: isActive ? "var(--text)" : "var(--text-3)" }}>
-                  {c.en}
-                </span>
-              </button>
+                <button key={c.id} onClick={() => setActiveId(c.id)}
+                  className="shrink-0 px-3.5 md:px-4 py-2 flex items-center gap-2 active:scale-95"
+                  style={{
+                    background:    isActive ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.04)",
+                    backdropFilter:"blur(10px)",
+                    border:       `1px solid ${isActive ? "var(--white-soft)" : "var(--white-ghost)"}`,
+                    borderRadius:  999,
+                    opacity:       inView ? 1 : 0,
+                    transform:     inView ? "translateY(0)" : "translateY(8px)",
+                    transition:   `opacity .5s ease ${0.15 + i * 0.04}s, transform .5s ease ${0.15 + i * 0.04}s, background .2s ease, border-color .2s ease, transform .15s ease`,
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.10)"; }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}>
+                  <span className="font-mono-label text-[10px] tracking-wider whitespace-nowrap"
+                    style={{ color: isActive ? "var(--text)" : "var(--text-2)" }}>
+                    {c.en}
+                  </span>
+                  <span className="font-mono-label text-[8px] whitespace-nowrap"
+                    style={{ color: "var(--text-3)" }}>
+                    {String(c.files.length).padStart(2, "0")}
+                  </span>
+                </button>
               );
             })}
           </div>
+        </div>
 
-          {/* ── Mobile: photo carousel (1 per view, swipeable) ── */}
-          <div className="md:hidden px-3 pb-8 pt-2">
-            <p className="font-mono-label text-[8px] tracking-[0.3em] mb-3 px-1" style={{ color: "var(--text-3)" }}>
-              {cat.files.length} PHOTOS — SWIPE OR TAP TO ENLARGE
-            </p>
-            <PhotoCarousel cat={cat} onSelect={idx => setLightbox({ idx })} variant="mobile" />
-          </div>
+        {/* ── Carousel ── */}
+        <div className="flex-1 relative min-h-[55vh] md:min-h-0">
+          <HorizontalCarousel cat={cat} onOpen={idx => setLightbox({ idx })} active={inView} />
+        </div>
 
-          {/* ── Desktop: vertical category list ── */}
-          <div className="hidden md:block">
-            <div className="space-y-1 mb-8">
-              {photoCategories.map((c, i) => {
-                const isActive = c.id === activeId;
-                return (
-                <button key={c.id} onClick={() => setActiveId(c.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left group"
-                  style={{
-                    background:     isActive ? "var(--white-ghost)" : "transparent",
-                    backdropFilter: isActive ? "blur(8px)" : "none",
-                    borderLeft:     isActive ? "2px solid var(--white-soft)" : "2px solid var(--white-ghost)",
-                    opacity: inView ? 1 : 0,
-                    transition: `opacity .6s ease ${.1 + i * .08}s, background .25s ease, border-color .25s ease`,
-                  }}
-                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = "var(--white-ghost)"; e.currentTarget.style.borderLeftColor = "var(--white-muted)"; } }}
-                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderLeftColor = "var(--white-ghost)"; } }}>
-                  <div>
-                    <p className="text-[13px] font-medium transition-colors duration-200" style={{ color: isActive ? "var(--text)" : "var(--text-2)" }}>
-                      {c.en}
-                    </p>
-                    <p className="font-mono-label text-[9px]" style={{ color: "var(--text-3)" }}>{c.zh}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono-label text-[8px]" style={{ color: "var(--text-3)" }}>{c.files.length}</span>
-                    <span className="font-mono-label text-[9px] transition-opacity duration-200"
-                      style={{ color: "var(--white-soft)", opacity: isActive ? 1 : 0 }}>→</span>
-                  </div>
-                </button>
-                );
-              })}
-            </div>
-            <p className="font-mono-label text-[9px] leading-relaxed mb-6" style={{ color: "var(--text-3)" }}>
-              {cat.desc}
-            </p>
-          </div>
-
-          {/* ── Desktop: photo carousel (2 per view, arrows + dots) ── */}
-          <div className="hidden md:block">
-            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>GALLERY</p>
-            <PhotoCarousel cat={cat} onSelect={idx => setLightbox({ idx })} perViewDesktop={2} variant="desktop" />
-            <p className="font-mono-label text-[8px] mt-3" style={{ color: "var(--text-3)" }}>
-              Click photo to enlarge · Arrow keys / swipe to browse · ESC to close
-            </p>
-          </div>
+        {/* ── Footer hint ── */}
+        <div className="shrink-0 px-5 md:px-12 pb-4 md:pb-6 pt-3 flex items-center justify-between gap-4 relative z-10">
+          <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.25em]"
+            style={{ color: "var(--text-3)" }}>
+            {lang === "zh"
+              ? "點圖放大　·　←→ 切換　·　ESC 關閉"
+              : "TAP TO ZOOM · ←→ TO BROWSE · ESC TO CLOSE"}
+          </p>
+          <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.25em] hidden md:block"
+            style={{ color: "var(--white-soft)" }}>
+            MINEH4O · {cat.en.toUpperCase()}
+          </p>
         </div>
       </section>
     </>
