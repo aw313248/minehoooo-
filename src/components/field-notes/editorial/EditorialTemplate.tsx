@@ -267,7 +267,7 @@ function ImageBlock({ item, frame }: Extract<Block, { type: "image" }>) {
         {item.src && item.caption && <p className="eb-img-cap">{item.caption}</p>}
         <style>{`
           .eb-banner { margin: 24px -24px; line-height: 0; font-size: 0; }
-          .eb-banner-img { display: block; width: 100%; height: auto; vertical-align: bottom; }
+          .eb-banner-img { display: block; width: 100%; height: auto; vertical-align: bottom; clip-path: inset(5px 0 0 0); margin-top: -5px; }
           @media (max-width: 680px) { .eb-banner { margin: 24px -16px; } }
         `}</style>
       </div>
