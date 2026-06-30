@@ -49,7 +49,7 @@ const wuluBlocks: Block[] = [
       alt:     "WULU 霧鹿 — Taiwan Single Malt Whisky No.7",
       caption: "WULU 霧鹿 · No.7 · Taiwan Single Malt Whisky",
     },
-    frame: "full",
+    frame: "banner",
   },
 
   /* ══════════════════════════════════════════════════════════════

@@ -44,7 +44,7 @@ export type Block =
       right: { src: string; alt?: string; objectPos?: string; label?: string };
       caption?: string }
   // Full image block
-  | { type: "image";         item: ImageItem; frame?: "phone" | "wide" | "full" }
+  | { type: "image";         item: ImageItem; frame?: "phone" | "wide" | "full" | "banner" }
   // Two images side by side (full-phone frames, kept for compatibility)
   | { type: "image-pair";    left: ImageItem; right: ImageItem; leftLabel?: string; rightLabel?: string }
   // Before/After compare — supports both image and video src

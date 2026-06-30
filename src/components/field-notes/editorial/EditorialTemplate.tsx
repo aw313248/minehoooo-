@@ -250,6 +250,29 @@ function UICropPairBlock({ left, right, caption }: Extract<Block, { type: "ui-cr
 function ImageBlock({ item, frame }: Extract<Block, { type: "image" }>) {
   const isWide = frame === "wide" || frame === "full";
   const isPhone = frame === "phone";
+
+  /* banner — natural ratio, no cropping, full bleed */
+  if (frame === "banner") {
+    return (
+      <div className="eb-banner">
+        {item.src ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={item.src} alt={item.alt ?? ""} className="eb-banner-img" />
+        ) : (
+          <div className="eb-vid-ph" style={{ minHeight: 180 }}>
+            <span className="eb-vid-icon" aria-hidden>□</span>
+            {item.caption && <p className="eb-vid-lbl">{item.caption}</p>}
+          </div>
+        )}
+        {item.src && item.caption && <p className="eb-img-cap">{item.caption}</p>}
+        <style>{`
+          .eb-banner { margin: 24px -24px; }
+          .eb-banner-img { display: block; width: 100%; height: auto; }
+          @media (max-width: 680px) { .eb-banner { margin: 24px -16px; } }
+        `}</style>
+      </div>
+    );
+  }
   if (isPhone) {
     return (
       <div style={{ display: "flex", justifyContent: "flex-start", margin: "24px 0" }}>
