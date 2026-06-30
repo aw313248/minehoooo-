@@ -44,6 +44,22 @@ export const fieldNotes: FieldNote[] = [
     triggerWord:   "飛天小女警",
   },
 
+  // ── AI Case Study ────────────────────────────────────────────
+  {
+    slug:          "wulu-concept-film",
+    title:         "WULU 霧鹿 — 用 AI 完成一支高端威士忌 Concept Film",
+    subtitle:      "Prompt 不是起點，而是前面所有創意決策的總和",
+    date:          "2026-07-01",
+    category:      "AI",
+    categoryLabel: "AI · CONCEPT FILM",
+    tags:          ["AI", "Prompt", "Brand", "Commercial", "WULU", "Concept Film", "威士忌"],
+    excerpt:       "WULU 是一個不存在的台灣單一麥芽威士忌品牌。這是一個完全虛構的品牌，用來測試目前 AI 是否可以完成一支高端精品商品廣告——以及在開始寫 Prompt 之前，真正需要思考的那些事",
+    heroImage:     "",
+    readingTime:   5,
+    articleType:   "editorial-v2",
+    triggerWord:   "wulu",
+  },
+
   // ── 編輯閱讀文章（後續陸續補充內容）────────────────────────────
   {
     slug:          "kino-iphone-guide",

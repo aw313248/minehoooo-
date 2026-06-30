@@ -23,6 +23,7 @@ import NoteArticleTemplate from "@/components/field-notes/note-article/NoteArtic
 import kinoContent from "./articles/kino-iphone-guide";
 import EditorialTemplate from "@/components/field-notes/editorial/EditorialTemplate";
 import kinoBlocks from "./articles/kino-iphone-guide-v2";
+import wuluBlocks from "./articles/wulu-concept-film";
 
 const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
@@ -81,6 +82,7 @@ const EDITORIAL_CONTENT: Record<string, any> = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const EDITORIAL_V2_BLOCKS: Record<string, any[]> = {
   "kino-iphone-guide": kinoBlocks,
+  "wulu-concept-film": wuluBlocks,
 };
 
 export default async function FieldNoteArticle({ params }: { params: Promise<{ slug: string }> }) {

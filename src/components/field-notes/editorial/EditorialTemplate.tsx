@@ -270,9 +270,16 @@ function ImageBlock({ item, frame }: Extract<Block, { type: "image" }>) {
   return (
     <div className={isWide ? "eb-img-wide" : "eb-img-normal"}>
       <div className="eb-img-wrap">
-        <Image src={item.src} alt={item.alt ?? ""} fill className="object-cover" sizes="(max-width: 768px) 100vw, 700px" />
+        {item.src ? (
+          <Image src={item.src} alt={item.alt ?? ""} fill className="object-cover" sizes="(max-width: 768px) 100vw, 700px" />
+        ) : (
+          <div className="eb-vid-ph">
+            <span className="eb-vid-icon" aria-hidden>□</span>
+            {item.caption && <p className="eb-vid-lbl">{item.caption}</p>}
+          </div>
+        )}
       </div>
-      {item.caption && <p className="eb-img-cap">{item.caption}</p>}
+      {item.src && item.caption && <p className="eb-img-cap">{item.caption}</p>}
       <style>{`
         .eb-img-normal { margin: 24px 0; }
         .eb-img-wide   { margin: 24px -24px; }
