@@ -86,7 +86,7 @@ const kinoBlocks: Block[] = [
     type:      "ui-crop",
     src:       "/field-notes/kino/waveform.jpg",
     alt:       "Kino 波形圖示波器",
-    objectPos: "50% 78%",
+    objectPos: "50% 50%",
     label:     "示波器 / 波形圖",
     caption:   "曝光唯一依據 — 不看螢幕，看數字",
   },
@@ -134,7 +134,8 @@ const kinoBlocks: Block[] = [
   {
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-demo.mp4",
-    aspectRatio: "16/9",
+    aspectRatio: "9/16",
+    maxWidth:    "360px",
     caption:     "街拍示範 — Kino 實際操作",
   },
 
@@ -165,7 +166,7 @@ const kinoBlocks: Block[] = [
   },
   {
     type:  "ui-crop-pair",
-    left:  { src: "/field-notes/kino/lut-select.jpg", objectPos: "50% 58%", label: "選取 LUT" },
+    left:  { src: "/field-notes/kino/lut-select.jpg", objectPos: "50% 82%", label: "選取 LUT" },
     right: { src: "/field-notes/kino/lut-fav.jpg",    objectPos: "50% 58%", label: "釘選常用" },
   },
   {
@@ -195,7 +196,8 @@ const kinoBlocks: Block[] = [
   {
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-travel.mp4",
-    aspectRatio: "16/9",
+    aspectRatio: "9/16",
+    maxWidth:    "360px",
     caption:     "旅行街拍 — 邊走邊拍，整路都在趕",
   },
 

@@ -45,9 +45,9 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
         </button>
       ))}
       <style>{`
-        .et-toc { position: sticky; top: 120px; padding-left: 24px; border-left: 1px solid rgba(255,255,255,0.07); }
-        .et-toc-title { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin: 0 0 14px; }
-        .et-toc-item { display: block; width: 100%; background: none; border: none; cursor: pointer; text-align: left; padding: 6px 0; font-family: var(--font-readex),sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.35; transition: color 0.15s; }
+        .et-toc { position: sticky; top: 120px; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.07); }
+        .et-toc-title { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin: 0 0 14px; text-align: right; }
+        .et-toc-item { display: block; width: 100%; background: none; border: none; cursor: pointer; text-align: right; padding: 6px 0; font-family: var(--font-readex),sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.35; transition: color 0.15s; }
         .et-toc-item[data-active="true"] { color: rgba(255,255,255,0.92); }
         .et-toc-item:hover { color: rgba(255,255,255,0.78); }
       `}</style>
@@ -782,7 +782,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-role { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
         .et-loc { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
 
-        .et-body { max-width: 1160px; margin: 0 auto; padding: 0 24px 96px; display: grid; grid-template-columns: minmax(0,700px) 1fr; gap: 0 48px; align-items: start; }
+        .et-body { max-width: 980px; margin: 0 auto; padding: 0 24px 96px; display: grid; grid-template-columns: minmax(0,700px) minmax(160px,200px); gap: 0 48px; align-items: start; }
         .et-article { min-width: 0; padding-top: 8px; }
         .et-toc-col { padding-top: 64px; }
         .et-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 64px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
