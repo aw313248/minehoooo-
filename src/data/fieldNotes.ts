@@ -54,7 +54,7 @@ export const fieldNotes: FieldNote[] = [
     categoryLabel: "AI · CONCEPT FILM",
     tags:          ["AI", "Prompt", "Brand", "Commercial", "WULU", "Concept Film", "威士忌"],
     excerpt:       "WULU 是一個不存在的台灣單一麥芽威士忌品牌。這是一個完全虛構的品牌，用來測試目前 AI 是否可以完成一支高端精品商品廣告——以及在開始寫 Prompt 之前，真正需要思考的那些事",
-    heroImage:     "",
+    heroImage:     "/field-notes/wulu/hero.jpg",
     readingTime:   5,
     articleType:   "editorial-v2",
     triggerWord:   "wulu",

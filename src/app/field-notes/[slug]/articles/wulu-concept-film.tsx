@@ -49,9 +49,10 @@ const wuluBlocks: Block[] = [
     sub:  "Final Result",
   },
   {
-    type:        "video",
-    placeholder: "WULU 概念影片｜需要 Oscar 補素材",
-    frame:       "wide",
+    type:        "video-lazy",
+    src:         "/field-notes/wulu/film.mp4",
+    aspectRatio: "16/9",
+    caption:     "WULU 霧鹿 — AI Concept Film · 2026",
   },
 
   /* ══════════════════════════════════════════════════════════════
@@ -66,9 +67,9 @@ const wuluBlocks: Block[] = [
   {
     type: "image",
     item: {
-      src:     "",
-      alt:     "WULU Storyboard",
-      caption: "需要 Oscar 補素材",
+      src:     "/field-notes/wulu/storyboard.png",
+      alt:     "WULU Storyboard — 15 個鏡頭分鏡表",
+      caption: "15 個鏡頭，每一格對應一個獨立剪輯點",
     },
     frame: "wide",
   },
@@ -123,10 +124,35 @@ const wuluBlocks: Block[] = [
   {
     type: "callout",
     content: (
-      <>
-        <strong style={{ color: "rgba(255,225,140,0.75)", fontWeight: 400 }}>需要 Oscar 補充：</strong>
-        完整 AI Video Prompt，逐字放上，不修改
-      </>
+      <div style={{ fontFamily: "var(--font-space-mono, monospace)", fontSize: 13, lineHeight: 1.8, color: "rgba(255,255,255,0.8)", whiteSpace: "pre-wrap" }}>
+{`Use @Image1 as a numbered storyboard sheet. Interpret the 15 numbered panels (01 to 15) as sequential cinematic cuts in reading order, left to right, top to bottom. Do not animate the storyboard as one single image. Each panel is one cut, approximately 1 second each. 15 seconds total.
+
+This is a premium Taiwan single malt whisky commercial — WULU 霧鹿. Deep, slow, atmospheric, building to a climax. High-mountain mist meets master distillery craft.
+
+01 Opening: Bottle on a dark oak cask, mountain mist drifting, candle flickering. Slow push-in.
+02 Hero: Full bottle against dark fog. Static. Mist drifts behind.
+03 Label: Macro of the WULU 霧鹿 label. Light rakes across paper texture.
+04 Wax Seal: Top-down macro of the forest-green wax cork. Slow tilt, light glints.
+05 Cask Number: Extreme macro of hand-inked "No.7". Static, candlelight drift.
+06 Whisky Pour: Amber whisky pours into a crystal glass. Side macro, natural speed.
+07 Golden Swirl: Top-down, whisky swirling in the glass, light dancing.
+08 Candlelight Glass: A hand holds the glass near a candle flame, mist behind, liquid glows.
+09 Distillery: Wide atmospheric — bottle among aging oak casks in a dim mountain warehouse.
+10 360 Orbit: A ribbon of golden light swirls and orbits around the bottle against black.
+11 Liquid Macro: Extreme through-glass macro of amber-gold whisky, glowing and shifting.
+12 Pour Slow-Mo: High-speed slow-motion whisky pour, droplets suspended, crown splash.
+13 Mountain Dusk: Wide — bottle against the Central Mountain Range at sunset, rolling fog below.
+14 Final Hero: Bottle under a single warm gold spotlight, mist curling at its base. Hold.
+15 End Frame: Gold "WULU 霧鹿 No.7" logo on black. Static, faint shimmer, settle.
+
+The energy builds: quiet and reverent in 01–05, richer and more sensory through 06–12, majestic and resolved in 13–15.
+
+Camera is restrained throughout — slow push-ins, macro raking, one orbit in frame 10. Movement comes from mist, candlelight, pouring and swirling liquid, the slow-mo splash, and rolling mountain fog. Never let the camera show off.
+
+Deep gold and amber tones meeting cool mountain-mist blue. Candlelight warmth. Premium artisan spirits photography, ultra-detailed, cinematic. Taiwan high-mountain whisky soul.
+
+No on-screen text changes, no watermark. Audio added in post.`}
+      </div>
     ),
   },
 
