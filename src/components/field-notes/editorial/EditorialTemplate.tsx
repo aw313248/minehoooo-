@@ -415,13 +415,16 @@ function VideoBlock({ src, placeholder, frame, caption }: Extract<Block, { type:
 }
 
 /* Lazy click-to-play video */
-function VideoLazyBlock({ src, caption, aspectRatio = "16/9" }: Extract<Block, { type: "video-lazy" }>) {
+function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth }: Extract<Block, { type: "video-lazy" }>) {
+  const isVertical = maxWidth != null;
   return (
-    <div className="eb-vlazy" style={{ margin: "24px 0" }}>
-      <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
-        <LazyVideo src={src} autoPlay={false} muted loop className="eb-vlazy-vid" />
+    <div className="eb-vlazy" style={{ margin: "24px 0", display: isVertical ? "flex" : undefined, justifyContent: isVertical ? "center" : undefined }}>
+      <div style={{ width: "100%", maxWidth: maxWidth ?? "100%" }}>
+        <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
+          <LazyVideo src={src} autoPlay={false} muted loop className="eb-vlazy-vid" />
+        </div>
+        {caption && <p className="eb-img-cap">{caption}</p>}
       </div>
-      {caption && <p className="eb-img-cap">{caption}</p>}
       <style>{`
         .eb-vlazy-wrap { position: relative; width: 100%; border-radius: 10px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.08); }
         .eb-vlazy-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
