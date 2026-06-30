@@ -415,13 +415,13 @@ function VideoBlock({ src, placeholder, frame, caption }: Extract<Block, { type:
 }
 
 /* Lazy click-to-play video */
-function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth }: Extract<Block, { type: "video-lazy" }>) {
+function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth, autoPlay = false }: Extract<Block, { type: "video-lazy" }>) {
   const isVertical = maxWidth != null;
   return (
     <div className="eb-vlazy" style={{ margin: "24px 0", display: isVertical ? "flex" : undefined, justifyContent: isVertical ? "center" : undefined }}>
       <div style={{ width: "100%", maxWidth: maxWidth ?? "100%" }}>
         <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
-          <LazyVideo src={src} autoPlay={false} muted loop className="eb-vlazy-vid" />
+          <LazyVideo src={src} autoPlay={autoPlay} muted loop className="eb-vlazy-vid" />
         </div>
         {caption && <p className="eb-img-cap">{caption}</p>}
       </div>

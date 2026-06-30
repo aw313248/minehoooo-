@@ -31,9 +31,11 @@ const kinoBlocks: Block[] = [
   },
   {
     type: "video-lazy",
-    src:  "/field-notes/kino/videos/gallery-01.mp4",
-    aspectRatio: "16/9",
-    caption: "歐洲旅行 2026 — Kino × iPhone",
+    src:  "/field-notes/kino/videos/travel-europe-2026.mp4",
+    autoPlay: true,
+    aspectRatio: "1320/2868",
+    maxWidth: "360px",
+    caption: "2026 奧地利x匈牙利x捷克 Oscar旅歐之旅！feat.KINO",
   },
   {
     type: "callout",
