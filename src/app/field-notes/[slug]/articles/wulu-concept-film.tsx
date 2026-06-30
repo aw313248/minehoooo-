@@ -40,6 +40,19 @@ const wuluBlocks: Block[] = [
   },
 
   /* ══════════════════════════════════════════════════════════════
+     Brand Banner — Key Visual
+     ══════════════════════════════════════════════════════════════ */
+  {
+    type: "image",
+    item: {
+      src:     "/field-notes/wulu/brand-banner.png",
+      alt:     "WULU 霧鹿 — Taiwan Single Malt Whisky No.7",
+      caption: "WULU 霧鹿 · No.7 · Taiwan Single Malt Whisky",
+    },
+    frame: "full",
+  },
+
+  /* ══════════════════════════════════════════════════════════════
      最終成果
      ══════════════════════════════════════════════════════════════ */
   {
@@ -231,6 +244,15 @@ No on-screen text changes, no watermark. Audio added in post.`}
         ))}
       </ul>
     ),
+  },
+  {
+    type: "image",
+    item: {
+      src:     "/field-notes/wulu/brand-board.png",
+      alt:     "WULU 霧鹿 品牌視覺板",
+      caption: "從品牌核心到畫面元素——完整的視覺語言",
+    },
+    frame: "wide",
   },
 
   /* 03 Rhythm */
