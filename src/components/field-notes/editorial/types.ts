@@ -60,5 +60,6 @@ export type Block =
   | { type: "next-stop";     cities: NextStopCity[] }
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }
+  | { type: "prompt-copy";   text: string; label?: string }
   | { type: "faq";           items: { q: string; a: string }[] }
   | { type: "related";       slugs: string[] };

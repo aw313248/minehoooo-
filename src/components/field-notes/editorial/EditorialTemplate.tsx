@@ -553,6 +553,36 @@ function ClosingBlock({ content }: Extract<Block, { type: "closing" }>) {
   );
 }
 
+/* Prompt Copy — monospace block with one-click copy button */
+function PromptCopyBlock({ text, label }: Extract<Block, { type: "prompt-copy" }>) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  };
+  return (
+    <div className="eb-pc">
+      <div className="eb-pc-header">
+        {label && <span className="eb-pc-label">{label}</span>}
+        <button className="eb-pc-btn" onClick={handleCopy} aria-label="複製 Prompt">
+          {copied ? "已複製 ✓" : "複製 Prompt"}
+        </button>
+      </div>
+      <pre className="eb-pc-text">{text}</pre>
+      <style>{`
+        .eb-pc { margin: 20px 0; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
+        .eb-pc-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
+        .eb-pc-label { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.36em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
+        .eb-pc-btn { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; background: none; border: 1px solid rgba(255,225,140,0.28); border-radius: 3px; color: rgba(255,225,140,0.85); padding: 5px 12px; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
+        .eb-pc-btn:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.6); background: rgba(255,225,140,0.06); }
+        .eb-pc-text { margin: 0; padding: 18px 16px; font-family: var(--font-space-mono),monospace; font-size: 12px; line-height: 1.85; color: rgba(255,255,255,0.72); white-space: pre-wrap; word-break: break-word; overflow-x: auto; max-height: 520px; overflow-y: auto; }
+      `}</style>
+    </div>
+  );
+}
+
 /* FAQ */
 function FAQBlock({ items }: Extract<Block, { type: "faq" }>) {
   const [open, setOpen] = useState<number | null>(null);
@@ -632,6 +662,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "travel-gallery":return <TravelGalleryBlock {...block} />;
     case "app-rec":       return <AppRecBlock {...block} />;
     case "next-stop":     return <NextStopBlock {...block} />;
+    case "prompt-copy":   return <PromptCopyBlock {...block} />;
     case "oscar-notes":   return <OscarNotesBlock {...block} />;
     case "closing":       return <ClosingBlock {...block} />;
     case "faq":           return <FAQBlock {...block} />;

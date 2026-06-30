@@ -135,10 +135,9 @@ const wuluBlocks: Block[] = [
     sub:  "完整使用的影片 Prompt（逐字）",
   },
   {
-    type: "callout",
-    content: (
-      <div style={{ fontFamily: "var(--font-space-mono, monospace)", fontSize: 13, lineHeight: 1.8, color: "rgba(255,255,255,0.8)", whiteSpace: "pre-wrap" }}>
-{`Use @Image1 as a numbered storyboard sheet. Interpret the 15 numbered panels (01 to 15) as sequential cinematic cuts in reading order, left to right, top to bottom. Do not animate the storyboard as one single image. Each panel is one cut, approximately 1 second each. 15 seconds total.
+    type:  "prompt-copy",
+    label: "AI Video Prompt · Seedance · 逐字",
+    text:  `Use @Image1 as a numbered storyboard sheet. Interpret the 15 numbered panels (01 to 15) as sequential cinematic cuts in reading order, left to right, top to bottom. Do not animate the storyboard as one single image. Each panel is one cut, approximately 1 second each. 15 seconds total.
 
 This is a premium Taiwan single malt whisky commercial — WULU 霧鹿. Deep, slow, atmospheric, building to a climax. High-mountain mist meets master distillery craft.
 
@@ -164,9 +163,7 @@ Camera is restrained throughout — slow push-ins, macro raking, one orbit in fr
 
 Deep gold and amber tones meeting cool mountain-mist blue. Candlelight warmth. Premium artisan spirits photography, ultra-detailed, cinematic. Taiwan high-mountain whisky soul.
 
-No on-screen text changes, no watermark. Audio added in post.`}
-      </div>
-    ),
+No on-screen text changes, no watermark. Audio added in post.`,
   },
 
   /* ══════════════════════════════════════════════════════════════
@@ -355,24 +352,6 @@ No on-screen text changes, no watermark. Audio added in post.`}
           當這些都建立完成後，
           Prompt 才有辦法把想像完整地傳達給 AI
         </p>
-      </>
-    ),
-  },
-
-  /* ══════════════════════════════════════════════════════════════
-     Downloads
-     ══════════════════════════════════════════════════════════════ */
-  {
-    type: "headline",
-    id:   "downloads",
-    text: "Downloads",
-    sub:  "免費下載",
-  },
-  {
-    type: "callout",
-    content: (
-      <>
-        Storyboard 與完整 Prompt 下載連結（需要 Oscar 補充素材與連結）
       </>
     ),
   },
