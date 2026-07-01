@@ -63,8 +63,8 @@ export const fieldNotes: FieldNote[] = [
   // ── 編輯閱讀文章（後續陸續補充內容）────────────────────────────
   {
     slug:          "kino-iphone-guide",
-    title:         "Field Notes #001 | 我是怎麼用 iPhone 拍完整趟歐洲旅行的",
-    subtitle:      "Kino 只是工具，你的眼睛才是主角",
+    title:         "Field Notes #001 | 整趟歐洲，我沒帶相機",
+    subtitle:      "設定我都給你，剩下的，靠你自己走出去",
     date:          "2026-07-01",
     category:      "KINO",
     categoryLabel: "KINO · iPhone",

@@ -26,8 +26,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "intro",
-    text: "那趟歐洲，我只帶了一支 iPhone",
-    sub:  "Kino 是工具，你的眼睛才是主角",
+    text: "一支 iPhone，走完整趟歐洲",
+    sub:  "出發前我也覺得可能不夠用",
   },
   {
     type: "video-lazy",
@@ -59,8 +59,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "setup",
-    text: "我的旅行設定",
-    sub:  "整趟歐洲，就是這四個",
+    text: "四個設定，死記住",
+    sub:  "商業拍攝才換，旅行不換",
   },
   {
     type: "setup-cards",
@@ -79,8 +79,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "exposure",
-    text: "曝光：我不相信眼睛",
-    sub:  "示波器告訴我答案",
+    text: "曝光這件事，我不信眼睛",
+    sub:  "有數字，就不猜",
   },
   {
     type:      "ui-crop",
@@ -114,8 +114,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "focus",
-    text: "對焦：90% 都是 AF",
-    sub:  "MF 只有一個理由",
+    text: "對焦：大部分時候別碰",
+    sub:  "那 10%，你自己會知道",
   },
   {
     type:  "ui-crop-pair",
@@ -145,8 +145,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "monitor",
-    text: "打開就能用的兩個數字",
-    sub:  "左上音量，右上剩餘",
+    text: "兩個數字盯著就好",
+    sub:  "不用記，打開看得到",
   },
   {
     type:  "ui-crop-pair",
@@ -161,8 +161,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "lut",
-    text: "我用的 LUT",
-    sub:  "Lektar + Glostrup，整趟就這兩個",
+    text: "LUT 只用兩個",
+    sub:  "換太多等於沒有風格",
   },
   {
     type:  "ui-crop-pair",
@@ -207,8 +207,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "export",
-    text: "拍完，然後呢",
-    sub:  "左下找，右下出",
+    text: "拍完的片在哪，怎麼出來",
+    sub:  "整個流程不用離開 Kino",
   },
   {
     type:  "ui-crop-pair",
@@ -223,8 +223,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "before-after",
-    text: "有 LUT 和沒有 LUT",
-    sub:  "同一個場景，同一支 iPhone",
+    text: "套上去和沒套，差多少",
+    sub:  "你自己判斷",
   },
   {
     type:   "compare",
@@ -239,8 +239,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "gallery",
-    text: "旅行成果",
-    sub:  "全部都是這趟歐洲，Kino × iPhone",
+    text: "這趟拍的東西",
+    sub:  "沒有相機，只有手機和腳",
   },
   {
     type: "travel-gallery",
@@ -267,8 +267,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "next-time",
-    text: "如果重來一次",
-    sub:  "這才是這篇最重要的部分",
+    text: "回來之後才想通的事",
+    sub:  "比設定更值得看",
   },
   {
     type: "text",
@@ -318,8 +318,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "app",
-    text: "推薦工具",
-    sub:  "目前旅行唯一使用的拍攝 App",
+    text: "用了兩年還在用的那個 App",
+    sub:  "沒有第二選擇",
   },
   {
     type:       "app-rec",
@@ -335,8 +335,8 @@ const kinoBlocks: Block[] = [
   {
     type: "headline",
     id:   "next-stop",
-    text: "下一站",
-    sub:  "我用 Kino 拍了這些城市",
+    text: "這趟去了哪",
+    sub:  "每個地方都有一段影片",
   },
   {
     type: "next-stop",
