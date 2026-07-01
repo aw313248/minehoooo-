@@ -38,6 +38,22 @@ const kinoBlocks: Block[] = [
     caption: "2026 奧地利x匈牙利x捷克 Oscar旅歐之旅！feat.KINO",
   },
   {
+    type: "text",
+    content: (
+      <>
+        <p>
+          <strong>Kino</strong> 是為 iPhone 設計的專業錄影相機。
+          支援 Apple Log 格式拍攝、即時套用 LUT 調色、音量監控，以及直接匯出——
+          所有功能在同一個畫面完成，不用在 App 之間切換
+        </p>
+        <p>
+          它不是那種打開就讓你看起來很厲害的 App。
+          它讓你有更多控制，你用得越熟，拍出來的東西越像你想要的樣子
+        </p>
+      </>
+    ),
+  },
+  {
     type: "callout",
     content: (
       <>
@@ -166,7 +182,7 @@ const kinoBlocks: Block[] = [
   },
   {
     type:  "ui-crop-pair",
-    left:  { src: "/field-notes/kino/lut-select.jpg", objectPos: "50% 82%", label: "選取 LUT" },
+    left:  { src: "/field-notes/kino/lut-select.jpg", objectPos: "50% 95%", label: "選取 LUT" },
     right: { src: "/field-notes/kino/lut-fav.jpg",    objectPos: "50% 58%", label: "釘選常用" },
   },
   {
@@ -211,10 +227,12 @@ const kinoBlocks: Block[] = [
     sub:  "整個流程不用離開 Kino",
   },
   {
-    type:  "ui-crop-pair",
-    left:  { src: "/field-notes/kino/find-file.jpg", objectPos: "20% 82%", label: "FIND — 左下角" },
-    right: { src: "/field-notes/kino/export.jpg",    objectPos: "82% 86%", label: "EXPORT — 右下角" },
-    caption: "整個流程不用離開 Kino",
+    type:      "ui-crop",
+    src:       "/field-notes/kino/find-file.jpg",
+    alt:       "Kino 左下角錄影紀錄",
+    objectPos: "50% 90%",
+    label:     "左下角 — 點進去看你的影片",
+    caption:   "拍完的片都在這裡，點左下角縮圖直接進入 / 右下角分享匯出（截圖補上）",
   },
 
   /* ══════════════════════════════════════════════════════════════

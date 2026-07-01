@@ -475,8 +475,13 @@ function AppRecBlock({ name, tagline, appStoreUrl, reason }: Extract<Block, { ty
         </div>
         <p className="eb-app-reason">{reason}</p>
         <div className="eb-app-rule" aria-hidden />
-        <a href={appStoreUrl} target="_blank" rel="noopener noreferrer" className="eb-app-btn">
-          App Store →
+        <a href={appStoreUrl} target="_blank" rel="noopener noreferrer" className="eb-app-badge" aria-label="在 App Store 下載">
+          <svg width="135" height="40" viewBox="0 0 135 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden>
+            <rect width="135" height="40" rx="8" fill="#000"/>
+            <path fill="#fff" d="M27.5 20.1c-.03-3.4 2.78-5.05 2.91-5.13-1.59-2.32-4.05-2.63-4.93-2.66-2.08-.21-4.08 1.24-5.14 1.24-1.08 0-2.7-1.22-4.45-1.18-2.26.03-4.38 1.34-5.54 3.38-2.4 4.15-.61 10.25 1.69 13.6 1.14 1.65 2.49 3.48 4.24 3.41 1.72-.07 2.36-1.1 4.43-1.1 2.05 0 2.66 1.1 4.45 1.06 1.84-.03 2.99-1.65 4.1-3.31 1.3-1.9 1.84-3.75 1.86-3.84-.04-.02-3.57-1.37-3.62-5.47zM24.1 10.5c.92-1.14 1.55-2.7 1.38-4.27-1.33.06-3 .9-3.97 2.02-.85.98-1.61 2.6-1.41 4.12 1.49.11 3.03-.75 4-1.87z"/>
+            <text fill="#fff" x="39" y="16.5" style={{ fontFamily: "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif", fontSize: "7.5px", letterSpacing: "0.1px" }}>Download on the</text>
+            <text fill="#fff" x="38" y="31" style={{ fontFamily: "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif", fontSize: "15px", fontWeight: 600 }}>App Store</text>
+          </svg>
         </a>
       </div>
       <style>{`
@@ -487,9 +492,9 @@ function AppRecBlock({ name, tagline, appStoreUrl, reason }: Extract<Block, { ty
         .eb-app-name { font-family: var(--font-readex),sans-serif; font-size: 18px; font-weight: 600; color: rgba(255,255,255,0.97); margin: 0; letter-spacing: -0.01em; }
         .eb-app-tag { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin: 4px 0 0; }
         .eb-app-reason { font-family: var(--font-readex),sans-serif; font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.62); font-weight: 300; margin: 0 0 16px; }
-        .eb-app-rule { height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 14px; }
-        .eb-app-btn { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,225,140,0.88); text-decoration: none; border: 1px solid rgba(255,225,140,0.24); border-radius: 3px; padding: 8px 14px; display: inline-block; transition: color .15s, border-color .15s; }
-        .eb-app-btn:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.55); }
+        .eb-app-rule { height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 16px; }
+        .eb-app-badge { display: inline-block; transition: opacity .15s; }
+        .eb-app-badge:hover { opacity: 0.82; }
       `}</style>
     </div>
   );
