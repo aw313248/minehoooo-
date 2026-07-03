@@ -35,13 +35,13 @@ const skills = [
 ];
 
 const credits = [
-  { text: "陳卓《愚人節 ALL FOOL'S DAY》五週年紀念 — DIR · D.P.", highlight: true  },
-  { text: "中華職棒明星賽紀實《精銳》Taiwolf — DIR · D.P.",       highlight: true  },
-  { text: "Lil RAD × Coy6oi ft.斑恩 Ben《早知道一個人也過得很好》— D.P.", highlight: true },
+  { text: "陳卓《愚人節 ALL FOOL'S DAY》五週年紀念 — DIR · DP", highlight: true  },
+  { text: "中華職棒明星賽紀實《精銳》Taiwolf — DIR · DP",       highlight: true  },
+  { text: "Lil RAD × Coy6oi ft.斑恩 Ben《早知道一個人也過得很好》— DP", highlight: true },
   { text: "89教科書《愛你真的梅辦法》— COLOR",                    highlight: true  },
-  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · D.P.",              highlight: true  },
-  { text: "Kolli《BRING ME YOUR LOVELY》— DIR · D.P. · AI 混合", highlight: true  },
-  { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · D.P.",         highlight: false },
+  { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP",              highlight: true  },
+  { text: "Kolli《BRING ME YOUR LOVELY》— DIR · DP · AI 混合", highlight: true  },
+  { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · DP",         highlight: false },
   { text: "古林睿煬 — 2024 CPBL MVP · 日職北海道火腿鬥士",          highlight: false },
 ];
 
@@ -179,7 +179,7 @@ export default function About() {
           {/* Subtitle above — wraps on mobile, single line on desktop */}
           <p className="font-mono-label text-[9px] md:text-[11px] tracking-[0.32em] md:tracking-[0.4em] mb-6 leading-relaxed"
             style={{ color: "var(--white-soft)", maxWidth: 480 }}>
-            DIRECTOR · D.P. · SCREENPLAY · PHOTOGRAPHY
+            DIRECTOR · DP · SCREENPLAY · PHOTOGRAPHY
           </p>
 
           {/* OSCAR — centered hero name */}
@@ -362,7 +362,7 @@ export default function About() {
           {/* Details — simplified per user feedback (education condensed, in-school items removed) */}
           <div className="space-y-5">
             {[
-              { label: "ROLE / 職稱",       value: "Director · D.P. · Screenplay" },
+              { label: "ROLE / 職稱",       value: "Director · DP · Screenplay" },
               { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系" },
               { label: "BASED IN / 所在地", value: "Taiwan · Taichung · GMT+8" },
               { label: "TOOLS / 工具",      value: "Premiere Pro · DaVinci Resolve\nAfter Effects · Lightroom" },
@@ -435,7 +435,7 @@ export default function About() {
             </div>
             <div className="space-y-4">
               {[
-                { label: "ROLE / 職稱",       value: "Director · D.P. · Screenplay" },
+                { label: "ROLE / 職稱",       value: "Director · DP · Screenplay" },
                 { label: "EDUCATION / 學歷",  value: "朝陽科技大學 傳播藝術系" },
                 { label: "BASED IN / 所在地", value: "Taiwan · Taichung" },
               ].map(item => (

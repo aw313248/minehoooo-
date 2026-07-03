@@ -266,15 +266,11 @@ function AwardOverlay({ text, onClose }: { text: string | null; onClose: () => v
 
 // Hero rotation — 精選輪播
 const featuredMVs = [
-  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "DIR", "DP"] },
-  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · D.P. · AI", tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
-  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · D.P.",      tags: ["MUSIC VIDEO", "TRILOGY"] },
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",                artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P. · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 LOVE ME NOT",    artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P.",            tags: ["MUSIC VIDEO", "DP"] },
-  { id: "GCDxrVigSfw", title: "愛人這件事 LOVING AFTER ALL", artist: "Lil RAD & Coy6oi",    subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "D.P. · COLOR",    tags: ["MUSIC VIDEO", "DP", "COLOR"] },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",       artist: "Lil RAD & Coy6oi",    subEn: "Music Video ft.斑恩Ben",        subZh: "音樂錄影帶",                 role: "D.P.",            tags: ["MUSIC VIDEO", "DP"] },
+  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",       artist: "陳卓 Jon Chen",       subEn: "Music Video · 5th Anniversary", subZh: "音樂錄影帶 · 五週年紀念版", role: "DIR · DP",      tags: ["MUSIC VIDEO", "DIR", "DP"] },
+  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",        artist: "Kolli (NN)",           subEn: "Music Video · AI Hybrid",       subZh: "音樂錄影帶 · AI 製作",       role: "DIR · DP · AI", tags: ["MUSIC VIDEO", "DIR", "DP", "AI"] },
+  { id: "erQ9lR_rNik", title: "流明 LUMEN",                  artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅰ",      subZh: "音樂錄影帶 · 三部曲 Ⅰ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "cIsS50e6YQ0", title: "光圈 APERTURE",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅱ",      subZh: "音樂錄影帶 · 三部曲 Ⅱ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
+  { id: "sxrucEXI9-A", title: "沒收 DEPRIVED",               artist: "陳卓 Jon Chen",       subEn: "Music Video · Trilogy Ⅲ",      subZh: "音樂錄影帶 · 三部曲 Ⅲ",    role: "DIR · DP",      tags: ["MUSIC VIDEO", "TRILOGY"] },
   { id: "_IUqMAI5GQg", title: "說了算",                      artist: "亥伯龍 · Doggy Chang · 7type", subEn: "Music Video",          subZh: "音樂錄影帶",                 role: "COLOR",         tags: ["MUSIC VIDEO", "COLOR"] },
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",   tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
 ];
@@ -282,23 +278,23 @@ const featuredMVs = [
 // 導演作品
 const directorMVs = [
   { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
-  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · D.P.",            cat: "MUSIC VIDEO" },
-  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "",       role: "DIR · D.P. · AI 50%",   cat: "MUSIC VIDEO" },
+  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · DP",            cat: "MUSIC VIDEO" },
+  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "MINEH4O", role: "DIR · DP · AI 50%",    cat: "MUSIC VIDEO" },
 ];
 
 // 光與景三部曲
 const trilogy = [
-  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
-  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
-  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · D.P." },
+  { id: "erQ9lR_rNik", title: "流明 Lumen",    ep: "Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+  { id: "cIsS50e6YQ0", title: "光圈 Aperture", ep: "Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+  { id: "sxrucEXI9-A", title: "沒收 Deprived", ep: "Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
 ];
 
 // Lil RAD × Coy6oi — 獨立系列，陳卓三部曲同款呈現
 const lilRadSeries = [
-  { id: "XJSI9s3-wk0", title: "沒有你的世界",                      ep: "Ⅰ", artist: "Lil RAD & Coy6oi",           role: "D.P. · COLOR" },
-  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not",           ep: "Ⅱ", artist: "Lil RAD & Coy6oi",           role: "D.P."         },
-  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All",         ep: "Ⅲ", artist: "Lil RAD & Coy6oi",           role: "D.P. · COLOR" },
-  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",              ep: "Ⅳ", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "D.P."        },
+  { id: "XJSI9s3-wk0", title: "沒有你的世界",                      ep: "Ⅰ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
+  { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not",           ep: "Ⅱ", artist: "Lil RAD & Coy6oi",           role: "DP"         },
+  { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All",         ep: "Ⅲ", artist: "Lil RAD & Coy6oi",           role: "DP · COLOR" },
+  { id: "569NoV2tyUE", title: "早知道一個人也過得很好",              ep: "Ⅳ", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP"        },
 ];
 
 // COLOR WORK — 流量高排前面，Lil RAD 已獨立成專區
@@ -317,7 +313,7 @@ const colorCredits = [
 const narrativeShorts = [
   { id: "RsPI2V_RQus", title: "回收場的夏天",   artist: "Reclaim My Summer · 公視學生劇展", role: "CAMERA ASST",    cat: "SHORT FILM", award: "2024 台北電影節最佳短片 · 金穗獎最佳劇情片 · 最佳演員獎 · ifva 亞洲新力量銀獎" },
   { id: "lLYzcW9pzGU", title: "爬坡 Her Slope", artist: "第62屆金馬影展 TGHFF",              role: "ART DEPT",       cat: "SHORT FILM", award: "第48屆金穗獎 最佳美術 · 最佳攝影 · 評審團特別獎 · 金馬影展入選" },
-  { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · D.P. · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
+  { id: "fR2TDfx04oU", title: "紅箱子",         artist: "劇情短片",                          role: "DIR · DP · EDIT", cat: "SHORT FILM", award: "2023 放視大賞入圍" },
 ];
 
 // 陳芳語 Kimberley Chen — 獨立歌手群組
@@ -332,23 +328,23 @@ const otherOnSet = [
 ];
 
 const commercial = [
-  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · D.P.",         cat: "COMMERCIAL" },
-  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "",           role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
+  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · DP",         cat: "COMMERCIAL" },
+  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6",         role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
 ];
 
 // 紀錄片 — 規模大的先排
 const liveDoc = [
-  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",    artist: "TEDxNTHU · 清大",    role: "DIR · D.P.", cat: "DOCUMENTARY" },
-  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》", artist: "Taiwolf × 中華職棒",  role: "DIR · D.P.", cat: "DOCUMENTARY" },
-  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",          artist: "",                   role: "DIR · D.P.", cat: "LIVE"        },
-  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",        artist: "",                   role: "DIR · D.P.", cat: "DOCUMENTARY" },
+  { id: "uU1hy2FK5D8", title: "2025 TEDxNTHU OOTB 年會",    artist: "TEDxNTHU · 清大",    role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "bKl5uW-69iQ", title: "中華職棒明星賽紀實《精銳》", artist: "Taiwolf × 中華職棒",  role: "DIR · DP", cat: "DOCUMENTARY" },
+  { id: "IGa91QIW84M", title: "DJ SOCUTE 演出記錄",          artist: "DJ SOCUTE",          role: "DIR · DP",   cat: "LIVE"        },
+  { id: "mXNbiHiC6bI", title: "USR計畫 V4 活動紀錄",        artist: "",                   role: "DIR · DP", cat: "DOCUMENTARY" },
 ];
 
 // 活動記錄 — 知名度高的先排
 const eventRec = [
-  { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · D.P.", cat: "EVENT" },
-  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · D.P.", cat: "EVENT" },
-  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · D.P.", cat: "EVENT" },
+  { id: "7rU2JUGplXw", title: "僑泰中學 55週年 校慶", artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "8JIvM93l0SQ", title: "九龍灣鳳靈修院 南巡",  artist: "", role: "DIR · DP", cat: "EVENT" },
+  { id: "IIMY2J3egHk", title: "擁擁｜抓周一歲儀式",   artist: "", role: "DIR · DP", cat: "EVENT" },
 ];
 
 // AIGC YouTube 作品
@@ -1228,9 +1224,9 @@ export default function WorkVideo() {
             </h2>
           </div>
           <div className="hidden md:block text-right">
-            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>D.P.</p>
+            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>DP</p>
             <p className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--text-2)" }}>Lil RAD & Coy6oi</p>
-            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>D.P. · COLOR · 4 MUSIC VIDEOS</p>
+            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>DP · COLOR · 4 MUSIC VIDEOS</p>
           </div>
         </div>
 
