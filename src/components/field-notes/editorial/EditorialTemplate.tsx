@@ -58,17 +58,17 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
 /* ─────────────────────────────────────────────────────────────────
    Lazy video — IntersectionObserver, click-to-play
    ───────────────────────────────────────────────────────────────── */
-function LazyVideo({ src, autoPlay = false, loop = true, muted = true, className = "", style = {} }: {
-  src: string; autoPlay?: boolean; loop?: boolean; muted?: boolean; className?: string; style?: React.CSSProperties;
+function LazyVideo({ src, autoPlay = false, loop = true, muted = true, soundToggle = false, className = "", style = {} }: {
+  src: string; autoPlay?: boolean; loop?: boolean; muted?: boolean; soundToggle?: boolean; className?: string; style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [soundOn, setSoundOn] = useState(false);
   useEffect(() => {
     const video = ref.current;
     if (!video || !autoPlay) return;
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) {
-        video.src = src;
-        video.load();
+        if (!video.src) { video.src = src; video.load(); }
         video.play().catch(() => {});
       } else {
         video.pause();
@@ -79,9 +79,130 @@ function LazyVideo({ src, autoPlay = false, loop = true, muted = true, className
   }, [src, autoPlay]);
 
   if (autoPlay) {
-    return <video ref={ref} muted loop playsInline className={className} style={style} />;
+    return (
+      <>
+        <video ref={ref} muted loop playsInline className={className} style={style} />
+        {soundToggle && (
+          <button
+            type="button"
+            aria-label={soundOn ? "關閉聲音" : "開啟聲音"}
+            onClick={() => {
+              const v = ref.current;
+              if (!v) return;
+              v.muted = soundOn;   // toggling: if currently on, mute back
+              if (!soundOn) { v.volume = 1; v.play().catch(() => {}); }
+              setSoundOn(s => !s);
+            }}
+            style={{
+              position: "absolute", right: 10, bottom: 10, zIndex: 3,
+              display: "flex", alignItems: "center", gap: 6,
+              background: "rgba(0,0,0,0.62)", backdropFilter: "blur(10px)",
+              border: "1px solid rgba(255,255,255,0.22)", borderRadius: 999,
+              padding: "7px 13px", cursor: "pointer",
+              fontFamily: "var(--font-space-mono),monospace", fontSize: 9,
+              letterSpacing: "0.2em", textTransform: "uppercase",
+              color: soundOn ? "rgba(255,225,140,0.95)" : "rgba(255,255,255,0.85)",
+              transition: "color .2s, border-color .2s",
+            }}>
+            <span aria-hidden style={{ fontSize: 12, lineHeight: 1 }}>{soundOn ? "🔊" : "🔇"}</span>
+            {soundOn ? "SOUND ON" : "SOUND"}
+          </button>
+        )}
+      </>
+    );
   }
   return <video src={src} muted={muted} loop={loop} playsInline controls preload="metadata" className={className} style={style} />;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Ambience — graded base + breathing glow + film grain.
+   Gives the pure-black page a "floor" without competing with content
+   ───────────────────────────────────────────────────────────────── */
+const GRAIN_URI = "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E\")";
+
+function EditorialAmbience() {
+  return (
+    <>
+      {/* Graded base — warm corner + cool corner over near-black */}
+      <div aria-hidden="true" style={{
+        position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none",
+        background: "radial-gradient(ellipse 90% 60% at 80% -12%, rgba(255,205,110,0.05), transparent 60%), radial-gradient(ellipse 85% 55% at 10% 110%, rgba(90,120,190,0.045), transparent 62%), #050506",
+      }} />
+      {/* Breathing glow — slow drift, barely there */}
+      <div aria-hidden="true" style={{
+        position: "fixed", inset: "-20%", zIndex: -1, pointerEvents: "none",
+        background: "radial-gradient(circle at 32% 38%, rgba(255,220,140,0.04), transparent 46%)",
+        animation: "etGlowDrift 26s ease-in-out infinite alternate",
+        willChange: "transform",
+      }} />
+      {/* Film grain — same stock as the rest of the site */}
+      <div aria-hidden="true" style={{
+        position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none",
+        backgroundImage: GRAIN_URI, backgroundSize: "140px 140px",
+        opacity: 0.045, mixBlendMode: "overlay",
+        animation: "grainShift 1.2s steps(10) infinite",
+      }} />
+      <style>{`
+        @keyframes etGlowDrift {
+          0%   { transform: translate(0%, 0%) scale(1); }
+          100% { transform: translate(6%, 4%) scale(1.12); }
+        }
+      `}</style>
+    </>
+  );
+}
+
+/* Reading progress — thin gold line across the very top */
+function ScrollProgress() {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const h = document.documentElement;
+        setP(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight));
+        raf = 0;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+  return (
+    <div aria-hidden="true" style={{ position: "fixed", top: 0, left: 0, right: 0, height: 2, zIndex: 50, pointerEvents: "none" }}>
+      <div style={{
+        width: "100%", height: "100%",
+        transform: `scaleX(${p})`, transformOrigin: "left",
+        background: "linear-gradient(to right, rgba(255,225,140,0.9), rgba(255,225,140,0.35))",
+      }} />
+    </div>
+  );
+}
+
+/* Scroll reveal — blocks surface as the reader scrolls */
+function Reveal({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { setInView(true); return; }
+    const o = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setInView(true); o.disconnect(); }
+    }, { threshold: 0.06, rootMargin: "0px 0px -8% 0px" });
+    o.observe(el);
+    return () => o.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className="et-reveal" data-in={inView}>
+      {children}
+      <style>{`
+        .et-reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+        .et-reveal[data-in="true"] { opacity: 1; transform: none; }
+      `}</style>
+    </div>
+  );
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -97,6 +218,8 @@ function HeadlineBlock({ id, text, sub }: Extract<Block, { type: "headline" }>) 
       <style>{`
         .eb-headline { padding-top: 56px; margin-bottom: 20px; }
         .eb-headline-rule { width: 32px; height: 1px; background: rgba(255,225,140,0.4); margin-bottom: 14px; }
+        .et-reveal .eb-headline-rule { transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.16,1,.3,1) .3s; }
+        .et-reveal[data-in="true"] .eb-headline-rule { transform: scaleX(1); }
         .eb-headline-text { font-family: var(--font-readex),sans-serif; font-size: clamp(18px,2.5vw,22px); font-weight: 500; letter-spacing: -0.01em; color: rgba(255,255,255,0.97); margin: 0; line-height: 1.2; }
         .eb-headline-sub { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.42); margin: 6px 0 0; }
       `}</style>
@@ -415,19 +538,23 @@ function VideoBlock({ src, placeholder, frame, caption }: Extract<Block, { type:
 }
 
 /* Lazy click-to-play video */
-function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth, autoPlay = false }: Extract<Block, { type: "video-lazy" }>) {
+function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth, autoPlay = false, sound = false }: Extract<Block, { type: "video-lazy" }>) {
   const isVertical = maxWidth != null;
   return (
-    <div className="eb-vlazy" style={{ margin: "24px 0", display: isVertical ? "flex" : undefined, justifyContent: isVertical ? "center" : undefined }}>
-      <div style={{ width: "100%", maxWidth: maxWidth ?? "100%" }}>
-        <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
-          <LazyVideo src={src} autoPlay={autoPlay} muted={autoPlay} loop className="eb-vlazy-vid" />
+    <div className="eb-vlazy" style={{ margin: "24px 0" }}>
+      <div style={{ display: isVertical ? "flex" : undefined, justifyContent: isVertical ? "center" : undefined }}>
+        <div style={{ width: "100%", maxWidth: maxWidth ?? "100%" }}>
+          <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
+            <LazyVideo src={src} autoPlay={autoPlay} muted={autoPlay} loop soundToggle={autoPlay && sound} className="eb-vlazy-vid" />
+          </div>
+          {caption && !isVertical && <p className="eb-img-cap">{caption}</p>}
         </div>
-        {caption && <p className="eb-img-cap">{caption}</p>}
       </div>
+      {caption && isVertical && <p className="eb-vlazy-title">{caption}</p>}
       <style>{`
         .eb-vlazy-wrap { position: relative; width: 100%; border-radius: 10px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.08); }
         .eb-vlazy-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .eb-vlazy-title { font-family: var(--font-space-mono),monospace; font-size: 10.5px; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); margin: 12px 0 0; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       `}</style>
     </div>
   );
@@ -720,6 +847,9 @@ interface EditorialTemplateProps {
 export default function EditorialTemplate({ note, blocks }: EditorialTemplateProps) {
   return (
     <>
+      <EditorialAmbience />
+      <ScrollProgress />
+
       {/* Nav */}
       <header className="et-nav" aria-label="Article navigation">
         <div className="et-nav-inner">
@@ -766,7 +896,9 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       <div className="et-body">
         <article className="et-article">
           {blocks.map((block, i) => (
-            <RenderBlock key={i} block={block} />
+            <Reveal key={i}>
+              <RenderBlock block={block} />
+            </Reveal>
           ))}
           <div className="et-footer">
             <span>© MINEH4O.ARW</span>

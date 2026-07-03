@@ -33,9 +33,10 @@ const kinoBlocks: Block[] = [
     type: "video-lazy",
     src:  "/field-notes/kino/videos/travel-europe-2026.mp4",
     autoPlay: true,
+    sound: true,
     aspectRatio: "1320/2868",
     maxWidth: "360px",
-    caption: "2026 奧地利x匈牙利x捷克 Oscar旅歐之旅！feat.KINO",
+    caption: "2026 奧地利 × 匈牙利 × 捷克 — 旅歐之旅 feat. KINO",
   },
   {
     type: "text",
