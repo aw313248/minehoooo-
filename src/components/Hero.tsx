@@ -74,14 +74,62 @@ function useTilt(): { x: number; y: number } {
   return tilt;
 }
 
+/* ───────── Hook: desktop mouse parallax
+   - Returns { x, y } in -1..1 (rAF-throttled)
+   - Listens only while enabled and on fine-pointer devices */
+function useMouseParallax(enabled: boolean): { x: number; y: number } {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (!enabled) { setPos({ x: 0, y: 0 }); return; }
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
+    let raf = 0, px = 0, py = 0;
+    const onMove = (e: MouseEvent) => {
+      px = (e.clientX / window.innerWidth)  * 2 - 1;
+      py = (e.clientY / window.innerHeight) * 2 - 1;
+      if (!raf) raf = requestAnimationFrame(() => { setPos({ x: px, y: py }); raf = 0; });
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [enabled]);
+
+  return pos;
+}
+
+/* ───────── Letterbox — cinema bars that open once the projection starts
+   Bars cover the iframe's white loading flash, then retract like a film reveal */
+function Letterbox({ open, size }: { open: boolean; size: string }) {
+  const bar: React.CSSProperties = {
+    position: "absolute", left: 0, right: 0, height: size,
+    background: "#000", zIndex: 30, pointerEvents: "none",
+    transition: "transform 1.6s cubic-bezier(0.45,0,0.25,1) 0.4s",
+  };
+  return (
+    <>
+      <div aria-hidden="true" style={{ ...bar, top: 0,
+        transformOrigin: "top", transform: open ? "scaleY(0)" : "scaleY(1)" }} />
+      <div aria-hidden="true" style={{ ...bar, bottom: 0,
+        transformOrigin: "bottom", transform: open ? "scaleY(0)" : "scaleY(1)" }} />
+    </>
+  );
+}
+
 /* Featured background video (YouTube embed muted+loop) */
 const HERO_VIDEO_ID = "d9_EuYkmfzM"; // 愚人節 ALL FOOL'S DAY — Jon Chen
 const HERO_VIDEO_START = 4;
 
+/* Cinematic grade applied to the background video */
+const HERO_GRADE = "brightness(0.48) contrast(1.06) saturate(0.9)";
+
 /* Past roles / departments — listed on right side (desktop only) */
 const PAST_ROLES = [
   "DIRECTOR",
-  "D.P.",
+  "DP",
   "SCREENPLAY",
   "COLOR",
   "EDITOR",
@@ -157,9 +205,25 @@ function DiagLine({ width = 96, rotation = 20, color = "rgba(255,255,255,0.32)" 
 /* ════════════════════════════════════════════════
    MOBILE HERO — single column, designed for phone
    ════════════════════════════════════════════════ */
+/* ───────── Hook: true video readiness
+   iframeReady only mounts the iframe on a timer — YouTube may still be showing
+   its loading chrome (title bar / spinner). Wait for the iframe's real onLoad,
+   then give the player a beat to start rendering frames before we reveal it. */
+function useVideoLive(iframeReady: boolean): { live: boolean; onIframeLoad: () => void } {
+  const [live, setLive] = useState(false);
+  const onIframeLoad = () => { setTimeout(() => setLive(true), 900); };
+  useEffect(() => {
+    if (!iframeReady) return;
+    const fallback = setTimeout(() => setLive(true), 4000); // in case onLoad never fires
+    return () => clearTimeout(fallback);
+  }, [iframeReady]);
+  return { live, onIframeLoad };
+}
+
 function HeroMobile({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
+  const { live, onIframeLoad } = useVideoLive(iframeReady);
   // Counter values — start animating when loaded
   // reach (the hero number) intentionally starts 1.5s LATER and runs longer (4s)
   // so it's the very last element to settle — eye naturally lands on it
@@ -175,12 +239,13 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
 
       {/* Background video — TRUE FULL-BLEED cover (iframe sized so 16:9 always fills viewport, overflows on long axis) */}
       <div className="absolute inset-0 overflow-hidden" style={{
-        opacity: iframeReady && isActive ? 1 : 0,
+        opacity: live && isActive ? 1 : 0,
         transition: "opacity 1.4s ease",
         pointerEvents: "none",
       }}>
         {iframeReady && (
           <iframe
+            onLoad={onIframeLoad}
             src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1&start=${HERO_VIDEO_START}`}
             style={{
               position: "absolute",
@@ -191,7 +256,7 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
               width: "max(100vw, calc(100dvh * 16 / 9))",
               height: "max(100dvh, calc(100vw * 9 / 16))",
               border: "none",
-              filter: "brightness(0.5) saturate(0.95)",
+              filter: HERO_GRADE,
               willChange: "transform",
             }}
             allow="autoplay; encrypted-media"
@@ -205,6 +270,9 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
           pointerEvents: "none",
         }} />
       </div>
+
+      {/* Cinema bars — open once the projection starts */}
+      <Letterbox open={loaded && live} size="8vh" />
 
       {/* Gradients — top/bottom only (vignette removed per user, was too dark) */}
       <div aria-hidden="true" className="pointer-events-none absolute top-0 left-0 right-0 h-36"
@@ -366,20 +434,30 @@ function HeroMobile({ loaded, iframeReady, isActive }: {
 function HeroDesktop({ loaded, iframeReady, isActive }: {
   loaded: boolean; iframeReady: boolean; isActive: boolean;
 }) {
+  // Mouse parallax — video drifts with the cursor, content counter-drifts for depth
+  const m = useMouseParallax(isActive);
+  const { live, onIframeLoad } = useVideoLive(iframeReady);
+
   return (
     <section className="hidden md:block relative h-screen w-full overflow-hidden bg-black">
 
       {/* Fullscreen background — YouTube iframe muted loop */}
       <div className="absolute inset-0" style={{
-        opacity: iframeReady && isActive ? 1 : 0,
+        opacity: live && isActive ? 1 : 0,
         transition: "opacity 1.4s ease",
         pointerEvents: "none",
       }}>
-        <div style={{ position: "absolute", inset: "-8%", width: "116%", height: "116%" }}>
+        <div style={{
+          position: "absolute", inset: "-8%", width: "116%", height: "116%",
+          transform: `translate(${m.x * 14}px, ${m.y * 14}px)`,
+          transition: "transform 1s cubic-bezier(0.16,1,0.3,1)",
+          willChange: "transform",
+        }}>
           {iframeReady && (
             <iframe
+              onLoad={onIframeLoad}
               src={`https://www.youtube.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&rel=0&modestbranding=1&playsinline=1&start=${HERO_VIDEO_START}`}
-              style={{ width: "100%", height: "100%", border: "none", filter: "brightness(0.5) saturate(0.95)" }}
+              style={{ width: "100%", height: "100%", border: "none", filter: HERO_GRADE }}
               allow="autoplay; encrypted-media"
               title="MINEH4O reel background"
             />
@@ -403,7 +481,14 @@ function HeroDesktop({ loaded, iframeReady, isActive }: {
         <DiagLine width={200} rotation={-20} color="rgba(255,255,255,0.22)" />
       </div>
 
-      <div className="relative h-full w-full">
+      {/* Cinema bars — open once the projection starts */}
+      <Letterbox open={loaded && live} size="11vh" />
+
+      <div className="relative h-full w-full" style={{
+        transform: `translate(${m.x * -6}px, ${m.y * -6}px)`,
+        transition: "transform 1s cubic-bezier(0.16,1,0.3,1)",
+        willChange: "transform",
+      }}>
 
         <h1 className="hero-title absolute text-white select-none"
           style={{
