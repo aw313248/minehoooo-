@@ -271,6 +271,13 @@ body::before {
   100% { transform: scale(1.03) translate(0.5%, -0.5%); }
 }
 
+/* ── PAGE DIP (PageScroll — dip-through-black cut, the site's single transition) ── */
+@keyframes pageDip {
+  0%   { opacity: 0; }
+  42%  { opacity: 0.72; }
+  100% { opacity: 0; }
+}
+
 /* ── FILM GRAIN SHIFT (WorkPhotography grain overlay) ── */
 @keyframes grainShift {
   0%  { background-position: 0   0;   }

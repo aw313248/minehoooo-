@@ -17,101 +17,42 @@ interface Props {
   children: React.ReactNode;
 }
 
-// 6 unique per-page transitions — no translateY, pure in-place animations
-// v = absIndex % 6  →  0=scale-dissolve  1=curtain-wipe  2=blur-skew  3=perspective-fold  4=split-reveal  5=iris-open
-function getStyle(offset: number, absIndex: number): React.CSSProperties {
-  const v = absIndex % 6;
+// Single site-wide cut grammar — dip-through-black dissolve.
+// One film, one edit: exiting page drifts forward into black, entering page
+// surfaces from black. The black dip overlay (rendered below) masks the seam.
+const CUT_EASE = "cubic-bezier(0.45,0,0.25,1)";
+const CUT_MS   = 950;
 
+function getStyle(offset: number): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "absolute",
     inset: 0,
     overflowY: "auto",
     overflowX: "hidden",
-    willChange: "transform, opacity, filter, clip-path",
+    willChange: "transform, opacity",
     backfaceVisibility: "hidden",
     WebkitBackfaceVisibility: "hidden",
+    transformOrigin: "50% 50%",
+    transition: `transform ${CUT_MS}ms ${CUT_EASE}, opacity ${CUT_MS}ms ${CUT_EASE}`,
   };
 
   // Pages not adjacent — fully hidden
   if (Math.abs(offset) > 1) {
-    return { ...base, opacity: 0, zIndex: 1, pointerEvents: "none" };
+    return { ...base, opacity: 0, zIndex: 1, pointerEvents: "none", transition: "none" };
   }
 
-  // ── Active page ──
+  // Active page — surfaces from black
   if (offset === 0) {
-    const clipActive = v === 1 ? "inset(0% 0% 0% 0%)" : v === 4 ? "inset(0% 0% 0% 0%)" : v === 5 ? "circle(140% at 50% 50%)" : "none";
-    const txActive   = v === 3 ? "0.95s cubic-bezier(0.16,1,0.3,1)" : "0.95s cubic-bezier(0.16,1,0.3,1)";
-    return {
-      ...base,
-      transform: "none", opacity: 1, filter: "blur(0px)", clipPath: clipActive,
-      zIndex: 20, pointerEvents: "auto",
-      transformOrigin: v === 3 ? "50% 0%" : "50% 50%",
-      transition:
-        v === 1 ? `clip-path 0.92s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease` :
-        v === 4 ? `clip-path 0.9s cubic-bezier(0.76,0,0.24,1)` :
-        v === 5 ? `clip-path 0.9s cubic-bezier(0.34,1.56,0.64,1)` :
-        v === 2 ? `transform ${txActive}, opacity 0.88s ease, filter 0.88s ease` :
-                  `transform ${txActive}, opacity 0.95s ease`,
-    };
+    return { ...base, transform: "scale(1)", opacity: 1, zIndex: 20, pointerEvents: "auto" };
   }
 
-  // ── Exited (offset = −1) — each page exits with its own style ──
+  // Exited — camera keeps pushing in as the frame sinks into black
   if (offset < 0) {
-    switch (v) {
-      case 0: // Scale dissolve — shrinks away
-        return { ...base, transform: "scale(0.88)", opacity: 0,
-          zIndex: 10, pointerEvents: "none", transformOrigin: "50% 50%",
-          transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.75s ease" };
-      case 1: // Curtain wipe — page collapses upward
-        return { ...base, clipPath: "inset(0% 0% 100% 0%)", opacity: 0,
-          zIndex: 10, pointerEvents: "none",
-          transition: "clip-path 0.92s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease" };
-      case 2: // Blur + skew — twists and dissolves
-        return { ...base, transform: "scale(0.94) rotateZ(-1.8deg)", opacity: 0, filter: "blur(16px)",
-          zIndex: 10, pointerEvents: "none",
-          transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.65s ease, filter 0.65s ease" };
-      case 3: // Perspective fold — folds back like a book page
-        return { ...base, transform: "perspective(1400px) rotateX(-16deg) scale(0.9)", opacity: 0,
-          zIndex: 10, pointerEvents: "none", transformOrigin: "50% 100%",
-          transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.7s ease" };
-      case 4: // Split reveal — collapses to center vertical line
-        return { ...base, clipPath: "inset(0% 50% 0% 50%)", opacity: 0,
-          zIndex: 10, pointerEvents: "none",
-          transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1), opacity 0.5s ease 0.1s" };
-      default: // Iris close — circle collapses to center point
-        return { ...base, clipPath: "circle(0% at 50% 50%)", opacity: 0,
-          zIndex: 10, pointerEvents: "none",
-          transition: "clip-path 0.88s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease 0.18s" };
-    }
+    return { ...base, transform: "scale(1.035)", opacity: 0, zIndex: 10, pointerEvents: "none" };
   }
 
-  // ── Waiting (offset = 1) — ready to enter ──
-  switch (v) {
-    case 0: // Scale up from slight zoom-in
-      return { ...base, transform: "scale(1.08)", opacity: 0,
-        zIndex: 15, pointerEvents: "none", transformOrigin: "50% 50%",
-        transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.95s ease" };
-    case 1: // Curtain — starts fully clipped from top
-      return { ...base, clipPath: "inset(100% 0% 0% 0%)", opacity: 1,
-        zIndex: 15, pointerEvents: "none",
-        transition: "clip-path 0.92s cubic-bezier(0.76,0,0.24,1)" };
-    case 2: // Blur + opposite skew
-      return { ...base, transform: "scale(1.05) rotateZ(1.8deg)", opacity: 0, filter: "blur(16px)",
-        zIndex: 15, pointerEvents: "none",
-        transition: "transform 0.9s cubic-bezier(0.16,1,0.3,1), opacity 0.88s ease, filter 0.88s ease" };
-    case 3: // Perspective unfold — tilted forward, then flattens
-      return { ...base, transform: "perspective(1400px) rotateX(10deg) scale(0.95)", opacity: 0,
-        zIndex: 15, pointerEvents: "none", transformOrigin: "50% 0%",
-        transition: "transform 0.95s cubic-bezier(0.16,1,0.3,1), opacity 0.9s ease" };
-    case 4: // Split — starts as vertical center line, expands outward
-      return { ...base, clipPath: "inset(0% 50% 0% 50%)", opacity: 1,
-        zIndex: 15, pointerEvents: "none",
-        transition: "clip-path 0.9s cubic-bezier(0.76,0,0.24,1)" };
-    default: // Iris open — expands from center point
-      return { ...base, clipPath: "circle(0% at 50% 50%)", opacity: 1,
-        zIndex: 15, pointerEvents: "none",
-        transition: "clip-path 0.88s cubic-bezier(0.34,1.56,0.64,1)" };
-  }
+  // Waiting — slightly pulled back, dark, ready to surface
+  return { ...base, transform: "scale(0.965)", opacity: 0, zIndex: 15, pointerEvents: "none" };
 }
 
 export default function PageScroll({ children }: Props) {
@@ -253,11 +194,20 @@ export default function PageScroll({ children }: Props) {
         <div
           key={i}
           ref={el => { refs.current[i] = el; }}
-          style={getStyle(i - page, i)}
+          style={getStyle(i - page)}
         >
           {child}
         </div>
       ))}
+
+      {/* ── Black dip — masks the crossfade seam, replays per navigation ── */}
+      {transitioning && (
+        <div key={page} aria-hidden="true" style={{
+          position: "fixed", inset: 0, zIndex: 50,
+          background: "#000", pointerEvents: "none", opacity: 0,
+          animation: "pageDip 0.95s cubic-bezier(0.45,0,0.25,1)",
+        }} />
+      )}
 
       {/* ── Page indicator — desktop only ── */}
       <div className="page-nav hidden md:flex" style={{
