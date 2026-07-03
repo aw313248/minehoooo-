@@ -19,10 +19,12 @@ const ALL_CATEGORIES: { key: "ALL" | NoteCategory; label: string }[] = [
 export default function FieldNotesIndex() {
   const [active, setActive] = useState<"ALL" | NoteCategory>("ALL");
 
+  const sorted = [...fieldNotes].sort((a, b) => b.date.localeCompare(a.date));
+
   const visible =
     active === "ALL"
-      ? fieldNotes
-      : fieldNotes.filter((n) => n.category === active);
+      ? sorted
+      : sorted.filter((n) => n.category === active);
 
   const hasActive = ALL_CATEGORIES
     .filter((c) => c.key !== "ALL")
@@ -121,7 +123,7 @@ export default function FieldNotesIndex() {
               {/* Meta */}
               <div className="fn-card-body">
                 <div className="fn-card-meta">
-                  <span className="fn-card-date">{note.date.slice(0, 7)}</span>
+                  <span className="fn-card-date">{note.date}</span>
                   <span className="fn-card-sep" aria-hidden>·</span>
                   <span className="fn-card-time">{note.readingTime} min</span>
                   {note.tool && (

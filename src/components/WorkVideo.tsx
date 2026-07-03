@@ -349,13 +349,13 @@ const eventRec = [
 
 // AIGC YouTube 作品
 const aigcWorks = [
-  { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O × Higgsfield AI", role: "DIR · AIGC", cat: "AIGC", award: "AIGC Short Film" },
+  { id: "z8IYXjmBXBk", title: "HOUSE RULES",              artist: "MINEH4O",  role: "DIR · AIGC", cat: "AIGC", award: "AIGC Short Film", tools: "Higgsfield" },
+  { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓",  artist: "MINEH4O",  role: "DIR · AIGC", cat: "AIGC",                           tools: "Seedance"  },
 ];
 
 const ytShorts = [
   { id: "raIh2Qlj5YY", title: "孩子們需要超人",              tags: ["#社會議題", "#Reels"] },
   { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
-  { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓",     tags: ["#AIGC", "#台灣"]   },
   { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",           tags: ["#器材", "#DJI"]   },
   { id: "EoJmdg8SxsI", title: "Short Film",                  tags: ["#短片"]            },
   { id: "5Y5u1Mtbmmo", title: "Short Film",                  tags: ["#短片"]            },
@@ -837,8 +837,8 @@ function Carousel<T>({ items, renderItem, getKey, perViewDesktop = 2 }: {
 }
 
 /* ─── Grid card ─── */
-function GridCard({ id, title, artist, role, award }: {
-  id: string; title: string; artist?: string; role: string; cat?: string; award?: string;
+function GridCard({ id, title, artist, role, award, tools }: {
+  id: string; title: string; artist?: string; role: string; cat?: string; award?: string; tools?: string;
 }) {
   const [awardOpen, setAwardOpen] = useState(false);
   return (
@@ -901,7 +901,15 @@ function GridCard({ id, title, artist, role, award }: {
       <div className="pt-2.5 pb-1">
         <p className="text-[12px] font-medium leading-snug" style={{ color: "var(--text)" }}>{title}</p>
         {artist && <p className="font-mono-label text-[8px] mt-0.5" style={{ color: "var(--text-3)" }}>{artist}</p>}
-        <div className="mt-1.5"><RoleTag text={role} /></div>
+        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+          <RoleTag text={role} />
+          {tools && (
+            <span className="font-mono-label text-[7.5px] tracking-[0.18em] px-1.5 py-0.5"
+              style={{ border: "1px solid rgba(120,180,255,0.28)", borderRadius: 3, color: "rgba(140,200,255,0.75)" }}>
+              {tools}
+            </span>
+          )}
+        </div>
       </div>
     </a>
     <AwardOverlay text={awardOpen ? (award ?? null) : null} onClose={() => setAwardOpen(false)} />
@@ -1485,7 +1493,7 @@ export default function WorkVideo() {
                 opacity: aigcIn ? 1 : 0, transform: aigcIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
               }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={v.award} />
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={v.award} tools={v.tools} />
               </div>
             ))}
           </div>
