@@ -387,6 +387,24 @@ const cats: Cat[] = [
       },
     ],
   },
+  {
+    number:"04", en:"Commercial", zh:"商案",
+    desc:"Brand Film · Client Work · Cinematography",
+    vLabels:["Brand Film","Client Work"],
+    subs:[
+      { en:"Brand Film",  zh:"品牌影片", bg:"linear-gradient(135deg,#1a1208,#0d0904)" },
+      { en:"Client Work", zh:"客戶商案", bg:"linear-gradient(135deg,#0d1018,#060810)" },
+    ],
+    videos:[
+      {
+        id:   "A_2zpqzw6Yw",
+        title:"柏朗克商案 FINAL",
+        subEn:"Commercial · Cinematographer",
+        subZh:"品牌商案 · 攝影指導",
+        tags: ["COMMERCIAL","DP","CINEMATOGRAPHER"],
+      },
+    ],
+  },
 ];
 
 /* ── Section fade/scale animation styles ── */
