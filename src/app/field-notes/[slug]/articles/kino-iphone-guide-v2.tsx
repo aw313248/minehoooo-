@@ -70,6 +70,17 @@ const kinoBlocks: Block[] = [
     href:    "/?section=video",
   },
 
+  /* ── 製作方式 — 整篇的流程預覽（seedance 式步驟卡）── */
+  {
+    type: "flow-steps",
+    steps: [
+      { num: "01", en: "Shoot",   zh: "Apple Log 拍攝",  thumb: "/field-notes/kino/videos/before.mp4", thumbType: "video" },
+      { num: "02", en: "Expose",  zh: "波形圖看曝光",    thumb: "/field-notes/kino/waveform.jpg",      thumbType: "image" },
+      { num: "03", en: "Grade",   zh: "即時 LUT 監看",   thumb: "/field-notes/kino/lut-select.jpg",    thumbType: "image" },
+      { num: "04", en: "Export",  zh: "Kino 內直接匯出", thumb: "/field-notes/kino/find-file.jpg",     thumbType: "image" },
+    ],
+  },
+
   /* ══════════════════════════════════════════════════════════════
      ② 我的旅行設定 — Setup Cards
      ══════════════════════════════════════════════════════════════ */

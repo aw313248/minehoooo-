@@ -57,6 +57,8 @@ export type Block =
   | { type: "travel-gallery"; items: GalleryVideo[] }
   // App recommendation card
   | { type: "app-rec";       name: string; tagline?: string; appStoreUrl: string; reason: string; website?: string; icon?: string }
+  // Production flow strip — numbered steps with image/video thumbs (seedance-style)
+  | { type: "flow-steps";    steps: { num: string; en: string; zh: string; thumb: string; thumbType: "image" | "video" }[] }
   | { type: "next-stop";     cities: NextStopCity[] }
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }

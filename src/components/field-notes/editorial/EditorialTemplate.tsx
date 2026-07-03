@@ -83,30 +83,50 @@ function LazyVideo({ src, autoPlay = false, loop = true, muted = true, soundTogg
       <>
         <video ref={ref} muted loop playsInline className={className} style={style} />
         {soundToggle && (
-          <button
-            type="button"
-            aria-label={soundOn ? "關閉聲音" : "開啟聲音"}
-            onClick={() => {
-              const v = ref.current;
-              if (!v) return;
-              v.muted = soundOn;   // toggling: if currently on, mute back
-              if (!soundOn) { v.volume = 1; v.play().catch(() => {}); }
-              setSoundOn(s => !s);
-            }}
-            style={{
-              position: "absolute", right: 10, bottom: 10, zIndex: 3,
-              display: "flex", alignItems: "center", gap: 6,
-              background: "rgba(0,0,0,0.62)", backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255,255,255,0.22)", borderRadius: 999,
-              padding: "7px 13px", cursor: "pointer",
-              fontFamily: "var(--font-space-mono),monospace", fontSize: 9,
-              letterSpacing: "0.2em", textTransform: "uppercase",
-              color: soundOn ? "rgba(255,225,140,0.95)" : "rgba(255,255,255,0.85)",
-              transition: "color .2s, border-color .2s",
-            }}>
-            <span aria-hidden style={{ fontSize: 12, lineHeight: 1 }}>{soundOn ? "🔊" : "🔇"}</span>
-            {soundOn ? "SOUND ON" : "SOUND"}
-          </button>
+          <div style={{
+            position: "absolute", right: 10, bottom: 10, zIndex: 3,
+            display: "flex", alignItems: "center", gap: 8,
+            background: "rgba(0,0,0,0.62)", backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.22)", borderRadius: 999,
+            padding: "6px 8px 6px 13px",
+          }}>
+            <button
+              type="button"
+              aria-label={soundOn ? "關閉聲音" : "開啟聲音"}
+              onClick={() => {
+                const v = ref.current;
+                if (!v) return;
+                v.muted = soundOn;   // toggling: if currently on, mute back
+                if (!soundOn) { if (v.volume === 1) v.volume = 0.8; v.play().catch(() => {}); }
+                setSoundOn(s => !s);
+              }}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                background: "none", border: "none", cursor: "pointer", padding: 0,
+                fontFamily: "var(--font-space-mono),monospace", fontSize: 9,
+                letterSpacing: "0.2em", textTransform: "uppercase",
+                color: soundOn ? "rgba(255,225,140,0.95)" : "rgba(255,255,255,0.85)",
+                transition: "color .2s",
+              }}>
+              <span aria-hidden style={{ fontSize: 12, lineHeight: 1 }}>{soundOn ? "🔊" : "🔇"}</span>
+              {soundOn ? "" : "SOUND"}
+            </button>
+            {soundOn && (
+              <input
+                type="range" min={0} max={100} defaultValue={80}
+                aria-label="音量"
+                onChange={e => {
+                  const v = ref.current;
+                  if (v) v.volume = Number(e.target.value) / 100;
+                }}
+                onInput={e => {
+                  const v = ref.current;
+                  if (v) v.volume = Number((e.target as HTMLInputElement).value) / 100;
+                }}
+                style={{ width: 76, accentColor: "rgba(255,225,140,0.95)", cursor: "pointer" }}
+              />
+            )}
+          </div>
         )}
       </>
     );
@@ -149,6 +169,56 @@ function EditorialAmbience() {
         }
       `}</style>
     </>
+  );
+}
+
+/* Hero video wall — three vertical loops behind the title, with scroll parallax.
+   Vertical clips side-by-side read as phone frames — fitting for an iPhone guide */
+function HeroVideoWall({ videos }: { videos: string[] }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const y = document.documentElement.scrollTop;
+        // parallax: backdrop drifts slower + scales, content above scrolls normally
+        el.style.transform = `translateY(${y * 0.35}px) scale(${1 + Math.min(y / 2400, 0.12)})`;
+        el.style.opacity = String(Math.max(0.15, 1 - y / 700));
+        raf = 0;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
+  }, []);
+  return (
+    <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
+      <div ref={wrapRef} style={{
+        position: "absolute", inset: 0, display: "flex", gap: 2,
+        willChange: "transform, opacity",
+      }}>
+        {videos.map((src, i) => (
+          <video
+            key={src}
+            src={src}
+            autoPlay muted loop playsInline preload="metadata"
+            style={{
+              flex: 1, minWidth: 0, height: "100%", objectFit: "cover",
+              filter: "brightness(0.42) saturate(0.9) contrast(1.05)",
+              // stagger the middle panel slightly — breaks the grid, adds depth
+              transform: i === 1 ? "scale(1.06)" : "none",
+            }}
+          />
+        ))}
+      </div>
+      {/* readability wash */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(to bottom, rgba(5,5,6,0.55) 0%, rgba(5,5,6,0.25) 45%, rgba(5,5,6,0.97) 100%)",
+      }} />
+    </div>
   );
 }
 
@@ -198,8 +268,8 @@ function Reveal({ children }: { children: React.ReactNode }) {
     <div ref={ref} className="et-reveal" data-in={inView}>
       {children}
       <style>{`
-        .et-reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
-        .et-reveal[data-in="true"] { opacity: 1; transform: none; }
+        .et-reveal { opacity: 0; transform: perspective(1100px) translateY(26px) rotateX(7deg) scale(0.985); transform-origin: 50% 100%; transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+        .et-reveal[data-in="true"] { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) scale(1); }
       `}</style>
     </div>
   );
@@ -634,6 +704,44 @@ function AppRecBlock({ name, tagline, appStoreUrl, reason, icon }: Extract<Block
   );
 }
 
+/* Production flow strip — numbered steps with media thumbs, 3D tilt on hover */
+function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
+  return (
+    <div className="eb-flow">
+      <div className="eb-flow-grid">
+        {steps.map((s, i) => (
+          <div key={s.num} className="eb-flow-card" style={{ transitionDelay: `${i * 0.08}s` }}>
+            <div className="eb-flow-thumb">
+              {s.thumbType === "video" ? (
+                <LazyVideo src={s.thumb} autoPlay loop muted className="eb-flow-media" />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={s.thumb} alt={`${s.zh} — 步驟 ${s.num}`} className="eb-flow-media" loading="lazy" />
+              )}
+              <span className="eb-flow-num">{s.num}</span>
+            </div>
+            <p className="eb-flow-en">{s.en}</p>
+            <p className="eb-flow-zh">{s.zh}</p>
+          </div>
+        ))}
+      </div>
+      <style>{`
+        .eb-flow { margin: 28px 0; perspective: 1200px; }
+        .eb-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .eb-flow-card { transform-style: preserve-3d; transition: transform .5s cubic-bezier(.16,1,.3,1); }
+        .eb-flow-card:hover { transform: translateY(-6px) rotateX(4deg); }
+        .eb-flow-thumb { position: relative; aspect-ratio: 4/5; border-radius: 10px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.09); transition: border-color .3s, box-shadow .3s; }
+        .eb-flow-card:hover .eb-flow-thumb { border-color: rgba(255,225,140,0.4); box-shadow: 0 18px 40px rgba(0,0,0,0.5); }
+        .eb-flow-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .eb-flow-num { position: absolute; top: 8px; left: 8px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,225,140,0.95); background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); padding: 3px 8px; border-radius: 3px; }
+        .eb-flow-en { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 10px 0 0; }
+        .eb-flow-zh { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.42); margin: 2px 0 0; }
+        @media (max-width: 600px) { .eb-flow-grid { grid-template-columns: repeat(2, 1fr); } }
+      `}</style>
+    </div>
+  );
+}
+
 /* Next Stop city cards */
 function NextStopBlock({ cities }: Extract<Block, { type: "next-stop" }>) {
   return (
@@ -826,6 +934,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "video-lazy":    return <VideoLazyBlock {...block} />;
     case "travel-gallery":return <TravelGalleryBlock {...block} />;
     case "app-rec":       return <AppRecBlock {...block} />;
+    case "flow-steps":    return <FlowStepsBlock {...block} />;
     case "next-stop":     return <NextStopBlock {...block} />;
     case "prompt-copy":   return <PromptCopyBlock {...block} />;
     case "oscar-notes":   return <OscarNotesBlock {...block} />;
@@ -865,8 +974,9 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       </header>
 
       {/* Hero */}
-      <div className="et-hero">
-        <div className="et-hero-inner">
+      <div className={note.heroVideos?.length ? "et-hero et-hero-video" : "et-hero"} style={{ position: "relative" }}>
+        {note.heroVideos && note.heroVideos.length > 0 && <HeroVideoWall videos={note.heroVideos} />}
+        <div className="et-hero-inner" style={{ position: "relative" }}>
           {note.issue && (
             <p className="et-issue" aria-hidden>
               <span className="et-issue-label">Field Notes</span>
@@ -921,6 +1031,9 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
 
         .et-hero { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .et-hero-inner { max-width: 760px; margin: 0 auto; padding: 52px 24px 36px; }
+        .et-hero-video { overflow: hidden; }
+        .et-hero-video .et-hero-inner { padding: clamp(120px, 22vh, 220px) 24px 64px; }
+        .et-hero-video .et-title { font-size: clamp(34px, 7vw, 62px); text-shadow: 0 2px 30px rgba(0,0,0,0.6); }
         .et-issue { display: flex; align-items: center; gap: 14px; margin: 0 0 26px; }
         .et-issue-label { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
         .et-issue-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.18), transparent); }
