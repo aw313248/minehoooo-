@@ -13,6 +13,7 @@ export type ArticleType = "tool" | "editorial" | "editorial-v2";
 export interface FieldNote {
   slug:          string;
   title:         string;
+  issue?:        string;        // e.g. "001" — rendered as "FIELD NOTES — ISSUE #001" eyebrow
   subtitle?:     string;
   date:          string;        // ISO date "YYYY-MM-DD"
   category:      NoteCategory;
@@ -63,7 +64,8 @@ export const fieldNotes: FieldNote[] = [
   // ── 編輯閱讀文章（後續陸續補充內容）────────────────────────────
   {
     slug:          "kino-iphone-guide",
-    title:         "Field Notes #001 | 整趟歐洲，我沒帶相機",
+    title:         "整趟歐洲，我沒帶相機",
+    issue:         "001",
     subtitle:      "設定我都給你，剩下的，靠你自己走出去",
     date:          "2026-07-01",
     category:      "KINO",

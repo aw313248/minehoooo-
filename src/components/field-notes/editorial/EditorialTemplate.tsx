@@ -447,6 +447,7 @@ function TravelGalleryBlock({ items }: Extract<Block, { type: "travel-gallery" }
               muted
               className="eb-tg-vid"
             />
+            {item.caption && <span className="eb-tg-cap">{item.caption}</span>}
           </div>
         ))}
       </div>
@@ -455,6 +456,7 @@ function TravelGalleryBlock({ items }: Extract<Block, { type: "travel-gallery" }
         .eb-tg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .eb-tg-cell { position: relative; aspect-ratio: 9/16; background: #0a0a0c; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
         .eb-tg-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .eb-tg-cap { position: absolute; left: 8px; bottom: 8px; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); padding: 3px 7px; border-radius: 3px; pointer-events: none; }
         @media (max-width: 600px) { .eb-tg-grid { grid-template-columns: repeat(2, 1fr); } }
       `}</style>
     </div>
@@ -462,12 +464,17 @@ function TravelGalleryBlock({ items }: Extract<Block, { type: "travel-gallery" }
 }
 
 /* App recommendation */
-function AppRecBlock({ name, tagline, appStoreUrl, reason }: Extract<Block, { type: "app-rec" }>) {
+function AppRecBlock({ name, tagline, appStoreUrl, reason, icon }: Extract<Block, { type: "app-rec" }>) {
   return (
     <div className="eb-app">
       <div className="eb-app-card">
         <div className="eb-app-head">
-          <div className="eb-app-icon" aria-hidden>⬛</div>
+          {icon ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={icon} alt={`${name} app icon`} className="eb-app-icon" style={{ objectFit: "cover" }} />
+          ) : (
+            <div className="eb-app-icon" aria-hidden>⬛</div>
+          )}
           <div>
             <p className="eb-app-name">{name}</p>
             {tagline && <p className="eb-app-tag">{tagline}</p>}
@@ -730,6 +737,13 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       {/* Hero */}
       <div className="et-hero">
         <div className="et-hero-inner">
+          {note.issue && (
+            <p className="et-issue" aria-hidden>
+              <span className="et-issue-label">Field Notes</span>
+              <span className="et-issue-rule" />
+              <span className="et-issue-no">ISSUE #{note.issue}</span>
+            </p>
+          )}
           <div className="et-meta">
             <span className="et-cat">{note.categoryLabel}</span>
             <span className="et-dot" aria-hidden>·</span>
@@ -775,11 +789,15 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
 
         .et-hero { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .et-hero-inner { max-width: 760px; margin: 0 auto; padding: 52px 24px 36px; }
+        .et-issue { display: flex; align-items: center; gap: 14px; margin: 0 0 26px; }
+        .et-issue-label { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+        .et-issue-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.18), transparent); }
+        .et-issue-no { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.3em; color: rgba(255,225,140,0.85); }
         .et-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
         .et-cat { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(255,225,140,0.88); border-bottom: 1px solid rgba(255,225,140,0.38); padding-bottom: 1px; }
         .et-dot { color: rgba(255,255,255,.22); font-size: 12px; }
         .et-date, .et-time { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; color: rgba(255,255,255,0.35); }
-        .et-title { font-family: var(--font-readex),sans-serif; font-size: clamp(24px,5vw,38px); font-weight: 600; letter-spacing: -0.02em; color: rgba(255,255,255,.97); margin: 0 0 10px; line-height: 1.22; }
+        .et-title { font-family: var(--font-readex),sans-serif; font-size: clamp(30px,6.2vw,54px); font-weight: 600; letter-spacing: -0.025em; color: rgba(255,255,255,.97); margin: 0 0 12px; line-height: 1.14; text-wrap: balance; }
         .et-subtitle { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.48); margin: 0 0 28px; line-height: 1.5; }
         .et-author { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
         .et-by { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.2em; color: rgba(255,255,255,0.28); }

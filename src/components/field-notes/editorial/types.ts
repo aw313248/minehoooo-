@@ -56,7 +56,7 @@ export type Block =
   // Travel gallery grid (auto-play muted, lazy)
   | { type: "travel-gallery"; items: GalleryVideo[] }
   // App recommendation card
-  | { type: "app-rec";       name: string; tagline?: string; appStoreUrl: string; reason: string; website?: string }
+  | { type: "app-rec";       name: string; tagline?: string; appStoreUrl: string; reason: string; website?: string; icon?: string }
   | { type: "next-stop";     cities: NextStopCity[] }
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }

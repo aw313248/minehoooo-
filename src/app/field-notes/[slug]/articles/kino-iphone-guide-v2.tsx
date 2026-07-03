@@ -261,14 +261,25 @@ const kinoBlocks: Block[] = [
     sub:  "沒有相機，只有手機和腳",
   },
   {
+    type:        "video-lazy",
+    src:         "/field-notes/kino/videos/picks/tram-dusk.mp4",
+    autoPlay:    true,
+    aspectRatio: "9/16",
+    maxWidth:    "420px",
+    caption:     "布拉格 · 34 號電車與暮色 — Apple Log + Lektar D323，手持",
+  },
+  {
     type: "travel-gallery",
     items: [
-      { src: "/field-notes/kino/videos/gallery-01.mp4" },
-      { src: "/field-notes/kino/videos/gallery-02.mp4" },
-      { src: "/field-notes/kino/videos/gallery-03.mp4" },
-      { src: "/field-notes/kino/videos/gallery-04.mp4" },
-      { src: "/field-notes/kino/videos/gallery-05.mp4" },
-      { src: "/field-notes/kino/videos/gallery-06.mp4" },
+      { src: "/field-notes/kino/videos/picks/vienna-square.mp4", caption: "WIEN 14:04" },
+      { src: "/field-notes/kino/videos/picks/rooftop-dusk.mp4",  caption: "WIEN 21:25" },
+      { src: "/field-notes/kino/videos/picks/vienna-night.mp4",  caption: "WIEN 19:24" },
+      { src: "/field-notes/kino/videos/picks/hallstatt.mp4",     caption: "HALLSTATT 16:07" },
+      { src: "/field-notes/kino/videos/picks/st-wolfgang.mp4",   caption: "AUSTRIA 18:18" },
+      { src: "/field-notes/kino/videos/picks/krumlov.mp4",       caption: "CZECHIA 08:51" },
+      { src: "/field-notes/kino/videos/picks/prague-square.mp4", caption: "PRAHA 17:17" },
+      { src: "/field-notes/kino/videos/picks/castle-steps.mp4",  caption: "PRAHA 18:02" },
+      { src: "/field-notes/kino/videos/picks/st-nicholas.mp4",   caption: "PRAHA 21:57" },
     ],
   },
   {
@@ -307,6 +318,14 @@ const kinoBlocks: Block[] = [
       </>
     ),
   },
+  {
+    type:        "video-lazy",
+    src:         "/field-notes/kino/videos/picks/budapest-night.mp4",
+    autoPlay:    true,
+    aspectRatio: "9/16",
+    maxWidth:    "420px",
+    caption:     "布達佩斯 · 聖史蒂芬大教堂前，雨後的路面 — 手持夜拍，沒有腳架",
+  },
 
   /* ══════════════════════════════════════════════════════════════
      Oscar's Notes
@@ -341,9 +360,10 @@ const kinoBlocks: Block[] = [
   },
   {
     type:       "app-rec",
-    name:       "Kino",
-    tagline:    "Professional Video Camera for iPhone",
-    appStoreUrl:"https://apps.apple.com/app/kino/id6471628249",
+    name:       "Kino — Pro Video Camera",
+    tagline:    "Lux Optics · iPhone 專業錄影",
+    appStoreUrl:"https://apps.apple.com/tw/app/kino-pro-video-camera/id6472380172",
+    icon:       "/field-notes/kino/app-icon.jpg",
     reason:     "從 Apple Log 到即時 LUT，整個拍攝流程都在同一個 App 完成。我目前的旅行拍攝完全依賴它",
   },
 
