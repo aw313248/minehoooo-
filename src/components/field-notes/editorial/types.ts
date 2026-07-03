@@ -29,7 +29,7 @@ export interface SetupCardItem {
 }
 
 export type Block =
-  | { type: "headline";      id: string; text: string; sub?: string }
+  | { type: "headline";      id: string; text: string; sub?: string; num?: string }
   | { type: "text";          content: ReactNode }
   | { type: "callout";       content: ReactNode }
   // Setup: 16:9 cards row
@@ -58,7 +58,8 @@ export type Block =
   // App recommendation card
   | { type: "app-rec";       name: string; tagline?: string; appStoreUrl: string; reason: string; website?: string; icon?: string }
   // Production flow strip — numbered steps with image/video thumbs (seedance-style)
-  | { type: "flow-steps";    steps: { num: string; en: string; zh: string; thumb: string; thumbType: "image" | "video" }[] }
+  // anchor: id of the section headline the card scrolls to (chapter-index behavior)
+  | { type: "flow-steps";    steps: { num: string; en: string; zh: string; thumb: string; thumbType: "image" | "video"; anchor?: string }[] }
   | { type: "next-stop";     cities: NextStopCity[] }
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }

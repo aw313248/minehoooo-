@@ -174,7 +174,7 @@ function EditorialAmbience() {
 
 /* Hero video wall — three vertical loops behind the title, with scroll parallax.
    Vertical clips side-by-side read as phone frames — fitting for an iPhone guide */
-function HeroVideoWall({ videos }: { videos: string[] }) {
+function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = wrapRef.current;
@@ -199,18 +199,30 @@ function HeroVideoWall({ videos }: { videos: string[] }) {
         position: "absolute", inset: 0, display: "flex", gap: 2,
         willChange: "transform, opacity",
       }}>
-        {videos.map((src, i) => (
-          <video
-            key={src}
-            src={src}
-            autoPlay muted loop playsInline preload="metadata"
-            style={{
-              flex: 1, minWidth: 0, height: "100%", objectFit: "cover",
-              filter: "brightness(0.42) saturate(0.9) contrast(1.05)",
-              // stagger the middle panel slightly — breaks the grid, adds depth
-              transform: i === 1 ? "scale(1.06)" : "none",
-            }}
-          />
+        {videos.map((v, i) => (
+          <div key={v.src} style={{ flex: 1, minWidth: 0, position: "relative", overflow: "hidden" }}>
+            <video
+              src={v.src}
+              autoPlay muted loop playsInline preload="metadata"
+              style={{
+                position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+                filter: "brightness(0.42) saturate(0.9) contrast(1.05)",
+                // stagger the middle panel slightly — breaks the grid, adds depth
+                transform: i === 1 ? "scale(1.06)" : "none",
+              }}
+            />
+            {v.label && (
+              <span style={{
+                position: "absolute", left: 14, top: 74, zIndex: 2,
+                fontFamily: "var(--font-space-mono),monospace", fontSize: 9.5,
+                letterSpacing: "0.3em", textTransform: "uppercase",
+                color: "rgba(255,255,255,0.75)",
+                background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)",
+                padding: "5px 10px", borderRadius: 3,
+                borderLeft: "2px solid rgba(255,225,140,0.7)",
+              }}>{v.label}</span>
+            )}
+          </div>
         ))}
       </div>
       {/* readability wash */}
@@ -279,19 +291,21 @@ function Reveal({ children }: { children: React.ReactNode }) {
    Block renderers
    ───────────────────────────────────────────────────────────────── */
 
-function HeadlineBlock({ id, text, sub }: Extract<Block, { type: "headline" }>) {
+function HeadlineBlock({ id, text, sub, num }: Extract<Block, { type: "headline" }>) {
   return (
     <div id={id} className="eb-headline">
+      {num && <span className="eb-headline-ghost" aria-hidden>{num}</span>}
       <div className="eb-headline-rule" aria-hidden />
       <h2 className="eb-headline-text">{text}</h2>
       {sub && <p className="eb-headline-sub">{sub}</p>}
       <style>{`
-        .eb-headline { padding-top: 56px; margin-bottom: 20px; }
+        .eb-headline { position: relative; padding-top: 64px; margin-bottom: 22px; }
+        .eb-headline-ghost { position: absolute; right: 0; top: 18px; font-family: var(--font-space-mono),monospace; font-size: clamp(56px,9vw,92px); font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.09); pointer-events: none; user-select: none; }
         .eb-headline-rule { width: 32px; height: 1px; background: rgba(255,225,140,0.4); margin-bottom: 14px; }
         .et-reveal .eb-headline-rule { transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.16,1,.3,1) .3s; }
         .et-reveal[data-in="true"] .eb-headline-rule { transform: scaleX(1); }
-        .eb-headline-text { font-family: var(--font-readex),sans-serif; font-size: clamp(18px,2.5vw,22px); font-weight: 500; letter-spacing: -0.01em; color: rgba(255,255,255,0.97); margin: 0; line-height: 1.2; }
-        .eb-headline-sub { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.42); margin: 6px 0 0; }
+        .eb-headline-text { font-family: var(--font-readex),sans-serif; font-size: clamp(21px,3.2vw,30px); font-weight: 600; letter-spacing: -0.015em; color: rgba(255,255,255,0.97); margin: 0; line-height: 1.2; }
+        .eb-headline-sub { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.45); margin: 7px 0 0; }
       `}</style>
     </div>
   );
@@ -710,7 +724,16 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
     <div className="eb-flow">
       <div className="eb-flow-grid">
         {steps.map((s, i) => (
-          <div key={s.num} className="eb-flow-card" style={{ transitionDelay: `${i * 0.08}s` }}>
+          <div
+            key={s.num}
+            className="eb-flow-card"
+            style={{ transitionDelay: `${i * 0.08}s`, cursor: s.anchor ? "pointer" : "default" }}
+            role={s.anchor ? "link" : undefined}
+            tabIndex={s.anchor ? 0 : undefined}
+            aria-label={s.anchor ? `跳到章節：${s.zh}` : undefined}
+            onClick={() => { if (s.anchor) document.getElementById(s.anchor)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+            onKeyDown={e => { if (s.anchor && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); document.getElementById(s.anchor)?.scrollIntoView({ behavior: "smooth", block: "start" }); } }}
+          >
             <div className="eb-flow-thumb">
               {s.thumbType === "video" ? (
                 <LazyVideo src={s.thumb} autoPlay loop muted className="eb-flow-media" />
@@ -719,12 +742,14 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
                 <img src={s.thumb} alt={`${s.zh} — 步驟 ${s.num}`} className="eb-flow-media" loading="lazy" />
               )}
               <span className="eb-flow-num">{s.num}</span>
+              {s.anchor && <span className="eb-flow-jump" aria-hidden>↓</span>}
             </div>
             <p className="eb-flow-en">{s.en}</p>
             <p className="eb-flow-zh">{s.zh}</p>
           </div>
         ))}
       </div>
+      <p className="eb-flow-hint">↑ 這就是整篇的流程 — 點卡片直接跳到那一章</p>
       <style>{`
         .eb-flow { margin: 28px 0; perspective: 1200px; }
         .eb-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -736,6 +761,9 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
         .eb-flow-num { position: absolute; top: 8px; left: 8px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,225,140,0.95); background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); padding: 3px 8px; border-radius: 3px; }
         .eb-flow-en { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.85); margin: 10px 0 0; }
         .eb-flow-zh { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.42); margin: 2px 0 0; }
+        .eb-flow-jump { position: absolute; right: 8px; bottom: 8px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: rgba(255,225,140,0.9); background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,225,140,0.3); border-radius: 50%; opacity: 0; transition: opacity .25s; }
+        .eb-flow-card:hover .eb-flow-jump { opacity: 1; }
+        .eb-flow-hint { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-align: center; margin: 14px 0 0; }
         @media (max-width: 600px) { .eb-flow-grid { grid-template-columns: repeat(2, 1fr); } }
       `}</style>
     </div>

@@ -21,7 +21,7 @@ export interface FieldNote {
   tags:          string[];
   excerpt:       string;
   heroImage:     string;        // path under /public
-  heroVideos?:   string[];      // looping hero backdrop; 3 vertical clips render as a video wall
+  heroVideos?:   { src: string; label?: string }[];  // looping hero backdrop; 3 vertical clips render as a video wall, label = city name
   readingTime:   number;        // in minutes
   articleType:   ArticleType;
   tool?:         string;        // only for "tool" articles
@@ -75,9 +75,9 @@ export const fieldNotes: FieldNote[] = [
     excerpt:       "那趟歐洲回來之後，我一直在想一件事。不是鏡頭、不是 App——是我到底是在拍什麼。這篇筆記記錄整趟旅行完整的拍攝邏輯：格式、焦段、曝光、色調，還有我怎麼思考畫面",
     heroImage:     "/field-notes/kino/hero.jpg",
     heroVideos:    [
-      "/field-notes/kino/videos/picks/vienna-night.mp4",
-      "/field-notes/kino/videos/picks/tram-dusk.mp4",
-      "/field-notes/kino/videos/picks/st-nicholas.mp4",
+      { src: "/field-notes/kino/videos/picks/vienna-night.mp4",   label: "WIEN 維也納" },
+      { src: "/field-notes/kino/videos/picks/tram-dusk.mp4",      label: "PRAHA 布拉格" },
+      { src: "/field-notes/kino/videos/picks/budapest-night.mp4", label: "BUDAPEST 布達佩斯" },
     ],
     readingTime:   7,
     articleType:   "editorial-v2",
