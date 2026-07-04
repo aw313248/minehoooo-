@@ -12,27 +12,57 @@ const extraVideos: Array<{
   id?: string; igCode?: string;
 }> = [
   {
-    igCode: "DWnqw4KEkmf",
-    title: "HORROR · AIGC SHORT",
-    sub: "AI Generated · Horror · Short Film",
-    role: "DIR · AI",
+    id: "z8IYXjmBXBk",
+    title: "HOUSE RULES",
+    sub: "AIGC Short Film · Higgsfield",
+    role: "DIR · AIGC",
   },
   {
-    id: "ZbaSBFVP-Tg",
-    title: "AIGC Short Film",
-    sub: "AI Generated · Short Film",
-    role: "DIR · AI",
+    id: "w7QdrphExQ8",
+    title: "地瓜球也能打乒乓",
+    sub: "AIGC Short · Seedance · 16s",
+    role: "DIR · AIGC",
+  },
+  {
+    igCode: "DVQvmpNEt8k",
+    title: "台中人在 228 成立武裝部隊？",
+    sub: "AIGC Historical Short · 8,398 views",
+    role: "DIR · AIGC",
+  },
+  {
+    igCode: "DWJW8U3EpoR",
+    title: "台中 AIGC · 火車",
+    sub: "AIGC Short · 4,796 views",
+    role: "DIR · AIGC",
+  },
+  {
+    igCode: "DWAol6QE2J1",
+    title: "玩具總動員根本不是夢",
+    sub: "AIGC Experiment · Living Toys",
+    role: "DIR · AIGC",
+  },
+  {
+    igCode: "DWTu59DBxpv",
+    title: "Miles Morales 害的",
+    sub: "AIGC Short · Spider-Verse Style",
+    role: "DIR · AIGC",
+  },
+  {
+    igCode: "DWnqw4KEkmf",
+    title: "GOING DOWN？",
+    sub: "AIGC Horror Short",
+    role: "DIR · AIGC",
   },
   {
     id: "eI1O_9jBHU0",
     title: "BRING ME YOUR LOVELY",
     sub: "Kolli (NN) · MV · AI Hybrid",
-    role: "DIR · D.P. · AI",
+    role: "DIR · DP · AI",
   },
 ];
 
 const details = [
-  { label: "TOOLS",    value: "Midjourney · ComfyUI · Stable Diffusion · After Effects" },
+  { label: "TOOLS",    value: "Higgsfield · Seedance · Midjourney · ComfyUI · After Effects" },
   { label: "DOMAIN",   value: "AI Generated Imagery · AI Film · Creative Exploration" },
   { label: "APPROACH", value: "Not replacing creativity — expanding the visual boundaries the human eye cannot reach" },
 ];
