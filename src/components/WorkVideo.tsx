@@ -364,10 +364,10 @@ const DECK_CARDS: DeckCard[] = [
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "d9_EuYkmfzM", title: "愚人節", en: "ALL FOOL'S DAY · 5TH ANNIVERSARY", artist: "陳卓 Jon Chen", role: "DIR · DP",
       note: "原曲獲盧廣仲、MC 張天賦翻唱 · 五週年紀念版 MV",
-      desc: "五週年紀念版。一場關於玩笑與真心的音樂錄影帶" }] },
+      desc: "陳卓與 MINEH4O 合作五年的見證 — 同樣的歌，不同的自己，重新站在鏡頭前" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY", en: "KOLLI (NN)", artist: "Kolli (NN)", role: "DIR · DP · AI", chip: "AI HYBRID",
-      desc: "實拍與生成式 AI 的混血 MV — 超現實視覺實驗" }] },
+      desc: "實拍與生成式 AI 的有機融合 — 用 AI 重構動態素材，做出傳統攝影拍不到的超現實紋理" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "erQ9lR_rNik", title: "流明", en: "LUMEN", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅰ",
       desc: "光與景三部曲首部曲 — 光是記憶的形狀" }] },
@@ -388,7 +388,7 @@ const DECK_CARDS: DeckCard[] = [
   /* ACT Ⅱ — 劇情短片（月桂加冕）*/
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
     { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST",
-      desc: "廢棄回收場裡的一個夏天，長大之前最後的野",
+      desc: "公視學生劇展 — 廢棄回收場裡的一個夏天。從台北電影節到 ifva，一路拿獎的短片，我在攝影組",
       awards: [
         { title: "最佳短片", org: "2024 台北電影節" },
         { title: "最佳劇情片", org: "金穗獎" },
@@ -397,7 +397,7 @@ const DECK_CARDS: DeckCard[] = [
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
     { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART DEPT",
-      desc: "一段上不完的坡，一個不肯下車的人",
+      desc: "金馬影展入選短片 — 美術與攝影雙金穗。我在美術組，把坡道上的世界一件件搭出來",
       awards: [
         { title: "最佳美術", org: "第48屆金穗獎" },
         { title: "最佳攝影", org: "第48屆金穗獎" },
@@ -440,8 +440,20 @@ const DECK_CARDS: DeckCard[] = [
     { id: "uU1hy2FK5D8", title: "TEDxNTHU", en: "OOTB 年會 2025 · 清大", artist: "TEDxNTHU · 清大", role: "DIR · DP",
       desc: "八位講者、一整天 — 把站上舞台那一刻留下來" }] },
 
-  /* ACT Ⅵ — AIGC */
-  { act: "Ⅵ", actLabel: "AIGC 生成式影像", works: [
+  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
+    { id: "7rU2JUGplXw", title: "僑泰 55 週年校慶", en: "CHIAO TAI 55TH ANNIVERSARY", artist: "僑泰中學", role: "DIR · DP", chip: "李多慧出席",
+      note: "李多慧出席現場 · 全程活動紀錄",
+      desc: "母校 55 週年校慶全紀錄 — 從彩排到壓軸，包含李多慧登場的完整現場" }] },
+
+  /* ACT Ⅵ — 劇組現場精選 */
+  { act: "Ⅵ", actLabel: "ON SET 劇組現場", works: [
+    { id: "mQ0KWgkGHlw", title: "侵愛的", artist: "陳芳語 Kimberley Chen", role: "SET DEPT", chip: "陳芳語 KIMBERLEY CHEN",
+      note: "陳芳語 MV 劇組現場 · 兩支作品",
+      desc: "在陳芳語兩支 MV 的劇組現場 — 大型製作的節奏與規格，都是在這裡看會的" },
+    { id: "W7E5bJ1Cmuo", title: "我們的愛", artist: "陳芳語 Kimberley Chen", role: "SET DEPT" }] },
+
+  /* ACT Ⅶ — AIGC */
+  { act: "Ⅶ", actLabel: "AIGC 生成式影像", works: [
     { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O", role: "DIR · AIGC", chip: "AIGC SHORT FILMS", tools: "Higgsfield",
       desc: "生成式 AI 短片 — 測試 AI 敘事的邊界" },
     { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓", artist: "MINEH4O", role: "DIR · AIGC", tools: "Seedance" }] },
@@ -459,12 +471,9 @@ const END_CREDITS: { group: string; rows: { id: string; work: string; credit: st
     { id: "xNg4Vupy8_0", work: "中部第一深情 — 66 · 中部管轄區", credit: "LIGHTING" },
   ]},
   { group: "ON SET 劇組現場", rows: [
-    { id: "mQ0KWgkGHlw", work: "侵愛的 — 陳芳語 Kimberley Chen", credit: "SET DEPT" },
-    { id: "W7E5bJ1Cmuo", work: "我們的愛 — 陳芳語 Kimberley Chen", credit: "SET DEPT" },
     { id: "FM5ukv7kqBM", work: "沒什麼道理 — STILA 言芯", credit: "SET DEPT" },
   ]},
   { group: "EVENT & LIVE 活動與現場", rows: [
-    { id: "7rU2JUGplXw", work: "僑泰中學 55週年 校慶", credit: "DIR · DP" },
     { id: "8JIvM93l0SQ", work: "九龍灣鳳靈修院 南巡", credit: "DIR · DP" },
     { id: "IIMY2J3egHk", work: "擁擁｜抓周一歲儀式", credit: "DIR · DP" },
     { id: "IGa91QIW84M", work: "DJ SOCUTE 演出記錄", credit: "DIR · DP" },
@@ -1327,16 +1336,19 @@ export default function WorkVideo() {
       <div ref={ecRef} className="px-4 md:px-14 py-20 border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
         <div style={{ opacity: ecIn ? 1 : 0, transition: "opacity 1s ease" }} className="max-w-[680px] mx-auto text-center">
           <p className="font-mono-label text-[8px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>AND FEATURING</p>
-          <h2 className="font-display leading-none mb-14" style={{ fontSize: "clamp(1.7rem, 4vw, 3.4rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
+          <h2 className="font-display leading-none mb-4" style={{ fontSize: "clamp(1.7rem, 4vw, 3.4rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
             END CREDITS
           </h2>
+          <p className="text-[12.5px] leading-relaxed mb-14 mx-auto" style={{ color: "var(--text-2)", maxWidth: 380 }}>
+            每一部片的完成，名單上都有一個位置。<br />這些是我掛在別人作品裡的名字 — 點任何一行都能看片
+          </p>
 
           {END_CREDITS.map((g, gi) => (
             <div key={g.group} className="mb-12" style={{
               opacity: ecIn ? 1 : 0, transform: ecIn ? "translateY(0)" : "translateY(20px)",
               transition: `opacity .8s ease ${gi * 0.15 + 0.2}s, transform .8s cubic-bezier(.16,1,.3,1) ${gi * 0.15 + 0.2}s`,
             }}>
-              <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5" style={{ color: "rgba(255,225,140,0.7)" }}>{g.group}</p>
+              <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5" style={{ color: "rgba(255,225,140,0.7)" }}>{g.group} <span style={{ color: "var(--text-3)" }}>× {g.rows.length}</span></p>
               <div className="flex flex-col gap-2.5">
                 {g.rows.map(r => (
                   <a key={r.id + r.credit} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"

@@ -492,7 +492,7 @@ function HeroDesktop({ loaded, iframeReady, isActive }: {
 
         <h1 className="hero-title absolute text-white select-none"
           style={{
-            fontSize: "clamp(6rem, 18vw, 22rem)",
+            fontSize: "clamp(4.2rem, 12vw, 13rem)",
             left: "1.5rem", top: "10%",
             opacity: loaded ? 1 : 0,
             transform: loaded ? "translateY(0)" : "translateY(28px)",
@@ -545,7 +545,7 @@ function HeroDesktop({ loaded, iframeReady, isActive }: {
 
         <h1 className="hero-title absolute text-white select-none"
           style={{
-            fontSize: "clamp(7rem, 22vw, 28rem)",
+            fontSize: "clamp(5rem, 15vw, 17rem)",
             left: "12%", bottom: "8%",
             letterSpacing: "0.02em",
             opacity: loaded ? 1 : 0,

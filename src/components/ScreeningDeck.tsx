@@ -210,6 +210,8 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
   const deckRef = useRef<HTMLDivElement>(null);
   const handRef = useRef<HTMLDivElement>(null);
   const cueRef = useRef<HTMLDivElement>(null);
+  const washRef = useRef<HTMLDivElement>(null);   // colour-grade wipe (ACT Ⅲ/Ⅳ)
+  const flashRef = useRef<HTMLDivElement>(null);  // dip/flash overlay (ACT Ⅱ/Ⅴ/Ⅵ/Ⅶ)
   const [activeAct, setActiveAct] = useState(0);
   const reduceMotion = useRef(false);
 
@@ -249,21 +251,47 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
       hand.parentElement.style.transform = `translateY(${clamp(-rect.top, 0, deck.offsetHeight - vh)}px)`;
     }
 
-    /* film strip sweep — alternating direction per changeover */
+    /* per-act transition — 每一幕有自己的換場語言（沒收之後不再重複膠片）
+       Ⅰ film strip ／ Ⅱ·Ⅵ dip-to-black ／ Ⅲ·Ⅳ colour-grade wash ／ Ⅴ·Ⅶ flash cut */
+    const nextAct = cards[Math.min(k + 1, cards.length - 1)].act;
+    const mode = nextAct === "Ⅰ" ? "strip" : nextAct === "Ⅱ" || nextAct === "Ⅵ" ? "dip"
+      : nextAct === "Ⅲ" || nextAct === "Ⅳ" ? "wash" : "flash";
+    const mid = smooth(1 - Math.abs(p - 0.5) * 2);   // 0→1→0 peak at the cut
+
     if (hand) {
-      if (reduceMotion.current) { hand.style.opacity = "0"; }
+      if (reduceMotion.current || mode !== "strip") { hand.style.opacity = "0"; }
       else {
         const dir = k % 2 === 0 ? 1 : -1;
         const sweep = smooth((p - 0.06) / 0.82);
         const x = (-260 + sweep * 520) * dir;
-        /* strip also rolls vertically like film through the gate */
         hand.style.transform = `translate(-50%,-50%) translateX(${x}%) translateY(${(sweep - 0.5) * -18}%) rotate(${5 * dir}deg)`;
         hand.style.opacity = p < 0.05 || p > 0.95 ? "0" : "0.95";
       }
     }
-    /* cue dot — brief flash as the changeover begins */
+    if (washRef.current) {
+      const w = washRef.current;
+      if (reduceMotion.current || mode !== "wash") { w.style.opacity = "0"; }
+      else {
+        const dir = k % 2 === 0 ? 1 : -1;
+        const sweep = smooth((p - 0.08) / 0.8);
+        w.style.transform = `translateX(${(-120 + sweep * 240) * dir}%) skewX(${-9 * dir}deg)`;
+        w.style.opacity = p < 0.06 || p > 0.94 ? "0" : "0.85";
+      }
+    }
+    if (flashRef.current) {
+      const f = flashRef.current;
+      if (reduceMotion.current) { f.style.opacity = "0"; }
+      else if (mode === "dip") { f.style.background = "#000"; f.style.opacity = String(mid * 0.92); }
+      else if (mode === "flash") {
+        f.style.background = "rgba(255,252,240,1)";
+        const blink = (p > 0.44 && p < 0.5) || (p > 0.53 && p < 0.57) ? mid * 0.65 : 0;
+        f.style.opacity = String(blink);
+      } else { f.style.opacity = "0"; }
+    }
+    /* cue dot — strip & flash modes only */
     if (cueRef.current) {
-      cueRef.current.style.opacity = !reduceMotion.current && p > 0.06 && p < 0.17 ? "1" : "0";
+      cueRef.current.style.opacity =
+        !reduceMotion.current && (mode === "strip" || mode === "flash") && p > 0.06 && p < 0.17 ? "1" : "0";
     }
 
     /* active act for HUD */
@@ -307,6 +335,14 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
         }}>
           <FilmStripOcclusion />
         </div>
+        {/* colour-grade wash — gold→teal gradient blade (ACT Ⅲ/Ⅳ) */}
+        <div ref={washRef} aria-hidden="true" style={{
+          position: "absolute", inset: "-10% -30%", opacity: 0, willChange: "transform, opacity",
+          background: "linear-gradient(100deg, transparent 18%, rgba(255,217,100,0.34) 38%, rgba(120,200,210,0.30) 62%, transparent 82%)",
+          filter: "blur(26px)",
+        }} />
+        {/* dip / flash overlay (ACT Ⅱ/Ⅴ/Ⅵ/Ⅶ) */}
+        <div ref={flashRef} aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: 0, willChange: "opacity" }} />
         {/* changeover cue dot — top-right, flashes right before the cut */}
         <div ref={cueRef} aria-hidden="true" style={{
           position: "absolute", top: 24, right: 26, width: 13, height: 13, borderRadius: "50%",
