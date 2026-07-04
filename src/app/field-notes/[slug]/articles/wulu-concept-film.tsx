@@ -23,15 +23,15 @@ const wuluBlocks: Block[] = [
     type: "text",
     content: (
       <>
-        <p>
+        <p key="p1">
           WULU（霧鹿）是一個完全虛構的台灣單一麥芽威士忌品牌
         </p>
-        <p>
+        <p key="p2">
           這個專案只有一個問題：
           如果今天有一個品牌找我製作，
           我能否先利用 AI 完成一支具有品牌感的 Concept Film？
         </p>
-        <p>
+        <p key="p3">
           目的不是證明 AI 可以取代任何職業。
           而是測試整個工作流程
         </p>
@@ -204,17 +204,17 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "text",
     content: (
       <>
-        <p>
+        <p key="p4">
           每個品牌，都有一個真正的核心。
           可能是一座山，可能是一片海，也可能是一種精神
         </p>
-        <p>
+        <p key="p5">
           真正需要思考的只有一件事：
         </p>
-        <p>
+        <p key="p6">
           如果這個品牌是一個人，它會是什麼樣的人？
         </p>
-        <p>
+        <p key="p7">
           WULU 的核心不是威士忌。
           而是高山、時間、霧、職人工藝，以及台灣。
           Prompt 只是把這些內容翻譯給 AI
@@ -233,7 +233,7 @@ No on-screen text changes, no watermark. Audio added in post.`,
   {
     type: "text",
     content: (
-      <p>
+      <p key="p8">
         品牌核心建立後，下一步是把抽象概念轉換成畫面。
         材質、色彩、光影、空間、運鏡節奏——
         每一個選擇都服務於品牌辨識度，
@@ -280,11 +280,11 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "text",
     content: (
       <>
-        <p>
+        <p key="p9">
           每個鏡頭不是越炫越好。
           而是每一秒都知道：這一秒，觀眾應該看什麼
         </p>
-        <p>
+        <p key="p10">
           前段建立品牌。中段建立感官。最後建立情緒。
           節奏比鏡頭數量更重要
         </p>
@@ -303,10 +303,10 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "text",
     content: (
       <>
-        <p>
+        <p key="p11">
           第一秒決定觀眾會不會繼續看
         </p>
-        <p>
+        <p key="p12">
           Hook 不一定是最快。而是最快建立情緒。
           有時候，一個很安靜的鏡頭，
           比快速剪輯更有力量
@@ -326,11 +326,11 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "text",
     content: (
       <>
-        <p>
+        <p key="p13">
           AI 很容易生成漂亮的畫面。
           但真正有品牌感的是光
         </p>
-        <p>
+        <p key="p14">
           光從哪裡來？為什麼從那裡來？
           它服務的是產品，還是情緒？
         </p>
@@ -345,7 +345,7 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "callout",
     content: (
       <>
-        <strong>工作流程框架：</strong>
+        <strong key="s1">工作流程框架：</strong>
         品牌內核 → 核心視覺 → 鏡頭節奏 → 光影設計 → Prompt → AI Generation
       </>
     ),
@@ -358,14 +358,14 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "oscar-notes",
     content: (
       <>
-        <p>
+        <p key="p15">
           很多人認為：只要拿到 Prompt，就可以生成同樣的作品
         </p>
-        <p>
+        <p key="p16">
           但我自己的經驗是——Prompt 更像是最後一步。
           真正花時間的，其實是品牌定位、視覺設計、鏡頭安排、節奏與光影
         </p>
-        <p>
+        <p key="p17">
           當這些都建立完成後，
           Prompt 才有辦法把想像完整地傳達給 AI
         </p>
@@ -394,10 +394,10 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "closing",
     content: (
       <>
-        <p>
+        <p key="p18">
           如果你做出了自己的版本，歡迎分享給我
         </p>
-        <p>
+        <p key="p19">
           我很期待看到同一份 Prompt，在不同創作者手中，
           會長出什麼樣的作品
         </p>

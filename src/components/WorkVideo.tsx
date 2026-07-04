@@ -360,8 +360,8 @@ const ytShorts = [
   { id: "raIh2Qlj5YY", title: "孩子們需要超人",              tags: ["#社會議題", "#Reels"] },
   { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
   { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",           tags: ["#器材", "#DJI"]   },
-  { id: "EoJmdg8SxsI", title: "Short Film",                  tags: ["#短片"]            },
-  { id: "5Y5u1Mtbmmo", title: "Short Film",                  tags: ["#短片"]            },
+  { id: "EoJmdg8SxsI", title: "2026年3月9日",                 tags: ["#短片"]            },
+  { id: "5Y5u1Mtbmmo", title: "畢製前一天錄音師消失了！！！", tags: ["#幕後", "#畢製"]   },
 ];
 
 const allReels = [
