@@ -484,6 +484,16 @@ const END_CREDITS: { group: string; rows: { id: string; work: string; credit: st
   ]},
 ];
 
+/* 留言牆 — 2026-07 由 Claude in Chrome 從 YouTube 實抓，讚數為真 */
+const COMMENT_WALL: { work: string; views: string; a: string; text: string; likes: string }[] = [
+  { work: "愛你真的梅辦法", views: "751萬", a: "@kparsifal3723", likes: "9,569", text: "搭捷運坐博愛座，阿北問我為什麼好手好腳可以坐。我回答：「我在聽89教科書的歌」，他立刻跟我道歉" },
+  { work: "愛你真的梅辦法", views: "751萬", a: "@嘿嘿嘿-p4c", likes: "1.6萬", text: "最喜歡這首歌了，自從我把它設成 8 點的鬧鐘，我每天 7 點就起來提前關鬧鐘了" },
+  { work: "愛你真的梅辦法", views: "751萬", a: "@郭-v4i", likes: "1.1萬", text: "去書局買了一本書叫 89 教科書，結帳拿出文化幣。店員：不好意思，文化幣只能買有文化的東西喔" },
+  { work: "愛你真的梅辦法", views: "751萬", a: "@Snow-Tuna", likes: "5,864", text: "上週我被綁架，迷迷糊糊講出第一句話：「我想聽帕拉梅拉」。他們二話不說把我丟下車" },
+  { work: "如果你不愛我 Love Me Not", views: "22.7萬", a: "@nerdyandcivic", likes: "8", text: "這些人用 100 倍的賣力呈現一首歌——就像愛情悲劇往往不對頻一樣" },
+  { work: "如果你不愛我 Love Me Not", views: "22.7萬", a: "@yuyusun悠", likes: "1", text: "太好聽了，尤其中間的 solo。「如果你不愛我，請別再對我溫柔」怎麼寫得這樣，推推" },
+];
+
 const ytShorts = [
   { id: "raIh2Qlj5YY", title: "孩子們需要超人",              tags: ["#社會議題", "#Reels"] },
   { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
@@ -1370,6 +1380,34 @@ export default function WorkVideo() {
           <p className="font-mono-label text-[8px] tracking-[0.3em] mt-4" style={{ color: "var(--white-dim)" }}>
             MINEH4O — 賴明宏 OSCAR LAI · TAICHUNG
           </p>
+        </div>
+      </div>
+
+      {/* ══ 留言牆 — 觀眾真實回聲 ══ */}
+      <div className="px-4 md:px-14 py-16 border-b" style={{ borderColor: "var(--border)" }}>
+        <p className="font-mono-label text-[8px] tracking-[0.42em] mb-2 text-center" style={{ color: "var(--white-soft)" }}>AUDIENCE</p>
+        <h2 className="font-display leading-none text-center mb-3" style={{ fontSize: "clamp(1.6rem, 3.6vw, 3rem)", color: "var(--text)" }}>
+          留言牆
+        </h2>
+        <p className="text-[11.5px] text-center mb-10" style={{ color: "var(--text-3)" }}>
+          從 YouTube 原封不動搬來的真實留言 — 含台式反串，讚數為真
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-[1100px] mx-auto">
+          {COMMENT_WALL.map((c, i) => (
+            <figure key={c.a + i} className="m-0 p-5 flex flex-col gap-3"
+              style={{
+                background: "var(--white-ghost)", border: "1px solid rgba(255,255,255,0.09)",
+                borderRadius: 14, transform: `rotate(${(i % 3 - 1) * 0.8}deg)`,
+              }}>
+              <blockquote className="m-0 text-[13px] leading-relaxed" style={{ color: "var(--white-secondary)" }}>
+                「{c.text}」
+              </blockquote>
+              <figcaption className="mt-auto flex items-baseline justify-between gap-3 flex-wrap">
+                <span className="font-mono-label text-[9px] tracking-[0.08em]" style={{ color: "var(--text-3)" }}>{c.a} · ♥ {c.likes}</span>
+                <span className="font-mono-label text-[8px] tracking-[0.14em]" style={{ color: "rgba(255,225,140,0.75)" }}>{c.work} · {c.views}觀看</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
 
