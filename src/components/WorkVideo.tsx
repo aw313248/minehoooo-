@@ -275,11 +275,13 @@ const featuredMVs = [
   { id: "kL8_Sk0JmKM", title: "記住你要快樂",                artist: "帝仰 tiang",           subEn: "Music Video",                  subZh: "音樂錄影帶",                 role: "DIR · COLOR",   tags: ["MUSIC VIDEO", "DIR", "COLOR"] },
 ];
 
-// 導演作品
+// 導演作品 — 招牌在前（愚人節、BMYL 同時保留於 hero 輪播）
 const directorMVs = [
-  { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
-  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",   artist: "梁承煜", role: "DIR · DP",            cat: "MUSIC VIDEO" },
-  { id: "hk43CW2Kqow", title: "LAST 10",              artist: "MINEH4O", role: "DIR · DP · AI 50%",    cat: "MUSIC VIDEO" },
+  { id: "d9_EuYkmfzM", title: "愚人節 ALL FOOL'S DAY",  artist: "陳卓 Jon Chen", role: "DIR · DP",           cat: "MUSIC VIDEO" },
+  { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY",   artist: "Kolli (NN)",     role: "DIR · DP · AI",      cat: "MUSIC VIDEO" },
+  { id: "jLLNkQod8pg", title: "向前行吧 GO AHEAD",      artist: "梁承煜",         role: "DIR · DP",           cat: "MUSIC VIDEO" },
+  { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS",    artist: "梁承煜",         role: "DIR · EDIT · COLOR", cat: "MUSIC VIDEO" },
+  { id: "hk43CW2Kqow", title: "LAST 10",                artist: "MINEH4O",        role: "DIR · DP · AI 50%",  cat: "MUSIC VIDEO" },
 ];
 
 // 光與景三部曲
@@ -328,8 +330,9 @@ const otherOnSet = [
 ];
 
 const commercial = [
-  { id: "Ou1y4dnFrsU", title: "台中好聖誕",     artist: "台中市政府", role: "DIR · DP",         cat: "COMMERCIAL" },
-  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6",         role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
+  { id: "Ou1y4dnFrsU", title: "台中好聖誕",       artist: "台中市政府", role: "DIR · DP",         cat: "COMMERCIAL" },
+  { id: "A_2zpqzw6Yw", title: "柏朗克商案 FINAL", artist: "柏朗克",     role: "DP",               cat: "COMMERCIAL" },
+  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光",   artist: "V6",         role: "LIGHTING · COLOR", cat: "COMMERCIAL" },
 ];
 
 // 紀錄片 — 規模大的先排
@@ -942,6 +945,8 @@ export default function WorkVideo() {
   const { ref: trRef,  inView: trIn  } = useInView(0.02);
   const { ref: lrRef,  inView: lrIn  } = useInView(0.02);  // Lil RAD series
   const { ref: wRef,   inView: wIn   } = useInView(0.02);
+  const { ref: cmRef,  inView: cmIn  } = useInView(0.02);  // Commercial
+  const { ref: osRef,  inView: osIn  } = useInView(0.02);  // On Set
   const { ref: evRef,  inView: evIn  } = useInView(0.02);
   const { ref: leRef,  inView: leIn  } = useInView(0.02);
   const { ref: aigcRef, inView: aigcIn } = useInView(0.02); // AIGC
@@ -1335,26 +1340,7 @@ export default function WorkVideo() {
         <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
       </div>
 
-      {/* ── 02 · MUSIC VIDEO · COLOR WORK ── */}
-      <div ref={wRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="02" label="MUSIC VIDEO · COLOR WORK" count={colorCredits.length} note="COLOR GRADING · DP" />
-          <Carousel
-            items={colorCredits}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
-              </div>
-            )}
-          />
-        </div>
-      </div>
-
-      {/* ── 03 · NARRATIVE SHORT FILM — editorial magazine layout ── */}
+      {/* ── 02 · NARRATIVE SHORT FILM — editorial magazine layout ── */}
       <div ref={evRef} className="relative">
         {/* Feathered top edge */}
         <div aria-hidden="true" style={{ height: 70, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 60%, #000)" }} />
@@ -1365,7 +1351,7 @@ export default function WorkVideo() {
           <div className="flex items-end justify-between mb-8 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
             <div>
               <p className="font-mono-label text-[9px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>
-                ISSUE 03 · FILM
+                ISSUE 02 · FILM
               </p>
               <h2 className="font-display leading-none"
                 style={{ fontSize: "clamp(2.4rem, 5.5vw, 5rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
@@ -1399,39 +1385,19 @@ export default function WorkVideo() {
             </div>
           </div>
 
-          {/* On Set — MV Credits (grouped by artist) */}
-          <SubLabel label="ON SET · MV PRODUCTION" />
+        </div>
+        {/* Feathered bottom edge */}
+        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
+      </div>
 
-          <ArtistGroupHeader name="KIMBERLEY CHEN · 陳芳語" count={kimberleyCredits.length} />
-          <div className="grid grid-cols-2 gap-4 md:gap-5 mb-6">
-            {kimberleyCredits.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            ))}
-          </div>
-
-          <ArtistGroupHeader name="STILA 言芯" count={otherOnSet.length} />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {otherOnSet.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.15}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.15}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            ))}
-          </div>
-
-          {/* Commercial */}
-          <SubLabel label="COMMERCIAL · BRAND" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+      {/* ── 03 · COMMERCIAL · BRAND ── */}
+      <div ref={cmRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: cmIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="03" label="COMMERCIAL · BRAND" count={commercial.length} note="CLIENT WORK" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
             {commercial.map((v, i) => (
               <div key={v.id} style={{
-                opacity: evIn ? 1 : 0, transform: evIn ? "translateY(0)" : "translateY(24px)",
+                opacity: cmIn ? 1 : 0, transform: cmIn ? "translateY(0)" : "translateY(24px)",
                 transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
               }}>
                 <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
@@ -1439,8 +1405,6 @@ export default function WorkVideo() {
             ))}
           </div>
         </div>
-        {/* Feathered bottom edge */}
-        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
       </div>
 
       {/* ── 04 · LIVE · DOCUMENTARY · EVENT ── */}
@@ -1503,10 +1467,60 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ── 06 · YOUTUBE SHORTS ── */}
+      {/* ── 06 · MUSIC VIDEO · COLOR & LIGHTING ── */}
+      <div ref={wRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="06" label="MUSIC VIDEO · COLOR & LIGHTING" count={colorCredits.length} note="COLOR GRADING · LIGHTING" />
+          <Carousel
+            items={colorCredits}
+            getKey={v => v.id}
+            renderItem={(v, i) => (
+              <div style={{
+                opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
+              </div>
+            )}
+          />
+        </div>
+      </div>
+
+      {/* ── 07 · ON SET · MV PRODUCTION ── */}
+      <div ref={osRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: osIn ? 1 : 0, transition: "opacity .7s ease" }}>
+          <CatHeader num="07" label="ON SET · MV PRODUCTION" count={kimberleyCredits.length + otherOnSet.length} note="SET DEPT · CREW" />
+
+          <ArtistGroupHeader name="KIMBERLEY CHEN · 陳芳語" count={kimberleyCredits.length} />
+          <div className="grid grid-cols-2 gap-4 md:gap-5 mb-6">
+            {kimberleyCredits.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: osIn ? 1 : 0, transform: osIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
+
+          <ArtistGroupHeader name="STILA 言芯" count={otherOnSet.length} />
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            {otherOnSet.map((v, i) => (
+              <div key={v.id} style={{
+                opacity: osIn ? 1 : 0, transform: osIn ? "translateY(0)" : "translateY(24px)",
+                transition: `opacity .6s ease ${i * 0.08 + 0.15}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.15}s`,
+              }}>
+                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── 08 · YOUTUBE SHORTS ── */}
       <div ref={sRef} className="px-4 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
-          <SubLabel label="YOUTUBE SHORTS" />
+          <CatHeader num="08" label="YOUTUBE SHORTS" count={ytShorts.length} note="SHORT-FORM" />
         </div>
         <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
           {ytShorts.map((s, i) => (
@@ -1537,7 +1551,7 @@ export default function WorkVideo() {
 
         <div className="px-4 md:px-14 pt-10 pb-2"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="06" label="IG REELS" count={igReelsData.length} note="@minehoooo · @minehoooo.arw · @mlpon6" />
+          <CatHeader num="09" label="IG REELS" count={igReelsData.length} note="@minehoooo.arw · @mlpon6" />
         </div>
 
         <div className="px-4 md:px-14 pb-6">
