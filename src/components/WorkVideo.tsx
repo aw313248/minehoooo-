@@ -387,7 +387,8 @@ const DECK_CARDS: DeckCard[] = [
 
   /* ACT Ⅱ — 劇情短片（月桂加冕）*/
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST",
+    { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST", chip: "劇組成員 · 攝影組",
+      note: "作品獲獎紀錄 — 我的位置是攝影組助理",
       desc: "公視學生劇展 — 廢棄回收場裡的一個夏天。從台北電影節到 ifva，一路拿獎的短片，我在攝影組",
       awards: [
         { title: "最佳短片", org: "2024 台北電影節" },
@@ -396,7 +397,8 @@ const DECK_CARDS: DeckCard[] = [
         { title: "亞洲新力量 銀獎", org: "ifva" },
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART DEPT",
+    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART DEPT", chip: "劇組成員 · 美術組",
+      note: "作品獲獎紀錄 — 我的位置是美術組",
       desc: "金馬影展入選短片 — 美術與攝影雙金穗。我在美術組，把坡道上的世界一件件搭出來",
       awards: [
         { title: "最佳美術", org: "第48屆金穗獎" },
@@ -405,17 +407,18 @@ const DECK_CARDS: DeckCard[] = [
         { title: "入選", org: "金馬影展" },
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · DP · EDIT",
-      desc: "畢業製作劇情短片 — 導演、攝影、剪接一手包",
+    { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · DP · EDIT", chip: "DIRECTED BY MINEH4O",
+      note: "這支我是導演 — 編、導、攝、剪一手包",
+      desc: "畢業製作劇情短片，放視大賞入圍",
       awards: [{ title: "入圍", org: "2023 放視大賞" }] }] },
 
   /* ACT Ⅲ — 攝影調色系列 */
   { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
     { id: "XJSI9s3-wk0", title: "沒有你的世界", artist: "Lil RAD & Coy6oi", role: "DP · COLOR", chip: "LIL RAD × COY6OI",
-      desc: "四支 MV 的攝影與調色 — 同一組人，四種心碎" },
-    { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi", role: "DP" },
-    { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi", role: "DP · COLOR" },
-    { id: "569NoV2tyUE", title: "早知道一個人也過得很好", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP" }] },
+      desc: "四支 MV 的攝影與調色 — 系列累積 43 萬+ 觀看" },
+    { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi", role: "DP", views: "22.7萬 views" },
+    { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi", role: "DP · COLOR", views: "7.6萬 views" },
+    { id: "569NoV2tyUE", title: "早知道一個人也過得很好", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP", views: "13.2萬 views" }] },
 
   { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
     { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", en: "PANAMERA · 89教科書", artist: "89教科書", role: "COLOR", chip: "750萬+ VIEWS",

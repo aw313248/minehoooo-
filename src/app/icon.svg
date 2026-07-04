@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#0a0a0b"/>
+  <!-- director's megaphone — cone + mouthpiece + handle, gold -->
+  <g fill="#ffd964">
+    <path d="M14 27 L38 15 L38 45 L14 33 Z"/>
+    <rect x="9" y="26.5" width="6" height="7" rx="2"/>
+    <path d="M38 12 L44 9 L44 51 L38 48 Z" opacity="0.85"/>
+    <rect x="20" y="34" width="5" height="14" rx="2.4" transform="rotate(14 22 41)"/>
+  </g>
+  <!-- sound lines -->
+  <g stroke="#ffd964" stroke-width="2.6" stroke-linecap="round" fill="none" opacity="0.8">
+    <path d="M49 22 Q54 32 49 42"/>
+    <path d="M54 17 Q61 32 54 47" opacity="0.55"/>
+  </g>
+</svg>

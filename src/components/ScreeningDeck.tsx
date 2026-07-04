@@ -27,6 +27,7 @@ export interface DeckWork {
   note?: string;       // credential line, e.g. covers / view milestones — gold mono
   awards?: { title: string; org: string }[];
   tools?: string;      // AIGC tool label
+  views?: string;      // real view count label, e.g. "22.7萬 views"
 }
 export interface DeckCard {
   act: string;         // "Ⅰ" — act numeral
@@ -120,7 +121,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
               <div className="absolute left-3 right-3 bottom-3 z-[2]">
                 <p className="text-[12px] md:text-[14px] font-medium leading-tight" style={{ color: "var(--text)" }}>{w.title}</p>
                 <p className="font-mono-label text-[7.5px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
-                  {w.role}{w.tools ? ` · ${w.tools}` : ""}
+                  {w.role}{w.tools ? ` · ${w.tools}` : ""}{w.views ? ` · ${w.views}` : ""}
                 </p>
               </div>
             )}
@@ -182,7 +183,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
             )}
           </div>
           <div className="md:max-w-[320px] md:text-right md:pb-1">
-            {lead.note && <p className="font-mono-label text-[9px] tracking-[0.14em] mb-2 leading-relaxed" style={{ color: "rgba(255,225,140,0.85)" }}>{lead.note}</p>}
+            {lead.note && <p className="text-[13px] md:text-[14.5px] tracking-[0.06em] mb-2 leading-relaxed font-medium" style={{ color: "rgba(255,225,140,0.95)", textShadow: "0 1px 12px rgba(0,0,0,0.6)" }}>{lead.note}</p>}
             {lead.artist && <p className="font-mono-label text-[10px] tracking-[0.16em] mb-1.5" style={{ color: "var(--text-2)" }}>{lead.artist}</p>}
             <p className="font-mono-label text-[8.5px] tracking-[0.24em] mb-2.5" style={{ color: "rgba(143,180,255,0.8)" }}>{lead.role}</p>
             {lead.desc && <p className="text-[12.5px] leading-relaxed hidden md:block" style={{ color: "var(--white-secondary)" }}>{lead.desc}</p>}
@@ -255,7 +256,7 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
        Ⅰ film strip ／ Ⅱ·Ⅵ dip-to-black ／ Ⅲ·Ⅳ colour-grade wash ／ Ⅴ·Ⅶ flash cut */
     const nextAct = cards[Math.min(k + 1, cards.length - 1)].act;
     const mode = nextAct === "Ⅰ" ? "strip" : nextAct === "Ⅱ" || nextAct === "Ⅵ" ? "dip"
-      : nextAct === "Ⅲ" || nextAct === "Ⅳ" ? "wash" : "flash";
+      : nextAct === "Ⅲ" || nextAct === "Ⅳ" ? "wash" : nextAct === "Ⅴ" ? "blinds" : "glitch";
     const mid = smooth(1 - Math.abs(p - 0.5) * 2);   // 0→1→0 peak at the cut
 
     if (hand) {
@@ -282,16 +283,24 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
       const f = flashRef.current;
       if (reduceMotion.current) { f.style.opacity = "0"; }
       else if (mode === "dip") { f.style.background = "#000"; f.style.opacity = String(mid * 0.92); }
-      else if (mode === "flash") {
-        f.style.background = "rgba(255,252,240,1)";
-        const blink = (p > 0.44 && p < 0.5) || (p > 0.53 && p < 0.57) ? mid * 0.65 : 0;
+      else if (mode === "blinds") {
+        /* venetian shutter — vertical bars sweep across (檔案快門) */
+        f.style.background = "repeating-linear-gradient(90deg, #000 0 6vw, transparent 6vw 12vw)";
+        f.style.backgroundPositionX = `${p * 24}vw`;
+        f.style.opacity = String(mid * 0.9);
+      } else if (mode === "glitch") {
+        /* RGB split pulse — AIGC 的訊號感 */
+        f.style.background = "linear-gradient(90deg, rgba(255,0,80,0.5), transparent 30%, transparent 70%, rgba(0,220,255,0.5))";
+        f.style.mixBlendMode = "screen";
+        const blink = (p > 0.42 && p < 0.48) || (p > 0.52 && p < 0.6) ? mid * 0.8 : 0;
         f.style.opacity = String(blink);
+        f.style.transform = blink ? `translateX(${(p * 977 % 7) - 3}px)` : "none";
       } else { f.style.opacity = "0"; }
     }
     /* cue dot — strip & flash modes only */
     if (cueRef.current) {
       cueRef.current.style.opacity =
-        !reduceMotion.current && (mode === "strip" || mode === "flash") && p > 0.06 && p < 0.17 ? "1" : "0";
+        !reduceMotion.current && (mode === "strip" || mode === "blinds") && p > 0.06 && p < 0.17 ? "1" : "0";
     }
 
     /* active act for HUD */

@@ -14,6 +14,7 @@ import PageTitle       from "@/components/PageTitle";
 import AudioPlayer     from "@/components/AudioPlayer";
 import AutoPlay        from "@/components/AutoPlay";
 import VersionBadge    from "@/components/VersionBadge";
+import FieldNotesCTA from "@/components/FieldNotesCTA";
 import { LangProvider } from "@/contexts/LangContext";
 
 export default function Home() {
@@ -29,6 +30,7 @@ export default function Home() {
         <WorkAIGC />
         <WorkProjects />
         <Contact />
+        <FieldNotesCTA />
       </PageScroll>
       {/* Film grain — one stock across every page, unifies the whole site */}
       <div aria-hidden="true" style={{

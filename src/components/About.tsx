@@ -11,12 +11,13 @@ const QUOTES = [
   { lines: ["停止對他們仰慕吧", "一天就好，只想著勝利", "衝吧"], attr: "— 大谷翔平" },
 ];
 
+const GOLD = { fontStyle: "normal" as const, color: "rgba(255,225,140,0.95)", fontWeight: 500 };
 const bioCn = [
-  "我叫明宏。鏡頭這件事，從高中就開始了——不是因為有計畫，是因為停不下來。",
-  "剪輯、音樂、色調、構圖，這些最早是靠 YouTube 自學拼出來的直覺。大學念傳播，才第一次認識「電影語言」——知道每個鏡頭都在說話之後，就再也看不了不知道自己在說什麼的畫面。",
-  "我在乎畫面的邏輯，也在乎它的重量。喜歡在拍攝前把每個運鏡想清楚，也能在現場即時回應那種沒法預期的真實。",
-  "在片場待久了，發現最難的從來不是器材，是信任。好的畫面通常是溝通換來的，不是架好機器就有的。",
-  "用影像說故事——這件事我認真做了七年，還沒有要停的意思。",
+  <>我叫明宏。鏡頭這件事，從高中就開始了——<em style={GOLD}>不是因為有計畫，是因為停不下來</em>。</>,
+  <>剪輯、音樂、色調、構圖，這些最早是靠 YouTube 自學拼出來的直覺。大學念傳播，才第一次認識「電影語言」——<em style={GOLD}>知道每個鏡頭都在說話之後，就再也看不了不知道自己在說什麼的畫面</em>。</>,
+  <>我在乎畫面的邏輯，也在乎它的重量。喜歡在拍攝前把每個運鏡想清楚，也能在現場即時回應那種沒法預期的真實。</>,
+  <>在片場待久了，發現最難的從來不是器材，<em style={GOLD}>是信任</em>。好的畫面通常是溝通換來的，不是架好機器就有的。</>,
+  <>用影像說故事——<em style={GOLD}>這件事我認真做了七年，還沒有要停的意思</em>。</>,
 ];
 
 const bioEn = [
@@ -151,7 +152,7 @@ export default function About() {
           priority
           className="object-cover"
           style={{
-            objectPosition: "center top",
+            objectPosition: "center 22%",
             animation: "kenBurns 22s ease-in-out infinite alternate",
             transformOrigin: "center top",
           }}

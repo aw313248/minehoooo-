@@ -11,6 +11,7 @@ const LABELS = [
   "AIGC",
   "PROJECTS",
   "CONTACT",
+  "NOTES",
 ];
 
 interface Props {
@@ -170,7 +171,9 @@ export default function PageScroll({ children }: Props) {
       video: 3,
       aigc: 4,
       projects: 4,
-      contact: 5,
+      contact: 6,
+      notes: 7,
+      fieldnotes: 7,
     };
     const target = map[section.toLowerCase()];
     if (typeof target === "number" && target >= 0 && target < total) {
