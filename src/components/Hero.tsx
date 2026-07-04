@@ -615,6 +615,10 @@ function HeroDesktop({ loaded, iframeReady, isActive }: {
             style={{ color: "rgba(255,255,255,0.55)", fontWeight: 400 }}>
             PRODUCTIONS · +7YR
           </p>
+          <p className="text-[10px] mt-2 text-right uppercase tracking-[0.24em]"
+            style={{ color: "rgba(255,225,140,0.75)", fontWeight: 500 }}>
+            THREADS 5.7M · 90-DAY REACH
+          </p>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 z-[9] px-10 pb-4 flex items-end justify-between gap-4"

@@ -24,6 +24,7 @@ export interface DeckWork {
   role: string;
   desc?: string;
   chip?: string;       // small badge e.g. "AI HYBRID", "TRILOGY Ⅰ/Ⅲ"
+  note?: string;       // credential line, e.g. covers / view milestones — gold mono
   awards?: { title: string; org: string }[];
   tools?: string;      // AIGC tool label
 }
@@ -54,28 +55,30 @@ function Laurel({ title, org }: { title: string; org: string }) {
   );
 }
 
-/* ─── Foreground hand — out-of-focus silhouette that sweeps between cards ─── */
-function HandSilhouette() {
-  /* rim-lit silhouette — the pale stroke is the "edge light" that makes a dark
-     foreground hand readable over dark footage, like a lens-side occlusion */
-  const finger = (x: number, y: number, len: number, w: number, rot: number) => (
-    <rect key={`${x}-${y}`} x={x} y={y} width={w} height={len} rx={w / 2}
-      transform={`rotate(${rot} ${x + w / 2} ${y + len})`}
-      fill="#0c0c10" stroke="rgba(255,246,220,0.35)" strokeWidth="5" />
-  );
+/* ─── Film changeover — an out-of-focus 35mm strip sweeps the foreground
+   between cards (換本), with a cue dot in the corner right before the cut.
+   Blurred foreground occlusion keeps the depth-compression feel. ─── */
+function FilmStripOcclusion() {
+  const sprockets: React.CSSProperties = {
+    width: "9%",
+    backgroundImage: "repeating-linear-gradient(to bottom, transparent 0 14px, rgba(255,248,230,0.55) 14px 34px, transparent 34px 48px)",
+    backgroundColor: "#040405",
+  };
   return (
-    <svg viewBox="0 0 300 200" width="100%" aria-hidden="true" style={{ display: "block" }}>
-      <ellipse cx="150" cy="150" rx="62" ry="52" fill="#0c0c10" stroke="rgba(255,246,220,0.35)" strokeWidth="5" />
-      <rect x="90" y="160" width="130" height="90" rx="24" fill="#0c0c10" stroke="rgba(255,246,220,0.35)" strokeWidth="5" />
-      {finger(96, 62, 96, 26, 14)}
-      {finger(128, 38, 118, 27, 6)}
-      {finger(160, 34, 122, 27, 0)}
-      {finger(191, 44, 110, 26, -7)}
-      {finger(218, 102, 74, 24, -38)}
-      {/* solid core repaint so inner strokes don't crosshatch */}
-      <ellipse cx="150" cy="152" rx="58" ry="48" fill="#0c0c10" />
-      <rect x="94" y="162" width="122" height="86" rx="22" fill="#0c0c10" />
-    </svg>
+    <div style={{ display: "flex", width: "100%", height: "100%" }}>
+      <div style={sprockets} />
+      <div style={{
+        flex: 1,
+        background: "#050507",
+        backgroundImage: [
+          /* frame gaps */
+          "repeating-linear-gradient(to bottom, transparent 0 23%, rgba(255,248,230,0.16) 23% 24%, transparent 24% 25%)",
+          /* faint light-leak inside frames */
+          "radial-gradient(ellipse 90% 22% at 50% 38%, rgba(255,190,90,0.10), transparent 70%)",
+        ].join(","),
+      }} />
+      <div style={sprockets} />
+    </div>
   );
 }
 
@@ -179,6 +182,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
             )}
           </div>
           <div className="md:max-w-[320px] md:text-right md:pb-1">
+            {lead.note && <p className="font-mono-label text-[9px] tracking-[0.14em] mb-2 leading-relaxed" style={{ color: "rgba(255,225,140,0.85)" }}>{lead.note}</p>}
             {lead.artist && <p className="font-mono-label text-[10px] tracking-[0.16em] mb-1.5" style={{ color: "var(--text-2)" }}>{lead.artist}</p>}
             <p className="font-mono-label text-[8.5px] tracking-[0.24em] mb-2.5" style={{ color: "rgba(143,180,255,0.8)" }}>{lead.role}</p>
             {lead.desc && <p className="text-[12.5px] leading-relaxed hidden md:block" style={{ color: "var(--white-secondary)" }}>{lead.desc}</p>}
@@ -205,6 +209,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
 export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
   const deckRef = useRef<HTMLDivElement>(null);
   const handRef = useRef<HTMLDivElement>(null);
+  const cueRef = useRef<HTMLDivElement>(null);
   const [activeAct, setActiveAct] = useState(0);
   const reduceMotion = useRef(false);
 
@@ -244,16 +249,21 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
       hand.parentElement.style.transform = `translateY(${clamp(-rect.top, 0, deck.offsetHeight - vh)}px)`;
     }
 
-    /* hand sweep — alternating direction per boundary */
+    /* film strip sweep — alternating direction per changeover */
     if (hand) {
       if (reduceMotion.current) { hand.style.opacity = "0"; }
       else {
         const dir = k % 2 === 0 ? 1 : -1;
         const sweep = smooth((p - 0.06) / 0.82);
-        const x = (-170 + sweep * 340) * dir;
-        hand.style.transform = `translate(-50%,-50%) translateX(${x}%) rotate(${(-13 + sweep * 22) * dir}deg) scaleX(${dir})`;
-        hand.style.opacity = p < 0.05 || p > 0.95 ? "0" : "0.92";
+        const x = (-260 + sweep * 520) * dir;
+        /* strip also rolls vertically like film through the gate */
+        hand.style.transform = `translate(-50%,-50%) translateX(${x}%) translateY(${(sweep - 0.5) * -18}%) rotate(${5 * dir}deg)`;
+        hand.style.opacity = p < 0.05 || p > 0.95 ? "0" : "0.95";
       }
+    }
+    /* cue dot — brief flash as the changeover begins */
+    if (cueRef.current) {
+      cueRef.current.style.opacity = !reduceMotion.current && p > 0.06 && p < 0.17 ? "1" : "0";
     }
 
     /* active act for HUD */
@@ -291,12 +301,18 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
       {/* pinned overlay layer — hand + programme HUD, manually pinned via transform */}
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100vh", zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
         <div ref={handRef} aria-hidden="true" style={{
-          position: "absolute", top: "50%", left: "50%", width: "92%", maxWidth: 720,
-          filter: "blur(10px) drop-shadow(0 0 50px rgba(0,0,0,0.55))",
+          position: "absolute", top: "50%", left: "50%", width: "min(46vw, 520px)", height: "130vh",
+          filter: "blur(7px) drop-shadow(0 0 60px rgba(0,0,0,0.6))",
           opacity: 0, willChange: "transform, opacity",
         }}>
-          <HandSilhouette />
+          <FilmStripOcclusion />
         </div>
+        {/* changeover cue dot — top-right, flashes right before the cut */}
+        <div ref={cueRef} aria-hidden="true" style={{
+          position: "absolute", top: 24, right: 26, width: 13, height: 13, borderRadius: "50%",
+          background: "rgba(255,250,235,0.9)", boxShadow: "0 0 10px rgba(255,250,235,0.5)",
+          filter: "blur(0.6px)", opacity: 0, transition: "opacity .12s linear",
+        }} />
 
         {/* programme HUD — acts, vertical-centered on the left edge, desktop only */}
         <div className="hidden md:flex" style={{

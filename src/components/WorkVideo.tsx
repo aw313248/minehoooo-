@@ -363,6 +363,7 @@ const DECK_CARDS: DeckCard[] = [
   /* ACT Ⅰ — 導演作品 */
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "d9_EuYkmfzM", title: "愚人節", en: "ALL FOOL'S DAY · 5TH ANNIVERSARY", artist: "陳卓 Jon Chen", role: "DIR · DP",
+      note: "原曲獲盧廣仲、MC 張天賦翻唱 · 五週年紀念版 MV",
       desc: "五週年紀念版。一場關於玩笑與真心的音樂錄影帶" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY", en: "KOLLI (NN)", artist: "Kolli (NN)", role: "DIR · DP · AI", chip: "AI HYBRID",
@@ -416,6 +417,11 @@ const DECK_CARDS: DeckCard[] = [
     { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi", role: "DP · COLOR" },
     { id: "569NoV2tyUE", title: "早知道一個人也過得很好", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP" }] },
 
+  { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
+    { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", en: "PANAMERA · 89教科書", artist: "89教科書", role: "COLOR", chip: "750萬+ VIEWS",
+      note: "750萬+ 觀看 · 話題單曲調色",
+      desc: "破 750 萬觀看的話題單曲 — 全片調色" }] },
+
   /* ACT Ⅳ — 商業委製 */
   { act: "Ⅳ", actLabel: "COMMERCIAL 商業委製", works: [
     { id: "Ou1y4dnFrsU", title: "台中好聖誕", en: "TAICHUNG CHRISTMAS", artist: "台中市政府", role: "DIR · DP",
@@ -427,8 +433,9 @@ const DECK_CARDS: DeckCard[] = [
 
   /* ACT Ⅴ — 紀實 */
   { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
-    { id: "bKl5uW-69iQ", title: "精銳", en: "CPBL ALL-STAR 2025 · TAIWOLF", artist: "Taiwolf × 中華職棒", role: "DIR · DP",
-      desc: "中華職棒明星賽紀實 — 鏡頭外的準備與等待" }] },
+    { id: "bKl5uW-69iQ", title: "精銳", en: "CPBL ALL-STAR 2025 · TAIWOLF", artist: "Taiwolf × 中華職棒", role: "EDIT",
+      note: "中華職棒明星賽官方紀實 · 剪接",
+      desc: "明星賽紀實影片剪接 — 把一整天的賽場剪成五分鐘" }] },
   { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
     { id: "uU1hy2FK5D8", title: "TEDxNTHU", en: "OOTB 年會 2025 · 清大", artist: "TEDxNTHU · 清大", role: "DIR · DP",
       desc: "八位講者、一整天 — 把站上舞台那一刻留下來" }] },
@@ -443,7 +450,6 @@ const DECK_CARDS: DeckCard[] = [
 /* 片尾字幕 — 支援角色（調色、燈光、劇組、活動）*/
 const END_CREDITS: { group: string; rows: { id: string; work: string; credit: string }[] }[] = [
   { group: "COLOR & LIGHTING 調色與燈光", rows: [
-    { id: "kUvT3eBfN9w", work: "愛你真的梅辦法 — 89教科書", credit: "COLOR" },
     { id: "_IUqMAI5GQg", work: "說了算 — 亥伯龍 · Doggy Chang · 7type", credit: "COLOR" },
     { id: "AuaEpljXpR8", work: "B.A.C 亚洲大尾 — 7type & 66 & CHE", credit: "COLOR" },
     { id: "0jyUrpj5Jiw", work: "DaLow — 大樓DaLow ft. C Grass", credit: "COLOR" },
@@ -1305,9 +1311,14 @@ export default function WorkVideo() {
             {DECK_CARDS.length} FILMS · 6 ACTS — 往下捲，開演
           </p>
         </div>
-        <p className="hidden md:block font-mono-label text-[8px] tracking-[0.26em] text-right" style={{ color: "var(--text-3)" }}>
-          DIR / DP / COLOR / AIGC<br />2019 — 2026
-        </p>
+        <div className="hidden md:block text-right">
+          <p className="font-mono-label text-[8px] tracking-[0.26em] mb-2" style={{ color: "var(--text-3)" }}>
+            DIR / DP / COLOR / AIGC · 2019 — 2026
+          </p>
+          <p className="font-mono-label text-[9px] tracking-[0.2em]" style={{ color: "rgba(255,225,140,0.8)" }}>
+            SOCIAL REACH — THREADS 5.7M / 90 DAYS
+          </p>
+        </div>
       </div>
 
       <ScreeningDeck cards={DECK_CARDS} />

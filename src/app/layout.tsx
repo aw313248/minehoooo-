@@ -240,7 +240,7 @@ const videoJsonLd = [
     "@context": "https://schema.org",
     "@type": "VideoObject",
     name: "2025中華明星賽＿精銳 Taiwolf | 中華職棒明星賽紀實",
-    description: "2025 中華職棒明星賽紀實影片《精銳》，Taiwolf 委製。導演、攝影指導 Director & DP: 賴明宏 Oscar Lai（MINEH4O）。",
+    description: "2025 中華職棒明星賽紀實影片《精銳》，Taiwolf 委製。剪接 Editor: 賴明宏 Oscar Lai（MINEH4O）。",
     thumbnailUrl: "https://img.youtube.com/vi/bKl5uW-69iQ/maxresdefault.jpg",
     contentUrl: "https://www.youtube.com/watch?v=bKl5uW-69iQ",
     embedUrl: "https://www.youtube.com/embed/bKl5uW-69iQ",
@@ -619,7 +619,7 @@ const personJsonLd = {
     { "@type": "VideoObject", name: "回收場的夏天 Reclaim My Summer", description: "公視短片 · 金穗獎最佳劇情片 · Camera Assistant", url: "https://www.youtube.com/watch?v=RsPI2V_RQus" },
     { "@type": "CreativeWork", name: "一千座山一千條河", description: "Album Cover Design · 陳卓 Jon Chen", creator: { "@type": "Person", name: "Oscar Lai" } },
     { "@type": "CreativeWork", name: "2026 TEDxNTHU", description: "8 位講者演講紀錄 · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
-    { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Director · DP", creator: { "@type": "Person", name: "Oscar Lai" } },
+    { "@type": "CreativeWork", name: "明星賽紀實：逐夢之路", description: "中華職棒明星賽紀錄片 · Taiwolf · Editor", creator: { "@type": "Person", name: "Oscar Lai" } },
   ],
   email: "cyuttkengineer@gmail.com",
   contactPoint: {
