@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { haptic } from "@/lib/haptic";
+import ScreeningDeck, { type DeckCard } from "@/components/ScreeningDeck";
 
 /* ─── Narrative feature card with mobile-friendly award handling ─── */
 function NarrativeFeatureCard({ feature, evIn }: {
@@ -354,6 +355,115 @@ const eventRec = [
 const aigcWorks = [
   { id: "z8IYXjmBXBk", title: "HOUSE RULES",              artist: "MINEH4O",  role: "DIR · AIGC", cat: "AIGC", award: "AIGC Short Film", tools: "Higgsfield" },
   { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓",  artist: "MINEH4O",  role: "DIR · AIGC", cat: "AIGC",                           tools: "Seedance"  },
+];
+
+/* ─── 一場放映 — ScreeningDeck 節目單（2026-07 全頁放映改版）───
+   正片進疊卡；調色/燈光/劇組/活動進片尾字幕；Shorts/Reels 進散場後 */
+const DECK_CARDS: DeckCard[] = [
+  /* ACT Ⅰ — 導演作品 */
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "d9_EuYkmfzM", title: "愚人節", en: "ALL FOOL'S DAY · 5TH ANNIVERSARY", artist: "陳卓 Jon Chen", role: "DIR · DP",
+      desc: "五週年紀念版。一場關於玩笑與真心的音樂錄影帶" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY", en: "KOLLI (NN)", artist: "Kolli (NN)", role: "DIR · DP · AI", chip: "AI HYBRID",
+      desc: "實拍與生成式 AI 的混血 MV — 超現實視覺實驗" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "erQ9lR_rNik", title: "流明", en: "LUMEN", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅰ",
+      desc: "光與景三部曲首部曲 — 光是記憶的形狀" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "cIsS50e6YQ0", title: "光圈", en: "APERTURE", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅱ",
+      desc: "三部曲第二章 — 收緊的光圈，放大的心事" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "sxrucEXI9-A", title: "沒收", en: "DEPRIVED", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅲ",
+      desc: "三部曲終章 — 被沒收的，不只是光" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "jLLNkQod8pg", title: "向前行吧", en: "GO AHEAD", artist: "梁承煜", role: "DIR · DP", chip: "梁承煜 · GO AHEAD",
+      desc: "往前走的人，不用把每一步都走對" },
+    { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR" }] },
+  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
+    { id: "hk43CW2Kqow", title: "LAST 10", en: "AI-ASSISTED MUSIC VIDEO", artist: "MINEH4O", role: "DIR · DP · AI 50%", chip: "AI 50%",
+      desc: "一半實拍、一半 AI — 倒數十秒的世界" }] },
+
+  /* ACT Ⅱ — 劇情短片（月桂加冕）*/
+  { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
+    { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST",
+      desc: "廢棄回收場裡的一個夏天，長大之前最後的野",
+      awards: [
+        { title: "最佳短片", org: "2024 台北電影節" },
+        { title: "最佳劇情片", org: "金穗獎" },
+        { title: "最佳演員", org: "金穗獎" },
+        { title: "亞洲新力量 銀獎", org: "ifva" },
+      ] }] },
+  { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
+    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART DEPT",
+      desc: "一段上不完的坡，一個不肯下車的人",
+      awards: [
+        { title: "最佳美術", org: "第48屆金穗獎" },
+        { title: "最佳攝影", org: "第48屆金穗獎" },
+        { title: "評審團特別獎", org: "金穗獎" },
+        { title: "入選", org: "金馬影展" },
+      ] }] },
+  { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
+    { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · DP · EDIT",
+      desc: "畢業製作劇情短片 — 導演、攝影、剪接一手包",
+      awards: [{ title: "入圍", org: "2023 放視大賞" }] }] },
+
+  /* ACT Ⅲ — 攝影調色系列 */
+  { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
+    { id: "XJSI9s3-wk0", title: "沒有你的世界", artist: "Lil RAD & Coy6oi", role: "DP · COLOR", chip: "LIL RAD × COY6OI",
+      desc: "四支 MV 的攝影與調色 — 同一組人，四種心碎" },
+    { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi", role: "DP" },
+    { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi", role: "DP · COLOR" },
+    { id: "569NoV2tyUE", title: "早知道一個人也過得很好", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP" }] },
+
+  /* ACT Ⅳ — 商業委製 */
+  { act: "Ⅳ", actLabel: "COMMERCIAL 商業委製", works: [
+    { id: "Ou1y4dnFrsU", title: "台中好聖誕", en: "TAICHUNG CHRISTMAS", artist: "台中市政府", role: "DIR · DP",
+      desc: "城市的聖誕，用影像點燈" }] },
+  { act: "Ⅳ", actLabel: "COMMERCIAL 商業委製", works: [
+    { id: "A_2zpqzw6Yw", title: "柏朗克商案", artist: "柏朗克", role: "DP", chip: "CLIENT WORK 品牌委製",
+      desc: "品牌委製 — 攝影指導與燈光調光" },
+    { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6", role: "LIGHTING · COLOR" }] },
+
+  /* ACT Ⅴ — 紀實 */
+  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
+    { id: "bKl5uW-69iQ", title: "精銳", en: "CPBL ALL-STAR 2025 · TAIWOLF", artist: "Taiwolf × 中華職棒", role: "DIR · DP",
+      desc: "中華職棒明星賽紀實 — 鏡頭外的準備與等待" }] },
+  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
+    { id: "uU1hy2FK5D8", title: "TEDxNTHU", en: "OOTB 年會 2025 · 清大", artist: "TEDxNTHU · 清大", role: "DIR · DP",
+      desc: "八位講者、一整天 — 把站上舞台那一刻留下來" }] },
+
+  /* ACT Ⅵ — AIGC */
+  { act: "Ⅵ", actLabel: "AIGC 生成式影像", works: [
+    { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O", role: "DIR · AIGC", chip: "AIGC SHORT FILMS", tools: "Higgsfield",
+      desc: "生成式 AI 短片 — 測試 AI 敘事的邊界" },
+    { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓", artist: "MINEH4O", role: "DIR · AIGC", tools: "Seedance" }] },
+];
+
+/* 片尾字幕 — 支援角色（調色、燈光、劇組、活動）*/
+const END_CREDITS: { group: string; rows: { id: string; work: string; credit: string }[] }[] = [
+  { group: "COLOR & LIGHTING 調色與燈光", rows: [
+    { id: "kUvT3eBfN9w", work: "愛你真的梅辦法 — 89教科書", credit: "COLOR" },
+    { id: "_IUqMAI5GQg", work: "說了算 — 亥伯龍 · Doggy Chang · 7type", credit: "COLOR" },
+    { id: "AuaEpljXpR8", work: "B.A.C 亚洲大尾 — 7type & 66 & CHE", credit: "COLOR" },
+    { id: "0jyUrpj5Jiw", work: "DaLow — 大樓DaLow ft. C Grass", credit: "COLOR" },
+    { id: "kL8_Sk0JmKM", work: "記住你要快樂 — 帝仰 tiang", credit: "DIR · COLOR" },
+    { id: "J-BIhdj-4oM", work: "Badass Dance — 大樓DaLow ft. Aiken", credit: "LIGHTING" },
+    { id: "BbDtN119tts", work: "DaLow — 大樓DaLow ft. C Grass", credit: "LIGHTING" },
+    { id: "xNg4Vupy8_0", work: "中部第一深情 — 66 · 中部管轄區", credit: "LIGHTING" },
+  ]},
+  { group: "ON SET 劇組現場", rows: [
+    { id: "mQ0KWgkGHlw", work: "侵愛的 — 陳芳語 Kimberley Chen", credit: "SET DEPT" },
+    { id: "W7E5bJ1Cmuo", work: "我們的愛 — 陳芳語 Kimberley Chen", credit: "SET DEPT" },
+    { id: "FM5ukv7kqBM", work: "沒什麼道理 — STILA 言芯", credit: "SET DEPT" },
+  ]},
+  { group: "EVENT & LIVE 活動與現場", rows: [
+    { id: "7rU2JUGplXw", work: "僑泰中學 55週年 校慶", credit: "DIR · DP" },
+    { id: "8JIvM93l0SQ", work: "九龍灣鳳靈修院 南巡", credit: "DIR · DP" },
+    { id: "IIMY2J3egHk", work: "擁擁｜抓周一歲儀式", credit: "DIR · DP" },
+    { id: "IGa91QIW84M", work: "DJ SOCUTE 演出記錄", credit: "DIR · DP" },
+    { id: "mXNbiHiC6bI", work: "USR計畫 V4 活動紀錄", credit: "DIR · DP" },
+  ]},
 ];
 
 const ytShorts = [
@@ -947,6 +1057,7 @@ export default function WorkVideo() {
   const { ref: wRef,   inView: wIn   } = useInView(0.02);
   const { ref: cmRef,  inView: cmIn  } = useInView(0.02);  // Commercial
   const { ref: osRef,  inView: osIn  } = useInView(0.02);  // On Set
+  const { ref: ecRef,  inView: ecIn  } = useInView(0.02);  // End Credits
   const { ref: evRef,  inView: evIn  } = useInView(0.02);
   const { ref: leRef,  inView: leIn  } = useInView(0.02);
   const { ref: aigcRef, inView: aigcIn } = useInView(0.02); // AIGC
@@ -1183,344 +1294,63 @@ export default function WorkVideo() {
         )}
       </div>
 
-      {/* ── 01 · DIRECTOR WORKS ── */}
-      <div ref={mvRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: mvIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="01" label="MUSIC VIDEO · DIR · DP" count={directorMVs.length} note="DIRECTOR WORKS" />
-          <Carousel
-            items={directorMVs}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: mvIn ? 1 : 0, transform: mvIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.1}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            )}
-          />
-        </div>
-      </div>
-
-      {/* ── 光與景三部曲 ── */}
-      <div ref={trRef} className="border-b" style={{ borderColor: "var(--border)" }}>
-        <div className="px-4 md:px-14 py-6 border-b flex items-center justify-between"
-          style={{ borderColor: "var(--border)", opacity: trIn ? 1 : 0, transition: "opacity .8s ease" }}>
-          <div>
-            <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
-            <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-              LIGHT & SCENE TRILOGY
-            </h2>
-          </div>
-          <div className="hidden md:block text-right">
-            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>DIRECTED BY</p>
-            <p className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--text-2)" }}>陳卓 Jon Chen</p>
-            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>DIR · DP · 3 EPISODES</p>
-          </div>
-        </div>
-        {trilogy.map((v, i) => (
-          <SeriesPanel key={v.id} video={v} index={i} inView={trIn} seriesLabel="TRILOGY" creditLabel="Directed by" />
-        ))}
-      </div>
-
-      {/* ── Lil RAD × Coy6oi SERIES — 4-card vertical poster wall ── */}
-      <div ref={lrRef} style={{ position: "relative" }}>
-        {/* Feathered top edge — gradient feather instead of hard border */}
-        <div aria-hidden="true" style={{ height: 80, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.6) 60%, #000)" }} />
-
-        <div className="px-4 md:px-14 py-8 flex items-center justify-between"
-          style={{ opacity: lrIn ? 1 : 0, transition: "opacity .8s ease" }}>
-          <div>
-            <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--text-3)" }}>FEATURED SERIES</p>
-            <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.6rem, 4vw, 3.8rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-              LIL RAD × COY6OI
-            </h2>
-          </div>
-          <div className="hidden md:block text-right">
-            <p className="font-mono-label text-[8px] tracking-[0.28em] mb-1" style={{ color: "var(--text-3)" }}>DP</p>
-            <p className="font-mono-label text-[11px] tracking-[0.12em]" style={{ color: "var(--text-2)" }}>Lil RAD & Coy6oi</p>
-            <p className="font-mono-label text-[8px] tracking-[0.22em] mt-1.5" style={{ color: "var(--text-3)" }}>DP · COLOR · 4 MUSIC VIDEOS</p>
-          </div>
-        </div>
-
-        {/* 4 portrait poster cards: 2-col on mobile (balanced), 4-col on desktop */}
-        <div className="px-4 md:px-14 pb-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
-          {lilRadSeries.map((v, i) => (
-            <a key={v.id}
-              href={`https://www.youtube.com/watch?v=${v.id}`}
-              target="_blank" rel="noopener noreferrer"
-              className="group relative block overflow-hidden"
-              style={{
-                aspectRatio: "9/14",
-                borderRadius: 20,
-                background: "#050505",
-                border: "1px solid var(--white-ghost)",
-                opacity: lrIn ? 1 : 0,
-                transform: lrIn ? "translateY(0)" : "translateY(28px)",
-                transition: `opacity .8s cubic-bezier(.16,1,.3,1) ${0.1 + i * 0.08}s, transform .8s cubic-bezier(.16,1,.3,1) ${0.1 + i * 0.08}s, border-color .3s ease`,
-              }}
-              onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--white-muted)")}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--white-ghost)")}>
-
-              {/* Thumbnail — 16:9 source, cropped to portrait */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`}
-                alt={`${v.artist} ${v.title}`}
-                loading="lazy"
-                style={{
-                  position: "absolute", inset: 0,
-                  width: "100%", height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  filter: "brightness(0.85)",
-                  transition: "transform 1.2s cubic-bezier(.16,1,.3,1), filter .5s",
-                }}
-                className="group-hover:scale-105 group-hover:brightness-100"
-                onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`; }} />
-
-              {/* Cinematic gradient overlay (bottom heavy, like movie poster) */}
-              <div className="absolute inset-0 pointer-events-none" style={{
-                background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 38%, transparent 60%, rgba(0,0,0,0.4) 100%)",
-              }} />
-
-              {/* Episode number — top-left, big */}
-              <div className="absolute top-3 left-3 z-[2]">
-                <span className="font-mono-label text-[8px] tracking-[0.32em]" style={{ color: "var(--white-muted)" }}>
-                  EP {v.ep}
-                </span>
-              </div>
-
-              {/* Series label — top-right */}
-              <div className="absolute top-3 right-3 z-[2]">
-                <span className="font-mono-label text-[7px] tracking-[0.3em] px-2 py-1"
-                  style={{ background: "rgba(0,0,0,0.55)", border: "1px solid var(--white-ghost)", borderRadius: 999, color: "var(--white-secondary)" }}>
-                  {v.role}
-                </span>
-              </div>
-
-              {/* Title block — bottom, magazine cover style */}
-              <div className="absolute bottom-0 left-0 right-0 px-4 pb-4 z-[2]">
-                {/* Episode big numeral, ghosted */}
-                <div style={{
-                  position: "absolute", right: 8, bottom: -8,
-                  fontFamily: "var(--font-bebas), sans-serif",
-                  fontSize: "clamp(3rem, 6vw, 5rem)",
-                  color: "rgba(255,255,255,0.1)",
-                  lineHeight: 1,
-                  pointerEvents: "none",
-                }}>
-                  {v.ep}
-                </div>
-                {/* Title */}
-                <h3 className="font-display leading-tight mb-1.5"
-                  style={{ fontSize: "clamp(1.1rem, 1.5vw, 1.5rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
-                  {v.title}
-                </h3>
-                <p className="font-mono-label text-[8px] tracking-[0.22em]" style={{ color: "var(--white-soft)" }}>
-                  by {v.artist}
-                </p>
-              </div>
-
-              {/* Hover: play button center */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-[3] pointer-events-none">
-                <div style={{
-                  width: 54, height: 54, borderRadius: "50%",
-                  background: "rgba(0,0,0,0.55)", backdropFilter: "blur(14px)",
-                  border: "1px solid var(--white-dim)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}><path d="M8 5v14l11-7z" /></svg>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        {/* Feathered bottom edge */}
-        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
-      </div>
-
-      {/* ── 02 · NARRATIVE SHORT FILM — editorial magazine layout ── */}
-      <div ref={evRef} className="relative">
-        {/* Feathered top edge */}
-        <div aria-hidden="true" style={{ height: 70, background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.55) 60%, #000)" }} />
-
-        <div className="px-4 md:px-14 py-6" style={{ opacity: evIn ? 1 : 0, transition: "opacity .7s ease" }}>
-
-          {/* Editorial magazine masthead */}
-          <div className="flex items-end justify-between mb-8 pb-4 border-b" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
-            <div>
-              <p className="font-mono-label text-[9px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>
-                ISSUE 02 · FILM
-              </p>
-              <h2 className="font-display leading-none"
-                style={{ fontSize: "clamp(2.4rem, 5.5vw, 5rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
-                NARRATIVE
-              </h2>
-              <p className="font-mono-label text-[10px] tracking-[0.32em] mt-2" style={{ color: "var(--text-3)" }}>
-                短片 / SHORT FILMS · 2023 — 2024
-              </p>
-            </div>
-            <div className="text-right hidden md:block">
-              <p className="font-mono-label text-[9px] tracking-[0.32em] mb-1" style={{ color: "var(--white-soft)" }}>
-                FEATURED THIS ISSUE
-              </p>
-              <p className="font-mono-label text-[11px] tracking-[0.18em]" style={{ color: "var(--text-2)" }}>
-                {narrativeShorts.length} WORKS · FESTIVAL CIRCUIT
-              </p>
-            </div>
-          </div>
-
-          {/* Magazine asymmetric grid: 1 feature + 2 side stack — balanced proportions */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
-
-            {/* ─── FEATURE CARD (回收場的夏天 — most awards) ─── */}
-            <NarrativeFeatureCard feature={narrativeShorts[0]} evIn={evIn} />
-
-            {/* ─── SIDE STACK — 2 cards, larger to match feature height ─── */}
-            <div className="md:col-span-6 grid grid-cols-1 gap-5 md:gap-6">
-              {narrativeShorts.slice(1).map((v, i) => (
-                <NarrativeSideCard key={v.id} v={v} index={i} evIn={evIn} />
-              ))}
-            </div>
-          </div>
-
-        </div>
-        {/* Feathered bottom edge */}
-        <div aria-hidden="true" style={{ height: 60, background: "linear-gradient(to top, transparent, rgba(0,0,0,0.5) 70%, #000)" }} />
-      </div>
-
-      {/* ── 03 · COMMERCIAL · BRAND ── */}
-      <div ref={cmRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: cmIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="03" label="COMMERCIAL · BRAND" count={commercial.length} note="CLIENT WORK" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
-            {commercial.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: cmIn ? 1 : 0, transform: cmIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ── 04 · LIVE · DOCUMENTARY · EVENT ── */}
-      <div ref={leRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: leIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="04" label="LIVE · DOCUMENTARY · EVENT" count={liveDoc.length + eventRec.length} note="REAL-TIME · RECORD" />
-
-          {/* 跑馬燈 ticker */}
-          <DocTicker items={["CPBL ALL-STAR 2025 精銳紀實", "TEDxNTHU OOTB 年會", "僑泰中學 55週年 校慶", "九龍灣鳳靈修院 南巡", "DJ SOCUTE 演出記錄", "USR計畫 活動紀錄"]} />
-
-          {/* Documentary */}
-          <SubLabel label="DOCUMENTARY · LIVE" />
-          <Carousel
-            items={liveDoc}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.06}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            )}
-          />
-
-          {/* Event Records */}
-          <SubLabel label="EVENT RECORDS" />
-          <Carousel
-            items={eventRec}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: leIn ? 1 : 0, transform: leIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.06 + 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.06 + 0.08}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            )}
-          />
-        </div>
-      </div>
-
-      {/* ── 05 · AIGC SHORT FILM ── */}
-      <div ref={aigcRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: aigcIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="05" label="AIGC SHORT FILM" count={aigcWorks.length} note="GENERATIVE AI · DIR" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
-            {aigcWorks.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: aigcIn ? 1 : 0, transform: aigcIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} award={v.award} tools={v.tools} />
-              </div>
-            ))}
-          </div>
-          <p className="font-mono-label text-[8px] tracking-[0.22em] mt-6" style={{ color: "var(--white-dim)" }}>
-            → More AIGC short films in IG Reels below ↓
+      {/* ══ 一場放映 — THE SCREENING ══ */}
+      <div className="px-4 md:px-14 py-8 border-b flex items-end justify-between" style={{ borderColor: "var(--border)" }}>
+        <div>
+          <p className="font-mono-label text-[8px] tracking-[0.38em] mb-2" style={{ color: "var(--white-soft)" }}>TONIGHT&apos;S PROGRAMME</p>
+          <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.8rem, 4.5vw, 4.2rem)", color: "var(--text)", letterSpacing: "0.01em" }}>
+            一場放映
+          </h2>
+          <p className="font-mono-label text-[9px] tracking-[0.3em] mt-2" style={{ color: "var(--text-3)" }}>
+            {DECK_CARDS.length} FILMS · 6 ACTS — 往下捲，開演
           </p>
         </div>
+        <p className="hidden md:block font-mono-label text-[8px] tracking-[0.26em] text-right" style={{ color: "var(--text-3)" }}>
+          DIR / DP / COLOR / AIGC<br />2019 — 2026
+        </p>
       </div>
 
-      {/* ── 06 · MUSIC VIDEO · COLOR & LIGHTING ── */}
-      <div ref={wRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: wIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="06" label="MUSIC VIDEO · COLOR & LIGHTING" count={colorCredits.length} note="COLOR GRADING · LIGHTING" />
-          <Carousel
-            items={colorCredits}
-            getKey={v => v.id}
-            renderItem={(v, i) => (
-              <div style={{
-                opacity: wIn ? 1 : 0, transform: wIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.07}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.07}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} />
-              </div>
-            )}
-          />
-        </div>
-      </div>
+      <ScreeningDeck cards={DECK_CARDS} />
 
-      {/* ── 07 · ON SET · MV PRODUCTION ── */}
-      <div ref={osRef} className="px-4 md:px-14 py-10 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: osIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="07" label="ON SET · MV PRODUCTION" count={kimberleyCredits.length + otherOnSet.length} note="SET DEPT · CREW" />
+      {/* ══ 片尾字幕 — END CREDITS（支援角色）══ */}
+      <div ref={ecRef} className="px-4 md:px-14 py-20 border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
+        <div style={{ opacity: ecIn ? 1 : 0, transition: "opacity 1s ease" }} className="max-w-[680px] mx-auto text-center">
+          <p className="font-mono-label text-[8px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>AND FEATURING</p>
+          <h2 className="font-display leading-none mb-14" style={{ fontSize: "clamp(1.7rem, 4vw, 3.4rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
+            END CREDITS
+          </h2>
 
-          <ArtistGroupHeader name="KIMBERLEY CHEN · 陳芳語" count={kimberleyCredits.length} />
-          <div className="grid grid-cols-2 gap-4 md:gap-5 mb-6">
-            {kimberleyCredits.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: osIn ? 1 : 0, transform: osIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.1}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.1}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
+          {END_CREDITS.map((g, gi) => (
+            <div key={g.group} className="mb-12" style={{
+              opacity: ecIn ? 1 : 0, transform: ecIn ? "translateY(0)" : "translateY(20px)",
+              transition: `opacity .8s ease ${gi * 0.15 + 0.2}s, transform .8s cubic-bezier(.16,1,.3,1) ${gi * 0.15 + 0.2}s`,
+            }}>
+              <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5" style={{ color: "rgba(255,225,140,0.7)" }}>{g.group}</p>
+              <div className="flex flex-col gap-2.5">
+                {g.rows.map(r => (
+                  <a key={r.id + r.credit} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
+                    className="group flex items-baseline justify-center gap-4">
+                    <span className="font-mono-label text-[8px] tracking-[0.22em] text-right transition-colors group-hover:!text-white"
+                      style={{ color: "var(--text-3)", width: 110, flexShrink: 0 }}>{r.credit}</span>
+                    <span aria-hidden className="hidden md:block" style={{ width: 24, height: 1, background: "var(--white-ghost)", alignSelf: "center" }} />
+                    <span className="text-[12.5px] md:text-[13px] text-left transition-colors group-hover:!text-white"
+                      style={{ color: "var(--text-2)", width: 300 }}>{r.work}</span>
+                  </a>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
 
-          <ArtistGroupHeader name="STILA 言芯" count={otherOnSet.length} />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-            {otherOnSet.map((v, i) => (
-              <div key={v.id} style={{
-                opacity: osIn ? 1 : 0, transform: osIn ? "translateY(0)" : "translateY(24px)",
-                transition: `opacity .6s ease ${i * 0.08 + 0.15}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.08 + 0.15}s`,
-              }}>
-                <GridCard id={v.id} title={v.title} artist={v.artist} role={v.role} cat={v.cat} />
-              </div>
-            ))}
-          </div>
+          <p className="font-mono-label text-[8px] tracking-[0.3em] mt-4" style={{ color: "var(--white-dim)" }}>
+            MINEH4O — 賴明宏 OSCAR LAI · TAICHUNG
+          </p>
         </div>
       </div>
 
       {/* ── 08 · YOUTUBE SHORTS ── */}
       <div ref={sRef} className="px-4 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
-          <CatHeader num="08" label="YOUTUBE SHORTS" count={ytShorts.length} note="SHORT-FORM" />
+          <CatHeader num="＋" label="散場後 · YOUTUBE SHORTS" count={ytShorts.length} note="AFTER HOURS" />
         </div>
         <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
           {ytShorts.map((s, i) => (
@@ -1551,7 +1381,7 @@ export default function WorkVideo() {
 
         <div className="px-4 md:px-14 pt-10 pb-2"
           style={{ opacity: igIn ? 1 : 0, transition: "opacity .7s ease" }}>
-          <CatHeader num="09" label="IG REELS" count={igReelsData.length} note="@minehoooo.arw · @mlpon6" />
+          <CatHeader num="＋" label="散場後 · IG REELS" count={igReelsData.length} note="AFTER HOURS · @minehoooo.arw · @mlpon6" />
         </div>
 
         <div className="px-4 md:px-14 pb-6">
