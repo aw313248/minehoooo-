@@ -73,7 +73,7 @@ export const fieldNotes: FieldNote[] = [
     categoryLabel: "KINO · iPhone",
     tags:          ["Kino", "iPhone", "Apple Log", "旅行拍片", "歐洲旅行", "電影感", "手機拍片"],
     excerpt:       "那趟歐洲回來之後，我一直在想一件事。不是鏡頭、不是 App——是我到底是在拍什麼。這篇筆記記錄整趟旅行完整的拍攝邏輯：格式、焦段、曝光、色調，還有我怎麼思考畫面",
-    heroImage:     "/field-notes/kino/hero.jpg",
+    heroImage:     "/field-notes/kino/hero-hallstatt.jpg",
     heroVideos:    [
       { src: "/field-notes/kino/videos/picks/vienna-night.mp4",   label: "WIEN 維也納" },
       { src: "/field-notes/kino/videos/picks/tram-dusk.mp4",      label: "PRAHA 布拉格" },
