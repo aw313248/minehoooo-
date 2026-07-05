@@ -425,41 +425,19 @@ const DECK_CARDS: DeckCard[] = [
       note: "750萬+ 觀看 · 話題單曲調色",
       desc: "破 750 萬觀看的話題單曲 — 全片調色" }] },
 
-  /* ACT Ⅳ — 商業委製 */
-  { act: "Ⅳ", actLabel: "COMMERCIAL 商業委製", works: [
-    { id: "Ou1y4dnFrsU", title: "台中好聖誕", en: "TAICHUNG CHRISTMAS", artist: "台中市政府", role: "DIR · DP",
-      desc: "城市的聖誕，用影像點燈" }] },
-  { act: "Ⅳ", actLabel: "COMMERCIAL 商業委製", works: [
-    { id: "A_2zpqzw6Yw", title: "柏朗克商案", artist: "柏朗克", role: "DP", chip: "CLIENT WORK 品牌委製",
-      desc: "品牌委製 — 攝影指導與燈光調光" },
-    { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6", role: "LIGHTING · COLOR" }] },
+];
 
-  /* ACT Ⅴ — 紀實 */
-  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
-    { id: "bKl5uW-69iQ", title: "精銳", en: "CPBL ALL-STAR 2025 · TAIWOLF", artist: "Taiwolf × 中華職棒", role: "EDIT",
-      note: "中華職棒明星賽官方紀實 · 剪接",
-      desc: "明星賽紀實影片剪接 — 把一整天的賽場剪成五分鐘" }] },
-  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
-    { id: "uU1hy2FK5D8", title: "TEDxNTHU", en: "OOTB 年會 2025 · 清大", artist: "TEDxNTHU · 清大", role: "DIR · DP",
-      desc: "八位講者、一整天 — 把站上舞台那一刻留下來" }] },
-
-  { act: "Ⅴ", actLabel: "DOCUMENTARY 紀實", works: [
-    { id: "7rU2JUGplXw", title: "僑泰 55 週年校慶", en: "CHIAO TAI 55TH ANNIVERSARY", artist: "僑泰中學", role: "DIR · DP", chip: "李多慧出席",
-      note: "李多慧出席現場 · 全程活動紀錄",
-      desc: "母校 55 週年校慶全紀錄 — 從彩排到壓軸，包含李多慧登場的完整現場" }] },
-
-  /* ACT Ⅵ — 劇組現場精選 */
-  { act: "Ⅵ", actLabel: "ON SET 劇組現場", works: [
-    { id: "mQ0KWgkGHlw", title: "侵愛的", artist: "陳芳語 Kimberley Chen", role: "SET DEPT", chip: "陳芳語 KIMBERLEY CHEN",
-      note: "陳芳語 MV 劇組現場 · 兩支作品",
-      desc: "在陳芳語兩支 MV 的劇組現場 — 大型製作的節奏與規格，都是在這裡看會的" },
-    { id: "W7E5bJ1Cmuo", title: "我們的愛", artist: "陳芳語 Kimberley Chen", role: "SET DEPT" }] },
-
-  /* ACT Ⅶ — AIGC */
-  { act: "Ⅶ", actLabel: "AIGC 生成式影像", works: [
-    { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O", role: "DIR · AIGC", chip: "AIGC SHORT FILMS", tools: "Higgsfield",
-      desc: "生成式 AI 短片 — 測試 AI 敘事的邊界" },
-    { id: "w7QdrphExQ8", title: "AIGC｜地瓜球也能打乒乓", artist: "MINEH4O", role: "DIR · AIGC", tools: "Seedance" }] },
+/* 其餘場次 — 乾淨的資訊清單（放映到梅辦法收尾，避免疲勞）*/
+const PROGRAMME_REST: { id: string; title: string; artist: string; role: string; note?: string; tag: string }[] = [
+  { id: "Ou1y4dnFrsU", title: "台中好聖誕", artist: "台中市政府", role: "DIR · DP", tag: "COMMERCIAL" },
+  { id: "A_2zpqzw6Yw", title: "柏朗克商案 FINAL", artist: "柏朗克", role: "DP", tag: "COMMERCIAL" },
+  { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6", role: "LIGHTING · COLOR", tag: "COMMERCIAL" },
+  { id: "bKl5uW-69iQ", title: "精銳 — 中華職棒明星賽紀實", artist: "Taiwolf × 中華職棒", role: "EDIT", note: "官方紀實剪接", tag: "DOCUMENTARY" },
+  { id: "uU1hy2FK5D8", title: "TEDxNTHU OOTB 年會", artist: "TEDxNTHU · 清大", role: "DIR · DP", note: "八位講者全程紀錄", tag: "DOCUMENTARY" },
+  { id: "7rU2JUGplXw", title: "僑泰 55 週年校慶", artist: "僑泰中學", role: "DIR · DP", note: "李多慧出席現場", tag: "EVENT" },
+  { id: "mQ0KWgkGHlw", title: "侵愛的 / 我們的愛", artist: "陳芳語 Kimberley Chen", role: "SET DEPT", note: "兩支 MV 劇組現場", tag: "ON SET" },
+  { id: "z8IYXjmBXBk", title: "HOUSE RULES", artist: "MINEH4O", role: "DIR · AIGC", note: "Higgsfield", tag: "AIGC" },
+  { id: "w7QdrphExQ8", title: "地瓜球也能打乒乓", artist: "MINEH4O", role: "DIR · AIGC", note: "Seedance", tag: "AIGC" },
 ];
 
 /* 片尾字幕 — 支援角色（調色、燈光、劇組、活動）*/
@@ -482,16 +460,6 @@ const END_CREDITS: { group: string; rows: { id: string; work: string; credit: st
     { id: "IGa91QIW84M", work: "DJ SOCUTE 演出記錄", credit: "DIR · DP" },
     { id: "mXNbiHiC6bI", work: "USR計畫 V4 活動紀錄", credit: "DIR · DP" },
   ]},
-];
-
-/* 留言牆 — 2026-07 由 Claude in Chrome 從 YouTube 實抓，讚數為真 */
-const COMMENT_WALL: { work: string; views: string; a: string; text: string; likes: string }[] = [
-  { work: "愛你真的梅辦法", views: "751萬", a: "@kparsifal3723", likes: "9,569", text: "搭捷運坐博愛座，阿北問我為什麼好手好腳可以坐。我回答：「我在聽89教科書的歌」，他立刻跟我道歉" },
-  { work: "愛你真的梅辦法", views: "751萬", a: "@嘿嘿嘿-p4c", likes: "1.6萬", text: "最喜歡這首歌了，自從我把它設成 8 點的鬧鐘，我每天 7 點就起來提前關鬧鐘了" },
-  { work: "愛你真的梅辦法", views: "751萬", a: "@郭-v4i", likes: "1.1萬", text: "去書局買了一本書叫 89 教科書，結帳拿出文化幣。店員：不好意思，文化幣只能買有文化的東西喔" },
-  { work: "愛你真的梅辦法", views: "751萬", a: "@Snow-Tuna", likes: "5,864", text: "上週我被綁架，迷迷糊糊講出第一句話：「我想聽帕拉梅拉」。他們二話不說把我丟下車" },
-  { work: "如果你不愛我 Love Me Not", views: "22.7萬", a: "@nerdyandcivic", likes: "8", text: "這些人用 100 倍的賣力呈現一首歌——就像愛情悲劇往往不對頻一樣" },
-  { work: "如果你不愛我 Love Me Not", views: "22.7萬", a: "@yuyusun悠", likes: "1", text: "太好聽了，尤其中間的 solo。「如果你不愛我，請別再對我溫柔」怎麼寫得這樣，推推" },
 ];
 
 const ytShorts = [
@@ -1086,6 +1054,7 @@ export default function WorkVideo() {
   const { ref: cmRef,  inView: cmIn  } = useInView(0.02);  // Commercial
   const { ref: osRef,  inView: osIn  } = useInView(0.02);  // On Set
   const { ref: ecRef,  inView: ecIn  } = useInView(0.02);  // End Credits
+  const { ref: prRef,  inView: prIn  } = useInView(0.02);  // Programme rest
   const { ref: evRef,  inView: evIn  } = useInView(0.02);
   const { ref: leRef,  inView: leIn  } = useInView(0.02);
   const { ref: aigcRef, inView: aigcIn } = useInView(0.02); // AIGC
@@ -1330,7 +1299,7 @@ export default function WorkVideo() {
             一場放映
           </h2>
           <p className="font-mono-label text-[9px] tracking-[0.3em] mt-2" style={{ color: "var(--text-3)" }}>
-            {DECK_CARDS.length} FILMS · 6 ACTS — 往下捲，開演
+            {DECK_CARDS.length} FILMS · 3 ACTS — 往下捲，開演
           </p>
         </div>
         <div className="hidden md:block text-right">
@@ -1344,6 +1313,41 @@ export default function WorkVideo() {
       </div>
 
       <ScreeningDeck cards={DECK_CARDS} />
+
+      {/* ══ 其餘場次 — 乾淨資訊清單（放映之外的委製與現場）══ */}
+      <div ref={prRef} className="px-4 md:px-14 py-16 border-b" style={{ borderColor: "var(--border)" }}>
+        <div style={{ opacity: prIn ? 1 : 0, transition: "opacity .8s ease" }} className="max-w-[880px] mx-auto">
+          <p className="font-mono-label text-[8px] tracking-[0.42em] mb-2" style={{ color: "var(--white-soft)" }}>ALSO SHOWING</p>
+          <h2 className="font-display leading-none mb-10" style={{ fontSize: "clamp(1.6rem, 3.6vw, 3rem)", color: "var(--text)" }}>
+            其餘場次
+          </h2>
+          <div className="flex flex-col">
+            {PROGRAMME_REST.map((r, i) => (
+              <a key={r.id + r.tag} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
+                className="group flex items-center gap-4 md:gap-6 py-4 border-b"
+                style={{
+                  borderColor: "var(--white-ghost)",
+                  opacity: prIn ? 1 : 0, transform: prIn ? "translateY(0)" : "translateY(16px)",
+                  transition: `opacity .6s ease ${i * 0.05}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.05}s`,
+                }}>
+                <div className="relative shrink-0 overflow-hidden" style={{ width: 118, aspectRatio: "16/9", borderRadius: 8, background: "#0a0a0c" }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://img.youtube.com/vi/${r.id}/mqdefault.jpg`} alt={`${r.title} 縮圖`} loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    style={{ filter: "brightness(0.85)" }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] md:text-[15px] font-medium leading-snug truncate" style={{ color: "var(--text)" }}>{r.title}</p>
+                  <p className="font-mono-label text-[8.5px] tracking-[0.16em] mt-1" style={{ color: "var(--text-3)" }}>
+                    {r.artist} · {r.role}{r.note ? <span style={{ color: "rgba(255,225,140,0.8)" }}> — {r.note}</span> : null}
+                  </p>
+                </div>
+                <span className="hidden md:block font-mono-label text-[8px] tracking-[0.24em] shrink-0" style={{ color: "var(--white-dim)" }}>{r.tag}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* ══ 片尾字幕 — END CREDITS（支援角色）══ */}
       <div ref={ecRef} className="px-4 md:px-14 py-20 border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
@@ -1383,35 +1387,7 @@ export default function WorkVideo() {
         </div>
       </div>
 
-      {/* ══ 留言牆 — 觀眾真實回聲 ══ */}
-      <div className="px-4 md:px-14 py-16 border-b" style={{ borderColor: "var(--border)" }}>
-        <p className="font-mono-label text-[8px] tracking-[0.42em] mb-2 text-center" style={{ color: "var(--white-soft)" }}>AUDIENCE</p>
-        <h2 className="font-display leading-none text-center mb-3" style={{ fontSize: "clamp(1.6rem, 3.6vw, 3rem)", color: "var(--text)" }}>
-          留言牆
-        </h2>
-        <p className="text-[11.5px] text-center mb-10" style={{ color: "var(--text-3)" }}>
-          從 YouTube 原封不動搬來的真實留言 — 含台式反串，讚數為真
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-[1100px] mx-auto">
-          {COMMENT_WALL.map((c, i) => (
-            <figure key={c.a + i} className="m-0 p-5 flex flex-col gap-3"
-              style={{
-                background: "var(--white-ghost)", border: "1px solid rgba(255,255,255,0.09)",
-                borderRadius: 14, transform: `rotate(${(i % 3 - 1) * 0.8}deg)`,
-              }}>
-              <blockquote className="m-0 text-[13px] leading-relaxed" style={{ color: "var(--white-secondary)" }}>
-                「{c.text}」
-              </blockquote>
-              <figcaption className="mt-auto flex items-baseline justify-between gap-3 flex-wrap">
-                <span className="font-mono-label text-[9px] tracking-[0.08em]" style={{ color: "var(--text-3)" }}>{c.a} · ♥ {c.likes}</span>
-                <span className="font-mono-label text-[8px] tracking-[0.14em]" style={{ color: "rgba(255,225,140,0.75)" }}>{c.work} · {c.views}觀看</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-
-      {/* ── 08 · YOUTUBE SHORTS ── */}
+      {/* ── ＋ · 散場後 YOUTUBE SHORTS ── */}
       <div ref={sRef} className="px-4 md:px-14 py-8 border-b" style={{ borderColor: "var(--border)" }}>
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
           <CatHeader num="＋" label="散場後 · YOUTUBE SHORTS" count={ytShorts.length} note="AFTER HOURS" />
