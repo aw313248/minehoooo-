@@ -119,15 +119,22 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${w.id}/mqdefault.jpg`; }} />
             {/* per-panel caption in multi cards */}
             {multi && (
-              <div className="absolute left-4 md:left-8 bottom-3 md:bottom-4 right-4 z-[2] flex items-end justify-between gap-4">
-                <div>
-                  <p className="text-[14px] md:text-[18px] font-medium leading-tight" style={{ color: "var(--text)", textShadow: "0 1px 10px rgba(0,0,0,0.7)" }}>{w.title}</p>
-                  <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
-                    {w.artist ? `${w.artist} · ` : ""}{w.role}{w.tools ? ` · ${w.tools}` : ""}
-                  </p>
+              <>
+                {/* 右側黑漸層 — 讓描述可讀 */}
+                <div aria-hidden="true" className="absolute inset-y-0 right-0 pointer-events-none" style={{ width: "52%", background: "linear-gradient(to left, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, transparent 100%)" }} />
+                <div className="absolute left-4 md:left-8 bottom-3 md:bottom-4 right-4 md:right-8 z-[2] flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-[14px] md:text-[18px] font-medium leading-tight" style={{ color: "var(--text)", textShadow: "0 1px 10px rgba(0,0,0,0.7)" }}>{w.title}</p>
+                    <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
+                      {w.artist ? `${w.artist} · ` : ""}{w.role}{w.tools ? ` · ${w.tools}` : ""}
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0" style={{ maxWidth: "44%" }}>
+                    {w.desc && <p className="hidden md:block text-[12px] leading-relaxed m-0" style={{ color: "var(--white-secondary)" }}>{w.desc}</p>}
+                    {w.views && <p className="font-mono-label text-[9px] tracking-[0.16em] m-0 mt-1" style={{ color: "rgba(255,225,140,0.85)" }}>{w.views}</p>}
+                  </div>
                 </div>
-                {w.views && <span className="font-mono-label text-[9px] tracking-[0.16em] shrink-0" style={{ color: "rgba(255,225,140,0.85)" }}>{w.views}</span>}
-              </div>
+              </>
             )}
             {/* hover play */}
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">

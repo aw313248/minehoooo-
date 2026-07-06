@@ -2,7 +2,7 @@
  * Field Notes #001 | 整趟歐洲，我沒帶相機
  * articleType: "editorial-v2"
  *
- * 結構原則（2026-07 內容修訂）：
+ * 結構原則（2026-07 內容修訂）：<br />
  * - flow-steps 是「章節索引」：四張卡各對應一個真實章節，點擊跳轉，不混內容
  * - 每個主題（設定／曝光／對焦／LUT／匯出）獨立成章，細節在章內講完
  * - 專有名詞（波形圖、Focus Peaking）都有人話解釋
@@ -56,7 +56,7 @@ const kinoBlocks: Block[] = [
     content: (
       <>
         <p key="p1">
-          行李空間有限，相機加鏡頭一公斤起跳。出發前我做了個決定：
+          行李空間有限，相機加鏡頭一公斤起跳。出發前我做了個決定：<br />
           這趟只帶 iPhone，然後把 <strong>Kino</strong> 練到熟
         </p>
         <p key="p2">
@@ -65,7 +65,7 @@ const kinoBlocks: Block[] = [
           不用在 App 之間跳來跳去
         </p>
         <p key="p3">
-          先說清楚：它不是那種打開就自動讓你變厲害的 App。
+          先說清楚：它不是那種打開就自動讓你變厲害的 App。<br />
           它給你的是「控制」——你越熟，拍出來的東西就越接近你腦中想的樣子
         </p>
       </>
@@ -75,7 +75,7 @@ const kinoBlocks: Block[] = [
     type: "callout",
     content: (
       <>
-        這篇的核心只有一句：<strong>當一個畫面讓你想停下來，就拿出手機</strong>。
+        這篇的核心只有一句：<strong>當一個畫面讓你想停下來，就拿出手機</strong>。<br />
         那個衝動比接下來講的所有設定都重要——設定只是讓衝動不被浪費
       </>
     ),
@@ -124,7 +124,7 @@ const kinoBlocks: Block[] = [
     content: (
       <>
         <p key="p4">
-          <strong>Apple Log</strong> 是這四個裡唯一不能妥協的。
+          <strong>Apple Log</strong> 是這四個裡唯一不能妥協的。<br />
           它記錄的顏色又灰又平，但保留的資訊最多——亮部沒那麼容易爆，
           暗部還救得回來，後期調色的空間完全不一樣
         </p>
@@ -158,7 +158,7 @@ const kinoBlocks: Block[] = [
     content: (
       <>
         <p key="p6">
-          <strong>波形圖（Waveform）</strong>是一張即時的亮度地圖：
+          <strong>波形圖（Waveform）</strong>是一張即時的亮度地圖：<br />
           畫面裡越亮的東西，訊號就疊得越高。看懂它只要記兩件事——
         </p>
         <p key="p7">
@@ -166,7 +166,7 @@ const kinoBlocks: Block[] = [
           <strong>整團訊號貼在底部＝太暗</strong>，硬拉亮會出現一堆噪點
         </p>
         <p key="p8">
-          我的習慣是讓主體落在中間偏下，天空亮部頂多碰到八成的位置。
+          我的習慣是讓主體落在中間偏下，天空亮部頂多碰到八成的位置。<br />
           我個人偏好稍微暗一點——電影感從來不是越亮越好
         </p>
       </>
@@ -176,7 +176,7 @@ const kinoBlocks: Block[] = [
     type: "callout",
     content: (
       <>
-        <strong>白平衡</strong>：大多數時候直接 AWB 自動。
+        <strong>白平衡</strong>：大多數時候直接 AWB 自動。<br />
         只有黃昏和室內鎢絲燈這種「顏色本身就是重點」的場景才手動鎖定
       </>
     ),
@@ -202,12 +202,12 @@ const kinoBlocks: Block[] = [
     content: (
       <>
         <p key="p9">
-          白天街拍、光線充足的場景，自動對焦（AF）又快又準，交給它就好。
+          白天街拍、光線充足的場景，自動對焦（AF）又快又準，交給它就好。<br />
           會出問題的是低光：夜景、室內、逆光——AF 會開始「猶豫」，
           畫面一下清楚一下模糊，那段素材基本就廢了
         </p>
         <p key="p10">
-          這時候切手動對焦（MF），然後打開 <strong>Focus Peaking（峰值對焦）</strong>。
+          這時候切手動對焦（MF），然後打開 <strong>Focus Peaking（峰值對焦）</strong>。<br />
           說人話：它會把畫面裡「目前對到焦」的邊緣描上一圈<em>綠色的線</em>——
           綠線在誰身上，焦點就在誰身上。你不用瞇著眼睛猜清不清楚，看線就好
         </p>
@@ -221,7 +221,7 @@ const kinoBlocks: Block[] = [
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-demo.mp4",
     autoPlay:    true,
-    aspectRatio: "9/16",
+    aspectRatio: "1320/2868",
     maxWidth:    "360px",
     caption:     "街拍實際操作 — AF 走天下，暗了才切 MF",
   },
@@ -265,7 +265,7 @@ const kinoBlocks: Block[] = [
     content: (
       <>
         <p key="p13">
-          <strong>Lektar D323</strong> — 整趟旅行九成都是它。
+          <strong>Lektar D323</strong> — 整趟旅行九成都是它。<br />
           高光收得住、畫面有密度、調性偏冷，陰天雨天照樣穩
         </p>
         <p key="p14">
@@ -279,7 +279,7 @@ const kinoBlocks: Block[] = [
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-travel.mp4",
     autoPlay:    true,
-    aspectRatio: "9/16",
+    aspectRatio: "1320/2868",
     maxWidth:    "360px",
     caption:     "旅行街拍 — 現場看到的，就是成品的顏色",
   },
@@ -395,8 +395,8 @@ const kinoBlocks: Block[] = [
           我會更勇敢地拍夜景
         </p>
         <p key="p16">
-          整趟旅行我躲掉了很多低光場景——怕噪點、怕失焦。
-          結果回來剪片，最有感覺的偏偏就是那幾段夜裡的畫面：
+          整趟旅行我躲掉了很多低光場景——怕噪點、怕失焦。<br />
+          結果回來剪片，最有感覺的偏偏就是那幾段夜裡的畫面：<br />
           雨後的石板路、街燈的倒影、教堂前的暮色
         </p>
         <p key="p17">
@@ -426,11 +426,11 @@ const kinoBlocks: Block[] = [
           是「你怎麼知道這個畫面值得拍？」
         </p>
         <p key="p19">
-          我沒有好答案。我只知道：當一個畫面讓我想停下來，我就拿出手機。
+          我沒有好答案。我只知道：當一個畫面讓我想停下來，我就拿出手機。<br />
           那種衝動，比任何設定都重要
         </p>
         <p key="p20">
-          Kino 幫我做的，只是把「那個衝動」和「拍出來的樣子」之間的距離縮到最短。
+          Kino 幫我做的，只是把「那個衝動」和「拍出來的樣子」之間的距離縮到最短。<br />
           設定我都給你了——剩下的，靠你自己走出去
         </p>
       </>

@@ -374,14 +374,14 @@ const DECK_CARDS: DeckCard[] = [
 
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "erQ9lR_rNik", title: "流明 LUMEN · Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 TRILOGY",
-      desc: "三部曲一次看完 — 光的三種狀態，同一個導演視角" },
-    { id: "cIsS50e6YQ0", title: "光圈 APERTURE · Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
-    { id: "sxrucEXI9-A", title: "沒收 DEPRIVED · Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP" }] },
+      desc: "三部曲起點 — 關於光的存在本身" },
+    { id: "cIsS50e6YQ0", title: "光圈 APERTURE · Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP", desc: "三部曲的轉折點 — 光開始有了邊界" },
+    { id: "sxrucEXI9-A", title: "沒收 DEPRIVED · Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP", desc: "終章 — 失去之後的靜止" }] },
 
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "jLLNkQod8pg", title: "向前行吧", en: "GO AHEAD", artist: "梁承煜", role: "DIR · DP", chip: "梁承煜 · GO AHEAD",
-      desc: "往前走的人，不用把每一步都走對" },
-    { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR" }] },
+      desc: "梁承煜 — 網路聲量上升中的創作歌手。明亮開闊的調性，把重量藏在光裡" },
+    { id: "xKo8NW2mBso", title: "我也是個人 IT HURTS", artist: "梁承煜", role: "DIR · EDIT · COLOR", desc: "室內單一場景的極簡克制 — 重量交還給歌聲" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "hk43CW2Kqow", title: "LAST 10", en: "AI-ASSISTED MUSIC VIDEO", artist: "MINEH4O", role: "DIR · DP · AI 50%", chip: "AI 50%",
       desc: "一半實拍、一半 AI — 倒數十秒的世界" }] },
@@ -414,17 +414,17 @@ const DECK_CARDS: DeckCard[] = [
       awards: [{ title: "入圍", org: "2023 放視大賞" }] }] },
 
   /* ACT Ⅲ — 攝影調色系列 */
-  { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
+  { act: "Ⅲ", actLabel: "DP · COLOR · LIGHTING 系列", works: [
     { id: "XJSI9s3-wk0", title: "沒有你的世界", artist: "Lil RAD & Coy6oi", role: "DP · COLOR", chip: "LIL RAD × COY6OI",
       desc: "四支 MV 的攝影與調色 — 系列累積 43 萬+ 觀看" },
     { id: "mdwoUFCe9Kk", title: "如果你不愛我 Love Me Not", artist: "Lil RAD & Coy6oi", role: "DP", views: "22.7萬 views" },
     { id: "GCDxrVigSfw", title: "愛人這件事 Loving After All", artist: "Lil RAD & Coy6oi", role: "DP · COLOR", views: "7.6萬 views" },
     { id: "569NoV2tyUE", title: "早知道一個人也過得很好", artist: "Lil RAD & Coy6oi ft.斑恩Ben", role: "DP", views: "13.2萬 views" }] },
 
-  { act: "Ⅲ", actLabel: "DP & COLOR SERIES 攝影調色系列", works: [
-    { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", en: "PANAMERA · 89教科書", artist: "89教科書", role: "COLOR", chip: "750萬+ VIEWS",
-      note: "750萬+ 觀看 · 話題單曲調色",
-      desc: "破 750 萬觀看的話題單曲 — 全片調色" }] },
+  { act: "Ⅲ", actLabel: "DP · COLOR · LIGHTING 系列", works: [
+    { id: "kUvT3eBfN9w", title: "愛你真的梅辦法", en: "PANAMERA · 89教科書", artist: "89教科書", role: "LIGHTING", chip: "750萬+ VIEWS",
+      note: "750萬+ 觀看 · 話題單曲燈光",
+      desc: "破 750 萬觀看的話題單曲 — 我他媽是燈光師" }] },
 
 ];
 

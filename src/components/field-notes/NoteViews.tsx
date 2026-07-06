@@ -33,7 +33,7 @@ export default function NoteViews({ slug, increment = false, style }: {
       fontFamily: "var(--font-space-mono),monospace", fontSize: 12.5, fontWeight: 700,
       letterSpacing: "0.14em", color: "rgba(255,225,140,0.95)", ...style,
     }}>
-      {views.toLocaleString()} VIEWS
+      即時瀏覽 {views.toLocaleString()}
     </span>
   );
 }

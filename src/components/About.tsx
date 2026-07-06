@@ -13,11 +13,11 @@ const QUOTES = [
 
 const GOLD = { fontStyle: "normal" as const, color: "rgba(255,225,140,0.95)", fontWeight: 500 };
 const bioCn = [
-  <>我叫明宏。鏡頭這件事，從高中就開始了——<em style={GOLD}>不是因為有計畫，是因為停不下來</em>。</>,
-  <>剪輯、音樂、色調、構圖，這些最早是靠 YouTube 自學拼出來的直覺。大學念傳播，才第一次認識「電影語言」——<em style={GOLD}>知道每個鏡頭都在說話之後，就再也看不了不知道自己在說什麼的畫面</em>。</>,
-  <>我在乎畫面的邏輯，也在乎它的重量。喜歡在拍攝前把每個運鏡想清楚，也能在現場即時回應那種沒法預期的真實。</>,
-  <>在片場待久了，發現最難的從來不是器材，<em style={GOLD}>是信任</em>。好的畫面通常是溝通換來的，不是架好機器就有的。</>,
-  <>用影像說故事——<em style={GOLD}>這件事我認真做了七年，還沒有要停的意思</em>。</>,
+  <>我叫明宏。<br />鏡頭這件事，從高中就開始了——<br /><em style={GOLD}>不是因為有計畫，是因為停不下來</em></>,
+  <>剪輯、音樂、色調、構圖，這些最早是靠 YouTube 自學拼出來的直覺。<br />大學念傳播，才第一次認識「電影語言」——<br /><em style={GOLD}>知道每個鏡頭都在說話之後，就再也看不了不知道自己在說什麼的畫面</em></>,
+  <>我在乎畫面的邏輯，也在乎它的重量。<br />喜歡在拍攝前把每個運鏡想清楚，也能在現場即時回應那種沒法預期的真實</>,
+  <>在片場待久了，發現最難的從來不是器材，<em style={GOLD}>是信任</em>。<br />好的畫面通常是溝通換來的，不是架好機器就有的</>,
+  <>用影像說故事——<br /><em style={GOLD}>這件事我認真做了七年，還沒有要停的意思</em></>,
 ];
 
 const bioEn = [
@@ -488,8 +488,25 @@ export default function About() {
             </div>
           </div>
 
-          {/* Bio ZH */}
+          {/* Bio ZH — 座右銘先講（他最在乎的事），再自我介紹 */}
           <div ref={bioRef}>
+            <p className="font-mono-label text-[9px] tracking-[0.3em] mb-6" style={{ color: "var(--text-3)" }}>
+              MOTTOS / 三句座右銘
+            </p>
+            <div className="space-y-5 max-w-lg mb-12">
+              {QUOTES.map((q, i) => (
+                <AnimLine key={i} delay={i * 0.12} inView={bioIn}>
+                  <div className="flex gap-4 items-baseline">
+                    <span className="font-mono-label text-[10px] shrink-0" style={{ color: "rgba(255,225,140,0.6)" }}>0{i + 1}</span>
+                    <p className="text-[16px] md:text-[18px] font-medium leading-relaxed m-0" style={{ color: "var(--text)" }}>
+                      {q.lines.map((l, j) => <span key={j}>{l}{j < q.lines.length - 1 && <br />}</span>)}
+                      {q.attr && <span className="block text-[11px] mt-1 font-normal" style={{ color: "var(--text-3)" }}>{q.attr}</span>}
+                    </p>
+                  </div>
+                </AnimLine>
+              ))}
+            </div>
+
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-7" style={{ color: "var(--text-3)" }}>
               ZH / 中文介紹
             </p>

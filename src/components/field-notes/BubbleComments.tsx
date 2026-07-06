@@ -55,8 +55,8 @@ export default function BubbleComments({ slug }: { slug: string }) {
     const c = comments[(idx.current + i) % comments.length];
     const left = i % 2 === 0;                       // 左右輪流
     const lane = (i * 37) % 90;                     // 邊欄內的水平散布 %
-    const dur = 22 + (i * 7) % 14;                  // 22–35s
-    const delay = i * 4.5;
+    const dur = 15 + (i * 5) % 9;                   // 15–23s
+    const delay = i * 1.6;
     return { c, left, lane, dur, delay, key: `${c.ts}-${i}` };
   }) : [];
 
@@ -64,7 +64,7 @@ export default function BubbleComments({ slug }: { slug: string }) {
     <>
       {/* ── 漂浮泡泡（僅桌面、僅側邊欄、不可互動）── */}
       {enabled && floats.map(f => (
-        <div key={f.key} aria-hidden="true" className="hidden lg:block"
+        <div key={f.key} aria-hidden="true" className="hidden md:block"
           style={{
             position: "fixed", bottom: -80, zIndex: 5, pointerEvents: "none",
             [f.left ? "left" : "right"]: `calc(${f.lane * 0.9}px + 12px)`,
