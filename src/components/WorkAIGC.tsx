@@ -261,17 +261,17 @@ export default function WorkAIGC() {
       </div>
 
       {/* ── DETAILS + EXTRA WORKS ── */}
-      <div ref={vRef} className="grid md:grid-cols-[1fr_1fr] border-b"
+      <div ref={vRef} className="border-b"
         style={{ borderColor: "var(--border)" }}>
 
         {/* Left: approach details */}
-        <div className="border-r p-8 md:p-12 flex flex-col justify-between"
+        <div className="p-8 md:p-12 pb-2"
           style={{
             borderColor: "var(--border)",
             opacity: vIn ? 1 : 0,
             transition: "opacity .9s ease .15s",
           }}>
-          <div className="space-y-7">
+          <div className="grid md:grid-cols-3 gap-6">
             {details.map((d, i) => (
               <div key={d.label}>
                 <AnimLine delay={0.15 + i * 0.12} inView={vIn}>
@@ -289,7 +289,7 @@ export default function WorkAIGC() {
           </div>
 
           {/* Visual signature lines */}
-          <div className="mt-8 space-y-1.5">
+          <div className="mt-8 space-y-1.5 max-w-[320px]">
             <p className="font-mono-label text-[9px] tracking-[0.3em] mb-3" style={{ color: "var(--text-3)" }}>
               VISUAL SIGNATURE
             </p>
@@ -308,7 +308,7 @@ export default function WorkAIGC() {
             <p className="font-mono-label text-[9px] tracking-[0.3em] shrink-0" style={{ color: "var(--text-3)" }}>MORE AIGC WORKS</p>
             <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
           </div>
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {extraVideos.map((v, i) => {
               const isIg = !!v.igCode;
               const href = isIg

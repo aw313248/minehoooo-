@@ -388,8 +388,7 @@ const DECK_CARDS: DeckCard[] = [
 
   /* ACT Ⅱ — 劇情短片（月桂加冕）*/
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST", chip: "劇組成員 · 攝影組",
-      note: "作品獲獎紀錄 — 我的位置是攝影組助理",
+    { id: "RsPI2V_RQus", title: "回收場的夏天", en: "RECLAIM MY SUMMER · 公視學生劇展", artist: "公視學生劇展", role: "CAMERA ASST", chip: "攝影助理",
       desc: "公視學生劇展 — 廢棄回收場裡的一個夏天。從台北電影節到 ifva，一路拿獎的短片，我在攝影組",
       awards: [
         { title: "最佳短片", org: "2024 台北電影節" },
@@ -398,8 +397,7 @@ const DECK_CARDS: DeckCard[] = [
         { title: "亞洲新力量 銀獎", org: "ifva" },
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART ASST", chip: "劇組成員 · 美術助理",
-      note: "作品獲獎紀錄 — 我的位置是美術助理",
+    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART ASST", chip: "美術助理",
       desc: "金馬影展入選短片 — 美術與攝影雙金穗。我在美術組，把坡道上的世界一件件搭出來",
       awards: [
         { title: "最佳美術", org: "第48屆金穗獎" },
@@ -409,7 +407,7 @@ const DECK_CARDS: DeckCard[] = [
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
     { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · COLOR", chip: "DIRECTED BY MINEH4O",
-      note: "這支我是導演 — 導演、調光",
+      note: "導演、調光",
       desc: "畢業製作劇情短片，放視大賞入圍",
       awards: [{ title: "入圍", org: "2023 放視大賞" }] }] },
 
@@ -463,12 +461,15 @@ const END_CREDITS: { group: string; rows: { id: string; work: string; credit: st
 ];
 
 const ytShorts = [
-  { id: "raIh2Qlj5YY", title: "孩子們需要超人",              tags: ["#社會議題", "#Reels"] },
-  { id: "pFvDTEf9fh0", title: "你說想養大貓咪 — AI 生給你", tags: ["#AIGC", "#AI動物"] },
-  { id: "43uhkGuAitU", title: "DJI Osmo 360 開箱",           tags: ["#器材", "#DJI"]   },
-  { id: "EoJmdg8SxsI", title: "2026年3月9日",                 tags: ["#短片"]            },
-  { id: "5Y5u1Mtbmmo", title: "畢製前一天錄音師消失了！！！", tags: ["#幕後", "#畢製"]   },
-];
+  { id: "G1bK-mxlTNQ", title: "我整趟歐洲，竟然只用了 iPhone？", tags: ["#Kino", "#歐洲"] },
+  { id: "ql3WyBtnjA8", title: "去旅行吧？！？什麼是答案",       tags: ["#旅行"] },
+  { id: "deGg8dUuOMs", title: "你猜猜看哪幾個鏡頭！是真的🥃",   tags: ["#WULU", "#AIGC"] },
+  { id: "jwTm1VO5YOU", title: "我只是搭個地鐵！眼前景象太震撼", tags: ["#布達佩斯"] },
+  { id: "esAAkUCJ3Dc", title: "這才是布拉格廣場真正的樣子嗎",   tags: ["#布拉格"] },
+  { id: "1VtO8VzBphI", title: "聽說這裡限飛！沒關係我照飛",     tags: ["#AIGC", "#教學"] },
+  { id: "M6f_YaODZ9Y", title: "台中鯰魚王….",                   tags: ["#台中"] },
+  { id: "ClMevgpW40o", title: "AIGC FILM — 地瓜球也能打乒乓🏓", tags: ["#AIGC"] },
+]
 
 const allReels = [
   { code: "DWnqw4KEkmf", tier: 1, year: "2026" },
@@ -1314,77 +1315,77 @@ export default function WorkVideo() {
 
       <ScreeningDeck cards={DECK_CARDS} />
 
-      {/* ══ 其餘場次 — 乾淨資訊清單（放映之外的委製與現場）══ */}
-      <div ref={prRef} className="px-4 md:px-14 py-16 border-b" style={{ borderColor: "var(--border)" }}>
-        <div style={{ opacity: prIn ? 1 : 0, transition: "opacity .8s ease" }} className="max-w-[880px] mx-auto">
-          <p className="font-mono-label text-[8px] tracking-[0.42em] mb-2" style={{ color: "var(--white-soft)" }}>ALSO SHOWING</p>
-          <h2 className="font-display leading-none mb-10" style={{ fontSize: "clamp(1.6rem, 3.6vw, 3rem)", color: "var(--text)" }}>
-            其餘場次
+      {/* ══ 完整片尾 — 其餘場次 × END CREDITS 合併成自動捲動的電影片尾 ══ */}
+      <div ref={ecRef} className="border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
+        <div className="px-4 md:px-14 pt-16 pb-6 text-center" style={{ opacity: ecIn ? 1 : 0, transition: "opacity .8s ease" }}>
+          <p className="font-mono-label text-[8px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>ALSO SHOWING × END CREDITS</p>
+          <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.7rem, 4vw, 3.4rem)", color: "var(--text)" }}>
+            完整片尾
           </h2>
-          <div className="flex flex-col">
-            {PROGRAMME_REST.map((r, i) => (
-              <a key={r.id + r.tag} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
-                className="group flex items-center gap-4 md:gap-6 py-4 border-b"
-                style={{
-                  borderColor: "var(--white-ghost)",
-                  opacity: prIn ? 1 : 0, transform: prIn ? "translateY(0)" : "translateY(16px)",
-                  transition: `opacity .6s ease ${i * 0.05}s, transform .6s cubic-bezier(.16,1,.3,1) ${i * 0.05}s`,
-                }}>
-                <div className="relative shrink-0 overflow-hidden" style={{ width: 118, aspectRatio: "16/9", borderRadius: 8, background: "#0a0a0c" }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://img.youtube.com/vi/${r.id}/mqdefault.jpg`} alt={`${r.title} 縮圖`} loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    style={{ filter: "brightness(0.85)" }} />
+          <p className="font-mono-label text-[8.5px] tracking-[0.24em] mt-3" style={{ color: "var(--text-3)" }}>
+            自動捲動 · 滑入暫停 · 點任何一行都能看片
+          </p>
+        </div>
+
+        <div className="credits-window" style={{ position: "relative", height: "68vh", overflow: "hidden" }}>
+          {/* fade masks */}
+          <div aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: 90, zIndex: 2, pointerEvents: "none", background: "linear-gradient(to bottom, #030304, transparent)" }} />
+          <div aria-hidden="true" style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 90, zIndex: 2, pointerEvents: "none", background: "linear-gradient(to top, #030304, transparent)" }} />
+
+          <div className="credits-roll">
+            {[0, 1].map(dup => (
+              <div key={dup} aria-hidden={dup === 1} className="max-w-[720px] mx-auto px-4 pb-20">
+                {/* 其餘場次 — 縮圖列 */}
+                <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5 mt-10 text-center" style={{ color: "rgba(255,225,140,0.7)" }}>ALSO SHOWING 其餘場次</p>
+                <div className="flex flex-col">
+                  {PROGRAMME_REST.map(r => (
+                    <a key={`${dup}-${r.id}-${r.tag}`} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
+                      className="group flex items-center gap-4 py-3 border-b" style={{ borderColor: "var(--white-ghost)" }}>
+                      <div className="relative shrink-0 overflow-hidden" style={{ width: 96, aspectRatio: "16/9", borderRadius: 6, background: "#0a0a0c" }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`https://img.youtube.com/vi/${r.id}/mqdefault.jpg`} alt={`${r.title} 縮圖`} loading="lazy"
+                          className="absolute inset-0 w-full h-full object-cover" style={{ filter: "brightness(0.85)" }} />
+                      </div>
+                      <div className="flex-1 min-w-0 text-left">
+                        <p className="text-[13.5px] font-medium leading-snug truncate" style={{ color: "var(--text)" }}>{r.title}</p>
+                        <p className="font-mono-label text-[8px] tracking-[0.16em] mt-1" style={{ color: "var(--text-3)" }}>
+                          {r.artist} · {r.role}{r.note ? <span style={{ color: "rgba(255,225,140,0.8)" }}> — {r.note}</span> : null}
+                        </p>
+                      </div>
+                      <span className="hidden md:block font-mono-label text-[7.5px] tracking-[0.22em] shrink-0" style={{ color: "var(--white-dim)" }}>{r.tag}</span>
+                    </a>
+                  ))}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[14px] md:text-[15px] font-medium leading-snug truncate" style={{ color: "var(--text)" }}>{r.title}</p>
-                  <p className="font-mono-label text-[8.5px] tracking-[0.16em] mt-1" style={{ color: "var(--text-3)" }}>
-                    {r.artist} · {r.role}{r.note ? <span style={{ color: "rgba(255,225,140,0.8)" }}> — {r.note}</span> : null}
-                  </p>
-                </div>
-                <span className="hidden md:block font-mono-label text-[8px] tracking-[0.24em] shrink-0" style={{ color: "var(--white-dim)" }}>{r.tag}</span>
-              </a>
+
+                {/* 片尾名單 */}
+                {END_CREDITS.map(g => (
+                  <div key={`${dup}-${g.group}`} className="mt-12 text-center">
+                    <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5" style={{ color: "rgba(255,225,140,0.7)" }}>{g.group} <span style={{ color: "var(--text-3)" }}>× {g.rows.length}</span></p>
+                    <div className="flex flex-col gap-2.5">
+                      {g.rows.map(r => (
+                        <a key={`${dup}-${r.id}-${r.credit}`} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
+                          className="group flex items-baseline justify-center gap-4">
+                          <span className="font-mono-label text-[8px] tracking-[0.22em] text-right transition-colors group-hover:!text-white" style={{ color: "var(--text-3)", width: 110, flexShrink: 0 }}>{r.credit}</span>
+                          <span aria-hidden className="hidden md:block" style={{ width: 24, height: 1, background: "var(--white-ghost)", alignSelf: "center" }} />
+                          <span className="text-[12.5px] text-left transition-colors group-hover:!text-white" style={{ color: "var(--text-2)", width: 300 }}>{r.work}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <p className="font-mono-label text-[8px] tracking-[0.3em] mt-14 text-center" style={{ color: "var(--white-dim)" }}>
+                  MINEH4O — 賴明宏 OSCAR LAI · TAICHUNG
+                </p>
+              </div>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* ══ 片尾字幕 — END CREDITS（支援角色）══ */}
-      <div ref={ecRef} className="px-4 md:px-14 py-20 border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
-        <div style={{ opacity: ecIn ? 1 : 0, transition: "opacity 1s ease" }} className="max-w-[680px] mx-auto text-center">
-          <p className="font-mono-label text-[8px] tracking-[0.42em] mb-3" style={{ color: "var(--white-soft)" }}>AND FEATURING</p>
-          <h2 className="font-display leading-none mb-4" style={{ fontSize: "clamp(1.7rem, 4vw, 3.4rem)", color: "var(--text)", letterSpacing: "0.02em" }}>
-            END CREDITS
-          </h2>
-          <p className="text-[12.5px] leading-relaxed mb-14 mx-auto" style={{ color: "var(--text-2)", maxWidth: 380 }}>
-            每一部片的完成，名單上都有一個位置。<br />這些是我掛在別人作品裡的名字 — 點任何一行都能看片
-          </p>
-
-          {END_CREDITS.map((g, gi) => (
-            <div key={g.group} className="mb-12" style={{
-              opacity: ecIn ? 1 : 0, transform: ecIn ? "translateY(0)" : "translateY(20px)",
-              transition: `opacity .8s ease ${gi * 0.15 + 0.2}s, transform .8s cubic-bezier(.16,1,.3,1) ${gi * 0.15 + 0.2}s`,
-            }}>
-              <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5" style={{ color: "rgba(255,225,140,0.7)" }}>{g.group} <span style={{ color: "var(--text-3)" }}>× {g.rows.length}</span></p>
-              <div className="flex flex-col gap-2.5">
-                {g.rows.map(r => (
-                  <a key={r.id + r.credit} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
-                    className="group flex items-baseline justify-center gap-4">
-                    <span className="font-mono-label text-[8px] tracking-[0.22em] text-right transition-colors group-hover:!text-white"
-                      style={{ color: "var(--text-3)", width: 110, flexShrink: 0 }}>{r.credit}</span>
-                    <span aria-hidden className="hidden md:block" style={{ width: 24, height: 1, background: "var(--white-ghost)", alignSelf: "center" }} />
-                    <span className="text-[12.5px] md:text-[13px] text-left transition-colors group-hover:!text-white"
-                      style={{ color: "var(--text-2)", width: 300 }}>{r.work}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
-
-          <p className="font-mono-label text-[8px] tracking-[0.3em] mt-4" style={{ color: "var(--white-dim)" }}>
-            MINEH4O — 賴明宏 OSCAR LAI · TAICHUNG
-          </p>
-        </div>
+        <style>{`
+          .credits-roll { animation: creditsRoll 60s linear infinite; }
+          .credits-window:hover .credits-roll { animation-play-state: paused; }
+          @keyframes creditsRoll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+          @media (prefers-reduced-motion: reduce) { .credits-roll { animation: none; } }
+        `}</style>
       </div>
 
       {/* ── ＋ · 散場後 YOUTUBE SHORTS ── */}
@@ -1392,9 +1393,10 @@ export default function WorkVideo() {
         <div style={{ opacity: sIn ? 1 : 0, transition: "opacity .6s ease" }}>
           <CatHeader num="＋" label="散場後 · YOUTUBE SHORTS" count={ytShorts.length} note="AFTER HOURS" />
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
-          {ytShorts.map((s, i) => (
-            <div key={s.id} className="shrink-0" style={{ width: 120, opacity: sIn ? 1 : 0, transform: sIn ? "translateY(0)" : "translateY(20px)", transition: `opacity .6s ease ${i * .1}s, transform .6s ease ${i * .1}s` }}>
+        <div className="overflow-hidden pb-2 shorts-marquee">
+          <div className="flex gap-4 w-max shorts-track">
+          {[...ytShorts, ...ytShorts].map((s, i) => (
+            <div key={`${s.id}-${i}`} className="shrink-0" style={{ width: 120, opacity: sIn ? 1 : 0, transform: sIn ? "translateY(0)" : "translateY(20px)", transition: `opacity .6s ease ${i * .1}s, transform .6s ease ${i * .1}s` }}>
               <a href={`https://youtube.com/shorts/${s.id}`} target="_blank" rel="noopener noreferrer" className="group block">
                 <div className="relative overflow-hidden mb-2" style={{ aspectRatio: "9/16", borderRadius: 18, background: "#080808" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1413,7 +1415,13 @@ export default function WorkVideo() {
               </a>
             </div>
           ))}
+          </div>
         </div>
+        <style>{`
+          .shorts-track { animation: shortsRoll 36s linear infinite; }
+          .shorts-marquee:hover .shorts-track { animation-play-state: paused; }
+          @keyframes shortsRoll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        `}</style>
       </div>
 
       {/* ── 07 · IG REELS ── */}

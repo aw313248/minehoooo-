@@ -16,6 +16,7 @@ export interface NextStopCity {
   nameZh?: string;
   slug?:   string;
   year?:   string;
+  videos?: string[];   // 城市實拍片段 — 卡片背景隨機輪播（霍格華茲畫像牆）
 }
 
 export interface GalleryVideo {

@@ -453,10 +453,10 @@ const kinoBlocks: Block[] = [
   {
     type: "next-stop",
     cities: [
-      { name: "Praha",     nameZh: "布拉格",  year: "2026" },
-      { name: "Wien",      nameZh: "維也納",  year: "2026" },
-      { name: "Budapest",  nameZh: "布達佩斯", year: "2026" },
-      { name: "Hallstatt", nameZh: "哈修塔特", year: "2026" },
+      { name: "Praha",     nameZh: "布拉格",  year: "2026", videos: ["/field-notes/kino/videos/picks/tram-dusk.mp4", "/field-notes/kino/videos/picks/prague-square.mp4", "/field-notes/kino/videos/picks/castle-steps.mp4", "/field-notes/kino/videos/picks/st-nicholas.mp4"] },
+      { name: "Wien",      nameZh: "維也納",  year: "2026", videos: ["/field-notes/kino/videos/picks/vienna-night.mp4", "/field-notes/kino/videos/picks/vienna-square.mp4", "/field-notes/kino/videos/picks/rooftop-dusk.mp4"] },
+      { name: "Budapest",  nameZh: "布達佩斯", year: "2026", videos: ["/field-notes/kino/videos/picks/budapest-night.mp4"] },
+      { name: "Hallstatt", nameZh: "哈修塔特", year: "2026", videos: ["/field-notes/kino/videos/picks/hallstatt.mp4", "/field-notes/kino/videos/picks/st-wolfgang.mp4"] },
     ],
   },
 

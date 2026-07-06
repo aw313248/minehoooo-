@@ -772,6 +772,26 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
   );
 }
 
+/* City portrait — 霍格華茲畫像牆：城市片段隨機輪播背景 */
+function CityPortrait({ videos, seed }: { videos: string[]; seed: number }) {
+  const [i, setI] = useState(seed % videos.length);
+  const [visible, setVisible] = useState(true);
+  useEffect(() => {
+    if (videos.length < 2) return;
+    const t = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => { setI(v => (v + 1 + Math.floor(seed) % (videos.length - 1)) % videos.length); setVisible(true); }, 450);
+    }, 5200 + seed * 900);
+    return () => clearInterval(t);
+  }, [videos.length, seed]);
+  return (
+    /* eslint-disable-next-line jsx-a11y/media-has-caption */
+    <video key={videos[i]} src={videos[i]} autoPlay muted loop playsInline preload="metadata"
+      className="absolute inset-0 w-full h-full object-cover"
+      style={{ filter: "brightness(0.5) saturate(0.9)", opacity: visible ? 1 : 0, transition: "opacity .45s ease" }} />
+  );
+}
+
 /* Next Stop city cards */
 function NextStopBlock({ cities }: Extract<Block, { type: "next-stop" }>) {
   return (
@@ -782,6 +802,7 @@ function NextStopBlock({ cities }: Extract<Block, { type: "next-stop" }>) {
             <div className="eb-ns-card">
               <div className="eb-ns-img">
                 <div className="eb-ns-img-ph" />
+                {city.videos && city.videos.length > 0 && <CityPortrait videos={city.videos} seed={city.name.length} />}
                 <div className="eb-ns-overlay" />
                 <div className="eb-ns-content">
                   {city.nameZh && <span className="eb-ns-zh">{city.nameZh}</span>}

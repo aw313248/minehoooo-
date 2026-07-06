@@ -38,8 +38,8 @@ const skills = [
 const credits = [
   { text: "陳卓《愚人節 ALL FOOL'S DAY》五週年紀念 — DIR · DP", highlight: true  },
   { text: "中華職棒明星賽紀實《精銳》Taiwolf — EDIT",           highlight: true  },
-  { text: "Lil RAD × Coy6oi ft.斑恩 Ben《早知道一個人也過得很好》— DP", highlight: true },
-  { text: "89教科書《愛你真的梅辦法》— COLOR",                    highlight: true  },
+  { text: "Lil RAD × Coy6oi 系列四支 — DP · 累積 43萬+ 觀看",      highlight: true },
+  { text: "89教科書《愛你真的梅辦法》— LIGHTING · 751萬+ 觀看",   highlight: true  },
   { text: "陳卓 Jon Chen 光與景三部曲 — DIR · DP",              highlight: true  },
   { text: "Kolli《BRING ME YOUR LOVELY》— DIR · DP · AI 混合", highlight: true  },
   { text: "2026 TEDxNTHU 8 位講者演講紀錄 — DIR · DP",         highlight: false },
