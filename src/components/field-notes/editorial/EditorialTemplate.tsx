@@ -7,6 +7,7 @@ import type { FieldNote } from "@/data/fieldNotes";
 import { getRelatedNotes } from "@/data/fieldNotes";
 import type { Block, NextStopCity } from "./types";
 import NoteViews from "@/components/field-notes/NoteViews";
+import BubbleComments from "@/components/field-notes/BubbleComments";
 
 /* ─────────────────────────────────────────────────────────────────
    TOC
@@ -987,6 +988,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
     <>
       <EditorialAmbience />
       <ScrollProgress />
+      <BubbleComments slug={note.slug} />
 
       {/* Nav */}
       <header className="et-nav" aria-label="Article navigation">

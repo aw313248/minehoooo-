@@ -42,6 +42,16 @@ const kinoBlocks: Block[] = [
     reason:     "下載不到兩個月，已經回不去了 — 從 Apple Log 到即時 LUT，整個拍攝流程都在同一個 App 完成",
   },
   {
+    type: "setup-cards",
+    items: [
+      { value: "8,533", label: "IG 瀏覽" },
+      { value: "460",   label: "留言" },
+      { value: "128",   label: "珍藏" },
+      { value: "67",    label: "分享" },
+    ],
+    footer: "這篇的 IG 導流貼文成績（另有 300 愛心 · 6 轉發）— 2026.07.07 當下數據",
+  },
+  {
     type: "text",
     content: (
       <>
