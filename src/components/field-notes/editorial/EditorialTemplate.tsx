@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { FieldNote } from "@/data/fieldNotes";
 import { getRelatedNotes } from "@/data/fieldNotes";
 import type { Block, NextStopCity } from "./types";
+import NoteViews from "@/components/field-notes/NoteViews";
 
 /* ─────────────────────────────────────────────────────────────────
    TOC
@@ -1018,6 +1019,8 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
             <span className="et-date">{note.date.slice(0, 7)}</span>
             <span className="et-dot" aria-hidden>·</span>
             <span className="et-time">{note.readingTime} min</span>
+            <span className="et-dot" aria-hidden>·</span>
+            <NoteViews slug={note.slug} increment />
           </div>
           <h1 className="et-title">{note.title}</h1>
           {note.subtitle && <p className="et-subtitle">{note.subtitle}</p>}

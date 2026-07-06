@@ -6,6 +6,7 @@ import FieldNoteNav from "@/components/FieldNoteNav";
 import FieldNoteClose from "@/components/FieldNoteClose";
 import PromptBuilder, { PromptAnatomy } from "@/components/field-notes/PromptBuilder";
 import HeroBackdrop from "@/components/field-notes/HeroBackdrop";
+import NoteViews from "@/components/field-notes/NoteViews";
 import QuickStart from "@/components/field-notes/QuickStart";
 import OriginalPrompt from "@/components/field-notes/OriginalPrompt";
 import MobileStickyBar from "@/components/field-notes/MobileStickyBar";
@@ -192,6 +193,11 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
           config={builderConfig}
           heroMedia={heroMedia}
         />
+      )}
+      {builderConfig && (
+        <div className="relative max-w-[1100px] mx-auto px-5 md:px-8 mt-3 flex justify-end">
+          <NoteViews slug={note.slug} increment />
+        </div>
       )}
 
       {/* ── 02 · QUICK START (visible on first screen, primary CTAs) ── */}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollUnlock from "@/components/ScrollUnlock";
 import { fieldNotes, type NoteCategory } from "@/data/fieldNotes";
+import { useEffect } from "react";
 
 const ALL_CATEGORIES: { key: "ALL" | NoteCategory; label: string }[] = [
   { key: "ALL",    label: "全部" },
@@ -18,6 +19,14 @@ const ALL_CATEGORIES: { key: "ALL" | NoteCategory; label: string }[] = [
 
 export default function FieldNotesIndex() {
   const [active, setActive] = useState<"ALL" | NoteCategory>("ALL");
+  const [views, setViews] = useState<Record<string, number> | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/views?slugs=${fieldNotes.map(n => n.slug).join(",")}`)
+      .then(r => r.json())
+      .then(d => { if (d.views) setViews(d.views); })
+      .catch(() => {});
+  }, []);
 
   const sorted = [...fieldNotes].sort((a, b) => b.date.localeCompare(a.date));
 
@@ -126,6 +135,12 @@ export default function FieldNotesIndex() {
                   <span className="fn-card-date">{note.date}</span>
                   <span className="fn-card-sep" aria-hidden>·</span>
                   <span className="fn-card-time">{note.readingTime} min</span>
+                  {views && typeof views[note.slug] === "number" && (
+                    <>
+                      <span className="fn-card-sep" aria-hidden>·</span>
+                      <span className="fn-card-views">{views[note.slug].toLocaleString()} views</span>
+                    </>
+                  )}
                   {note.tool && (
                     <>
                       <span className="fn-card-sep" aria-hidden>·</span>
@@ -366,6 +381,7 @@ export default function FieldNotesIndex() {
           color: rgba(255,255,255,0.35);
         }
         .fn-card-sep { color: rgba(255,255,255,0.2); font-size: 11px; }
+        .fn-card-views { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.18em; color: rgba(255,225,140,0.75); }
         .fn-card-tool {
           font-family: var(--font-space-mono), monospace;
           font-size: 9px;
