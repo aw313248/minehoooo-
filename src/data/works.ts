@@ -541,7 +541,7 @@ export const worksData: WorkEntry[] = [
     title: "《爬坡 Her Slope》",
     titleEn: "Her Slope — 2025 TGHFF Short Film",
     artist: "第62屆金馬影展入選短片",
-    role: "ART DEPT",
+    role: "ART ASST",
     category: "SHORT FILM",
     uploadDate: "2025-10-17",
     duration: "PT0M54S",

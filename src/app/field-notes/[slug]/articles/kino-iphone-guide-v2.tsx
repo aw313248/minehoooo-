@@ -34,6 +34,14 @@ const kinoBlocks: Block[] = [
     caption: "2026 奧地利 × 匈牙利 × 捷克 — 旅歐之旅 feat. KINO",
   },
   {
+    type:       "app-rec",
+    name:       "Kino — Pro Video Camera",
+    tagline:    "Lux Optics · iPhone 專業錄影 — 這篇用的就是它",
+    appStoreUrl:"https://apps.apple.com/tw/app/kino-pro-video-camera/id6472380172",
+    icon:       "/field-notes/kino/app-icon.jpg",
+    reason:     "下載不到兩個月，已經回不去了 — 從 Apple Log 到即時 LUT，整個拍攝流程都在同一個 App 完成",
+  },
+  {
     type: "text",
     content: (
       <>
@@ -202,6 +210,7 @@ const kinoBlocks: Block[] = [
   {
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-demo.mp4",
+    autoPlay:    true,
     aspectRatio: "9/16",
     maxWidth:    "360px",
     caption:     "街拍實際操作 — AF 走天下，暗了才切 MF",
@@ -259,6 +268,7 @@ const kinoBlocks: Block[] = [
   {
     type:        "video-lazy",
     src:         "/field-notes/kino/videos/street-travel.mp4",
+    autoPlay:    true,
     aspectRatio: "9/16",
     maxWidth:    "360px",
     caption:     "旅行街拍 — 現場看到的，就是成品的顏色",
@@ -420,29 +430,13 @@ const kinoBlocks: Block[] = [
   /* ══════════════════════════════════════════════════════════════
      App 推薦
      ══════════════════════════════════════════════════════════════ */
-  {
-    type: "headline",
-    id:   "app",
-    num:  "11",
-    text: "用了兩年還在用的那個 App",
-    sub:  "沒有第二選擇",
-  },
-  {
-    type:       "app-rec",
-    name:       "Kino — Pro Video Camera",
-    tagline:    "Lux Optics · iPhone 專業錄影",
-    appStoreUrl:"https://apps.apple.com/tw/app/kino-pro-video-camera/id6472380172",
-    icon:       "/field-notes/kino/app-icon.jpg",
-    reason:     "從 Apple Log 到即時 LUT，整個拍攝流程都在同一個 App 完成。我目前的旅行拍攝完全依賴它",
-  },
-
   /* ══════════════════════════════════════════════════════════════
      下一站
      ══════════════════════════════════════════════════════════════ */
   {
     type: "headline",
     id:   "next-stop",
-    num:  "12",
+    num:  "11",
     text: "這趟去了哪",
     sub:  "每個地方都有一段影片",
   },

@@ -362,21 +362,22 @@ const aigcWorks = [
 const DECK_CARDS: DeckCard[] = [
   /* ACT Ⅰ — 導演作品 */
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
-    { id: "d9_EuYkmfzM", title: "愚人節", en: "ALL FOOL'S DAY · 5TH ANNIVERSARY", artist: "陳卓 Jon Chen", role: "DIR · DP",
+    { id: "d9_EuYkmfzM", title: "愚人節", en: "ALL FOOL'S DAY · 5TH ANNIVERSARY", artist: "陳卓 Jon Chen", role: "DIR · DP", hot: true,
       note: "原曲獲盧廣仲、MC 張天賦翻唱 · 五週年紀念版 MV",
       desc: "陳卓與 MINEH4O 合作五年的見證 — 同樣的歌，不同的自己，重新站在鏡頭前" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
-    { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY", en: "KOLLI (NN)", artist: "Kolli (NN)", role: "DIR · DP · AI", chip: "AI HYBRID",
+    { id: "eI1O_9jBHU0", title: "BRING ME YOUR LOVELY", en: "KOLLI (NN)", artist: "Kolli (NN)", role: "DIR · DP · AI", chip: "AI HYBRID", hot: true,
       desc: "實拍與生成式 AI 的有機融合 — 用 AI 重構動態素材，做出傳統攝影拍不到的超現實紋理" }] },
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
-    { id: "erQ9lR_rNik", title: "流明", en: "LUMEN", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅰ",
-      desc: "光與景三部曲首部曲 — 光是記憶的形狀" }] },
+    { id: "kL8_Sk0JmKM", title: "記住你要快樂", en: "帝仰 TIANG", artist: "帝仰 tiang", role: "DIR · COLOR", hot: true,
+      desc: "溫暖敘事的鏡頭 — 導演與調色，關於自我療癒的叮嚀" }] },
+
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
-    { id: "cIsS50e6YQ0", title: "光圈", en: "APERTURE", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅱ",
-      desc: "三部曲第二章 — 收緊的光圈，放大的心事" }] },
-  { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
-    { id: "sxrucEXI9-A", title: "沒收", en: "DEPRIVED", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 Ⅲ",
-      desc: "三部曲終章 — 被沒收的，不只是光" }] },
+    { id: "erQ9lR_rNik", title: "流明 LUMEN · Ⅰ", artist: "陳卓 Jon Chen", role: "DIR · DP", chip: "光與景三部曲 TRILOGY",
+      desc: "三部曲一次看完 — 光的三種狀態，同一個導演視角" },
+    { id: "cIsS50e6YQ0", title: "光圈 APERTURE · Ⅱ", artist: "陳卓 Jon Chen", role: "DIR · DP" },
+    { id: "sxrucEXI9-A", title: "沒收 DEPRIVED · Ⅲ", artist: "陳卓 Jon Chen", role: "DIR · DP" }] },
+
   { act: "Ⅰ", actLabel: "DIRECTOR'S CUT 導演作品", works: [
     { id: "jLLNkQod8pg", title: "向前行吧", en: "GO AHEAD", artist: "梁承煜", role: "DIR · DP", chip: "梁承煜 · GO AHEAD",
       desc: "往前走的人，不用把每一步都走對" },
@@ -397,8 +398,8 @@ const DECK_CARDS: DeckCard[] = [
         { title: "亞洲新力量 銀獎", org: "ifva" },
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART DEPT", chip: "劇組成員 · 美術組",
-      note: "作品獲獎紀錄 — 我的位置是美術組",
+    { id: "lLYzcW9pzGU", title: "爬坡", en: "HER SLOPE · 第62屆金馬影展", artist: "第62屆金馬影展", role: "ART ASST", chip: "劇組成員 · 美術助理",
+      note: "作品獲獎紀錄 — 我的位置是美術助理",
       desc: "金馬影展入選短片 — 美術與攝影雙金穗。我在美術組，把坡道上的世界一件件搭出來",
       awards: [
         { title: "最佳美術", org: "第48屆金穗獎" },
@@ -407,8 +408,8 @@ const DECK_CARDS: DeckCard[] = [
         { title: "入選", org: "金馬影展" },
       ] }] },
   { act: "Ⅱ", actLabel: "NARRATIVE 劇情短片", works: [
-    { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · DP · EDIT", chip: "DIRECTED BY MINEH4O",
-      note: "這支我是導演 — 編、導、攝、剪一手包",
+    { id: "fR2TDfx04oU", title: "紅箱子", en: "THE RED BOX", artist: "劇情短片", role: "DIR · COLOR", chip: "DIRECTED BY MINEH4O",
+      note: "這支我是導演 — 導演、調光",
       desc: "畢業製作劇情短片，放視大賞入圍",
       awards: [{ title: "入圍", org: "2023 放視大賞" }] }] },
 
@@ -446,7 +447,6 @@ const END_CREDITS: { group: string; rows: { id: string; work: string; credit: st
     { id: "_IUqMAI5GQg", work: "說了算 — 亥伯龍 · Doggy Chang · 7type", credit: "COLOR" },
     { id: "AuaEpljXpR8", work: "B.A.C 亚洲大尾 — 7type & 66 & CHE", credit: "COLOR" },
     { id: "0jyUrpj5Jiw", work: "DaLow — 大樓DaLow ft. C Grass", credit: "COLOR" },
-    { id: "kL8_Sk0JmKM", work: "記住你要快樂 — 帝仰 tiang", credit: "DIR · COLOR" },
     { id: "J-BIhdj-4oM", work: "Badass Dance — 大樓DaLow ft. Aiken", credit: "LIGHTING" },
     { id: "BbDtN119tts", work: "DaLow — 大樓DaLow ft. C Grass", credit: "LIGHTING" },
     { id: "xNg4Vupy8_0", work: "中部第一深情 — 66 · 中部管轄區", credit: "LIGHTING" },

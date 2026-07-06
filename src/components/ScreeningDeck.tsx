@@ -28,6 +28,7 @@ export interface DeckWork {
   awards?: { title: string; org: string }[];
   tools?: string;      // AIGC tool label
   views?: string;      // real view count label, e.g. "22.7萬 views"
+  hot?: boolean;       // 熱推 featured pick — gold star badge
 }
 export interface DeckCard {
   act: string;         // "Ⅰ" — act numeral
@@ -173,6 +174,11 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
         <div className="absolute left-4 right-4 md:left-14 md:right-14 bottom-8 md:bottom-12 z-[3] flex flex-col md:flex-row md:items-end gap-4 md:gap-10 pointer-events-none">
           <div className="flex-1 min-w-0">
             <p className="font-mono-label text-[9px] tracking-[0.34em] mb-2" style={{ color: "rgba(255,225,140,0.75)" }}>
+              {lead.hot && (
+                <span className="mr-3 px-2 py-0.5" style={{ background: "rgba(255,217,100,0.16)", border: "1px solid rgba(255,217,100,0.5)", borderRadius: 999, color: "rgba(255,225,140,1)" }}>
+                  ★ 熱推
+                </span>
+              )}
               FILM {String(index + 1).padStart(2, "0")}
             </p>
             <h3 className="font-display leading-none" style={{ fontSize: "clamp(2.2rem, 6.5vw, 5.5rem)", color: "var(--text)", letterSpacing: "0.01em", textShadow: "0 2px 30px rgba(0,0,0,0.6)" }}>
