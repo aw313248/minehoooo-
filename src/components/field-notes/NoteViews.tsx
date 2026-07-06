@@ -30,8 +30,8 @@ export default function NoteViews({ slug, increment = false, style }: {
   if (views === null) return null;
   return (
     <span style={{
-      fontFamily: "var(--font-space-mono),monospace", fontSize: 10,
-      letterSpacing: "0.18em", color: "rgba(255,225,140,0.75)", ...style,
+      fontFamily: "var(--font-space-mono),monospace", fontSize: 12.5, fontWeight: 700,
+      letterSpacing: "0.14em", color: "rgba(255,225,140,0.95)", ...style,
     }}>
       {views.toLocaleString()} VIEWS
     </span>

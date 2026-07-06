@@ -105,7 +105,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
       }}>
 
       {/* backdrop(s) */}
-      <div style={{ position: "absolute", inset: 0, display: "flex", gap: multi ? 2 : 0 }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: multi ? "column" : "row", gap: multi ? 2 : 0 }}>
         {card.works.map(w => (
           <a key={w.id} href={`https://www.youtube.com/watch?v=${w.id}`} target="_blank" rel="noopener noreferrer"
             className="group relative block"
@@ -115,15 +115,18 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
             <img src={`https://img.youtube.com/vi/${w.id}/maxresdefault.jpg`} alt={`${w.title} 劇照`}
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] group-hover:scale-[1.04]"
-              style={{ filter: multi ? "brightness(0.55) saturate(0.92)" : "brightness(0.46) saturate(0.92) contrast(1.04)" }}
+              style={{ filter: multi ? "brightness(0.6) saturate(0.95)" : "brightness(0.46) saturate(0.92) contrast(1.04)" }}
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${w.id}/mqdefault.jpg`; }} />
             {/* per-panel caption in multi cards */}
             {multi && (
-              <div className="absolute left-3 right-3 bottom-3 z-[2]">
-                <p className="text-[12px] md:text-[14px] font-medium leading-tight" style={{ color: "var(--text)" }}>{w.title}</p>
-                <p className="font-mono-label text-[7.5px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
-                  {w.role}{w.tools ? ` · ${w.tools}` : ""}{w.views ? ` · ${w.views}` : ""}
-                </p>
+              <div className="absolute left-4 md:left-8 bottom-3 md:bottom-4 right-4 z-[2] flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-[14px] md:text-[18px] font-medium leading-tight" style={{ color: "var(--text)", textShadow: "0 1px 10px rgba(0,0,0,0.7)" }}>{w.title}</p>
+                  <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
+                    {w.artist ? `${w.artist} · ` : ""}{w.role}{w.tools ? ` · ${w.tools}` : ""}
+                  </p>
+                </div>
+                {w.views && <span className="font-mono-label text-[9px] tracking-[0.16em] shrink-0" style={{ color: "rgba(255,225,140,0.85)" }}>{w.views}</span>}
               </div>
             )}
             {/* hover play */}
