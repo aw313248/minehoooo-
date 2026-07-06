@@ -15,6 +15,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
+
 /* ─── Types ─── */
 export interface DeckWork {
   id: string;          // YouTube id
@@ -90,6 +91,11 @@ const smooth = (v: number) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); 
 /* ─── One card ─── */
 function Card({ card, index }: { card: DeckCard; index: number }) {
   const multi = card.works.length > 1;
+  /* hover 2.5s → 靜音自動播放預覽（Oscar 點名保留的功能）*/
+  const [previewId, setPreviewId] = useState<string | null>(null);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const startHover = (id: string) => { hoverTimer.current = setTimeout(() => setPreviewId(id), 2500); };
+  const endHover = () => { if (hoverTimer.current) clearTimeout(hoverTimer.current); setPreviewId(null); };
   const lead = card.works[0];
   const crowned = lead.awards && lead.awards.length > 0;
 
@@ -110,6 +116,8 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
           <a key={w.id} href={`https://www.youtube.com/watch?v=${w.id}`} target="_blank" rel="noopener noreferrer"
             className="group relative block"
             style={{ flex: 1, minWidth: 0, overflow: "hidden" }}
+            onMouseEnter={() => startHover(w.id)}
+            onMouseLeave={endHover}
             aria-label={`觀看 ${w.title}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={`https://img.youtube.com/vi/${w.id}/maxresdefault.jpg`} alt={`${w.title} 劇照`}
@@ -117,6 +125,14 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.4s] group-hover:scale-[1.04]"
               style={{ filter: multi ? "brightness(0.6) saturate(0.95)" : "brightness(0.46) saturate(0.92) contrast(1.04)" }}
               onError={e => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${w.id}/mqdefault.jpg`; }} />
+            {previewId === w.id && (
+              <iframe
+                src={`https://www.youtube.com/embed/${w.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=5`}
+                className="absolute"
+                style={{ inset: "-12%", width: "124%", height: "124%", border: "none", pointerEvents: "none", filter: "brightness(0.75)" }}
+                allow="autoplay; encrypted-media"
+                title={`${w.title} 預覽`} />
+            )}
             {/* per-panel caption in multi cards */}
             {multi && (
               <>

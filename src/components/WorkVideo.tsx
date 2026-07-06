@@ -427,7 +427,9 @@ const DECK_CARDS: DeckCard[] = [
 ];
 
 /* 其餘場次 — 乾淨的資訊清單（放映到梅辦法收尾，避免疲勞）*/
-const PROGRAMME_REST: { id: string; title: string; artist: string; role: string; note?: string; tag: string }[] = [
+const PROGRAMME_REST: { id: string; title: string; artist: string; role: string; note?: string; tag: string; local?: string; poster?: string }[] = [
+  { id: "kunni", local: "/works/kunni-dance.mp4", poster: "/works/kunni-dance-poster.jpg",
+    title: "昆尼舞蹈影像 VTube", artist: "昆尼", role: "DIR · DP · COLOR", note: "舞蹈影像作品 · 4K 拍攝", tag: "DANCE FILM" },
   { id: "Ou1y4dnFrsU", title: "台中好聖誕", artist: "台中市政府", role: "DIR · DP", tag: "COMMERCIAL" },
   { id: "A_2zpqzw6Yw", title: "柏朗克商案 FINAL", artist: "柏朗克", role: "DP", tag: "COMMERCIAL" },
   { id: "PKMi1HPRX-E", title: "V6｜燈光、調光", artist: "V6", role: "LIGHTING · COLOR", tag: "COMMERCIAL" },
@@ -1339,11 +1341,11 @@ export default function WorkVideo() {
                 <p className="font-mono-label text-[9px] tracking-[0.4em] mb-5 mt-10 text-center" style={{ color: "rgba(255,225,140,0.7)" }}>ALSO SHOWING 其餘場次</p>
                 <div className="flex flex-col">
                   {PROGRAMME_REST.map(r => (
-                    <a key={`${dup}-${r.id}-${r.tag}`} href={`https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
+                    <a key={`${dup}-${r.id}-${r.tag}`} href={r.local ?? `https://www.youtube.com/watch?v=${r.id}`} target="_blank" rel="noopener noreferrer"
                       className="group flex items-center gap-4 py-3 border-b" style={{ borderColor: "var(--white-ghost)" }}>
                       <div className="relative shrink-0 overflow-hidden" style={{ width: 96, aspectRatio: "16/9", borderRadius: 6, background: "#0a0a0c" }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={`https://img.youtube.com/vi/${r.id}/mqdefault.jpg`} alt={`${r.title} 縮圖`} loading="lazy"
+                        <img src={r.poster ?? `https://img.youtube.com/vi/${r.id}/mqdefault.jpg`} alt={`${r.title} 縮圖`} loading="lazy"
                           className="absolute inset-0 w-full h-full object-cover" style={{ filter: "brightness(0.85)" }} />
                       </div>
                       <div className="flex-1 min-w-0 text-left">

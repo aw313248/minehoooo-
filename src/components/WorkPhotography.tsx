@@ -438,6 +438,61 @@ export default function WorkPhotography() {
             MINEH4O · {cat.en.toUpperCase()}
           </p>
         </div>
+
+      {/* ══ SELECTED — 僑泰55校慶 × 平面設計（花式亂序馬賽克 · 原始尺寸照片）══ */}
+      <div className="px-4 md:px-14 py-16 border-t" style={{ borderColor: "var(--border)" }}>
+        <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
+          <div>
+            <p className="font-mono-label text-[8px] tracking-[0.42em] mb-2" style={{ color: "rgba(255,225,140,0.75)" }}>SELECTED SET</p>
+            <h2 className="font-display leading-none" style={{ fontSize: "clamp(1.8rem, 4.2vw, 3.6rem)", color: "var(--text)" }}>
+              僑泰 55 週年校慶
+            </h2>
+            <p className="font-mono-label text-[9px] tracking-[0.28em] mt-2" style={{ color: "var(--text-3)" }}>
+              EVENT PHOTOGRAPHY · 10 SELECTS ＋ ALBUM ARTWORK
+            </p>
+          </div>
+          <p className="font-mono-label text-[8px] tracking-[0.22em] text-right" style={{ color: "var(--white-dim)" }}>
+            李多慧出席現場 · 全原始尺寸
+          </p>
+        </div>
+
+        {/* CSS columns 亂序馬賽克 — 自然比例、交錯縮放、毛玻璃 hover 標籤 */}
+        <div className="ct55-mosaic" style={{ columnGap: 14 }}>
+          {/* 專輯封面 — 平面設計 feature，插在照片流裡 */}
+          <figure className="ct55-item m-0 mb-3.5 relative overflow-hidden group" style={{ borderRadius: 14, breakInside: "avoid" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/photo/album-thousand-mountains.jpg" alt="一千座山一千條河 專輯封面設計" loading="lazy"
+              className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]" />
+            <figcaption className="ct55-cap">
+              <span>一千座山一千條河 — 專輯封面設計</span>
+              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.24em", color: "rgba(255,225,140,0.9)" }}>GRAPHIC DESIGN · 陳卓專輯</span>
+            </figcaption>
+          </figure>
+          {Array.from({ length: 10 }, (_, i) => (
+            <figure key={i} className="ct55-item m-0 mb-3.5 relative overflow-hidden group"
+              style={{ borderRadius: 14, breakInside: "avoid", transform: `rotate(${(i % 3 - 1) * 0.6}deg)` }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`/photo/chiaotai55/ct55-${String(i + 1).padStart(2, "0")}.jpg`} alt={`僑泰55校慶 精選 ${i + 1}`} loading="lazy"
+                className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]" />
+              <figcaption className="ct55-cap">
+                <span>僑泰 55 週年校慶</span>
+                <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.24em", color: "rgba(255,255,255,0.6)" }}>SELECT {String(i + 1).padStart(2, "0")} / 10</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+        <style>{`
+          .ct55-mosaic { columns: 1; }
+          @media (min-width: 640px) { .ct55-mosaic { columns: 2; } }
+          @media (min-width: 1024px) { .ct55-mosaic { columns: 3; } }
+          .ct55-cap { position: absolute; left: 10px; right: 10px; bottom: 10px; display: flex; flex-direction: column; gap: 2px;
+            background: rgba(10,10,12,0.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; padding: 9px 12px; font-size: 12px; color: rgba(255,255,255,0.92);
+            opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s cubic-bezier(.16,1,.3,1); }
+          .ct55-item:hover .ct55-cap { opacity: 1; transform: translateY(0); }
+        `}</style>
+      </div>
+
       </section>
     </>
   );
