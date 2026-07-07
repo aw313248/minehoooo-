@@ -208,7 +208,8 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
               autoPlay muted loop playsInline preload="metadata"
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
-                filter: "brightness(0.42) saturate(0.9) contrast(1.05)",
+                // 夜景片本身已暗，0.42 會壓成全黑 — 提到 0.62，標題對比交給下方 readability wash
+                filter: "brightness(0.62) saturate(0.92) contrast(1.04)",
                 // stagger the middle panel slightly — breaks the grid, adds depth
                 transform: i === 1 ? "scale(1.06)" : "none",
               }}
@@ -788,7 +789,9 @@ function CityPortrait({ videos, seed }: { videos: string[]; seed: number }) {
     /* eslint-disable-next-line jsx-a11y/media-has-caption */
     <video key={videos[i]} src={videos[i]} autoPlay muted loop playsInline preload="metadata"
       className="absolute inset-0 w-full h-full object-cover"
-      style={{ filter: "brightness(0.5) saturate(0.9)", opacity: visible ? 1 : 0, transition: "opacity .45s ease" }} />
+      /* 城市卡是「這趟去了哪」的主秀 — 影片要看得見。夜景片本身已暗，不再壓亮度，
+         文字對比交給 eb-ns-overlay 底部漸層 */
+      style={{ filter: "brightness(0.95) saturate(0.98)", opacity: visible ? 1 : 0, transition: "opacity .45s ease" }} />
   );
 }
 
