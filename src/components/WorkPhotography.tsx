@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
+import WorkDesign from "@/components/WorkDesign";
 import { WordReveal } from "@/components/WordReveal";
 import { photoCategories, type PhotoCategory } from "@/data/photos";
 import { useLang } from "@/contexts/LangContext";
@@ -439,7 +440,10 @@ export default function WorkPhotography() {
           </p>
         </div>
 
-      {/* ══ SELECTED — 僑泰55校慶 × 平面設計（花式亂序馬賽克 · 原始尺寸照片）══ */}
+      {/* ══ 平面設計 — WorkDesign（專輯封面 + petit/Probeer/PARK2/婚攝）══ */}
+      <WorkDesign />
+
+      {/* ══ SELECTED — 僑泰55校慶（花式亂序馬賽克）══ */}
       <div className="px-4 md:px-14 py-16 border-t" style={{ borderColor: "var(--border)" }}>
         <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
           <div>
@@ -448,7 +452,7 @@ export default function WorkPhotography() {
               僑泰 55 週年校慶
             </h2>
             <p className="font-mono-label text-[9px] tracking-[0.28em] mt-2" style={{ color: "var(--text-3)" }}>
-              EVENT PHOTOGRAPHY · 10 SELECTS ＋ ALBUM ARTWORK
+              EVENT PHOTOGRAPHY · 10 SELECTS
             </p>
           </div>
           <p className="font-mono-label text-[8px] tracking-[0.22em] text-right" style={{ color: "var(--white-dim)" }}>
@@ -458,16 +462,6 @@ export default function WorkPhotography() {
 
         {/* CSS columns 亂序馬賽克 — 自然比例、交錯縮放、毛玻璃 hover 標籤 */}
         <div className="ct55-mosaic" style={{ columnGap: 14 }}>
-          {/* 專輯封面 — 平面設計 feature，插在照片流裡 */}
-          <figure className="ct55-item m-0 mb-3.5 relative overflow-hidden group" style={{ borderRadius: 14, breakInside: "avoid" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/photo/album-thousand-mountains.jpg" alt="一千座山一千條河 專輯封面設計" loading="lazy"
-              className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]" />
-            <figcaption className="ct55-cap">
-              <span>一千座山一千條河 — 專輯封面設計</span>
-              <span className="font-mono-label" style={{ fontSize: 8, letterSpacing: "0.24em", color: "rgba(255,225,140,0.9)" }}>GRAPHIC DESIGN · 陳卓專輯</span>
-            </figcaption>
-          </figure>
           {Array.from({ length: 10 }, (_, i) => (
             <figure key={i} className="ct55-item m-0 mb-3.5 relative overflow-hidden group"
               style={{ borderRadius: 14, breakInside: "avoid", transform: `rotate(${(i % 3 - 1) * 0.6}deg)` }}>
