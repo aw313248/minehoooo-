@@ -74,7 +74,7 @@ export const fieldNotes: FieldNote[] = [
     category:      "TRAVEL",
     categoryLabel: "TRAVEL · VIENNA",
     tags:          ["維也納", "Vienna", "Griechenbeisl", "Mark Twain Room", "旅行筆記", "歐洲旅行", "Reels 拆解"],
-    excerpt:       "吃到一半我突然想離開座位，在餐廳裡亂逛。店員沒有阻止我，然後我就走進了一間整面牆都是簽名的房間——Mark Twain Room。這篇筆記有這間店的位置、官方歷史的中文整理，還有我怎麼把一段根本沒拍完整的素材剪成影片",
+    excerpt:       "吃到一半我突然想離開座位，在餐廳裡亂逛。服務人員沒有攔我，然後我就走進了一間整面牆都是簽名的房間——Mark Twain Room。正片影片、這間店的位置、五百年官方歷史的中文整理，全部都在這篇筆記",
     heroImage:     "/field-notes/griechenbeisl/wall-signatures.avif",
     heroVideos:    [
       { src: "/field-notes/griechenbeisl/hero-entrance.mp4", label: "FLEISCHMARKT 11" },

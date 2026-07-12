@@ -978,35 +978,40 @@ const TL_TAG: Record<string, { label: string; color: string }> = {
 function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
   return (
     <div className="eb-tl">
-      {events.map((e, i) => (
-        <div key={i} className="eb-tl-row">
-          <div className="eb-tl-rail" aria-hidden>
-            <span className="eb-tl-dot" />
-            {i < events.length - 1 && <span className="eb-tl-line" />}
-          </div>
-          <div className="eb-tl-body">
-            <div className="eb-tl-head">
-              <span className="eb-tl-year">{e.year}</span>
-              {e.tag && TL_TAG[e.tag] && (
-                <span className="eb-tl-tag" style={{ color: TL_TAG[e.tag].color, borderColor: TL_TAG[e.tag].color.replace("0.8", "0.3") }}>
-                  {TL_TAG[e.tag].label}
-                </span>
+      <div className="eb-tl-track">
+        {events.map((e, i) => (
+          <div key={i} className="eb-tl-row" data-hl={e.highlight ? "true" : undefined}>
+            <div className="eb-tl-rail" aria-hidden>
+              <span className="eb-tl-dot" />
+              {i < events.length - 1 && <span className="eb-tl-line" />}
+            </div>
+            <div className="eb-tl-body">
+              <div className="eb-tl-head">
+                <span className="eb-tl-year">{e.year}</span>
+                {e.tag && TL_TAG[e.tag] && (
+                  <span className="eb-tl-tag" style={{ color: TL_TAG[e.tag].color, borderColor: TL_TAG[e.tag].color.replace("0.8", "0.3") }}>
+                    {TL_TAG[e.tag].label}
+                  </span>
+                )}
+              </div>
+              <p className="eb-tl-title">{e.title}</p>
+              {e.desc && <p className="eb-tl-desc">{e.desc}</p>}
+              {e.img && (
+                <figure className="eb-tl-fig">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={e.img.src} alt={e.img.alt} loading="lazy" className="eb-tl-img" />
+                  {e.img.caption && <figcaption className="eb-tl-cap">{e.img.caption}</figcaption>}
+                </figure>
               )}
             </div>
-            <p className="eb-tl-title">{e.title}</p>
-            {e.desc && <p className="eb-tl-desc">{e.desc}</p>}
-            {e.img && (
-              <figure className="eb-tl-fig">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={e.img.src} alt={e.img.alt} loading="lazy" className="eb-tl-img" />
-                {e.img.caption && <figcaption className="eb-tl-cap">{e.img.caption}</figcaption>}
-              </figure>
-            )}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
+      <p className="eb-tl-hint" aria-hidden>→ 橫向滑動看完五百年</p>
       <style>{`
         .eb-tl { margin: 28px 0; }
+        /* ── 手機：直向（預設）── */
+        .eb-tl-track { display: flex; flex-direction: column; }
         .eb-tl-row { display: flex; gap: 18px; }
         .eb-tl-rail { display: flex; flex-direction: column; align-items: center; width: 12px; flex-shrink: 0; padding-top: 7px; }
         .eb-tl-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,225,140,0.9); box-shadow: 0 0 10px rgba(255,225,140,0.35); flex-shrink: 0; }
@@ -1020,6 +1025,25 @@ function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
         .eb-tl-fig { margin: 12px 0 0; }
         .eb-tl-img { display: block; width: 100%; max-width: 420px; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.09); background: #0a0a0c; }
         .eb-tl-cap { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.32); margin-top: 7px; }
+        .eb-tl-hint { display: none; }
+        /* highlight — 手機版給卡片底 */
+        .eb-tl-row[data-hl="true"] .eb-tl-body { background: rgba(255,225,140,0.05); border: 1px solid rgba(255,225,140,0.22); border-radius: 10px; padding: 14px 16px 16px; margin-bottom: 26px; }
+        .eb-tl-row[data-hl="true"] .eb-tl-title { font-size: 17px; font-weight: 600; color: rgba(255,235,180,0.98); }
+        .eb-tl-row[data-hl="true"] .eb-tl-dot { width: 12px; height: 12px; box-shadow: 0 0 16px rgba(255,225,140,0.6); }
+
+        /* ── 桌機：橫向卷軸 ── */
+        @media (min-width: 681px) {
+          .eb-tl { margin: 28px -24px; padding: 0 24px; }
+          .eb-tl-track { flex-direction: row; overflow-x: auto; padding: 6px 2px 16px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: rgba(255,225,140,0.3) transparent; }
+          .eb-tl-row { flex: 0 0 248px; flex-direction: column; gap: 0; scroll-snap-align: start; }
+          .eb-tl-row[data-hl="true"] { flex-basis: 292px; }
+          .eb-tl-rail { flex-direction: row; width: auto; height: 13px; padding: 0; align-items: center; }
+          .eb-tl-line { width: auto; height: 1px; flex: 1; margin: 0 10px 0 6px; background: linear-gradient(to right, rgba(255,225,140,0.35), rgba(255,255,255,0.1)); }
+          .eb-tl-body { padding: 14px 20px 0 0; }
+          .eb-tl-row[data-hl="true"] .eb-tl-body { margin: 14px 20px 0 0; padding: 14px 16px 16px; }
+          .eb-tl-img { max-width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+          .eb-tl-hint { display: block; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; color: rgba(255,255,255,0.3); text-align: right; margin: 6px 0 0; }
+        }
       `}</style>
     </div>
   );
@@ -1128,6 +1152,43 @@ function CommentCTABlock({ label, sub }: Extract<Block, { type: "comment-cta" }>
   );
 }
 
+/* YouTube 嵌入 — 點縮圖才載入播放器，載入後有完整音量控制 */
+function YouTubeBlock({ id, title, aspect = "16/9" }: Extract<Block, { type: "youtube" }>) {
+  const [play, setPlay] = useState(false);
+  return (
+    <div className="eb-yt">
+      <div className="eb-yt-wrap" style={{ aspectRatio: aspect }}>
+        {play ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+            title={title}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
+        ) : (
+          <button type="button" className="eb-yt-load" onClick={() => setPlay(true)} aria-label={`播放 ${title}`}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={title} className="eb-yt-thumb" loading="lazy" />
+            <span className="eb-yt-play" aria-hidden>▶</span>
+            <span className="eb-yt-title">{title}</span>
+          </button>
+        )}
+      </div>
+      <style>{`
+        .eb-yt { margin: 24px 0; }
+        .eb-yt-wrap { position: relative; width: 100%; border-radius: 10px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.09); }
+        .eb-yt-load { position: absolute; inset: 0; border: none; padding: 0; cursor: pointer; background: #000; }
+        .eb-yt-thumb { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.72; transition: opacity .2s; }
+        .eb-yt-load:hover .eb-yt-thumb { opacity: 0.9; }
+        .eb-yt-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 62px; height: 62px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(0,0,0,0.65); border: 1px solid rgba(255,225,140,0.55); color: rgba(255,225,140,0.95); font-size: 20px; padding-left: 4px; transition: background .2s; }
+        .eb-yt-load:hover .eb-yt-play { background: rgba(255,225,140,0.2); }
+        .eb-yt-title { position: absolute; left: 14px; bottom: 12px; font-family: var(--font-readex),sans-serif; font-size: 12.5px; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); padding: 6px 10px; border-radius: 4px; }
+      `}</style>
+    </div>
+  );
+}
+
 /* Sources — 資料來源清單 */
 function SourcesBlock({ items }: Extract<Block, { type: "sources" }>) {
   return (
@@ -1187,6 +1248,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "info-card":     return <InfoCardBlock {...block} />;
     case "map-embed":     return <MapEmbedBlock {...block} />;
     case "comment-cta":   return <CommentCTABlock {...block} />;
+    case "youtube":       return <YouTubeBlock {...block} />;
     case "sources":       return <SourcesBlock {...block} />;
     default:              return null;
   }

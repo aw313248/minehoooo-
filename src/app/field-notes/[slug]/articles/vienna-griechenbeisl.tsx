@@ -19,8 +19,15 @@ const OFFICIAL_STORY = "https://www.griechenbeisl.at/our-story/";
 const blocks: Block[] = [
 
   /* ══════════════════════════════════════════════════════════════
-     00 · 開場
+     00 · 正片 + 開場
      ══════════════════════════════════════════════════════════════ */
+  {
+    type: "video-lazy",
+    src: `${GB}/final-reel.mp4`,
+    caption: "▶ 正片 — 我在維也納誤入的 500 年餐廳（62 秒，有聲音）",
+    aspectRatio: "9/16",
+    maxWidth: "320px",
+  },
   {
     type: "text",
     content: (
@@ -28,9 +35,9 @@ const blocks: Block[] = [
         <p key="1">先講結論，</p>
         <p key="2"><strong key="s">吃飯的時候，多起來走一走</strong></p>
         <p key="3">
-          這篇筆記有兩件事：
-          一間我意外走進去的五百年老餐廳，
-          還有一支「素材根本沒拍完整」的影片是怎麼剪出來的
+          上面那支影片就是這個故事的正片，
+          這篇筆記是它的完整背景：
+          店的位置、五百年的官方歷史、牆上每個名字的來歷
         </p>
       </>
     ),
@@ -250,36 +257,30 @@ const blocks: Block[] = [
       {
         year: "1447",
         title: "首次出現在文獻紀錄",
-        desc: "維基百科記載首次文獻提及是 1447 年——當時統治奧地利的是哈布斯堡的腓特烈三世，達文西還要再等 5 年才出生。官方自述至今服務約 550 年，是維也納最老的餐館",
+        desc: "當時統治奧地利的是哈布斯堡的腓特烈三世，達文西還要再等 5 年才出生。官方自述至今服務約 550 年",
         tag: "extra",
-        img: { src: "/field-notes/griechenbeisl/history/friedrich-iii.avif", alt: "腓特烈三世畫像", caption: "1447 年的奧地利統治者——腓特烈三世（Wikimedia Commons）" },
+        img: { src: "/field-notes/griechenbeisl/history/friedrich-iii.avif", alt: "腓特烈三世畫像", caption: "1447 年的奧地利統治者（Wikimedia Commons）" },
       },
       {
         year: "1440 年代",
         title: "同時期的歐洲：古騰堡剛發明活字印刷",
-        desc: "餐廳留下文獻紀錄的那幾年，古騰堡正在美因茲調試活字印刷機，1450 年代印出《古騰堡聖經》——資訊時代的第一聲",
+        desc: "餐廳留下文獻紀錄的那幾年，古騰堡正在調試活字印刷機——資訊時代的第一聲",
         tag: "extra",
         img: { src: "/field-notes/griechenbeisl/history/gutenberg-bible.avif", alt: "古騰堡聖經內頁", caption: "古騰堡聖經（Wikimedia Commons）" },
       },
       {
         year: "同一年的中國",
-        title: "明朝正統十二年",
-        desc: "鄭和下西洋已經結束 14 年，船隊解散、海禁開始，2 年後明英宗在土木堡之變被瓦剌俘虜——皇帝本人被抓走的那種年代",
+        title: "鄭和下西洋結束 14 年，船隊解散",
+        desc: "兩年後，明英宗御駕親征瓦剌，在土木堡兵敗被俘——皇帝本人被抓走的那種年代",
         tag: "extra",
-        img: { src: "/field-notes/griechenbeisl/history/ming-yingzong.avif", alt: "明英宗坐像", caption: "明英宗朱祁鎮——1449 年土木堡之變的主角（Wikimedia Commons）" },
-      },
-      {
-        year: "同一年的韓國",
-        title: "《訓民正音》剛頒布一年",
-        desc: "1446 年朝鮮世宗頒布《訓民正音》，韓文字才剛誕生——跟牆上那位簽韓文的先生，隔著五百多年剛好接上",
-        tag: "extra",
-        img: { src: "/field-notes/griechenbeisl/history/hunminjeongeum.avif", alt: "訓民正音書影", caption: "訓民正音——韓文字的出生證明（Wikimedia Commons）" },
+        img: { src: "/field-notes/griechenbeisl/history/ming-yingzong.avif", alt: "明英宗坐像", caption: "明英宗朱祁鎮——土木堡之變的主角（Wikimedia Commons）" },
       },
       {
         year: "同一年的台灣",
         title: "連一行文字紀錄都還沒有",
-        desc: "還要再等 177 年，荷蘭人才會在 1624 年登陸大員——這間餐廳開始寫進文獻的時候，我們的島連名字都還沒被寫下來",
+        desc: "還要再等 177 年，荷蘭人才會在 1624 年登陸大員。這間餐廳開始寫進文獻的時候，我們的島連名字都還沒被寫下來——人家在餐廳吃飯留簽名，我們連被寫都輪不到",
         tag: "extra",
+        highlight: true,
       },
       {
         year: "1492",
@@ -289,52 +290,29 @@ const blocks: Block[] = [
         img: { src: "/field-notes/griechenbeisl/history/columbus.avif", alt: "哥倫布登陸美洲油畫", caption: "哥倫布登陸美洲，1492（Wikimedia Commons）" },
       },
       {
-        year: "早期",
-        title: "曾用過不同店名",
-        desc: "先後叫過「黃鷹之家 Gasthaus zum gelben Adler」與「金天使之家 Gasthaus zum goldenen Engel」",
-        tag: "official",
-      },
-      {
-        year: "17 世紀",
-        title: "親愛的奧古斯丁在這裡演出",
-        desc: "民謠歌手 Der liebe Augustin 常帶著風笛在店裡表演，他的傳說留在下面第 07 章",
-        tag: "official",
-      },
-      {
         year: "17 世紀中葉",
         title: "得到現在的名字",
-        desc: "希臘商人在這一區聚居經商之後，店逐漸被維也納人叫成 Griechenbeisl——「希臘小酒館」，Beisl 是維也納方言的小酒館",
+        desc: "希臘商人在這一區聚居經商之後，店逐漸被叫成 Griechenbeisl——「希臘小酒館」",
         tag: "official",
-      },
-      {
-        year: "1852",
-        title: "維也納的第一杯皮爾森",
-        desc: "維基百科：店主 Leopold Schmied 把波希米亞的 Pilsner Urquell 引進維也納，當時是全新的東西——所以在這裡喝啤酒也算喝歷史",
-        tag: "extra",
       },
       {
         year: "19–20 世紀",
         title: "藝術家、學者、政治人物的聚會所",
-        desc: "官方列出的簽名包括：維也納市長 Karl Lueger、俾斯麥 Graf Bismarck、畫家席勒 Egon Schiele、泰山演員 Johnny Weissmüller",
+        desc: "官方列出的簽名：維也納市長 Karl Lueger、俾斯麥、畫家席勒 Egon Schiele、泰山演員 Johnny Weissmüller",
         tag: "official",
       },
       {
-        year: "名人食客",
+        year: "名人時刻",
         title: "馬克吐溫、貝多芬、莫札特都吃過",
-        desc: "官方網站首頁寫著 Mark Twain、Beethoven、Mozart、Pavarotti、Johnny Cash 曾在此用餐——注意這說的是「來吃過飯」，牆上哪些是本人親筆簽名要另外考證",
-        tag: "official",
-      },
-      {
-        year: "現在",
-        title: "一樓五廳、二樓三廳",
-        desc: "一樓有圓廳、齊特琴室、Karlsbader、Mark Twain Room 等五間，二樓有獵人廳、燭光廳、Biedermeier 廳，全部可以包場",
+        desc: "官方網站首頁：Mark Twain、Beethoven、Mozart、Pavarotti、Johnny Cash 曾在此用餐",
         tag: "official",
       },
       {
         year: "2026-06-12",
         title: "一個台中人吃飯吃到一半亂逛，誤入 Mark Twain Room",
-        desc: "本篇筆記的起點",
+        desc: "本篇筆記的起點——你手上這篇，就是這條時間軸最新的一格",
         tag: "oscar",
+        highlight: true,
       },
     ],
   },
@@ -439,11 +417,21 @@ const blocks: Block[] = [
     },
   },
   {
-    type: "cta",
-    message: "沒聽過帕華洛帝？先聽這首再回來",
-    sub: "Nessun Dorma《公主徹夜未眠》— 他最有名的一首，聽完你就懂為什麼全世界的牆都想要他的簽名",
-    cta: "YouTube 聽 Nessun Dorma",
-    href: "https://www.youtube.com/watch?v=8uqPnY5hQDs",
+    type: "text",
+    content: (
+      <>
+        <p key="1">
+          沒聽過帕華洛帝？直接在這裡聽——
+          Nessun Dorma《公主徹夜未眠》，他最有名的一首，
+          聽完你就懂為什麼全世界的牆都想要他的簽名
+        </p>
+      </>
+    ),
+  },
+  {
+    type: "youtube",
+    id: "8uqPnY5hQDs",
+    title: "Pavarotti — Nessun Dorma（官方現場）",
   },
   {
     type: "callout",
@@ -562,111 +550,14 @@ const blocks: Block[] = [
   },
 
   /* ══════════════════════════════════════════════════════════════
-     08 · Reels 拆解
-     ══════════════════════════════════════════════════════════════ */
-  {
-    type: "headline",
-    id:   "reels",
-    text: "這支影片是怎麼剪的",
-    sub:  "Reels Breakdown · 08",
-    num:  "08",
-  },
-  {
-    type: "text",
-    content: (
-      <>
-        <p key="1">
-          現在換帽子，
-          從旅行筆記切到創作者筆記
-        </p>
-        <p key="2">
-          它最大的問題是：
-          <strong key="s">我根本沒有拍攝計畫</strong>，
-          素材是吃飯吃到一半亂拍的，
-          最關鍵的「走進餐廳、一路探索」的運鏡畫面，完全不存在
-        </p>
-      </>
-    ),
-  },
-  {
-    type: "callout",
-    content: (
-      <>
-        <strong>Hook（開頭第一句）：</strong><br />
-        「我現在最後悔的，就是以前吃飯的時候不夠白目。」
-      </>
-    ),
-  },
-  {
-    type: "text",
-    content: (
-      <>
-        <p key="1"><strong key="s">資訊揭露順序，照懸念排：</strong></p>
-        <p key="2">
-          聚餐 → 突然想亂逛 → Google Maps 找不到入口 →
-          （這裡本來該有走路素材，偏偏沒有）→
-          直接跳進簽名房 → 現代名人 → 誤認李昌鈺 →
-          歷史名人揭露 → Mark Twain Room 點題 →
-          親愛的奧古斯丁收尾 → 導流到這篇筆記
-        </p>
-      </>
-    ),
-  },
-  {
-    type: "text",
-    content: (
-      <>
-        <p key="1"><strong key="s">素材缺一大塊，怎麼辦：</strong></p>
-        <p key="2">
-          我的原則是——
-          <strong key="s2">不生成假的紀錄畫面，不假裝有拍到</strong>，
-          缺的就承認缺，然後想辦法讓缺口變成故事的一部分
-        </p>
-      </>
-    ),
-  },
-  {
-    type: "callout",
-    content: (
-      <>
-        <strong>缺素材的五個解法：</strong><br />
-        1. 直接在旁白承認「偏偏沒有拍到」——誠實本身就有喜感<br />
-        2. 用 Google Maps 螢幕錄影補「地理懸念」：地圖上找不到門口，剛好接住敘事<br />
-        3. 靜態照片加推近、裁切、鏡頭晃動，配上空間音效，觀眾會自己腦補出空間感<br />
-        4. 用旁白把缺少的「行動」講出來，畫面只負責情緒<br />
-        5. 素材的缺口 = 故事的轉折點，「我沒拍到」比「我拍到了」更像真的
-      </>
-    ),
-  },
-  {
-    type: "text",
-    content: (
-      <>
-        <p key="1"><strong key="s">留言點，二選一：</strong></p>
-        <p key="2">
-          「你第一眼也有把他看成李昌鈺博士嗎？」
-          或
-          「有人看得出這到底是誰嗎？」
-        </p>
-        <p key="3"><strong key="s2">筆記導流（影片結尾唸的那句）：</strong></p>
-        <p key="4">
-          「我把這間店的位置、那個人的故事、官方歷史的中文整理，
-          還有我怎麼把一段根本沒拍完整的素材剪成影片，
-          全部放在首頁筆記了。」
-        </p>
-      </>
-    ),
-  },
-
-  /* ══════════════════════════════════════════════════════════════
-     09 · 資料來源
+     08 · 資料來源
      ══════════════════════════════════════════════════════════════ */
   {
     type: "headline",
     id:   "sources",
     text: "資料來源",
-    sub:  "Sources · 09",
-    num:  "09",
+    sub:  "Sources · 08",
+    num:  "08",
   },
   {
     type: "sources",
