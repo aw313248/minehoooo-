@@ -262,6 +262,7 @@ const blocks: Block[] = [
   },
   {
     type: "timeline",
+    epic: true,
     events: [
       {
         year: "約 1200",

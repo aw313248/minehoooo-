@@ -975,6 +975,118 @@ const TL_TAG: Record<string, { label: string; color: string }> = {
   extra:    { label: "資料補充", color: "rgba(140,190,255,0.8)" },
   oscar:    { label: "現場筆記", color: "rgba(140,220,160,0.85)" },
 };
+/* Epic Timeline — 全幅「500 年劇場」：滿版黑幕、巨型標題、橫向膠卷卡片
+   滾輪在條帶上直接橫推，手機用滑的；金色進度線從 1447 走到 2026 */
+function EpicTimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [prog, setProg] = useState(0);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollWidth - el.clientWidth;
+      setProg(max > 0 ? el.scrollLeft / max : 0);
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    // 桌機滾輪 → 橫向推進（到頭放行，讓頁面繼續往下）
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      const max = el.scrollWidth - el.clientWidth;
+      const atStart = el.scrollLeft <= 1 && e.deltaY < 0;
+      const atEnd = el.scrollLeft >= max - 1 && e.deltaY > 0;
+      if (max <= 0 || atStart || atEnd) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => { el.removeEventListener("scroll", onScroll); el.removeEventListener("wheel", onWheel); };
+  }, []);
+
+  return (
+    <section className="eb-tle" aria-label="五百年歷史時間軸">
+      {/* 幕前標題 */}
+      <div className="eb-tle-head">
+        <p className="eb-tle-eyebrow">1447 → 2026 · FIVE CENTURIES · ONE INN</p>
+        <p className="eb-tle-giant"><span className="eb-tle-500">500</span><span className="eb-tle-yr">年</span></p>
+        <p className="eb-tle-sub">一間還在營業的時光機 — 往右滑，穿越它的五個世紀</p>
+      </div>
+
+      {/* 膠卷條帶 */}
+      <div ref={trackRef} className="eb-tle-track">
+        {events.map((e, i) => (
+          <article key={i} className="eb-tle-card" data-hl={e.highlight ? "true" : undefined}>
+            <div className="eb-tle-card-head">
+              <span className="eb-tle-year">{e.year}</span>
+              {e.tag && TL_TAG[e.tag] && (
+                <span className="eb-tle-tag" style={{ color: TL_TAG[e.tag].color, borderColor: TL_TAG[e.tag].color.replace("0.8", "0.3") }}>
+                  {TL_TAG[e.tag].label}
+                </span>
+              )}
+            </div>
+            {e.img && (
+              <figure className="eb-tle-fig">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={e.img.src} alt={e.img.alt} loading="lazy" className="eb-tle-img" />
+                {e.img.caption && <figcaption className="eb-tle-cap">{e.img.caption}</figcaption>}
+              </figure>
+            )}
+            <p className="eb-tle-title">{e.title}</p>
+            {e.desc && <p className="eb-tle-desc">{e.desc}</p>}
+            <span className="eb-tle-idx" aria-hidden>{String(i + 1).padStart(2, "0")} / {String(events.length).padStart(2, "0")}</span>
+          </article>
+        ))}
+      </div>
+
+      {/* 進度線 1447 → 2026 */}
+      <div className="eb-tle-progress" aria-hidden>
+        <span className="eb-tle-p-start">1447</span>
+        <span className="eb-tle-p-rail"><span className="eb-tle-p-fill" style={{ transform: `scaleX(${Math.max(prog, 0.02)})` }} /></span>
+        <span className="eb-tle-p-end">2026</span>
+      </div>
+      <p className="eb-tle-hint" aria-hidden>⇢ 直接滾動或滑動，穿越五百年</p>
+
+      <style>{`
+        .eb-tle { position: relative; z-index: 6; margin: 56px calc(50% - 50vw); padding: 62px 0 46px;
+          background:
+            radial-gradient(ellipse 70% 50% at 18% 0%, rgba(255,205,110,0.07), transparent 62%),
+            radial-gradient(ellipse 60% 45% at 88% 100%, rgba(90,120,190,0.05), transparent 65%),
+            #060607;
+          border-top: 1px solid rgba(255,225,140,0.14); border-bottom: 1px solid rgba(255,255,255,0.06);
+          overflow: hidden; }
+        .eb-tle::before { content: "1447"; position: absolute; right: -1.5vw; top: -3vw; font-family: var(--font-space-mono),monospace; font-weight: 700; font-size: clamp(120px, 22vw, 340px); line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,225,140,0.07); pointer-events: none; user-select: none; }
+        .eb-tle-head { padding: 0 max(24px, calc(50vw - 350px)); margin-bottom: 34px; position: relative; }
+        .eb-tle-eyebrow { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,225,140,0.75); margin: 0 0 14px; }
+        .eb-tle-giant { margin: 0; line-height: 0.9; }
+        .eb-tle-500 { font-family: var(--font-readex),sans-serif; font-weight: 700; font-size: clamp(88px, 16vw, 190px); letter-spacing: -0.04em; color: rgba(255,255,255,0.97); text-shadow: 0 0 80px rgba(255,225,140,0.18); }
+        .eb-tle-yr { font-family: var(--font-readex),sans-serif; font-weight: 600; font-size: clamp(30px, 5vw, 60px); color: rgba(255,225,140,0.9); margin-left: 10px; }
+        .eb-tle-sub { font-family: var(--font-readex),sans-serif; font-size: clamp(13.5px, 1.6vw, 16px); font-weight: 300; color: rgba(255,255,255,0.55); margin: 16px 0 0; }
+        .eb-tle-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x proximity; padding: 4px max(24px, calc(50vw - 350px)) 22px; scrollbar-width: none; }
+        .eb-tle-track::-webkit-scrollbar { display: none; }
+        .eb-tle-card { position: relative; flex: 0 0 min(78vw, 390px); scroll-snap-align: start; background: rgba(255,255,255,0.028); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; padding: 22px 22px 44px; backdrop-filter: blur(6px); transition: border-color .25s, transform .25s; }
+        .eb-tle-card:hover { border-color: rgba(255,225,140,0.35); transform: translateY(-4px); }
+        .eb-tle-card[data-hl="true"] { flex-basis: min(84vw, 440px); background: rgba(255,225,140,0.055); border-color: rgba(255,225,140,0.4); box-shadow: 0 0 46px rgba(255,225,140,0.08) inset, 0 18px 50px rgba(0,0,0,0.4); }
+        .eb-tle-card-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .eb-tle-year { font-family: var(--font-readex),sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.02em; color: rgba(255,225,140,0.95); line-height: 1.05; }
+        .eb-tle-card[data-hl="true"] .eb-tle-year { font-size: clamp(28px, 3.4vw, 40px); color: rgba(255,235,180,1); }
+        .eb-tle-tag { font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; border: 1px solid; border-radius: 3px; padding: 2px 6px; }
+        .eb-tle-fig { margin: 0 0 14px; }
+        .eb-tle-img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; object-position: 50% 18%; border-radius: 9px; border: 1px solid rgba(255,255,255,0.1); background: #0a0a0c; }
+        .eb-tle-cap { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.16em; color: rgba(255,255,255,0.34); margin-top: 7px; line-height: 1.6; }
+        .eb-tle-title { font-family: var(--font-readex),sans-serif; font-size: 17px; font-weight: 600; color: rgba(255,255,255,0.95); margin: 0 0 8px; line-height: 1.4; }
+        .eb-tle-card[data-hl="true"] .eb-tle-title { font-size: 19px; }
+        .eb-tle-desc { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.58); margin: 0; line-height: 1.75; }
+        .eb-tle-idx { position: absolute; right: 18px; bottom: 14px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.24em; color: rgba(255,255,255,0.26); }
+        .eb-tle-progress { display: flex; align-items: center; gap: 14px; padding: 14px max(24px, calc(50vw - 350px)) 0; }
+        .eb-tle-p-start, .eb-tle-p-end { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: 0.2em; color: rgba(255,225,140,0.85); }
+        .eb-tle-p-rail { flex: 1; height: 2px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+        .eb-tle-p-fill { display: block; height: 100%; background: linear-gradient(to right, rgba(255,225,140,0.9), rgba(255,225,140,0.4)); transform-origin: left; transition: transform .15s linear; }
+        .eb-tle-hint { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.3em; color: rgba(255,255,255,0.3); text-align: center; margin: 12px 0 0; }
+      `}</style>
+    </section>
+  );
+}
+
 function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
   return (
     <div className="eb-tl">
@@ -1244,7 +1356,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "closing":       return <ClosingBlock {...block} />;
     case "faq":           return <FAQBlock {...block} />;
     case "related":       return <RelatedBlock {...block} />;
-    case "timeline":      return <TimelineBlock {...block} />;
+    case "timeline":      return block.epic ? <EpicTimelineBlock {...block} /> : <TimelineBlock {...block} />;
     case "info-card":     return <InfoCardBlock {...block} />;
     case "map-embed":     return <MapEmbedBlock {...block} />;
     case "comment-cta":   return <CommentCTABlock {...block} />;
