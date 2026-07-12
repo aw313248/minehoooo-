@@ -448,7 +448,7 @@ const blocks: Block[] = [
   {
     type: "headline",
     id:   "reels",
-    text: "這支影片是怎麼剪的",
+    text: "《Lost Frame》是怎麼剪的",
     sub:  "Reels Breakdown · 08",
     num:  "08",
   },
@@ -460,8 +460,14 @@ const blocks: Block[] = [
           現在換帽子，
           從旅行筆記切到創作者筆記
         </p>
+        <p key="1b">
+          這支影片我把它叫<strong key="t">《Lost Frame》</strong>——
+          frame 是影格，也是相框：
+          一層是「沒拍到的畫面」，
+          一層是牆上那個沒有答案的相框
+        </p>
         <p key="2">
-          這支 Reels 最大的問題是：
+          它最大的問題是：
           <strong key="s">我根本沒有拍攝計畫</strong>，
           素材是吃飯吃到一半亂拍的，
           最關鍵的「走進餐廳、一路探索」的運鏡畫面，完全不存在

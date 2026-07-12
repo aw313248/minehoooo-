@@ -73,7 +73,7 @@ export const fieldNotes: FieldNote[] = [
     date:          "2026-07-12",
     category:      "TRAVEL",
     categoryLabel: "TRAVEL · VIENNA",
-    tags:          ["維也納", "Vienna", "Griechenbeisl", "Mark Twain Room", "旅行筆記", "歐洲旅行", "Reels 拆解"],
+    tags:          ["維也納", "Vienna", "Griechenbeisl", "Mark Twain Room", "旅行筆記", "歐洲旅行", "Reels 拆解", "Lost Frame"],
     excerpt:       "吃到一半我突然想離開座位，在餐廳裡亂逛。店員沒有阻止我，然後我就走進了一間整面牆都是簽名的房間——Mark Twain Room。這篇筆記有這間店的位置、官方歷史的中文整理，還有我怎麼把一段根本沒拍完整的素材剪成影片",
     heroImage:     "/field-notes/griechenbeisl/ceiling-oscar.avif",
     heroVideos:    [
