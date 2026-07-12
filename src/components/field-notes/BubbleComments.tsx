@@ -20,6 +20,9 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
   const [name, setName] = useState("");
   const [state, setState] = useState<"idle" | "busy" | "done" | string>("idle");
   const [enabled, setEnabled] = useState(true);
+  // 手機版彈幕：一次一顆、可開關（記在 localStorage，預設開）
+  const [mobileOn, setMobileOn] = useState(true);
+  const [mIdx, setMIdx] = useState(0);
   const idx = useRef(0);
 
   useEffect(() => {
@@ -38,6 +41,21 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
   }, [slug]);
 
   const dismissInvite = () => { setInvited(false); localStorage.setItem("bubble-invited", "1"); };
+
+  useEffect(() => {
+    setMobileOn(localStorage.getItem("bubble-mobile") !== "0");
+  }, []);
+
+  // 手機彈幕輪播：每 6 秒換下一則
+  useEffect(() => {
+    if (!mobileOn || comments.length === 0) return;
+    const t = setInterval(() => setMIdx(i => (i + 1) % comments.length), 6000);
+    return () => clearInterval(t);
+  }, [mobileOn, comments.length]);
+
+  const toggleMobile = () => {
+    setMobileOn(v => { localStorage.setItem("bubble-mobile", v ? "0" : "1"); return !v; });
+  };
 
   const submit = async () => {
     if (text.trim().length < 2 || state === "busy") return;
@@ -85,6 +103,24 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
         </div>
       ))}
 
+      {/* ── 手機版彈幕：一次一顆，浮在膠囊上方，不可互動 ── */}
+      {enabled && mobileOn && !open && comments.length > 0 && (
+        <div key={`m-${mIdx}`} aria-hidden="true" className="md:hidden"
+          style={{
+            position: "fixed", right: 16, bottom: 78, zIndex: 44,
+            maxWidth: "72vw", pointerEvents: "none",
+            animation: "bubbleToast 6s ease both",
+          }}>
+          <div style={{
+            background: "rgba(20,20,24,0.6)", border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 14, padding: "8px 12px", backdropFilter: "blur(8px)",
+          }}>
+            <p style={{ margin: 0, fontSize: 12, lineHeight: 1.5, color: "rgba(255,255,255,0.75)" }}>{comments[mIdx].t}</p>
+            {comments[mIdx].n && <p style={{ margin: "3px 0 0", fontFamily: "var(--font-space-mono),monospace", fontSize: 8.5, letterSpacing: "0.12em", color: "rgba(255,225,140,0.6)" }}>— {comments[mIdx].n}</p>}
+          </div>
+        </div>
+      )}
+
       {/* ── 進場邀請 / 常駐膠囊 / 輸入框 — 右下角，可關 ── */}
       <div style={{ position: "fixed", right: 16, bottom: 16, zIndex: 45, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
         {open && (
@@ -125,12 +161,27 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
         )}
 
         {!invited && !open && (
-          <button onClick={() => setOpen(true)} aria-label="留言"
-            style={{
-              width: 44, height: 44, borderRadius: "50%", cursor: "pointer",
-              background: "rgba(12,12,15,0.9)", border: "1px solid rgba(255,225,140,0.4)",
-              backdropFilter: "blur(12px)", fontSize: 17,
-            }}>💬</button>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {enabled && comments.length > 0 && (
+              <button onClick={toggleMobile} className="md:hidden"
+                aria-label={mobileOn ? "關閉留言彈幕" : "開啟留言彈幕"} aria-pressed={mobileOn}
+                style={{
+                  fontFamily: "var(--font-space-mono),monospace", fontSize: 9, letterSpacing: "0.2em",
+                  color: mobileOn ? "rgba(255,225,140,0.9)" : "rgba(255,255,255,0.45)",
+                  background: "rgba(12,12,15,0.85)", backdropFilter: "blur(10px)",
+                  border: `1px solid ${mobileOn ? "rgba(255,225,140,0.35)" : "rgba(255,255,255,0.15)"}`,
+                  borderRadius: 999, padding: "7px 11px", cursor: "pointer",
+                }}>
+                彈幕 {mobileOn ? "開" : "關"}
+              </button>
+            )}
+            <button onClick={() => setOpen(true)} aria-label="留言"
+              style={{
+                width: 44, height: 44, borderRadius: "50%", cursor: "pointer",
+                background: "rgba(12,12,15,0.9)", border: "1px solid rgba(255,225,140,0.4)",
+                backdropFilter: "blur(12px)", fontSize: 17,
+              }}>💬</button>
+          </div>
         )}
         {open && (
           <button onClick={() => setOpen(false)} aria-label="收合留言"
@@ -139,6 +190,12 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
       </div>
 
       <style>{`
+        @keyframes bubbleToast {
+          0%   { opacity: 0; transform: translateY(10px); }
+          8%   { opacity: 1; transform: translateY(0); }
+          82%  { opacity: 1; }
+          100% { opacity: 0; transform: translateY(-6px); }
+        }
         @keyframes bubbleFloat {
           0%   { transform: translateY(0); opacity: 0; }
           6%   { opacity: 0.85; }
