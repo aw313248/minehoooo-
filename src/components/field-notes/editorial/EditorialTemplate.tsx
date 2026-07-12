@@ -332,8 +332,8 @@ function TextBlock({ content }: Extract<Block, { type: "text" }>) {
 function CalloutBlock({ content }: Extract<Block, { type: "callout" }>) {
   return (
     <div className="eb-callout">
-      {content}
-      <style>{`
+      <div key="callout-content">{content}</div>
+      <style key="callout-style">{`
         .eb-callout { background: rgba(255,225,140,0.06); border: 1px solid rgba(255,225,140,0.18); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-family: var(--font-readex),sans-serif; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,0.82); font-weight: 300; }
         .eb-callout strong { color: rgba(255,225,140,0.95); font-weight: 500; }
       `}</style>

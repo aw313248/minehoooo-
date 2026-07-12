@@ -12,6 +12,7 @@ import OriginalPrompt from "@/components/field-notes/OriginalPrompt";
 import MobileStickyBar from "@/components/field-notes/MobileStickyBar";
 import ToolBadge from "@/components/field-notes/ToolBadge";
 import ScrollUnlock from "@/components/ScrollUnlock";
+import BubbleComments from "@/components/field-notes/BubbleComments";
 import { fieldNotes, getFieldNote } from "@/data/fieldNotes";
 import {
   getPromptBuilder,
@@ -169,6 +170,7 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
       style={{ overflowY: "auto" }}
     >
       <ScrollUnlock />
+      <BubbleComments slug={note.slug} />
 
       {/* Grain */}
       <div

@@ -245,17 +245,11 @@ No on-screen text changes, no watermark. Audio added in post.`,
     type: "callout",
     content: (
       <ul style={{ paddingLeft: "1.2em", margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-        {[
-          "材質 — 玻璃、木頭、霧、水滴、蠟封",
-          "色彩 — 琥珀金、森林綠、冷霧藍",
-          "光影 — 燭光、自然光、聚光",
-          "空間 — 酒窖、高山、木桶",
-          "運鏡 — 慢推、Macro、Orbit",
-        ].map((item, i) => (
-          <li key={i} style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>
-            {item}
-          </li>
-        ))}
+        <li key="i0" style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>材質 — 玻璃、木頭、霧、水滴、蠟封</li>
+        <li key="i1" style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>色彩 — 琥珀金、森林綠、冷霧藍</li>
+        <li key="i2" style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>光影 — 燭光、自然光、聚光</li>
+        <li key="i3" style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>空間 — 酒窖、高山、木桶</li>
+        <li key="i4" style={{ fontFamily: "var(--font-readex),sans-serif", fontSize: 14, fontWeight: 300, color: "rgba(255,255,255,0.75)", lineHeight: 1.6, listStyleType: "none", paddingLeft: 0 }}>運鏡 — 慢推、Macro、Orbit</li>
       </ul>
     ),
   },
@@ -346,7 +340,7 @@ No on-screen text changes, no watermark. Audio added in post.`,
     content: (
       <>
         <strong key="s1">工作流程框架：</strong>
-        品牌內核 → 核心視覺 → 鏡頭節奏 → 光影設計 → Prompt → AI Generation
+        <span key="s2">品牌內核 → 核心視覺 → 鏡頭節奏 → 光影設計 → Prompt → AI Generation</span>
       </>
     ),
   },
