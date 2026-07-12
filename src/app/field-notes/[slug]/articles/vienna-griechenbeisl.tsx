@@ -94,9 +94,10 @@ const blocks: Block[] = [
       <>
         <strong>維也納料理順帶一提：</strong><br />
         我點的是洋蔥烤牛肉 Rostbraten 配烤馬鈴薯，
+        肉嫩到是我在歐洲餐廳裡少數吃到這麼嫩的，
         盤子邊緣就印著 Griechenbeisl 的字樣，
-        湯是清湯底的傳統前菜，
-        啤酒是奧地利的 Gösser
+        濃湯居然喝得到一點亞洲的味道，
+        另外蜂蜜啤酒超級好喝，這句沒有業配
       </>
     ),
   },
@@ -178,6 +179,8 @@ const blocks: Block[] = [
       { label: "類型",      value: "傳統維也納料理" },
       { label: "招牌廳室",  value: "Mark Twain Room 簽名廳" },
       { label: "自述歷史",  value: "已服務客人約 550 年（官方網站）" },
+      { label: "主餐價位",  value: "約 €20–34，甜點 €9–14（2026 官方菜單，未含服務費）" },
+      { label: "Google 評價", value: "4.5★ · 6,500+ 則（2026-07 查詢）" },
     ],
     links: [
       { label: "Google Maps", href: MAPS_PLACE },
@@ -218,10 +221,22 @@ const blocks: Block[] = [
     type: "timeline",
     events: [
       {
-        year: "約 550 年前",
-        title: "餐館開始服務客人",
-        desc: "官方網站自述「The Griechenbeisl has been serving guests for 550 years」，是維也納自稱最老的餐館 The oldest Inn in town",
-        tag: "official",
+        year: "約 1200",
+        title: "建築的骨架比餐廳更老",
+        desc: "維基百科：建築內含約 1200 年維也納舊城牆塔樓的殘構，14 世紀被併入哥德式住宅",
+        tag: "extra",
+      },
+      {
+        year: "1447",
+        title: "首次出現在文獻紀錄",
+        desc: "維基百科記載首次文獻提及是 1447 年——比哥倫布 1492 年抵達美洲還早 45 年，達文西還要再等 5 年才出生。官方自述至今服務約 550 年，是維也納最老的餐館",
+        tag: "extra",
+      },
+      {
+        year: "同場加映 1447",
+        title: "那一年，世界上其他地方",
+        desc: "古騰堡剛發明活字印刷；維也納聖史蒂芬大教堂南塔完工 14 年；中國是明朝正統十二年；韓國前一年剛頒布《訓民正音》——韓文字誕生，跟牆上那位簽韓文的先生剛好隔空接上",
+        tag: "extra",
       },
       {
         year: "早期",
@@ -236,10 +251,16 @@ const blocks: Block[] = [
         tag: "official",
       },
       {
-        year: "希臘商人時代",
+        year: "17 世紀中葉",
         title: "得到現在的名字",
         desc: "希臘商人在這一區聚居經商之後，店逐漸被維也納人叫成 Griechenbeisl——「希臘小酒館」，Beisl 是維也納方言的小酒館",
         tag: "official",
+      },
+      {
+        year: "1852",
+        title: "維也納的第一杯皮爾森",
+        desc: "維基百科：店主 Leopold Schmied 把波希米亞的 Pilsner Urquell 引進維也納，當時是全新的東西——所以在這裡喝啤酒也算喝歷史",
+        tag: "extra",
       },
       {
         year: "19–20 世紀",
@@ -322,7 +343,10 @@ const blocks: Block[] = [
           <strong key="s">以下是我在現場照片裡自己辨認的，屬於個人判斷，歡迎指正：</strong>
         </p>
         <p key="2">
-          簽名牆上看得到日文簽名「山本耕史」「戶田惠梨香」，
+          簽名牆上看得到日文簽名「山本耕史」，
+          還有一個一開始被我認成戶田惠梨香的「戸田恵子」——
+          放大一看是三個字，
+          <strong key="k">是幫麵包超人配音超過三十年的那位戶田惠子</strong>，
           相框照片的部分有鋼琴家郎朗、米倉涼子、假屋崎省吾，
           還有更多我認不出來的人物
         </p>
@@ -344,6 +368,18 @@ const blocks: Block[] = [
       alt: "牆上的帕華洛帝簽名照與 Engelbert 相框",
       caption: "帕華洛帝的簽名照片，下面是 Engelbert 的簽名證書",
     },
+  },
+  {
+    type: "callout",
+    content: (
+      <>
+        <strong>誤認還不只一次：</strong><br />
+        牆上有一幅畫像，我一度以為是年輕的莫札特，
+        回來放大畫像下面的花體字——
+        Ignaz Czapka，1838 到 1848 年的維也納市長，
+        在這面牆上，連認錯人都會認錯得很有歷史
+      </>
+    ),
   },
 
   /* ══════════════════════════════════════════════════════════════
@@ -560,6 +596,8 @@ const blocks: Block[] = [
     items: [
       { label: "Griechenbeisl 官方網站 — Our Story", href: OFFICIAL_STORY, note: "餐廳歷史、曾用店名、命名由來、奧古斯丁、官方確認的簽名名單、廳室配置（本文 A 類資訊的唯一來源）" },
       { label: "Griechenbeisl 官方網站 — 首頁與 Impressum", href: OFFICIAL, note: "「最老餐館」自述、名人食客名單、地址 Fleischmarkt 11, 1010 Wien" },
+      { label: "Wikipedia — Griechenbeisl", href: "https://en.wikipedia.org/wiki/Griechenbeisl", note: "1447 首次文獻紀錄、約 1200 年塔樓殘構、1852 皮爾森引進、希臘商人 17 世紀中葉（資料補充類的來源）" },
+      { label: "Griechenbeisl 2026 官方菜單 PDF", href: "https://www.griechenbeisl.at/wp-content/uploads/2026/06/GB-Speisekarte-_-Pilze-2026.pdf", note: "價位區間依此整理" },
       { label: "Google Maps 商家頁", href: MAPS_PLACE, note: "位置、評分與營業資訊（會變動，以現場為準）" },
       { label: "Oscar 現場照片與影片（2026-06-12）", note: "簽名與相框人物辨認屬個人現場判斷（C 類），歡迎指正" },
       { label: "《Oh du lieber Augustin》民謠與奧古斯丁傳說", note: "民間傳說常見版本（B 類），本文以「傳說」描述，不當作史實" },
