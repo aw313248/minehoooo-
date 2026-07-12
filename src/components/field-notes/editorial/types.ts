@@ -64,6 +64,16 @@ export type Block =
   | { type: "next-stop";     cities: NextStopCity[] }
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }
+  // 歷史時間軸 — tag 區分：official 官方記載 / extra 資料補充 / oscar 現場筆記
+  | { type: "timeline";      events: { year: string; title: string; desc?: string; tag?: "official" | "extra" | "oscar" }[] }
+  // 可收藏的地點資料卡（含外部連結按鈕）
+  | { type: "info-card";     name: string; sub?: string; rows: { label: string; value: string }[]; links: { label: string; href: string }[]; footnote?: string }
+  // Google Maps 互動地圖 — 點擊才載入 iframe，不拖慢頁面
+  | { type: "map-embed";     src: string; title?: string; aspect?: string }
+  // 開啟留言泡泡輸入框的按鈕（配合文章內的留言點）
+  | { type: "comment-cta";   label: string; sub?: string }
+  // 資料來源清單
+  | { type: "sources";       items: { label: string; href?: string; note?: string }[] }
   | { type: "prompt-copy";   text: string; label?: string }
   | { type: "faq";           items: { q: string; a: string }[] }
   | { type: "related";       slugs: string[] };

@@ -26,6 +26,7 @@ import kinoContent from "./articles/kino-iphone-guide";
 import EditorialTemplate from "@/components/field-notes/editorial/EditorialTemplate";
 import kinoBlocks from "./articles/kino-iphone-guide-v2";
 import wuluBlocks from "./articles/wulu-concept-film";
+import viennaBlocks from "./articles/vienna-griechenbeisl";
 
 const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
@@ -43,6 +44,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const ogImage =
     slug === "seedance-aerial"
       ? "/field-notes/seedance-map-route/social-cover.jpg"
+      : slug === "vienna-griechenbeisl"
+      ? "/field-notes/griechenbeisl/og.jpg"
       : SOCIAL_COVER_DEFAULT;
   const socialTitle =
     slug === "seedance-aerial"
@@ -85,6 +88,7 @@ const EDITORIAL_CONTENT: Record<string, any> = {
 const EDITORIAL_V2_BLOCKS: Record<string, any[]> = {
   "kino-iphone-guide": kinoBlocks,
   "wulu-concept-film": wuluBlocks,
+  "vienna-griechenbeisl": viennaBlocks,
 };
 
 export default async function FieldNoteArticle({ params }: { params: Promise<{ slug: string }> }) {

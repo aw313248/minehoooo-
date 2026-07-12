@@ -969,6 +969,184 @@ function RelatedBlock({ slugs }: Extract<Block, { type: "related" }>) {
   );
 }
 
+/* Timeline — 垂直金線時間軸，標籤區分官方記載/資料補充/現場筆記 */
+const TL_TAG: Record<string, { label: string; color: string }> = {
+  official: { label: "官方記載", color: "rgba(255,225,140,0.85)" },
+  extra:    { label: "資料補充", color: "rgba(140,190,255,0.8)" },
+  oscar:    { label: "現場筆記", color: "rgba(140,220,160,0.85)" },
+};
+function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
+  return (
+    <div className="eb-tl">
+      {events.map((e, i) => (
+        <div key={i} className="eb-tl-row">
+          <div className="eb-tl-rail" aria-hidden>
+            <span className="eb-tl-dot" />
+            {i < events.length - 1 && <span className="eb-tl-line" />}
+          </div>
+          <div className="eb-tl-body">
+            <div className="eb-tl-head">
+              <span className="eb-tl-year">{e.year}</span>
+              {e.tag && TL_TAG[e.tag] && (
+                <span className="eb-tl-tag" style={{ color: TL_TAG[e.tag].color, borderColor: TL_TAG[e.tag].color.replace("0.8", "0.3") }}>
+                  {TL_TAG[e.tag].label}
+                </span>
+              )}
+            </div>
+            <p className="eb-tl-title">{e.title}</p>
+            {e.desc && <p className="eb-tl-desc">{e.desc}</p>}
+          </div>
+        </div>
+      ))}
+      <style>{`
+        .eb-tl { margin: 28px 0; }
+        .eb-tl-row { display: flex; gap: 18px; }
+        .eb-tl-rail { display: flex; flex-direction: column; align-items: center; width: 12px; flex-shrink: 0; padding-top: 7px; }
+        .eb-tl-dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,225,140,0.9); box-shadow: 0 0 10px rgba(255,225,140,0.35); flex-shrink: 0; }
+        .eb-tl-line { width: 1px; flex: 1; background: linear-gradient(to bottom, rgba(255,225,140,0.35), rgba(255,255,255,0.08)); margin-top: 4px; }
+        .eb-tl-body { padding-bottom: 26px; min-width: 0; }
+        .eb-tl-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .eb-tl-year { font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: 0.18em; color: rgba(255,225,140,0.9); }
+        .eb-tl-tag { font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; border: 1px solid; border-radius: 3px; padding: 2px 6px; }
+        .eb-tl-title { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.92); margin: 6px 0 0; line-height: 1.5; }
+        .eb-tl-desc { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.55); margin: 4px 0 0; line-height: 1.7; }
+      `}</style>
+    </div>
+  );
+}
+
+/* Info card — 可收藏的地點資料卡 */
+function InfoCardBlock({ name, sub, rows, links, footnote }: Extract<Block, { type: "info-card" }>) {
+  return (
+    <div className="eb-ic">
+      <div className="eb-ic-card">
+        <p className="eb-ic-badge">FIELD DATA · 地點資料</p>
+        <p className="eb-ic-name">{name}</p>
+        {sub && <p className="eb-ic-sub">{sub}</p>}
+        <div className="eb-ic-rule" aria-hidden />
+        <dl className="eb-ic-rows">
+          {rows.map((r) => (
+            <div key={r.label} className="eb-ic-row">
+              <dt>{r.label}</dt>
+              <dd>{r.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="eb-ic-links">
+          {links.map((l) => (
+            <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="eb-ic-btn">{l.label} ↗</a>
+          ))}
+        </div>
+        {footnote && <p className="eb-ic-foot">{footnote}</p>}
+      </div>
+      <style>{`
+        .eb-ic { margin: 24px 0; }
+        .eb-ic-card { background: #0d0d10; border: 1px solid rgba(255,225,140,0.16); border-radius: 12px; padding: 24px 26px; }
+        .eb-ic-badge { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.44em; text-transform: uppercase; color: rgba(255,225,140,0.6); margin: 0 0 12px; }
+        .eb-ic-name { font-family: var(--font-readex),sans-serif; font-size: clamp(22px,4vw,30px); font-weight: 600; letter-spacing: -0.01em; color: rgba(255,255,255,0.97); margin: 0; line-height: 1.15; }
+        .eb-ic-sub { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5); margin: 6px 0 0; }
+        .eb-ic-rule { height: 1px; background: rgba(255,255,255,0.07); margin: 16px 0; }
+        .eb-ic-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin: 0; }
+        .eb-ic-row dt { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.34); margin-bottom: 4px; }
+        .eb-ic-row dd { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85); margin: 0; line-height: 1.5; }
+        .eb-ic-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+        .eb-ic-btn { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,225,140,0.9); text-decoration: none; border: 1px solid rgba(255,225,140,0.3); border-radius: 3px; padding: 9px 14px; transition: color .15s, border-color .15s, background .15s; }
+        .eb-ic-btn:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.6); background: rgba(255,225,140,0.06); }
+        .eb-ic-foot { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); margin: 14px 0 0; line-height: 1.6; }
+        @media (max-width: 520px) { .eb-ic-rows { grid-template-columns: 1fr; } }
+      `}</style>
+    </div>
+  );
+}
+
+/* Map embed — 點擊才載入 Google Maps iframe，避免拖慢頁面 */
+function MapEmbedBlock({ src, title, aspect = "16/9" }: Extract<Block, { type: "map-embed" }>) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="eb-map">
+      <div className="eb-map-wrap" style={{ aspectRatio: aspect }}>
+        {loaded ? (
+          <iframe
+            src={src}
+            title={title ?? "Google Maps"}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        ) : (
+          <button type="button" className="eb-map-load" onClick={() => setLoaded(true)}>
+            <span className="eb-map-pin" aria-hidden>◉</span>
+            <span className="eb-map-lbl">{title ?? "載入互動地圖"}</span>
+            <span className="eb-map-sub">點一下載入 Google Maps</span>
+          </button>
+        )}
+      </div>
+      <style>{`
+        .eb-map { margin: 24px 0; }
+        .eb-map-wrap { position: relative; width: 100%; border-radius: 10px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.08); }
+        .eb-map-load { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; background: radial-gradient(ellipse 70% 60% at 50% 40%, rgba(255,225,140,0.05), transparent 70%), #0a0a0c; border: none; cursor: pointer; }
+        .eb-map-pin { font-size: 22px; color: rgba(255,225,140,0.8); }
+        .eb-map-lbl { font-family: var(--font-readex),sans-serif; font-size: 14px; color: rgba(255,255,255,0.85); }
+        .eb-map-sub { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+        .eb-map-load:hover .eb-map-lbl { color: rgba(255,225,140,0.95); }
+      `}</style>
+    </div>
+  );
+}
+
+/* Comment CTA — 打開右下角留言泡泡輸入框 */
+function CommentCTABlock({ label, sub }: Extract<Block, { type: "comment-cta" }>) {
+  return (
+    <div className="eb-cc">
+      <button
+        type="button"
+        className="eb-cc-btn"
+        onClick={() => window.dispatchEvent(new CustomEvent("bubble-comments:open"))}
+      >
+        <span aria-hidden>💬</span>
+        <span>{label}</span>
+      </button>
+      {sub && <p className="eb-cc-sub">{sub}</p>}
+      <style>{`
+        .eb-cc { margin: 20px 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .eb-cc-btn { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,225,140,0.08); border: 1px solid rgba(255,225,140,0.35); border-radius: 999px; padding: 11px 20px; cursor: pointer; font-family: var(--font-readex),sans-serif; font-size: 14px; color: rgba(255,255,255,0.92); transition: background .15s, border-color .15s; }
+        .eb-cc-btn:hover { background: rgba(255,225,140,0.14); border-color: rgba(255,225,140,0.6); }
+        .eb-cc-sub { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); margin: 0; }
+      `}</style>
+    </div>
+  );
+}
+
+/* Sources — 資料來源清單 */
+function SourcesBlock({ items }: Extract<Block, { type: "sources" }>) {
+  return (
+    <div className="eb-src">
+      <ol className="eb-src-list">
+        {items.map((s, i) => (
+          <li key={i} className="eb-src-item">
+            {s.href ? (
+              <a href={s.href} target="_blank" rel="noopener noreferrer" className="eb-src-link">{s.label} ↗</a>
+            ) : (
+              <span className="eb-src-label">{s.label}</span>
+            )}
+            {s.note && <span className="eb-src-note"> — {s.note}</span>}
+          </li>
+        ))}
+      </ol>
+      <style>{`
+        .eb-src { margin: 20px 0; }
+        .eb-src-list { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 10px; }
+        .eb-src-item { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.7; }
+        .eb-src-item::marker { font-family: var(--font-space-mono),monospace; font-size: 11px; color: rgba(255,225,140,0.6); }
+        .eb-src-link { color: rgba(255,255,255,0.8); text-decoration: none; border-bottom: 1px solid rgba(255,225,140,0.3); transition: color .15s, border-color .15s; }
+        .eb-src-link:hover { color: rgba(255,225,140,0.95); border-color: rgba(255,225,140,0.7); }
+        .eb-src-note { color: rgba(255,255,255,0.45); }
+      `}</style>
+    </div>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────
    Block dispatcher
    ───────────────────────────────────────────────────────────────── */
@@ -995,6 +1173,11 @@ function RenderBlock({ block }: { block: Block }) {
     case "closing":       return <ClosingBlock {...block} />;
     case "faq":           return <FAQBlock {...block} />;
     case "related":       return <RelatedBlock {...block} />;
+    case "timeline":      return <TimelineBlock {...block} />;
+    case "info-card":     return <InfoCardBlock {...block} />;
+    case "map-embed":     return <MapEmbedBlock {...block} />;
+    case "comment-cta":   return <CommentCTABlock {...block} />;
+    case "sources":       return <SourcesBlock {...block} />;
     default:              return null;
   }
 }
@@ -1012,7 +1195,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
     <>
       <EditorialAmbience />
       <ScrollProgress />
-      <BubbleComments slug={note.slug} />
+      <BubbleComments slug={note.slug} prompt={note.commentPrompt} />
 
       {/* Nav */}
       <header className="et-nav" aria-label="Article navigation">

@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 
 interface C { n?: string; t: string; ts: number }
 
-export default function BubbleComments({ slug }: { slug: string }) {
+export default function BubbleComments({ slug, prompt }: { slug: string; prompt?: string }) {
   const [comments, setComments] = useState<C[]>([]);
   const [open, setOpen] = useState(false);
   const [invited, setInvited] = useState(false);
@@ -31,7 +31,10 @@ export default function BubbleComments({ slug }: { slug: string }) {
       if (!localStorage.getItem("bubble-invited")) setInvited(true);
     }, 3000);
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) setEnabled(false);
-    return () => clearTimeout(t);
+    // 文章內的留言點按鈕可直接打開輸入框
+    const openFromArticle = () => { setOpen(true); setInvited(false); localStorage.setItem("bubble-invited", "1"); };
+    window.addEventListener("bubble-comments:open", openFromArticle);
+    return () => { clearTimeout(t); window.removeEventListener("bubble-comments:open", openFromArticle); };
   }, [slug]);
 
   const dismissInvite = () => { setInvited(false); localStorage.setItem("bubble-invited", "1"); };
@@ -89,7 +92,7 @@ export default function BubbleComments({ slug }: { slug: string }) {
             background: "rgba(12,12,15,0.92)", border: "1px solid rgba(255,225,140,0.3)",
             borderRadius: 14, padding: 14, width: 252, backdropFilter: "blur(16px)",
           }}>
-            <p style={{ margin: "0 0 8px", fontSize: 12, color: "rgba(255,255,255,0.85)" }}>留一句話，它會變成這頁的泡泡 ✦</p>
+            <p style={{ margin: "0 0 8px", fontSize: 12, color: "rgba(255,255,255,0.85)" }}>{prompt ?? "留一句話，它會變成這頁的泡泡 ✦"}</p>
             <input value={name} onChange={e => setName(e.target.value)} placeholder="暱稱（選填）" maxLength={16}
               style={{ width: "100%", boxSizing: "border-box", marginBottom: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, padding: "7px 10px", fontSize: 12, color: "#fff", outline: "none" }} />
             <textarea value={text} onChange={e => setText(e.target.value)} placeholder="最多 60 字" maxLength={60} rows={2}

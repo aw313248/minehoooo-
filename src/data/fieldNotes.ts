@@ -26,6 +26,7 @@ export interface FieldNote {
   articleType:   ArticleType;
   tool?:         string;        // only for "tool" articles
   triggerWord?:  string;        // IG/Threads bot keyword that links here
+  commentPrompt?: string;       // 留言泡泡輸入框的客製提問（預設「留一句話，它會變成這頁的泡泡」）
 }
 
 export const fieldNotes: FieldNote[] = [
@@ -60,6 +61,30 @@ export const fieldNotes: FieldNote[] = [
     readingTime:   5,
     articleType:   "editorial-v2",
     triggerWord:   "wulu",
+  },
+
+
+  // ── 旅行筆記（維也納 Griechenbeisl）──────────────────────────
+  {
+    slug:          "vienna-griechenbeisl",
+    title:         "我現在最後悔的，就是以前吃飯的時候不夠白目",
+    issue:         "002",
+    subtitle:      "我只是在維也納吃個飯，卻意外走進一間藏滿名人簽名的五百年老餐廳",
+    date:          "2026-07-12",
+    category:      "TRAVEL",
+    categoryLabel: "TRAVEL · VIENNA",
+    tags:          ["維也納", "Vienna", "Griechenbeisl", "Mark Twain Room", "旅行筆記", "歐洲旅行", "Reels 拆解"],
+    excerpt:       "吃到一半我突然想離開座位，在餐廳裡亂逛。店員沒有阻止我，然後我就走進了一間整面牆都是簽名的房間——Mark Twain Room。這篇筆記有這間店的位置、官方歷史的中文整理，還有我怎麼把一段根本沒拍完整的素材剪成影片",
+    heroImage:     "/field-notes/griechenbeisl/ceiling-oscar.avif",
+    heroVideos:    [
+      { src: "/field-notes/griechenbeisl/hero-entrance.mp4", label: "FLEISCHMARKT 11" },
+      { src: "/field-notes/griechenbeisl/hero-ceiling.mp4",  label: "MARK TWAIN ROOM" },
+      { src: "/field-notes/griechenbeisl/hero-dining.mp4",   label: "GRIECHENBEISL" },
+    ],
+    readingTime:   8,
+    articleType:   "editorial-v2",
+    triggerWord:   "白目",
+    commentPrompt: "你第一眼覺得照片裡的人是誰？",
   },
 
   // ── 編輯閱讀文章（後續陸續補充內容）────────────────────────────
