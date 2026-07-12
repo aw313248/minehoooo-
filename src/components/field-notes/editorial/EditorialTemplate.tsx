@@ -995,6 +995,13 @@ function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
             </div>
             <p className="eb-tl-title">{e.title}</p>
             {e.desc && <p className="eb-tl-desc">{e.desc}</p>}
+            {e.img && (
+              <figure className="eb-tl-fig">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={e.img.src} alt={e.img.alt} loading="lazy" className="eb-tl-img" />
+                {e.img.caption && <figcaption className="eb-tl-cap">{e.img.caption}</figcaption>}
+              </figure>
+            )}
           </div>
         </div>
       ))}
@@ -1010,6 +1017,9 @@ function TimelineBlock({ events }: Extract<Block, { type: "timeline" }>) {
         .eb-tl-tag { font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.26em; text-transform: uppercase; border: 1px solid; border-radius: 3px; padding: 2px 6px; }
         .eb-tl-title { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.92); margin: 6px 0 0; line-height: 1.5; }
         .eb-tl-desc { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.55); margin: 4px 0 0; line-height: 1.7; }
+        .eb-tl-fig { margin: 12px 0 0; }
+        .eb-tl-img { display: block; width: 100%; max-width: 420px; height: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.09); background: #0a0a0c; }
+        .eb-tl-cap { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.32); margin-top: 7px; }
       `}</style>
     </div>
   );

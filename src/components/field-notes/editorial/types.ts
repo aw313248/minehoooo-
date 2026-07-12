@@ -65,7 +65,7 @@ export type Block =
   | { type: "oscar-notes";   content: ReactNode }
   | { type: "closing";       content: ReactNode }
   // 歷史時間軸 — tag 區分：official 官方記載 / extra 資料補充 / oscar 現場筆記
-  | { type: "timeline";      events: { year: string; title: string; desc?: string; tag?: "official" | "extra" | "oscar" }[] }
+  | { type: "timeline";      events: { year: string; title: string; desc?: string; tag?: "official" | "extra" | "oscar"; img?: { src: string; alt: string; caption?: string } }[] }
   // 可收藏的地點資料卡（含外部連結按鈕）
   | { type: "info-card";     name: string; sub?: string; rows: { label: string; value: string }[]; links: { label: string; href: string }[]; footnote?: string }
   // Google Maps 互動地圖 — 點擊才載入 iframe，不拖慢頁面

@@ -51,24 +51,33 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          那天在維也納，就是跟大家吃個飯，
+          那天是跟團的聚餐，
+          本來以為就只是一間普通的餐廳，
           沒有拍攝計畫，沒有功課，什麼都沒有
         </p>
         <p key="2">
-          吃到一半，我突然想離開座位，在餐廳裡亂逛
+          吃到一半，我突然想離開座位，在餐廳裡亂逛，
+          服務人員看到了，也沒有攔我
         </p>
         <p key="3">
           我平常吃飯不太會做這件事——
           <strong key="s">這也是我現在最後悔的地方</strong>
         </p>
         <p key="4">
-          這間店的外觀真的不起眼，
-          裡面卻像地窖，一間房接著一間房，越走越深，
-          店員看到我在亂晃，也沒有阻止我
+          奇怪的是，從外面看，它明明是白天戶外的餐廳，
+          走進去卻像走進一個地窖——
+          但你又很清楚自己不在地下，
+          一間房接著一間房，越走越深
         </p>
         <p key="5">
           然後我推開其中一間房——
-          整個天花板、整面牆，全部都是簽名
+          整個天花板、整面牆，全部都是簽名，
+          當下真的被震撼到
+        </p>
+        <p key="6">
+          回來一 Google 才知道這裡有多扯：
+          <strong key="s2">五百年的店，莫札特和馬克吐溫都來過</strong>，
+          而我是點完餐才發現的
         </p>
       </>
     ),
@@ -189,6 +198,18 @@ const blocks: Block[] = [
     footnote: "營業時間與訂位資訊會變動，前往之前請再到官方網站或 Google Maps 確認一次",
   },
   {
+    type: "callout",
+    content: (
+      <>
+        <strong>官方招牌怎麼點（2026 菜單）：</strong><br />
+        菜單上標成 House Special 的是脆皮烤豬腳（雙人份 €49.9），
+        經典款是小牛維也納炸排 €33.9 和水煮牛肉 Tafelspitz €28.9，
+        甜點必點手工 Kaiserschmarrn 奧地利帝王煎餅 €13.9（要等 20 分鐘，值得），<br />
+        一人正常吃大約 €35–55，約台幣 1,200–1,900，未含服務費
+      </>
+    ),
+  },
+  {
     type: "map-embed",
     src: MAPS_EMBED,
     title: "Griechenbeisl 位置地圖",
@@ -229,14 +250,43 @@ const blocks: Block[] = [
       {
         year: "1447",
         title: "首次出現在文獻紀錄",
-        desc: "維基百科記載首次文獻提及是 1447 年——比哥倫布 1492 年抵達美洲還早 45 年，達文西還要再等 5 年才出生。官方自述至今服務約 550 年，是維也納最老的餐館",
+        desc: "維基百科記載首次文獻提及是 1447 年——當時統治奧地利的是哈布斯堡的腓特烈三世，達文西還要再等 5 年才出生。官方自述至今服務約 550 年，是維也納最老的餐館",
+        tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/friedrich-iii.avif", alt: "腓特烈三世畫像", caption: "1447 年的奧地利統治者——腓特烈三世（Wikimedia Commons）" },
+      },
+      {
+        year: "1440 年代",
+        title: "同時期的歐洲：古騰堡剛發明活字印刷",
+        desc: "餐廳留下文獻紀錄的那幾年，古騰堡正在美因茲調試活字印刷機，1450 年代印出《古騰堡聖經》——資訊時代的第一聲",
+        tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/gutenberg-bible.avif", alt: "古騰堡聖經內頁", caption: "古騰堡聖經（Wikimedia Commons）" },
+      },
+      {
+        year: "同一年的中國",
+        title: "明朝正統十二年",
+        desc: "鄭和下西洋已經結束 14 年，船隊解散、海禁開始，2 年後明英宗在土木堡之變被瓦剌俘虜——皇帝本人被抓走的那種年代",
+        tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/ming-yingzong.avif", alt: "明英宗坐像", caption: "明英宗朱祁鎮——1449 年土木堡之變的主角（Wikimedia Commons）" },
+      },
+      {
+        year: "同一年的韓國",
+        title: "《訓民正音》剛頒布一年",
+        desc: "1446 年朝鮮世宗頒布《訓民正音》，韓文字才剛誕生——跟牆上那位簽韓文的先生，隔著五百多年剛好接上",
+        tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/hunminjeongeum.avif", alt: "訓民正音書影", caption: "訓民正音——韓文字的出生證明（Wikimedia Commons）" },
+      },
+      {
+        year: "同一年的台灣",
+        title: "連一行文字紀錄都還沒有",
+        desc: "還要再等 177 年，荷蘭人才會在 1624 年登陸大員——這間餐廳開始寫進文獻的時候，我們的島連名字都還沒被寫下來",
         tag: "extra",
       },
       {
-        year: "同場加映 1447",
-        title: "那一年，世界上其他地方",
-        desc: "古騰堡剛發明活字印刷；維也納聖史蒂芬大教堂南塔完工 14 年；中國是明朝正統十二年；韓國前一年剛頒布《訓民正音》——韓文字誕生，跟牆上那位簽韓文的先生剛好隔空接上",
+        year: "1492",
+        title: "哥倫布抵達美洲——餐廳文獻的 45 年後",
+        desc: "換句話說：這間店有文獻紀錄的時候，歐洲人連美洲在哪都還不知道",
         tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/columbus.avif", alt: "哥倫布登陸美洲油畫", caption: "哥倫布登陸美洲，1492（Wikimedia Commons）" },
       },
       {
         year: "早期",
@@ -343,12 +393,18 @@ const blocks: Block[] = [
           <strong key="s">以下是我在現場照片裡自己辨認的，屬於個人判斷，歡迎指正：</strong>
         </p>
         <p key="2">
-          簽名牆上看得到日文簽名「山本耕史」，
-          還有一個一開始被我認成戶田惠梨香的「戸田恵子」——
+          簽名牆上看得到「山本耕史」——
+          大河劇《新選組！》的土方歲三、《鎌倉殿的 13 人》的三浦義村，
+          旁邊還有一個一開始被我認成戶田惠梨香的「戸田恵子」——
           放大一看是三個字，
-          <strong key="k">是幫麵包超人配音超過三十年的那位戶田惠子</strong>，
-          相框照片的部分有鋼琴家郎朗、米倉涼子、假屋崎省吾，
-          還有更多我認不出來的人物
+          <strong key="k">是幫麵包超人配音超過三十年的那位戶田惠子</strong>
+        </p>
+        <p key="3">
+          相框照片的部分有郎朗——
+          在白宮和奧運開幕式都彈過琴的那位國際鋼琴家，
+          《派遣女醫 X》裡「我不會失敗」的米倉涼子，
+          還有日本花藝大師假屋崎省吾，
+          以及更多我認不出來的人物
         </p>
       </>
     ),
@@ -362,12 +418,32 @@ const blocks: Block[] = [
     },
   },
   {
+    type: "text",
+    content: (
+      <>
+        <p key="1">
+          牆上還掛著一張很珍貴的照片：
+          <strong key="s">世界三大男高音之一的帕華洛帝 Luciano Pavarotti</strong>，
+          親自舉著筆在這片天花板上簽名的瞬間，
+          照片下方就貼著他的名牌
+        </p>
+      </>
+    ),
+  },
+  {
     type: "image",
     item: {
-      src: `${GB}/pavarotti-wall.avif`,
-      alt: "牆上的帕華洛帝簽名照與 Engelbert 相框",
-      caption: "帕華洛帝的簽名照片，下面是 Engelbert 的簽名證書",
+      src: `${GB}/pavarotti-close.avif`,
+      alt: "帕華洛帝在 Griechenbeisl 天花板上簽名的裱框照片特寫",
+      caption: "帕華洛帝本人簽天花板的瞬間 — 放大版，名牌寫著 Luciano Pavarotti",
     },
+  },
+  {
+    type: "cta",
+    message: "沒聽過帕華洛帝？先聽這首再回來",
+    sub: "Nessun Dorma《公主徹夜未眠》— 他最有名的一首，聽完你就懂為什麼全世界的牆都想要他的簽名",
+    cta: "YouTube 聽 Nessun Dorma",
+    href: "https://www.youtube.com/watch?v=8uqPnY5hQDs",
   },
   {
     type: "callout",
@@ -477,6 +553,13 @@ const blocks: Block[] = [
     maxWidth: "300px",
     autoPlay: true,
   },
+  {
+    type: "cta",
+    message: "《Oh du lieber Augustin》這首歌長怎樣？",
+    sub: "歌詞唱著「一切都完了」，曲調卻歡樂到不行——很維也納。旋律你八成聽過：跟童謠 The More We Get Together 是同一條",
+    cta: "YouTube 聽這首民謠",
+    href: "https://www.youtube.com/results?search_query=O+du+lieber+Augustin",
+  },
 
   /* ══════════════════════════════════════════════════════════════
      08 · Reels 拆解
@@ -484,7 +567,7 @@ const blocks: Block[] = [
   {
     type: "headline",
     id:   "reels",
-    text: "《Lost Frame》是怎麼剪的",
+    text: "這支影片是怎麼剪的",
     sub:  "Reels Breakdown · 08",
     num:  "08",
   },
@@ -495,12 +578,6 @@ const blocks: Block[] = [
         <p key="1">
           現在換帽子，
           從旅行筆記切到創作者筆記
-        </p>
-        <p key="1b">
-          這支影片我把它叫<strong key="t">《Lost Frame》</strong>——
-          frame 是影格，也是相框：
-          一層是「沒拍到的畫面」，
-          一層是牆上那個沒有答案的相框
         </p>
         <p key="2">
           它最大的問題是：

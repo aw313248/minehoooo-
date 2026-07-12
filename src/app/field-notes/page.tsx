@@ -7,18 +7,15 @@ import ScrollUnlock from "@/components/ScrollUnlock";
 import { fieldNotes, type NoteCategory } from "@/data/fieldNotes";
 import { useEffect } from "react";
 
-const ALL_CATEGORIES: { key: "ALL" | NoteCategory; label: string }[] = [
-  { key: "ALL",    label: "全部" },
-  { key: "AI",     label: "AI" },
-  { key: "KINO",   label: "Kino" },
-  { key: "COLOR",  label: "Color" },
-  { key: "STREET", label: "Street" },
-  { key: "TRAVEL", label: "Travel" },
-  { key: "GEAR",   label: "Gear" },
+// 兩個入口：AI 工具 ／ 旅遊（Kino 拍片與旅行筆記都算旅遊）
+const GROUPS: { key: "ALL" | "AI" | "TRAVEL"; label: string; cats: NoteCategory[] }[] = [
+  { key: "ALL",    label: "全部", cats: [] },
+  { key: "AI",     label: "AI",   cats: ["AI", "COLOR", "GEAR"] },
+  { key: "TRAVEL", label: "旅遊", cats: ["KINO", "TRAVEL", "STREET"] },
 ];
 
 export default function FieldNotesIndex() {
-  const [active, setActive] = useState<"ALL" | NoteCategory>("ALL");
+  const [active, setActive] = useState<"ALL" | "AI" | "TRAVEL">("ALL");
   const [views, setViews] = useState<Record<string, number> | null>(null);
 
   useEffect(() => {
@@ -30,14 +27,13 @@ export default function FieldNotesIndex() {
 
   const sorted = [...fieldNotes].sort((a, b) => b.date.localeCompare(a.date));
 
+  const activeGroup = GROUPS.find((g) => g.key === active);
   const visible =
     active === "ALL"
       ? sorted
-      : sorted.filter((n) => n.category === active);
+      : sorted.filter((n) => activeGroup?.cats.includes(n.category));
 
-  const hasActive = ALL_CATEGORIES
-    .filter((c) => c.key !== "ALL")
-    .some((c) => fieldNotes.some((n) => n.category === c.key));
+  const hasActive = fieldNotes.length > 0;
 
   return (
     <main className="fn-root" style={{ overflowY: "auto" }}>
@@ -76,11 +72,11 @@ export default function FieldNotesIndex() {
         {/* ── Category tabs ── */}
         {hasActive && (
           <div className="fn-tabs-wrap" role="tablist" aria-label="文章分類">
-            {ALL_CATEGORIES.map((cat) => {
+            {GROUPS.map((cat) => {
               const count =
                 cat.key === "ALL"
                   ? fieldNotes.length
-                  : fieldNotes.filter((n) => n.category === cat.key).length;
+                  : fieldNotes.filter((n) => cat.cats.includes(n.category)).length;
               if (cat.key !== "ALL" && count === 0) return null;
               return (
                 <button
