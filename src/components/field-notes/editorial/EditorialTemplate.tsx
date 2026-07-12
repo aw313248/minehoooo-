@@ -1094,8 +1094,8 @@ function InfoCardBlock({ name, sub, rows, links, footnote }: Extract<Block, { ty
 }
 
 /* Map embed — 點擊才載入 Google Maps iframe，避免拖慢頁面 */
-function MapEmbedBlock({ src, title, aspect = "16/9" }: Extract<Block, { type: "map-embed" }>) {
-  const [loaded, setLoaded] = useState(false);
+function MapEmbedBlock({ src, title, aspect = "16/9", eager = false }: Extract<Block, { type: "map-embed" }>) {
+  const [loaded, setLoaded] = useState(eager);
   return (
     <div className="eb-map">
       <div className="eb-map-wrap" style={{ aspectRatio: aspect }}>

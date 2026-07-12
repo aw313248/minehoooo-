@@ -22,9 +22,15 @@ const blocks: Block[] = [
      00 · 正片 + 開場
      ══════════════════════════════════════════════════════════════ */
   {
+    type: "headline",
+    id:   "film",
+    text: "先看正片",
+    sub:  "我在維也納誤入的 500 年餐廳 · 62 秒 · 有聲音",
+  },
+  {
     type: "video-lazy",
     src: `${GB}/final-reel.mp4`,
-    caption: "▶ 正片 — 我在維也納誤入的 500 年餐廳（62 秒，有聲音）",
+    caption: "▶ 點擊播放",
     aspectRatio: "9/16",
     maxWidth: "320px",
   },
@@ -103,6 +109,14 @@ const blocks: Block[] = [
     aspectRatio: "9/16",
     maxWidth: "300px",
     autoPlay: true,
+  },
+  {
+    type: "image",
+    item: {
+      src: `${GB}/stained-glass.avif`,
+      alt: "餐廳深處的彩繪玻璃窗與油燈",
+      caption: "越走越深的其中一角 — 彩繪玻璃、油燈、放著酒瓶的窗台",
+    },
   },
   {
     type: "callout",
@@ -221,6 +235,7 @@ const blocks: Block[] = [
     src: MAPS_EMBED,
     title: "Griechenbeisl 位置地圖",
     aspect: "16/10",
+    eager: true,
   },
 
   /* ══════════════════════════════════════════════════════════════
@@ -253,6 +268,7 @@ const blocks: Block[] = [
         title: "建築的骨架比餐廳更老",
         desc: "維基百科：建築內含約 1200 年維也納舊城牆塔樓的殘構，14 世紀被併入哥德式住宅",
         tag: "extra",
+        img: { src: "/field-notes/griechenbeisl/history/vienna-1493.avif", alt: "1493 年維也納木刻版畫", caption: "那個年代的維也納長這樣——1493 年木刻（Wikimedia Commons）" },
       },
       {
         year: "1447",
@@ -281,6 +297,7 @@ const blocks: Block[] = [
         desc: "還要再等 177 年，荷蘭人才會在 1624 年登陸大員。這間餐廳開始寫進文獻的時候，我們的島連名字都還沒被寫下來——人家在餐廳吃飯留簽名，我們連被寫都輪不到",
         tag: "extra",
         highlight: true,
+        img: { src: "/field-notes/griechenbeisl/history/fort-zeelandia.avif", alt: "熱蘭遮城古圖", caption: "直到 1624 年荷蘭人建熱蘭遮城，台灣才開始被畫進地圖（Wikimedia Commons）" },
       },
       {
         year: "1492",
@@ -292,20 +309,23 @@ const blocks: Block[] = [
       {
         year: "17 世紀中葉",
         title: "得到現在的名字",
-        desc: "希臘商人在這一區聚居經商之後，店逐漸被叫成 Griechenbeisl——「希臘小酒館」",
+        desc: "希臘商人在這一區聚居經商之後，店逐漸被叫成 Griechenbeisl——「希臘小酒館」，隔壁到現在都還是希臘東正教堂",
         tag: "official",
+        img: { src: "/field-notes/griechenbeisl/history/griechenkirche.avif", alt: "希臘東正教三位一體教堂", caption: "餐廳隔壁的希臘東正教堂——這一區就是維也納的希臘區（Wikimedia Commons）" },
       },
       {
         year: "19–20 世紀",
         title: "藝術家、學者、政治人物的聚會所",
         desc: "官方列出的簽名：維也納市長 Karl Lueger、俾斯麥、畫家席勒 Egon Schiele、泰山演員 Johnny Weissmüller",
         tag: "official",
+        img: { src: "/field-notes/griechenbeisl/history/schiele.avif", alt: "席勒自畫像", caption: "畫家席勒 Egon Schiele——官方確認牆上有他的簽名（Wikimedia Commons）" },
       },
       {
         year: "名人時刻",
         title: "馬克吐溫、貝多芬、莫札特都吃過",
         desc: "官方網站首頁：Mark Twain、Beethoven、Mozart、Pavarotti、Johnny Cash 曾在此用餐",
         tag: "official",
+        img: { src: "/field-notes/griechenbeisl/history/mozart.avif", alt: "莫札特畫像", caption: "莫札特——官方名人食客名單的第一排（Wikimedia Commons）" },
       },
       {
         year: "2026-06-12",
@@ -542,11 +562,27 @@ const blocks: Block[] = [
     autoPlay: true,
   },
   {
-    type: "cta",
-    message: "《Oh du lieber Augustin》這首歌長怎樣？",
-    sub: "歌詞唱著「一切都完了」，曲調卻歡樂到不行——很維也納。旋律你八成聽過：跟童謠 The More We Get Together 是同一條",
-    cta: "YouTube 聽這首民謠",
-    href: "https://www.youtube.com/results?search_query=O+du+lieber+Augustin",
+    type: "text",
+    content: (
+      <>
+        <p key="1">
+          最後說他那首歌《Oh du lieber Augustin》——
+          <strong key="s">你絕對有聽過，你不可能沒有聽過</strong>
+        </p>
+        <p key="2">
+          這條旋律傳到全世界，變成了台灣每個人小時候都唱過的
+          <strong key="s2">《當我們同在一起》</strong>，
+          原曲的歌詞卻是「一切都完了」——
+          用最歡樂的曲調唱最慘的事，很維也納，
+          不信你按下去聽
+        </p>
+      </>
+    ),
+  },
+  {
+    type: "youtube",
+    id: "ZKwyuMVLV48",
+    title: "O du lieber Augustin — 你絕對聽過的那條旋律",
   },
 
   /* ══════════════════════════════════════════════════════════════
