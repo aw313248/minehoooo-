@@ -46,10 +46,10 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
     setMobileOn(localStorage.getItem("bubble-mobile") !== "0");
   }, []);
 
-  // 手機彈幕輪播：每 6 秒換下一則
+  // 手機彈幕輪播：每 6.5 秒換下一則（tick 遞增，單則留言也能重新觸發動畫）
   useEffect(() => {
     if (!mobileOn || comments.length === 0) return;
-    const t = setInterval(() => setMIdx(i => (i + 1) % comments.length), 6000);
+    const t = setInterval(() => setMIdx(i => i + 1), 6500);
     return () => clearInterval(t);
   }, [mobileOn, comments.length]);
 
@@ -115,8 +115,8 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
             background: "rgba(20,20,24,0.6)", border: "1px solid rgba(255,255,255,0.12)",
             borderRadius: 14, padding: "8px 12px", backdropFilter: "blur(8px)",
           }}>
-            <p style={{ margin: 0, fontSize: 12, lineHeight: 1.5, color: "rgba(255,255,255,0.75)" }}>{comments[mIdx].t}</p>
-            {comments[mIdx].n && <p style={{ margin: "3px 0 0", fontFamily: "var(--font-space-mono),monospace", fontSize: 8.5, letterSpacing: "0.12em", color: "rgba(255,225,140,0.6)" }}>— {comments[mIdx].n}</p>}
+            <p style={{ margin: 0, fontSize: 12, lineHeight: 1.5, color: "rgba(255,255,255,0.75)" }}>{comments[mIdx % comments.length].t}</p>
+            {comments[mIdx % comments.length].n && <p style={{ margin: "3px 0 0", fontFamily: "var(--font-space-mono),monospace", fontSize: 8.5, letterSpacing: "0.12em", color: "rgba(255,225,140,0.6)" }}>— {comments[mIdx % comments.length].n}</p>}
           </div>
         </div>
       )}
