@@ -293,6 +293,21 @@ body::before {
   100%{ background-position: 0   0;    }
 }
 
+/* ── FILM GRAIN SHIFT（transform 版：只動合成層，不重繪整個螢幕）── */
+@keyframes grainShiftT {
+  0%  { transform: translate(0, 0); }
+  10% { transform: translate(-1.6%, -3.3%); }
+  20% { transform: translate(-5%, 1.6%); }
+  30% { transform: translate(2.3%, -8.3%); }
+  40% { transform: translate(-1.6%, 8.3%); }
+  50% { transform: translate(-5%, 3.3%); }
+  60% { transform: translate(5%, 0); }
+  70% { transform: translate(0, 5%); }
+  80% { transform: translate(1%, 11.6%); }
+  90% { transform: translate(-3.3%, 3.3%); }
+  100%{ transform: translate(0, 0); }
+}
+
 /* ── HERO GLITCH LAYERS ── */
 @keyframes heroGlitch1 {
   0%,  90%, 100% { clip-path: inset(0 0 100% 0); opacity: 0; transform: translate(0,0); }

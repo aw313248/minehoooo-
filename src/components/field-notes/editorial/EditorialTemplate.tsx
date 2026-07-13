@@ -157,13 +157,16 @@ function EditorialAmbience() {
         animation: "etGlowDrift 26s ease-in-out infinite alternate",
         willChange: "transform",
       }} />
-      {/* Film grain — same stock as the rest of the site */}
-      <div aria-hidden="true" style={{
-        position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none",
-        backgroundImage: GRAIN_URI, backgroundSize: "140px 140px",
-        opacity: 0.045, mixBlendMode: "overlay",
-        animation: "grainShift 1.2s steps(10) infinite",
-      }} />
+      {/* Film grain — transform 版動畫，只動合成層不重繪 */}
+      <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
+        <div style={{
+          position: "absolute", inset: "-30%",
+          backgroundImage: GRAIN_URI, backgroundSize: "140px 140px",
+          opacity: 0.045, mixBlendMode: "overlay",
+          animation: "grainShiftT 1.2s steps(10) infinite",
+          willChange: "transform",
+        }} />
+      </div>
       <style>{`
         @keyframes etGlowDrift {
           0%   { transform: translate(0%, 0%) scale(1); }
@@ -178,6 +181,17 @@ function EditorialAmbience() {
    Vertical clips side-by-side read as phone frames — fitting for an iPhone guide */
 function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  // 捲出畫面就暫停三支影片 — 不讓它們在整頁生命週期持續解碼
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const vids = () => Array.from(el.querySelectorAll("video"));
+    const io = new IntersectionObserver(([e]) => {
+      vids().forEach(v => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); });
+    }, { rootMargin: "60px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
@@ -208,9 +222,7 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
               autoPlay muted loop playsInline preload="metadata"
               style={{
                 position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
-                // 夜景片本身已暗，0.42 會壓成全黑 — 提到 0.62，標題對比交給下方 readability wash
-                filter: "brightness(0.62) saturate(0.92) contrast(1.04)",
-                // stagger the middle panel slightly — breaks the grid, adds depth
+                // 暗度改由下方遮罩處理 — 播放中影片套 CSS filter 是持續的 GPU 成本
                 transform: i === 1 ? "scale(1.06)" : "none",
               }}
             />
@@ -228,7 +240,11 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
           </div>
         ))}
       </div>
-      {/* readability wash */}
+      {/* readability wash — 同時補回原本 filter 的暗度 */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "rgba(5,5,6,0.30)",
+      }} />
       <div style={{
         position: "absolute", inset: 0,
         background: "linear-gradient(to bottom, rgba(5,5,6,0.55) 0%, rgba(5,5,6,0.25) 45%, rgba(5,5,6,0.97) 100%)",

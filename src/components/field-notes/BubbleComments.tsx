@@ -94,8 +94,8 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
             opacity: 0,
           } as React.CSSProperties}>
           <div style={{
-            background: "rgba(20,20,24,0.55)", border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: 14, padding: "8px 11px", backdropFilter: "blur(6px)",
+            background: "rgba(22,22,27,0.82)", border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 14, padding: "8px 11px",
           }}>
             <p style={{ margin: 0, fontSize: 11, lineHeight: 1.5, color: "rgba(255,255,255,0.6)" }}>{f.c.t}</p>
             {f.c.n && <p style={{ margin: "3px 0 0", fontFamily: "var(--font-space-mono),monospace", fontSize: 8, letterSpacing: "0.12em", color: "rgba(255,225,140,0.55)" }}>— {f.c.n}</p>}
@@ -112,8 +112,8 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
             animation: "bubbleToast 6s ease both",
           }}>
           <div style={{
-            background: "rgba(20,20,24,0.6)", border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 14, padding: "8px 12px", backdropFilter: "blur(8px)",
+            background: "rgba(22,22,27,0.85)", border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 14, padding: "8px 12px",
           }}>
             <p style={{ margin: 0, fontSize: 12, lineHeight: 1.5, color: "rgba(255,255,255,0.75)" }}>{comments[mIdx % comments.length].t}</p>
             {comments[mIdx % comments.length].n && <p style={{ margin: "3px 0 0", fontFamily: "var(--font-space-mono),monospace", fontSize: 8.5, letterSpacing: "0.12em", color: "rgba(255,225,140,0.6)" }}>— {comments[mIdx % comments.length].n}</p>}
