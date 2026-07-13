@@ -694,7 +694,7 @@ function TravelGalleryBlock({ items }: Extract<Block, { type: "travel-gallery" }
 }
 
 /* App recommendation */
-function AppRecBlock({ name, tagline, appStoreUrl, reason, icon }: Extract<Block, { type: "app-rec" }>) {
+function AppRecBlock({ name, tagline, appStoreUrl, reason, icon, website }: Extract<Block, { type: "app-rec" }>) {
   return (
     <div className="eb-app">
       <div className="eb-app-card">
@@ -720,9 +720,12 @@ function AppRecBlock({ name, tagline, appStoreUrl, reason, icon }: Extract<Block
             <text fill="#fff" x="38" y="31" style={{ fontFamily: "-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif", fontSize: "15px", fontWeight: 600 }}>App Store</text>
           </svg>
         </a>
+        {website && <a href={website} target="_blank" rel="noopener noreferrer" className="eb-app-web">官網（有中文）↗</a>}
       </div>
       <style>{`
         .eb-app { margin: 24px 0; }
+        .eb-app-web { display: inline-block; margin-left: 14px; font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,225,140,0.85); text-decoration: none; border: 1px solid rgba(255,225,140,0.28); border-radius: 3px; padding: 8px 14px; vertical-align: 14px; transition: color .15s, border-color .15s; }
+        .eb-app-web:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.6); }
         .eb-app-card { background: #0d0d10; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 22px 24px; }
         .eb-app-head { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
         .eb-app-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #111 0%, #222 100%); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; color: transparent; text-shadow: 0 0 0 rgba(255,255,255,0.6); }

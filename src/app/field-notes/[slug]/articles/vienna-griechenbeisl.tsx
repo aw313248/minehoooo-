@@ -587,14 +587,65 @@ const blocks: Block[] = [
   },
 
   /* ══════════════════════════════════════════════════════════════
-     08 · 資料來源
+     08 · 深度旅遊外掛：GuruWalk
+     ══════════════════════════════════════════════════════════════ */
+  {
+    type: "headline",
+    id:   "guruwalk",
+    text: "這種旅行，有一個外掛",
+    sub:  "Travel Tool · 08",
+    num:  "08",
+  },
+  {
+    type: "text",
+    content: (
+      <>
+        <p key="1">
+          像 Griechenbeisl 這種要「走進巷子才會遇到」的地方，
+          全世界每個老城區都藏了一堆，
+          我在網路上看到很多人推一個逛法：
+          <strong key="s">跟當地人的免費徒步導覽團</strong>
+        </p>
+        <p key="2">
+          GuruWalk 就是做這件事的平台——
+          當地導遊帶隊、行程免費參加，
+          <strong key="s2">結束後照你對導遊的喜好給小費就好</strong>（官方建議上限約 $50）
+        </p>
+        <p key="3">
+          我喜歡它的三個點：
+          導遊會在頁面上分享自己的路線筆記和在地美食推薦；
+          資訊很透明，導覽語言和評價星等直接標在每個團上；
+          官網內容很豐富，而且有中文介面可以逛
+        </p>
+        <p key="4">
+          查了一下，台灣也有團——
+          台北老城區的導覽是招牌，
+          <strong key="s3">連台中都有</strong>，
+          出發前可以先在自己的城市試跟一次，
+          這段是免費分享，沒有業配沒有分潤
+        </p>
+      </>
+    ),
+  },
+  {
+    type: "app-rec",
+    name: "GuruWalk",
+    tagline: "FREE WALKING TOURS · 小費制在地導覽",
+    appStoreUrl: "https://apps.apple.com/tw/app/guruwalk/id1505278935",
+    website: "https://www.guruwalk.com/",
+    icon: "/field-notes/griechenbeisl/guruwalk-icon.jpg",
+    reason: "深度旅遊的外掛：跟著當地導遊用走的認識一座城市，行程免費、結束後依滿意度給小費。導覽語言、星等評價都標得清清楚楚，維也納、台北、台中都有團",
+  },
+
+  /* ══════════════════════════════════════════════════════════════
+     09 · 資料來源
      ══════════════════════════════════════════════════════════════ */
   {
     type: "headline",
     id:   "sources",
     text: "資料來源",
-    sub:  "Sources · 08",
-    num:  "08",
+    sub:  "Sources · 09",
+    num:  "09",
   },
   {
     type: "sources",
@@ -606,6 +657,7 @@ const blocks: Block[] = [
       { label: "Google Maps 商家頁", href: MAPS_PLACE, note: "位置、評分與營業資訊（會變動，以現場為準）" },
       { label: "Oscar 現場照片與影片（2026-06-12）", note: "簽名與相框人物辨認屬個人現場判斷（C 類），歡迎指正" },
       { label: "《Oh du lieber Augustin》民謠與奧古斯丁傳說", note: "民間傳說常見版本（B 類），本文以「傳說」描述，不當作史實" },
+      { label: "GuruWalk 官方網站", href: "https://www.guruwalk.com/", note: "小費制模式與台灣場次（台北／台中）於 2026-07 查證；免費分享，非業配" },
     ],
   },
 
