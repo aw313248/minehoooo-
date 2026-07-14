@@ -28,9 +28,9 @@ const blocks: Block[] = [
           <strong key="s">走路、停下、開箱、吃東西 — 四個動作</strong>
         </p>
         <p key="2">
-          剩下的九龍城寨、地下賭場、霓虹和槍手，
-          全部來自角色設定、Target Frame、Sequence Storyboard
-          和 Seedance 2.0，
+          剩下的九龍城寨、賭場、霓虹和槍手，
+          都是 AI 生的 —
+          我給它的只有角色設定、參考畫面和分鏡，
           最後在 DaVinci 調光收尾
         </p>
       </>
@@ -85,8 +85,8 @@ const blocks: Block[] = [
       { key: "raw", num: "01", label: "RAW", zh: "原影片", mediaType: "video", src: `${M}/shot-02-corridor-raw.mp4`, poster: `${M}/shot-02-corridor-keyframe.avif`, note: "在家拍的 5 秒直線位移 — 沒有佈景、沒有燈光，只有動作" },
       { key: "kf", num: "02", label: "KEYFRAME", zh: "關鍵幀", mediaType: "image", src: `${M}/shot-02-corridor-keyframe.avif`, note: "從 Raw 挑出姿勢最清楚的一格" },
       { key: "tf", num: "03", label: "TARGET FRAME", zh: "目標畫面", mediaType: "image", src: `${M}/shot-02-corridor-target.avif`, note: "Image-to-Image：同一個姿勢，換上電影的皮" },
-      { key: "gen", num: "04", label: "GENERATED", zh: "生成結果", mediaType: "video", src: `${M}/shot-02-corridor-generated.mp4`, poster: `${M}/posters/shot-02-corridor-generated.jpg`, note: "Seedance 2.0 — 位移與速度都吃到 Raw 的表演" },
-      { key: "fin", num: "05", label: "FINAL GRADE", zh: "調光成片", mediaType: "video", src: `${M}/final-film.mp4`, poster: `${M}/posters/final-film.jpg`, note: "調光後的完整成片 — 統一色溫與黑位之後，素材才真正屬於同一部電影" },
+      { key: "gen", num: "04", label: "GENERATED", zh: "生成結果", mediaType: "video", src: `${M}/shot-02-corridor-generated.mp4`, poster: `${M}/posters/shot-02-corridor-generated.jpg`, note: "Seedance 2.0 生成 — 位移和速度都跟著 Raw 走" },
+      { key: "fin", num: "05", label: "FINAL GRADE", zh: "調光成片", mediaType: "video", src: `${M}/final-film.mp4`, poster: `${M}/posters/final-film.jpg`, note: "調光後的完整成片 — 色溫與黑位統一了，看起來才像同一部片" },
     ],
   },
 
@@ -103,9 +103,8 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          這條流程能走通，
-          靠的是每個素材的職責分得非常清楚，
-          誰都不越界：
+          分工越清楚，
+          生成越穩：
         </p>
         <p key="2">
           <strong key="a">Raw Footage</strong> — 動作、節奏、表演<br key="b1" />
@@ -131,10 +130,9 @@ const blocks: Block[] = [
     content: (
       <>
         <strong>Element 的正確用法：</strong><br />
-        角色三視圖建立成 @OSCAR-1 之後，
-        就不要再把白底三視圖當場景參考圖上傳 —
-        會出現多個角色、白底污染、三視圖版面滲進影片，
-        Element 負責的是身份，不是畫面
+        三視圖建成 @OSCAR-1 之後就別再上傳一次 —
+        模型會把白底和排版當成畫面，還會長出多個角色，
+        Element 管身份，不管畫面
       </>
     ),
   },
@@ -152,10 +150,9 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          每一顆都有完整的過程可以切換著看：
+          每顆卡片都能切換看：
           原影片 → 關鍵幀 → 目標畫面 → 生成結果，
-          成功點、問題和修正也都寫在卡片裡 —
-          <strong key="s">包括失敗的部分，那才是值錢的</strong>
+          <strong key="s">哪裡成功、哪裡失敗、怎麼修，都寫在卡片裡</strong>
         </p>
       </>
     ),
@@ -166,11 +163,10 @@ const blocks: Block[] = [
     content: (
       <>
         <strong>關於秒數的觀察（本次實測建議，非官方規定）：</strong><br />
-        對照上面五顆卡片的數字 —
-        Raw 5.7s→生成 5.0s、8.6s→9.0s、7.5s→8.0s，
-        當生成長度跟 Raw 非常接近時，動作完整度明顯較高；
-        反過來，把 12.6 秒的完整走位硬壓成 5 秒，
-        模型就自己挑精華，直接跳過走路（第 05 章有完整案例）
+        Raw 幾秒，生成就設幾秒 —
+        5.7→5.0、8.6→9.0、7.5→8.0 都順利；
+        12.6 秒壓成 5 秒，
+        模型就直接跳過走路（見第 05 章）
       </>
     ),
   },
@@ -188,11 +184,11 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          上面五顆是「一顆一顆生」的 Raw Footage 驅動，
-          我另外做了一個實驗：
-          不給任何 Raw，
-          只給 12 格 Sequence Storyboard＋開場圖＋結尾圖＋角色與道具，
-          讓 Seedance 直接生一段 15 秒的 sequence
+          上面五顆是一顆一顆生的，
+          我另外做了個實驗：
+          不給 Raw，
+          只給 12 格分鏡、開場圖、結尾圖和角色道具，
+          讓 Seedance 一次生 15 秒
         </p>
       </>
     ),
@@ -218,9 +214,10 @@ const blocks: Block[] = [
       <>
         <p key="1">
           我的結論：
-          <strong key="s">關鍵敘事鏡頭用 Raw 驅動，探索性的段落交給 Storyboard 驅動</strong>，
-          前者保表演，後者偶爾會給你沒想過的電影語言 —
-          代價是它也可能把你的分鏡表當成幻燈片
+          <strong key="s">重要的鏡頭用 Raw 驅動，實驗性的段落交給 Storyboard 驅動</strong> —
+          Raw 保表演，
+          Storyboard 偶爾給驚喜，
+          但也可能把分鏡表當成幻燈片
         </p>
       </>
     ),
@@ -346,9 +343,8 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          Prompt 不能只描述「畫面裡有什麼」，
-          還要描述<strong key="s">「攝影機如何發現資訊」</strong> —
-          讓鏡頭發現資訊，而不是把資訊擺在畫面裡
+          Prompt 不能只寫畫面裡有什麼，
+          還要寫<strong key="s">攝影機怎麼動、觀眾先看到什麼</strong>
         </p>
         <p key="2">
           我的 Prompt 固定拆成七個部分，按優先級排：
@@ -381,8 +377,8 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          完整的逐字 Prompt 正在整理版本演變（含失敗版），
-          會在補完後更新到這一章
+          完整逐字 Prompt（含失敗版）
+          整理好後會補進這一章
         </p>
       </>
     ),
@@ -401,10 +397,9 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          AI 生成的每顆鏡頭色彩都各自為政 —
-          「降低 AI 感」不是套一顆 LUT，
-          <strong key="s">是鏡頭與鏡頭之間的一致性</strong>：
-          統一曝光、統一色溫、收斂過鮮的顏色、對齊黑位、壓掉數位銳利感
+          AI 生的每顆鏡頭顏色都不一樣，
+          降 AI 感靠的不是套一顆 LUT，
+          <strong key="s">是讓所有鏡頭的曝光、色溫、黑位一致</strong>
         </p>
         <p key="2">
           我在 DaVinci 的七個步驟，每一步都有截圖：
@@ -417,8 +412,8 @@ const blocks: Block[] = [
     title: "DAVINCI 調光七步驟",
     stages: [
       { key: "g0", num: "00", label: "SOURCE", zh: "生成原色", mediaType: "image", src: `${M}/grade-0-source.avif`, note: "Seedance 直出 — 顏色過鮮、各鏡頭黑位不一" },
-      { key: "g1", num: "01", label: "DESATURATE", zh: "先去飽和", mediaType: "image", src: `${M}/grade-1-desaturate.avif`, note: "把 AI 的糖果色先收下來" },
-      { key: "g2", num: "02", label: "COOL TONE", zh: "冷調定調", mediaType: "image", src: `${M}/grade-2-cool-tone.avif`, note: "整部片的犯罪片底色在這一步決定" },
+      { key: "g1", num: "01", label: "DESATURATE", zh: "先去飽和", mediaType: "image", src: `${M}/grade-1-desaturate.avif`, note: "先把過鮮的顏色壓下來" },
+      { key: "g2", num: "02", label: "COOL TONE", zh: "冷調定調", mediaType: "image", src: `${M}/grade-2-cool-tone.avif`, note: "全片的冷色底在這一步定下來" },
       { key: "g3", num: "03", label: "LOCAL COLOR", zh: "局部色彩", mediaType: "image", src: `${M}/grade-3-local-color.avif`, note: "把霓虹紅藍洋紅救回來 — 只亮該亮的" },
       { key: "g4", num: "04", label: "SHARPEN", zh: "整體銳度", mediaType: "image", src: `${M}/grade-4-sharpen.avif`, note: "因應不同平台的壓縮補一點銳度" },
       { key: "g5", num: "05", label: "GLOW", zh: "光暈", mediaType: "image", src: `${M}/grade-5-glow.avif`, note: "霓虹的柔光暈染，壓掉數位感" },
@@ -440,10 +435,10 @@ const blocks: Block[] = [
       <>
         <p key="1">{crimeCosts.note}</p>
         <p key="2">
-          可以先說的原則：
-          音訊與更高解析度都會增加 credits 消耗，
-          所以「720p＋Audio Off 測試、確認後才出高規格版」
-          本身就是成本控制的一部分
+          原則很簡單：
+          解析度和音訊都吃 credits，
+          先用 720p＋關音訊測試，
+          確認滿意再出高規格版
         </p>
       </>
     ),
@@ -477,16 +472,16 @@ const blocks: Block[] = [
     content: (
       <>
         <p key="1">
-          這不是按下一個按鈕就能拍電影 —
-          是<strong key="s">重新分配製作流程</strong>：
-          真人先負責表演與動作，
-          AI 負責世界、美術與延伸鏡頭，
-          導演仍然負責取捨
+          這不是按一個按鈕就有電影 —
+          是<strong key="s">把分工重排</strong>：
+          人負責表演，
+          AI 負責場景和美術，
+          導演負責取捨
         </p>
         <p key="2">
-          生成會失敗、角色會漂、場景會 morph、
-          Storyboard 不等於穩定、後期仍然重要 —
-          導演的工作變成決定「保留什麼、捨棄什麼」
+          生成會失敗、角色會漂、場景會變形，
+          後期仍然重要 —
+          你的工作是決定留什麼、丟什麼
         </p>
         <p key="3">
           <strong key="s2">現在的大場面，可能只需要你家的一面牆</strong>
