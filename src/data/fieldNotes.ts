@@ -64,6 +64,24 @@ export const fieldNotes: FieldNote[] = [
   },
 
 
+  // ── AI 犯罪短片教學（ISSUE #003）───────────────────────────────
+  {
+    slug:          "ai-crime-film",
+    title:         "我在家拍了四個動作，做出一支地下犯罪電影",
+    issue:         "003",
+    subtitle:      "從 Raw Footage、Target Frame、Sequence Storyboard 到 Seedance 2.0 的完整工作流",
+    date:          "2026-07-14",
+    category:      "AI",
+    categoryLabel: "AI · SEEDANCE 2.0",
+    tags:          ["Seedance 2.0", "Higgsfield", "AI 電影", "Storyboard", "Raw Footage", "調光", "犯罪片", "賽博龐克"],
+    excerpt:       "走路、停下、開箱、吃東西——四個在家拍的動作，加上角色設定、目標畫面、12 格分鏡和 Seedance 2.0，變成一支九龍城寨風的地下犯罪短片。含五顆鏡頭逐顆拆解、兩種工作流對照、十個踩過的雷和調光七步驟",
+    heroImage:     "/field-notes/ai-crime-film/posters/final-film.jpg",
+    readingTime:   10,
+    articleType:   "editorial-v2",
+    triggerWord:   "在家拍電影",
+    commentPrompt: "你會想先試哪一顆鏡頭？",
+  },
+
   // ── 旅遊工具小筆記（GuruWalk）─────────────────────────────────
   {
     slug:          "guruwalk",

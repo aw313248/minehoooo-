@@ -74,6 +74,12 @@ export type Block =
   | { type: "comment-cta";   label: string; sub?: string }
   // YouTube 嵌入 — 點縮圖才載入播放器（自帶音量控制）
   | { type: "youtube";       id: string; title: string; aspect?: string }
+  // 五階段過程切換器（Process Rail）：Raw → Keyframe → Target Frame → Generated → Final
+  | { type: "stage-switcher"; title?: string; stages: { key: string; num: string; label: string; zh: string; mediaType: "video" | "image"; src: string; poster?: string; note?: string }[] }
+  // 單顆鏡頭拆解卡（吃 aiCrimeFilm 的 CrimeShot 資料）
+  | { type: "shot-breakdown"; shot: import("@/data/aiCrimeFilm").CrimeShot }
+  // 雙工作流對照表
+  | { type: "workflow-comparison"; data: typeof import("@/data/aiCrimeFilm").workflowComparison }
   // Higgsfield 邀請橫幅（banner=AI 教學醒目版 / plug=旅遊中場工商）
   | { type: "higgsfield";    variant?: "banner" | "plug" }
   // 資料來源清單

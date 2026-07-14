@@ -29,6 +29,7 @@ import kinoBlocks from "./articles/kino-iphone-guide-v2";
 import wuluBlocks from "./articles/wulu-concept-film";
 import viennaBlocks from "./articles/vienna-griechenbeisl";
 import guruwalkBlocks from "./articles/guruwalk";
+import aiCrimeFilmBlocks from "./articles/ai-crime-film";
 
 const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
@@ -50,6 +51,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ? "/field-notes/griechenbeisl/og.jpg"
       : slug === "guruwalk"
       ? "/field-notes/guruwalk/cover.jpg"
+      : slug === "ai-crime-film"
+      ? "/field-notes/ai-crime-film/og.jpg"
       : SOCIAL_COVER_DEFAULT;
   const socialTitle =
     slug === "seedance-aerial"
@@ -94,6 +97,7 @@ const EDITORIAL_V2_BLOCKS: Record<string, any[]> = {
   "wulu-concept-film": wuluBlocks,
   "vienna-griechenbeisl": viennaBlocks,
   "guruwalk": guruwalkBlocks,
+  "ai-crime-film": aiCrimeFilmBlocks,
 };
 
 export default async function FieldNoteArticle({ params }: { params: Promise<{ slug: string }> }) {

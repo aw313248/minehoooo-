@@ -1328,6 +1328,166 @@ function YouTubeBlock({ id, title, aspect = "16/9" }: Extract<Block, { type: "yo
   );
 }
 
+/* ═══ MediaStageSwitcher — 五階段過程切換（Process Rail）═══
+   點縮圖切換主畫面：Raw → Keyframe → Target Frame → Generated → Final
+   影片一律點擊播放（poster 預覽、preload=none），不自動載入 */
+function StageSwitcherBlock({ title, stages }: Extract<Block, { type: "stage-switcher" }>) {
+  const [active, setActive] = useState(0);
+  const st = stages[active];
+  return (
+    <div className="eb-ss">
+      {title && <p className="eb-ss-title">{title}</p>}
+      <div className="eb-ss-stage">
+        {st.mediaType === "video" ? (
+          <video key={st.src} src={st.src} poster={st.poster} controls preload="none" playsInline className="eb-ss-media" />
+        ) : (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img key={st.src} src={st.src} alt={`${st.zh} — ${st.label}`} loading="lazy" className="eb-ss-media" />
+        )}
+        <span className="eb-ss-badge">{st.num} · {st.label}</span>
+      </div>
+      {st.note && <p className="eb-ss-note">{st.note}</p>}
+      <div className="eb-ss-rail" role="tablist" aria-label="製作階段">
+        {stages.map((g, i) => (
+          <button key={g.key} role="tab" aria-selected={i === active} className="eb-ss-thumb" data-active={i === active} onClick={() => setActive(i)}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={g.mediaType === "video" ? (g.poster ?? "") : g.src} alt="" loading="lazy" className="eb-ss-thumb-img" />
+            <span className="eb-ss-thumb-num">{g.num}</span>
+            <span className="eb-ss-thumb-lbl">{g.zh}</span>
+            {i < stages.length - 1 && <span className="eb-ss-arrow" aria-hidden>→</span>}
+          </button>
+        ))}
+      </div>
+      <style>{`
+        .eb-ss { margin: 26px 0; }
+        .eb-ss-title { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 0 0 12px; }
+        .eb-ss-stage { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden; background: #0a0a0c; border: 1px solid rgba(255,255,255,0.1); }
+        .eb-ss-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #060607; }
+        .eb-ss-badge { position: absolute; top: 12px; left: 12px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,225,140,0.95); background: rgba(0,0,0,0.65); border: 1px solid rgba(255,225,140,0.3); border-radius: 4px; padding: 4px 9px; pointer-events: none; }
+        .eb-ss-note { font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.5); margin: 10px 0 0; line-height: 1.7; }
+        .eb-ss-rail { display: flex; gap: 6px; margin-top: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+        .eb-ss-rail::-webkit-scrollbar { display: none; }
+        .eb-ss-thumb { position: relative; flex: 1 1 0; min-width: 92px; background: none; border: none; padding: 0; cursor: pointer; text-align: left; }
+        .eb-ss-thumb-img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 7px; border: 2px solid rgba(255,255,255,0.12); background: #101013; transition: border-color .2s, opacity .2s; opacity: 0.6; }
+        .eb-ss-thumb[data-active="true"] .eb-ss-thumb-img { border-color: rgba(255,225,140,0.85); opacity: 1; }
+        .eb-ss-thumb:hover .eb-ss-thumb-img { opacity: 0.9; }
+        .eb-ss-thumb-num { position: absolute; top: 5px; left: 6px; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.18em; color: rgba(255,225,140,0.95); background: rgba(0,0,0,0.65); border-radius: 3px; padding: 2px 5px; }
+        .eb-ss-thumb-lbl { display: block; font-family: var(--font-readex),sans-serif; font-size: 10.5px; color: rgba(255,255,255,0.55); margin-top: 5px; }
+        .eb-ss-thumb[data-active="true"] .eb-ss-thumb-lbl { color: rgba(255,225,140,0.9); }
+        .eb-ss-arrow { position: absolute; right: -7px; top: 32%; font-size: 11px; color: rgba(255,255,255,0.3); pointer-events: none; }
+      `}</style>
+    </div>
+  );
+}
+
+/* ═══ ShotBreakdown — 單顆鏡頭拆解卡 ═══ */
+const METHOD_LABEL: Record<string, string> = {
+  "raw-driven": "RAW 驅動", "storyboard-driven": "STORYBOARD 驅動", "image-driven": "IMAGE 驅動",
+};
+function ShotBreakdownBlock({ shot }: Extract<Block, { type: "shot-breakdown" }>) {
+  const stages: Extract<Block, { type: "stage-switcher" }>["stages"] = [];
+  if (shot.rawVideo) stages.push({ key: "raw", num: "01", label: "RAW", zh: "原影片", mediaType: "video", src: shot.rawVideo, poster: shot.keyframe, note: "在家拍的動作參考 — 控制動作、節奏、姿勢與表演" });
+  if (shot.keyframe) stages.push({ key: "kf", num: stages.length ? "02" : "01", label: "KEYFRAME", zh: "關鍵幀", mediaType: "image", src: shot.keyframe, note: "從 Raw 挑出最容易被 AI 理解的一格 — 姿勢清楚、遮擋少" });
+  if (shot.targetFrame) stages.push({ key: "tf", num: String(stages.length + 1).padStart(2, "0"), label: "TARGET FRAME", zh: "目標畫面", mediaType: "image", src: shot.targetFrame, note: "Image-to-Image 生成的最終示意 — 控制場景、燈光、美術與構圖" });
+  if (shot.generatedVideo) stages.push({ key: "gen", num: String(stages.length + 1).padStart(2, "0"), label: "GENERATED", zh: "生成結果", mediaType: "video", src: shot.generatedVideo, poster: shot.generatedPoster, note: "Seedance 2.0 輸出 — 點擊播放" });
+  return (
+    <article className="eb-sb">
+      <header className="eb-sb-head">
+        <span className="eb-sb-id">SHOT {shot.id}</span>
+        <h3 className="eb-sb-title">{shot.title}</h3>
+        <span className="eb-sb-method">{METHOD_LABEL[shot.generationMethod]}</span>
+      </header>
+      <p className="eb-sb-func">{shot.storyFunction}</p>
+      <div className="eb-sb-meta">
+        {shot.hasRawFootage && shot.rawDuration && <span className="eb-sb-chip">Raw {shot.rawDuration}s</span>}
+        <span className="eb-sb-chip">生成 {shot.generatedDuration}s</span>
+        {shot.cameraLanguage && <span className="eb-sb-chip eb-sb-chip-cam">{shot.cameraLanguage}</span>}
+      </div>
+      <StageSwitcherBlock type="stage-switcher" stages={stages} />
+      {shot.promptSummary && (
+        <p className="eb-sb-prompt"><span className="eb-sb-plabel">PROMPT 摘要</span>{shot.promptSummary}</p>
+      )}
+      <div className="eb-sb-grid">
+        <div className="eb-sb-col">
+          <p className="eb-sb-col-t" data-c="ok">成功點</p>
+          {shot.whatWorked.map((w, i) => <p key={i} className="eb-sb-col-i">・{w}</p>)}
+        </div>
+        <div className="eb-sb-col">
+          <p className="eb-sb-col-t" data-c="bad">問題</p>
+          {shot.whatFailed.map((w, i) => <p key={i} className="eb-sb-col-i">・{w}</p>)}
+        </div>
+        {shot.fix && (
+          <div className="eb-sb-col">
+            <p className="eb-sb-col-t" data-c="fix">修正</p>
+            <p className="eb-sb-col-i">・{shot.fix}</p>
+          </div>
+        )}
+      </div>
+      <p className="eb-sb-inputs">輸入素材：{shot.inputAssets.join("・")}</p>
+      {shot.credits && shot.credits.status === "verified" && (
+        <p className="eb-sb-inputs">Credits：{shot.credits.value}</p>
+      )}
+      <style>{`
+        .eb-sb { margin: 34px 0; padding: 24px 24px 20px; background: rgba(255,255,255,0.022); border: 1px solid rgba(255,255,255,0.09); border-radius: 14px; }
+        .eb-sb-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+        .eb-sb-id { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255,225,140,0.95); }
+        .eb-sb-title { font-family: var(--font-readex),sans-serif; font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.96); margin: 0; }
+        .eb-sb-method { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.24em; color: rgba(140,190,255,0.85); border: 1px solid rgba(140,190,255,0.3); border-radius: 3px; padding: 3px 7px; }
+        .eb-sb-func { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.6); margin: 8px 0 0; line-height: 1.7; }
+        .eb-sb-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .eb-sb-chip { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.18em; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 4px 10px; }
+        .eb-sb-chip-cam { color: rgba(255,225,140,0.8); border-color: rgba(255,225,140,0.25); }
+        .eb-sb-prompt { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.62); background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px 14px; margin: 4px 0 0; line-height: 1.75; }
+        .eb-sb-plabel { display: inline-block; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.28em; color: rgba(255,225,140,0.8); margin-right: 10px; }
+        .eb-sb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
+        .eb-sb-col-t { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.28em; margin: 0 0 6px; }
+        .eb-sb-col-t[data-c="ok"] { color: rgba(140,220,160,0.9); }
+        .eb-sb-col-t[data-c="bad"] { color: rgba(255,150,130,0.9); }
+        .eb-sb-col-t[data-c="fix"] { color: rgba(255,225,140,0.9); }
+        .eb-sb-col-i { font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.6); margin: 0 0 4px; line-height: 1.65; }
+        .eb-sb-inputs { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); margin: 14px 0 0; }
+      `}</style>
+    </article>
+  );
+}
+
+/* ═══ WorkflowComparison — 雙工作流對照 ═══ */
+function WorkflowComparisonBlock({ data }: Extract<Block, { type: "workflow-comparison" }>) {
+  return (
+    <div className="eb-wc">
+      <div className="eb-wc-heads">
+        <span />
+        <div className="eb-wc-head"><p className="eb-wc-name">{data.a.name}</p><p className="eb-wc-sub">{data.a.sub}</p><p className="eb-wc-tone">{data.a.tone}</p></div>
+        <div className="eb-wc-head eb-wc-head-b"><p className="eb-wc-name">{data.b.name}</p><p className="eb-wc-sub">{data.b.sub}</p><p className="eb-wc-tone">{data.b.tone}</p></div>
+      </div>
+      {data.rows.map((r) => (
+        <div key={r.label} className="eb-wc-row">
+          <span className="eb-wc-label">{r.label}</span>
+          <span className="eb-wc-cell">{r.a}</span>
+          <span className="eb-wc-cell eb-wc-cell-b">{r.b}</span>
+        </div>
+      ))}
+      <style>{`
+        .eb-wc { margin: 26px 0; border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; overflow: hidden; }
+        .eb-wc-heads, .eb-wc-row { display: grid; grid-template-columns: 92px 1fr 1fr; }
+        .eb-wc-heads { background: rgba(255,255,255,0.035); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .eb-wc-head { padding: 16px 14px; }
+        .eb-wc-head-b { border-left: 1px solid rgba(255,255,255,0.07); }
+        .eb-wc-name { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,225,140,0.95); margin: 0; }
+        .eb-wc-head-b .eb-wc-name { color: rgba(140,190,255,0.95); }
+        .eb-wc-sub { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.24em; color: rgba(255,255,255,0.4); margin: 4px 0 0; }
+        .eb-wc-tone { font-family: var(--font-readex),sans-serif; font-size: 11.5px; font-weight: 300; color: rgba(255,255,255,0.55); margin: 8px 0 0; line-height: 1.5; }
+        .eb-wc-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .eb-wc-row:last-child { border-bottom: none; }
+        .eb-wc-label { padding: 12px 12px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); display: flex; align-items: center; }
+        .eb-wc-cell { padding: 12px 14px; font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.72); line-height: 1.6; }
+        .eb-wc-cell-b { border-left: 1px solid rgba(255,255,255,0.05); }
+        @media (max-width: 560px) { .eb-wc-heads, .eb-wc-row { grid-template-columns: 72px 1fr 1fr; } .eb-wc-cell { font-size: 11px; padding: 10px 8px; } }
+      `}</style>
+    </div>
+  );
+}
+
 /* Sources — 資料來源清單 */
 function SourcesBlock({ items }: Extract<Block, { type: "sources" }>) {
   return (
@@ -1389,6 +1549,9 @@ function RenderBlock({ block }: { block: Block }) {
     case "comment-cta":   return <CommentCTABlock {...block} />;
     case "youtube":       return <YouTubeBlock {...block} />;
     case "higgsfield":    return <HiggsfieldRef variant={block.variant} />;
+    case "stage-switcher":     return <StageSwitcherBlock {...block} />;
+    case "shot-breakdown":     return <ShotBreakdownBlock {...block} />;
+    case "workflow-comparison":return <WorkflowComparisonBlock {...block} />;
     case "sources":       return <SourcesBlock {...block} />;
     default:              return null;
   }
