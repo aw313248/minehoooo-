@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 public/**/*-full.jpg
 public/boom.png
+
+# review packages (heavy local artifacts, see scripts/review/README.md)
+/docs/review/
