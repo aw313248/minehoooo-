@@ -182,13 +182,20 @@ function EditorialAmbience() {
    Vertical clips side-by-side read as phone frames — fitting for an iPhone guide */
 function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  // 捲出畫面就暫停三支影片 — 不讓它們在整頁生命週期持續解碼
+  // 捲出畫面就暫停三支影片 — 但絕不干擾初始 autoplay：
+  // 只有「曾經確認在畫面內」之後的離場才暫停；IO 異常時完全退回原生 autoplay 行為
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
     const vids = () => Array.from(el.querySelectorAll("video"));
+    let seen = false;
     const io = new IntersectionObserver(([e]) => {
-      vids().forEach(v => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); });
+      if (e.isIntersecting) {
+        seen = true;
+        vids().forEach(v => { if (v.paused) v.play().catch(() => {}); });
+      } else if (seen) {
+        vids().forEach(v => v.pause());
+      }
     }, { rootMargin: "60px" });
     io.observe(el);
     return () => io.disconnect();
