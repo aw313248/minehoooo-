@@ -119,6 +119,7 @@ const blocks: Block[] = [
       </>
     ),
   },
+  { type: "higgsfield", variant: "plug" },
   {
     type: "sources",
     items: [

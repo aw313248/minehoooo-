@@ -74,6 +74,8 @@ export type Block =
   | { type: "comment-cta";   label: string; sub?: string }
   // YouTube 嵌入 — 點縮圖才載入播放器（自帶音量控制）
   | { type: "youtube";       id: string; title: string; aspect?: string }
+  // Higgsfield 邀請橫幅（banner=AI 教學醒目版 / plug=旅遊中場工商）
+  | { type: "higgsfield";    variant?: "banner" | "plug" }
   // 資料來源清單
   | { type: "sources";       items: { label: string; href?: string; note?: string }[] }
   | { type: "prompt-copy";   text: string; label?: string }

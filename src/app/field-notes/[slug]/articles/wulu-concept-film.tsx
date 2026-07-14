@@ -13,6 +13,8 @@ const wuluBlocks: Block[] = [
   /* ══════════════════════════════════════════════════════════════
      Project Intro
      ══════════════════════════════════════════════════════════════ */
+  { type: "higgsfield", variant: "banner" },
+
   {
     type: "headline",
     id:   "project",

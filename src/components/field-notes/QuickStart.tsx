@@ -118,13 +118,6 @@ export default function QuickStart({
         </a>
       </div>
 
-      {/* 邀請碼揭露 — 醒目金框 */}
-      <p className="qs-ref-note">
-        <span className="qs-ref-tag">邀請連結</span>
-        上面的按鈕用的是 Oscar 的邀請碼——你註冊不會多花一毛錢，
-        但如果你訂閱 Higgsfield 2.0，Oscar 會拿到創作額度，等於直接支持這些免費教學繼續出
-      </p>
-
       {/* Tertiary link to tool intro */}
       <p className="qs-sub-link">
         第一次使用？

@@ -430,6 +430,8 @@ const kinoBlocks: Block[] = [
   /* ══════════════════════════════════════════════════════════════
      Oscar's Notes
      ══════════════════════════════════════════════════════════════ */
+  { type: "higgsfield", variant: "plug" },
+
   {
     type: "oscar-notes",
     content: (

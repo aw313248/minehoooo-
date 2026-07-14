@@ -8,6 +8,7 @@ import { getRelatedNotes } from "@/data/fieldNotes";
 import type { Block, NextStopCity } from "./types";
 import NoteViews from "@/components/field-notes/NoteViews";
 import BubbleComments from "@/components/field-notes/BubbleComments";
+import HiggsfieldRef from "@/components/HiggsfieldRef";
 
 /* ─────────────────────────────────────────────────────────────────
    TOC
@@ -1380,6 +1381,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "map-embed":     return <MapEmbedBlock {...block} />;
     case "comment-cta":   return <CommentCTABlock {...block} />;
     case "youtube":       return <YouTubeBlock {...block} />;
+    case "higgsfield":    return <HiggsfieldRef variant={block.variant} />;
     case "sources":       return <SourcesBlock {...block} />;
     default:              return null;
   }

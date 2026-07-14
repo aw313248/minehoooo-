@@ -13,6 +13,7 @@ import MobileStickyBar from "@/components/field-notes/MobileStickyBar";
 import ToolBadge from "@/components/field-notes/ToolBadge";
 import ScrollUnlock from "@/components/ScrollUnlock";
 import BubbleComments from "@/components/field-notes/BubbleComments";
+import HiggsfieldRef from "@/components/HiggsfieldRef";
 import { fieldNotes, getFieldNote } from "@/data/fieldNotes";
 import {
   getPromptBuilder,
@@ -208,6 +209,13 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
         <div className="relative max-w-[1100px] mx-auto px-5 md:px-8 mt-3 flex justify-end">
           <NoteViews slug={note.slug} increment />
         </div>
+      )}
+
+      {/* ── Higgsfield 官方 Logo 邀請橫幅 — 教學最顯眼位置 ── */}
+      {builderConfig && (
+        <section className="relative max-w-[1100px] mx-auto px-5 md:px-8 mt-6">
+          <HiggsfieldRef variant="banner" />
+        </section>
       )}
 
       {/* ── 02 · QUICK START (visible on first screen, primary CTAs) ── */}

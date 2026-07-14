@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollUnlock from "@/components/ScrollUnlock";
 import { fieldNotes, type NoteCategory } from "@/data/fieldNotes";
+import HiggsfieldRef from "@/components/HiggsfieldRef";
 import { useEffect } from "react";
 
 // 兩個入口：AI 工具 ／ 旅遊（Kino 拍片與旅行筆記都算旅遊）
@@ -94,6 +95,9 @@ export default function FieldNotesIndex() {
             })}
           </div>
         )}
+
+        {/* ── Higgsfield 邀請橫幅（筆記最外層）── */}
+        <HiggsfieldRef variant="banner" />
 
         {/* ── Article list ── */}
         <div className="fn-list">
