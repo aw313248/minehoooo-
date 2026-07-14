@@ -64,6 +64,23 @@ export const fieldNotes: FieldNote[] = [
   },
 
 
+  // ── 旅遊工具小筆記（GuruWalk）─────────────────────────────────
+  {
+    slug:          "guruwalk",
+    title:         "出國想深度旅遊，先把這個 App 裝起來",
+    subtitle:      "GuruWalk — 免費跟當地人的導覽團，結束後看喜好給小費",
+    date:          "2026-07-12",
+    category:      "TRAVEL",
+    categoryLabel: "TRAVEL · TOOL",
+    tags:          ["GuruWalk", "旅遊工具", "Free Walking Tour", "深度旅遊", "歐洲旅行", "導覽團"],
+    excerpt:       "行程免費參加、結束後照你對導遊的喜好給小費。導覽語言和星等都標得清清楚楚，官網還有中文介面——而且台北、台中就有團，出國前可以先試跟一次",
+    heroImage:     "/field-notes/guruwalk/cover.jpg",
+    readingTime:   2,
+    articleType:   "editorial-v2",
+    triggerWord:   "guruwalk",
+    commentPrompt: "你跟過哪個城市的導覽團？推薦嗎？",
+  },
+
   // ── 旅行筆記（維也納 Griechenbeisl）──────────────────────────
   {
     slug:          "vienna-griechenbeisl",
