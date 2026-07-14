@@ -75,7 +75,8 @@ export interface ToolInfo {
 
 export const TOOL_HIGGSFIELD: ToolInfo = {
   name: "HIGGSFIELD × SEEDANCE",
-  url: "https://higgsfield.ai/",
+  // Oscar 的邀請連結 — 讀者訂閱 Higgsfield 2.0，Oscar 可獲得使用額度（頁面上有揭露）
+  url: "https://higgsfield.ai/?ref=seedance_CGSr2hyNc_U",
   toolPagePath: "/tools/higgsfield-seedance",
 };
 

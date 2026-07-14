@@ -4,7 +4,7 @@ import FieldNoteNav from "@/components/FieldNoteNav";
 import ScrollUnlock from "@/components/ScrollUnlock";
 
 const SITE_URL = "https://minehoooo.xyz";
-const TOOL_URL = "https://higgsfield.ai/";
+const TOOL_URL = "https://higgsfield.ai/?ref=seedance_CGSr2hyNc_U"; // Oscar 邀請連結（頁上有揭露）
 const TUTORIAL_PATH = "/field-notes/seedance-aerial";
 
 export const metadata: Metadata = {
@@ -143,6 +143,22 @@ export default function HiggsfieldToolPage() {
               <span aria-hidden style={{ fontSize: 16 }}>→</span>
             </Link>
           </div>
+          <p style={{
+            display: "flex", alignItems: "baseline", gap: 10, margin: "16px 0 0",
+            padding: "11px 14px", background: "rgba(255,225,140,0.06)",
+            border: "1px solid rgba(255,225,140,0.25)", borderRadius: 8,
+            fontSize: 12.5, lineHeight: 1.7, color: "rgba(255,255,255,0.72)",
+          }}>
+            <span style={{
+              flexShrink: 0, fontFamily: "var(--font-space-mono),monospace", fontSize: 9,
+              letterSpacing: "0.26em", color: "rgba(255,225,140,0.95)",
+              border: "1px solid rgba(255,225,140,0.4)", borderRadius: 3, padding: "2px 7px",
+            }}>邀請連結</span>
+            <span>
+              Open Higgsfield 用的是 Oscar 的邀請碼——你不會多花錢，
+              但你訂閱 Higgsfield 2.0 的話，Oscar 會拿到創作額度，等於支持這些免費教學繼續出
+            </span>
+          </p>
         </Block>
 
         {/* Footer */}

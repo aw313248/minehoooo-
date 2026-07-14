@@ -118,6 +118,13 @@ export default function QuickStart({
         </a>
       </div>
 
+      {/* 邀請碼揭露 — 醒目金框 */}
+      <p className="qs-ref-note">
+        <span className="qs-ref-tag">邀請連結</span>
+        上面的按鈕用的是 Oscar 的邀請碼——你註冊不會多花一毛錢，
+        但如果你訂閱 Higgsfield 2.0，Oscar 會拿到創作額度，等於直接支持這些免費教學繼續出
+      </p>
+
       {/* Tertiary link to tool intro */}
       <p className="qs-sub-link">
         第一次使用？
@@ -319,7 +326,9 @@ function Styles() {
         border-color: rgba(255,255,255,0.32);
       }
 
-      .qs-sub-link {
+      .qs-ref-note { display: flex; align-items: baseline; gap: 10px; margin: 14px 0 0; padding: 11px 14px; background: rgba(255,225,140,0.06); border: 1px solid rgba(255,225,140,0.25); border-radius: 8px; font-size: 12.5px; line-height: 1.7; color: rgba(255,255,255,0.72); }
+        .qs-ref-tag { flex-shrink: 0; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; color: rgba(255,225,140,0.95); border: 1px solid rgba(255,225,140,0.4); border-radius: 3px; padding: 2px 7px; }
+        .qs-sub-link {
         margin: 8px 0 0;
         font-size: 12.5px;
         color: rgba(255,255,255,0.5);

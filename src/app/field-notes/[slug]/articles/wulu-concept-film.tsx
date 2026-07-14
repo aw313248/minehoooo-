@@ -385,6 +385,13 @@ No on-screen text changes, no watermark. Audio added in post.`,
      Closing
      ══════════════════════════════════════════════════════════════ */
   {
+    type: "cta",
+    message: "想自己試 Seedance？用 Oscar 的邀請連結註冊 Higgsfield",
+    sub: "你不會多花錢；你訂閱 Higgsfield 2.0 的話，Oscar 會拿到創作額度，等於直接支持免費教學繼續出",
+    cta: "用邀請連結開始",
+    href: "https://higgsfield.ai/?ref=seedance_CGSr2hyNc_U",
+  },
+  {
     type: "closing",
     content: (
       <>
