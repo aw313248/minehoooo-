@@ -277,7 +277,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                       {s.status === "候選" && <span className="rb-stop-tent">TENTATIVE</span>}
                     </h3>
                     {en && <p className="rb-stop-en">{en}</p>}
-                    {s.note && <p className="rb-stop-note">{s.note}</p>}
+                    {s.note && <p className="rb-stop-note">{coarse(s.note)}</p>}
                     <FieldIntel stop={s} />
                     {s.mapsUrl && (
                       <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
@@ -295,7 +295,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                   <div key={s.id} className="rb-planb-item">
                     <p className="rb-planb-k">PLAN B / {String(i + 1).padStart(2, "0")}</p>
                     <p className="rb-planb-name">{coarse(s.name)}</p>
-                    {s.note && <p className="rb-planb-note">{s.note}</p>}
+                    {s.note && <p className="rb-planb-note">{coarse(s.note)}</p>}
                     <FieldIntel stop={s} />
                     {s.mapsUrl && (
                       <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">

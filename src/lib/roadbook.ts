@@ -64,7 +64,7 @@ function mapPage(page: any): RoadbookStop | null {
     mapsUrl: p["Google Maps"]?.url ?? undefined,
     segmentNavUrl: p["整段導航"]?.url ?? undefined,
     order: typeof p["排序"]?.number === "number" ? p["排序"].number : 999,
-    note: text(p["備註"]),
+    note: text(p["備註"])?.replace(/([市縣])[^\s·，,()（）]{1,3}[區鄉鎮](?![場館街路])/g, "$1"),
     isCurrent: p["目前位置"]?.checkbox === true,
     lat: typeof p["緯度"]?.number === "number" ? p["緯度"].number : undefined,
     lng: typeof p["經度"]?.number === "number" ? p["經度"].number : undefined,
