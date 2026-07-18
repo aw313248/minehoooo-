@@ -35,7 +35,8 @@ const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
 
 export async function generateStaticParams() {
-  return fieldNotes.map(n => ({ slug: n.slug }));
+  // taiwan-roadbook 由靜態資料夾路由（LIVE Roadbook）處理，不走文章模板
+  return fieldNotes.filter(n => n.slug !== "taiwan-roadbook").map(n => ({ slug: n.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

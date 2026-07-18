@@ -82,6 +82,21 @@ export const fieldNotes: FieldNote[] = [
     commentPrompt: "你會想先試哪一顆鏡頭？",
   },
 
+  // ── 台灣機車環島 Roadbook（LIVE，靜態路由 /field-notes/taiwan-roadbook）──
+  {
+    slug:          "taiwan-roadbook",
+    title:         "台灣機車環島 Roadbook",
+    subtitle:      "七天六夜逆時針環島 — 現場使用中的互動 Roadbook",
+    date:          "2026-07-15",
+    category:      "TRAVEL",
+    categoryLabel: "TRAVEL · TAIWAN",
+    tags:          ["機車環島", "台灣", "Roadbook", "旅行", "LIVE"],
+    excerpt:       "七天六夜逆時針環島，行程、導航、目前位置與現場更新都集中在這裡——LIVE ROADBOOK，路上即時同步",
+    heroImage:     "/field-notes/taiwan-roadbook/cover.jpg",
+    readingTime:   1,
+    articleType:   "editorial-v2",
+  },
+
   // ── 旅遊工具小筆記（GuruWalk）─────────────────────────────────
   {
     slug:          "guruwalk",
