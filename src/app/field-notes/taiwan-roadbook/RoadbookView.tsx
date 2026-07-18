@@ -1,15 +1,16 @@
 "use client";
 
 /**
- * 台灣機車環島 Roadbook — 前端視覺層（call sheet / 公路電影 editorial）
+ * 台灣機車環島 Roadbook — 前端視覺層（一天一頁 · Apple glass）
+ * 三個分頁：行程（每天一頁，翻頁換天）/ 旅程紀錄 / 留言板
  * 資料由 server 端傳入（已過濾：僅公開、無取消）；此檔不接觸任何 token
- * 視覺規範：#050505 底、#F2F0EA 主文字、#E3C66B accent、#88C999 目前位置、#C98752 Plan B
+ * 顯示地名一律 coarse()：只到縣市，不出現區
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { RoadbookData, RoadbookStop } from "@/lib/roadbook";
-import { CITY_EN, CAT_EN, cityKeyOf } from "./geo";
+import { CITY_EN, CAT_EN, cityKeyOf, coarse } from "./geo";
 import { storyFor } from "./stories";
 import { imageFor, EQUIP_IMAGES, photoCredits } from "./spotImages";
 import RideMap from "./RideMap";
@@ -33,7 +34,7 @@ function timeAgo(iso?: string): string {
 
 const dayNum = (d: string) => (d.match(/\d+/)?.[0] ?? "1").padStart(2, "0");
 
-/* ── 座標不足時的文字路線 ── */
+/* ── 當日文字路線 ── */
 function TextRoute({ cities }: { cities: string[] }) {
   if (cities.length === 0) return null;
   return (
@@ -104,7 +105,7 @@ function SyncButton() {
   );
 }
 
-/* ── Day 切換：數字＋滑動膠囊底線 ── */
+/* ── Day 切換：玻璃膠囊滑塊 ── */
 function DayRail({ days, day, currentDay, onPick }: {
   days: string[]; day: string; currentDay: string; onPick: (d: string) => void;
 }) {
@@ -115,7 +116,7 @@ function DayRail({ days, day, currentDay, onPick }: {
     if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth });
   }, [day, days]);
   return (
-    <nav className="rb-days" role="tablist" aria-label="選擇天數" ref={wrap}>
+    <nav className="rb-days rb-glass" role="tablist" aria-label="選擇天數" ref={wrap}>
       {days.map(d => (
         <button
           key={d} role="tab" aria-selected={d === day}
@@ -131,7 +132,7 @@ function DayRail({ days, day, currentDay, onPick }: {
   );
 }
 
-/* ── FIELD INTEL：景點情報（評論查證＋去的理由）── */
+/* ── FIELD INTEL：景點情報 ── */
 function FieldIntel({ stop }: { stop: RoadbookStop }) {
   const story = storyFor(stop.name);
   if (!story) return null;
@@ -155,8 +156,11 @@ function FieldIntel({ stop }: { stop: RoadbookStop }) {
 }
 
 /* ── 主畫面 ── */
+type View = "trip" | "log" | "talk";
+
 export default function RoadbookView({ data }: { data: RoadbookData }) {
   const [day, setDay] = useState(data.currentDay);
+  const [view, setView] = useState<View>("trip");
   const dayStops = useMemo(() => data.stops.filter(s => s.day === day), [data.stops, day]);
   const main = dayStops.filter(s => s.status !== "備案");
   const planB = dayStops.filter(s => s.status === "備案");
@@ -174,6 +178,14 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
     });
     return seen;
   }, [data.stops]);
+  const dayIdx = data.days.indexOf(day);
+  const prevDay = data.days[dayIdx - 1];
+  const nextDay = data.days[dayIdx + 1];
+  const flipDay = (d?: string) => {
+    if (!d) return;
+    setDay(d);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   if (!data.ok) {
     return (
@@ -192,25 +204,23 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
 
   return (
     <>
-      {/* 捲動跟隨小地圖（fixed，不佔版面） */}
-      <RideMap stops={data.stops} />
+      {/* 整頁背景地圖：跟著翻頁的那一天 */}
+      <RideMap stops={data.stops} activeDay={day} />
 
-      {/* ── 首屏：公路電影 opening title ── */}
+      {/* ── 首屏（壓縮版 opening title，DAY = 目前翻到的那天）── */}
       <section className="rb-hero">
         <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> LIVE FIELD NOTE</p>
-        <p className="rb-hero-day">DAY {dayNum(data.currentDay)}</p>
-        {cities.length > 0 && day === data.currentDay && (
-          <p className="rb-hero-route">{cities.join("  →  ")}</p>
-        )}
+        <p className="rb-hero-day">DAY {dayNum(day)}</p>
+        {cities.length > 0 && <p className="rb-hero-route">{cities.join("  →  ")}</p>}
         <div className="rb-hero-title">
           <span className="rb-hero-zh">台灣機車環島</span>
           <span className="rb-hero-date">07.19 — 07.25</span>
         </div>
-        <div className="rb-hero-bar">
+        <div className="rb-hero-bar rb-glass">
           {data.currentStop && (
             <div className="rb-bar-cell">
               <span className="rb-bar-k">CURRENTLY</span>
-              <span className="rb-bar-v rb-bar-now">{data.currentStop.name}</span>
+              <span className="rb-bar-v rb-bar-now">{coarse(data.currentStop.name)}</span>
             </div>
           )}
           <div className="rb-bar-cell">
@@ -225,130 +235,146 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
         </div>
       </section>
 
-      <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={setDay} />
+      {/* ── 分頁切換（玻璃 segmented control）── */}
+      <nav className="rb-views rb-glass" role="tablist" aria-label="頁面切換">
+        {([["trip", "行程"], ["log", "旅程紀錄"], ["talk", "留言板"]] as [View, string][]).map(([v, label]) => (
+          <button key={v} role="tab" aria-selected={view === v} className="rb-view-tab"
+            data-active={view === v} onClick={() => setView(v)}>
+            {label}
+          </button>
+        ))}
+      </nav>
 
-      {/* ── 今日行程：垂直路線（key=day 觸發淡入）── */}
-      <section className="rb-tl" key={day}>
-        {main.length === 0 && <p className="rb-tl-empty">這一天還沒有公開行程</p>}
-        {main.map((s, i) => {
-          const done = !s.isCurrent && (s.status === "已完成" || s.status === "已抵達");
-          const en = [cityOf(s), CAT_EN[s.category]].filter(Boolean).join(" · ");
-          return (
-            <article key={s.id} className="rb-stop" data-done={done} data-maybe={s.status === "候選"} data-current={s.isCurrent}>
-              <div className="rb-stop-time">{s.time ?? ""}</div>
-              <div className="rb-stop-rail" aria-hidden>
-                <span className="rb-stop-node" />
-                {i < main.length - 1 && <span className="rb-stop-line" />}
-              </div>
-              <div className="rb-stop-body">
-                {(() => { const img = imageFor(s.name); return img ? (
-                  <div className="rb-stop-photo">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={img.src} alt={s.name} loading="lazy" />
-                    <span className="rb-stop-photo-fade" aria-hidden />
-                    {img.isPlaceholder && <span className="rb-stop-photo-tag">示意圖</span>}
+      {view === "trip" && (
+        <>
+          <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={flipDay} />
+
+          {/* ── 當日行程（一天一頁）── */}
+          <section className="rb-tl" key={day}>
+            {main.length === 0 && <p className="rb-tl-empty">這一天還沒有公開行程</p>}
+            {main.map((s, i) => {
+              const done = !s.isCurrent && (s.status === "已完成" || s.status === "已抵達");
+              const en = [cityOf(s), CAT_EN[s.category]].filter(Boolean).join(" · ");
+              return (
+                <article key={s.id} className="rb-stop" data-done={done} data-maybe={s.status === "候選"} data-current={s.isCurrent}>
+                  <div className="rb-stop-time">{s.time ?? ""}</div>
+                  <div className="rb-stop-rail" aria-hidden>
+                    <span className="rb-stop-node" />
+                    {i < main.length - 1 && <span className="rb-stop-line" />}
                   </div>
-                ) : null; })()}
-                <h3 className="rb-stop-name">
-                  {s.name}
-                  {s.isCurrent && <span className="rb-stop-here">● HERE</span>}
-                  {s.status === "候選" && <span className="rb-stop-tent">TENTATIVE</span>}
-                </h3>
-                {en && <p className="rb-stop-en">{en}</p>}
-                {s.note && <p className="rb-stop-note">{s.note}</p>}
-                <FieldIntel stop={s} />
-                {s.mapsUrl && (
-                  <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
-                    [ OPEN MAP ]
-                  </a>
-                )}
-              </div>
-            </article>
-          );
-        })}
+                  <div className="rb-stop-body">
+                    {(() => { const img = imageFor(s.name); return img ? (
+                      <div className="rb-stop-photo">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img.src} alt={coarse(s.name)} loading="lazy" />
+                        <span className="rb-stop-photo-fade" aria-hidden />
+                        {img.isPlaceholder && <span className="rb-stop-photo-tag">示意圖</span>}
+                      </div>
+                    ) : null; })()}
+                    <h3 className="rb-stop-name">
+                      {coarse(s.name)}
+                      {s.isCurrent && <span className="rb-stop-here">● HERE</span>}
+                      {s.status === "候選" && <span className="rb-stop-tent">TENTATIVE</span>}
+                    </h3>
+                    {en && <p className="rb-stop-en">{en}</p>}
+                    {s.note && <p className="rb-stop-note">{s.note}</p>}
+                    <FieldIntel stop={s} />
+                    {s.mapsUrl && (
+                      <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
+                        [ OPEN MAP ]
+                      </a>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
 
-        {/* Plan B — 雜誌旁註 */}
-        {planB.length > 0 && (
-          <aside className="rb-planb">
-            {planB.map((s, i) => (
-              <div key={s.id} className="rb-planb-item">
-                <p className="rb-planb-k">PLAN B / {String(i + 1).padStart(2, "0")}</p>
-                <p className="rb-planb-name">{s.name}</p>
-                {s.note && <p className="rb-planb-note">{s.note}</p>}
-                <FieldIntel stop={s} />
-                {s.mapsUrl && (
-                  <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
-                    [ OPEN MAP ]
-                  </a>
-                )}
-              </div>
-            ))}
-          </aside>
-        )}
-      </section>
+            {planB.length > 0 && (
+              <aside className="rb-planb">
+                {planB.map((s, i) => (
+                  <div key={s.id} className="rb-planb-item">
+                    <p className="rb-planb-k">PLAN B / {String(i + 1).padStart(2, "0")}</p>
+                    <p className="rb-planb-name">{coarse(s.name)}</p>
+                    {s.note && <p className="rb-planb-note">{s.note}</p>}
+                    <FieldIntel stop={s} />
+                    {s.mapsUrl && (
+                      <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
+                        [ OPEN MAP ]
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </aside>
+            )}
+          </section>
 
-      {/* 分段導航（只在 Notion 有整段導航網址時出現） */}
-      {segments.length > 0 && (
-        <section className="rb-sec">
-          <p className="rb-label">NAVIGATION</p>
-          {segments.map(s => (
-            <a key={s.id} href={s.segmentNavUrl} target="_blank" rel="noopener noreferrer" className="rb-navlink">
-              {s.name} 段導航 →
-            </a>
-          ))}
-        </section>
+          {segments.length > 0 && (
+            <section className="rb-sec">
+              <p className="rb-label">NAVIGATION</p>
+              {segments.map(s => (
+                <a key={s.id} href={s.segmentNavUrl} target="_blank" rel="noopener noreferrer" className="rb-navlink">
+                  {coarse(s.name)} 段導航 →
+                </a>
+              ))}
+            </section>
+          )}
+
+          <TextRoute cities={cities} />
+
+          {/* ── 翻頁：上一天／下一天 ── */}
+          <nav className="rb-pager">
+            <button className="rb-page-btn rb-glass" disabled={!prevDay} onClick={() => flipDay(prevDay)}>
+              ← {prevDay ? `DAY ${dayNum(prevDay)}` : "起點"}
+            </button>
+            <button className="rb-page-btn rb-glass" disabled={!nextDay} onClick={() => flipDay(nextDay)}>
+              {nextDay ? `DAY ${dayNum(nextDay)}` : "終點"} →
+            </button>
+          </nav>
+        </>
       )}
 
-      {/* 里程表 */}
-      <section className="rb-sec">
-        <Odometer />
-      </section>
+      {view === "log" && (
+        <>
+          <section className="rb-sec"><Odometer /></section>
+          <section className="rb-sec">
+            <p className="rb-label">FILM LOG — 每日現場</p>
+            <FilmLog />
+          </section>
+          <section className="rb-sec">
+            <p className="rb-label">EQUIPMENT</p>
+            <div className="rb-credit rb-glass">
+              <div className="rb-credit-txt">
+                <span className="rb-credit-k">CAMERA</span>
+                <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={EQUIP_IMAGES.camera.src} alt="Fujifilm X-Pro2" loading="lazy" className="rb-credit-img" />
+            </div>
+            <div className="rb-credit rb-glass">
+              <div className="rb-credit-txt">
+                <span className="rb-credit-k">SUPPORT</span>
+                <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={EQUIP_IMAGES.support.src} alt="Manfrotto 腳架" loading="lazy" className="rb-credit-img" />
+            </div>
+          </section>
+          <Checklist />
+          <p className="rb-photocredit">示意圖 · Wikimedia Commons — {photoCredits.join("；")}（Oscar 實拍上線後陸續替換）</p>
+        </>
+      )}
 
-      {/* 每日影像日誌 */}
-      <section className="rb-sec">
-        <p className="rb-label">FILM LOG — 每日現場</p>
-        <FilmLog />
-      </section>
-
-      {/* 文字路線（當日城市） */}
-      <TextRoute cities={cities} />
-
-      {/* 裝備 — editorial credits */}
-      <section className="rb-sec">
-        <p className="rb-label">EQUIPMENT</p>
-        <div className="rb-credit">
-          <div className="rb-credit-txt">
-            <span className="rb-credit-k">CAMERA</span>
-            <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={EQUIP_IMAGES.camera.src} alt="Fujifilm X-Pro2" loading="lazy" className="rb-credit-img" />
-        </div>
-        <div className="rb-credit">
-          <div className="rb-credit-txt">
-            <span className="rb-credit-k">SUPPORT</span>
-            <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={EQUIP_IMAGES.support.src} alt="Manfrotto 腳架" loading="lazy" className="rb-credit-img" />
-        </div>
-      </section>
-
-      {/* 分區留言 + 推薦我去哪 */}
-      <section className="rb-sec">
-        <p className="rb-label">ROAD TALK — 各地的人說話</p>
-        <RegionTalk regions={regions} />
-      </section>
-
-      {/* 加油 */}
-      <section className="rb-sec">
-        <CheerButton />
-      </section>
-
-      {/* 示意圖致謝（CC 授權） */}
-      <p className="rb-photocredit">示意圖 · Wikimedia Commons — {photoCredits.join("；")}（Oscar 實拍上線後陸續替換）</p>
-
-      <Checklist />
+      {view === "talk" && (
+        <>
+          <section className="rb-sec">
+            <p className="rb-label">ROAD TALK — 各地的人說話</p>
+            <RegionTalk regions={regions} />
+          </section>
+          <section className="rb-sec">
+            <CheerButton />
+          </section>
+        </>
+      )}
     </>
   );
 }

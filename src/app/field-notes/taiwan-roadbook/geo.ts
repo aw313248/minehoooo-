@@ -31,6 +31,11 @@ export const CAT_EN: Record<string, string> = {
   "加油": "FUEL", "休息": "REST", "目前位置": "NOW",
 };
 
+/* 顯示用地名只到縣市：「台中市南區」→「台中市」 */
+export function coarse(text: string): string {
+  return text.replace(/([市縣])[^\s·，,()（）]{1,3}[區鄉鎮市](?![場館街路])/g, "$1");
+}
+
 export function cityKeyOf(name: string, address?: string): string | undefined {
   const src = `${address ?? ""}${name}`;
   for (const zh of Object.keys(CITY_EN)) if (src.includes(zh)) return zh;

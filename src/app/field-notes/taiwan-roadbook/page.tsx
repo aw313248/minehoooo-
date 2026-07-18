@@ -89,8 +89,14 @@ export default async function TaiwanRoadbookPage() {
         .rb-body { max-width: 680px; margin: 0 auto; padding: 0 22px 80px; position: relative; z-index: 1; }
         .rb-foot { max-width: 680px; margin: 0 auto; padding: 22px; display: flex; justify-content: space-between; border-top: 1px solid var(--rb-line); font-family: var(--rb-mono); font-size: 9px; letter-spacing: .24em; color: var(--rb-faint); }
 
+        /* ── Apple glass 基底 ── */
+        .rb-glass { background: rgba(255,255,255,.055);
+          backdrop-filter: blur(22px) saturate(1.5); -webkit-backdrop-filter: blur(22px) saturate(1.5);
+          border: 1px solid rgba(255,255,255,.10); border-radius: 20px;
+          box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); }
+
         /* ── 首屏：opening title ── */
-        .rb-hero { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; padding: 8vh 0 5vh; animation: rbFadeUp .9s ease both; }
+        .rb-hero { min-height: 52vh; display: flex; flex-direction: column; justify-content: center; padding: 4vh 0 3vh; animation: rbFadeUp .9s ease both; }
         @keyframes rbFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
         .rb-hero-live { display: flex; align-items: center; gap: 9px; font-family: var(--rb-mono); font-size: 10px; letter-spacing: .42em; color: var(--rb-dim); margin: 0 0 4vh; }
         .rb-livedot { width: 6px; height: 6px; border-radius: 50%; background: var(--rb-now); animation: rbBreathe 2s ease-in-out infinite; }
@@ -100,10 +106,10 @@ export default async function TaiwanRoadbookPage() {
         }
         .rb-hero-day { font-family: var(--font-bebas), sans-serif; font-size: clamp(88px, 24vw, 190px); line-height: .88; letter-spacing: .015em; color: var(--rb-fg); margin: 0; }
         .rb-hero-route { font-family: var(--rb-mono); font-size: clamp(11px, 3vw, 14px); letter-spacing: .3em; color: var(--rb-acc); margin: 22px 0 0; }
-        .rb-hero-title { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 5vh; }
+        .rb-hero-title { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 3.5vh; }
         .rb-hero-zh { font-size: 19px; font-weight: 300; letter-spacing: .12em; color: var(--rb-fg); }
         .rb-hero-date { font-family: var(--rb-mono); font-size: 11px; letter-spacing: .22em; color: var(--rb-dim); }
-        .rb-hero-bar { display: flex; align-items: flex-end; gap: 26px; flex-wrap: wrap; margin-top: 6vh; padding-top: 18px; border-top: 1px solid var(--rb-line); }
+        .rb-hero-bar { display: flex; align-items: flex-end; gap: 26px; flex-wrap: wrap; margin-top: 4vh; padding: 18px 20px; }
         .rb-bar-cell { display: flex; flex-direction: column; gap: 5px; }
         .rb-bar-k { font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .34em; color: var(--rb-faint); }
         .rb-bar-v { font-family: var(--rb-mono); font-size: 13px; letter-spacing: .1em; color: var(--rb-fg); }
@@ -112,16 +118,33 @@ export default async function TaiwanRoadbookPage() {
         .rb-sync:hover { color: var(--rb-acc); }
         .rb-sync:disabled { opacity: .5; }
 
-        /* ── Day 切換：數字＋細線 ── */
-        .rb-days { position: relative; display: flex; gap: clamp(14px, 5vw, 34px); border-top: 1px solid var(--rb-line); border-bottom: 1px solid var(--rb-line); padding: 2px 0; margin-bottom: 52px; overflow-x: auto; scrollbar-width: none; }
+        /* ── 分頁切換（segmented control）── */
+        .rb-views { display: flex; gap: 4px; padding: 5px; margin: 26px 0 22px; position: sticky; top: 12px; z-index: 20; border-radius: 999px; }
+        .rb-view-tab { flex: 1; font-size: 14px; font-weight: 400; color: var(--rb-dim); background: none;
+          border: none; border-radius: 999px; padding: 11px 0; cursor: pointer;
+          transition: background .35s cubic-bezier(0.65,0,0.35,1), color .35s; }
+        .rb-view-tab[data-active="true"] { color: #0a0a0a; background: var(--rb-acc); font-weight: 600; }
+
+        /* ── Day 切換：玻璃膠囊 ── */
+        .rb-days { position: relative; display: flex; gap: clamp(6px, 2.5vw, 18px); padding: 5px 8px; margin-bottom: 34px; overflow-x: auto; scrollbar-width: none; border-radius: 999px; }
         .rb-days::-webkit-scrollbar { display: none; }
-        .rb-daynum { position: relative; font-family: var(--rb-mono); font-size: 14px; letter-spacing: .12em; color: var(--rb-faint); background: none; border: none; padding: 14px 2px; cursor: pointer; flex-shrink: 0; transition: color .25s; }
+        .rb-daynum { position: relative; z-index: 1; font-family: var(--rb-mono); font-size: 13.5px; letter-spacing: .1em; color: var(--rb-faint); background: none; border: none; border-radius: 999px; padding: 10px 13px; cursor: pointer; flex-shrink: 0; transition: color .25s; }
         .rb-daynum:hover { color: var(--rb-dim); }
-        .rb-daynum[data-active="true"] { color: var(--rb-acc); }
-        .rb-daynum-dot { position: absolute; top: 10px; right: -5px; width: 4px; height: 4px; border-radius: 50%; background: var(--rb-now); }
-        /* 滑動膠囊底線 — JS 依 active 鈕的 offsetLeft/offsetWidth 定位 */
-        .rb-daypill { position: absolute; bottom: -1px; height: 1px; background: var(--rb-acc);
+        .rb-daynum[data-active="true"] { color: #0a0a0a; font-weight: 700; }
+        .rb-daynum-dot { position: absolute; top: 7px; right: 6px; width: 4px; height: 4px; border-radius: 50%; background: var(--rb-now); }
+        /* 滑動玻璃膠囊 — JS 依 active 鈕的 offsetLeft/offsetWidth 定位 */
+        .rb-daypill { position: absolute; top: 5px; bottom: 5px; border-radius: 999px; background: var(--rb-acc);
+          box-shadow: 0 2px 14px rgba(227,198,107,.35);
           transition: left 0.4s cubic-bezier(0.65, 0, 0.35, 1), width 0.4s cubic-bezier(0.65, 0, 0.35, 1); }
+
+        /* ── 翻頁 ── */
+        .rb-pager { display: flex; gap: 12px; margin-top: 44px; }
+        .rb-page-btn { flex: 1; font-family: var(--rb-mono); font-size: 12px; letter-spacing: .2em;
+          color: var(--rb-fg); padding: 17px 0; cursor: pointer;
+          transition: background .3s, transform .3s cubic-bezier(0.34,1.56,0.64,1); }
+        .rb-page-btn:hover:not(:disabled) { background: rgba(255,255,255,.10); }
+        .rb-page-btn:active:not(:disabled) { transform: scale(.97); }
+        .rb-page-btn:disabled { opacity: .3; cursor: default; }
 
         /* ── 垂直路線 ── */
         .rb-tl { animation: rbFadeIn .5s ease both; }
@@ -171,16 +194,16 @@ export default async function TaiwanRoadbookPage() {
         .rb-credit-k { font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .38em; color: var(--rb-faint); }
         .rb-credit-v { font-family: var(--rb-mono); font-size: 12.5px; letter-spacing: .14em; color: var(--rb-fg); line-height: 1.7; }
 
-        .rb-credit { flex-direction: row; align-items: center; justify-content: space-between; gap: 18px; }
+        .rb-credit { flex-direction: row; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 18px; margin-bottom: 12px; border-bottom: none; }
         .rb-credit-txt { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-        .rb-credit-img { width: 96px; height: 64px; object-fit: cover; flex-shrink: 0;
+        .rb-credit-img { width: 96px; height: 64px; object-fit: cover; flex-shrink: 0; border-radius: 12px;
           filter: saturate(.8); mask-image: linear-gradient(90deg, transparent 0%, #000 35%); }
 
         /* ── ROAD TALK：分區留言 ── */
         .rb-talk-regions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
         .rb-talk-region { font-family: var(--rb-mono); font-size: 12px; letter-spacing: .1em;
-          color: var(--rb-faint); background: none; border: 1px solid transparent; padding: 7px 10px; cursor: pointer; }
-        .rb-talk-region[data-active="true"] { color: var(--rb-acc); border-bottom: 1px solid var(--rb-acc); }
+          color: var(--rb-faint); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 999px; padding: 8px 14px; cursor: pointer; transition: all .3s; }
+        .rb-talk-region[data-active="true"] { color: #0a0a0a; background: var(--rb-acc); border-color: var(--rb-acc); font-weight: 600; }
         .rb-talk-layers { display: flex; gap: 22px; margin-bottom: 16px; }
         .rb-talk-layer { font-size: 14px; font-weight: 300; color: var(--rb-faint); background: none;
           border: none; padding: 4px 0; cursor: pointer; }
@@ -198,21 +221,22 @@ export default async function TaiwanRoadbookPage() {
         .rb-talk-form { display: flex; gap: 8px; margin-top: 14px; }
         .rb-talk-form-col { flex-direction: column; margin-top: 0; margin-bottom: 8px; }
         .rb-talk-row { display: flex; gap: 8px; }
-        .rb-talk-in { flex: 1; min-width: 0; background: rgba(255,255,255,.03);
-          border: 1px solid var(--rb-line); color: var(--rb-fg); font-size: 14px; font-weight: 300;
-          padding: 11px 13px; outline: none; }
+        .rb-talk-in { flex: 1; min-width: 0; background: rgba(255,255,255,.05);
+          backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(255,255,255,.10); border-radius: 12px; color: var(--rb-fg); font-size: 14px; font-weight: 300;
+          padding: 11px 14px; outline: none; }
         .rb-talk-in:focus { border-color: rgba(227,198,107,.4); }
         .rb-talk-in::placeholder { color: var(--rb-faint); }
         .rb-talk-in-name { flex: 0 0 118px; }
         .rb-talk-send { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .18em;
-          color: #0a0a0a; background: var(--rb-acc); border: none; padding: 11px 16px; cursor: pointer; }
+          color: #0a0a0a; background: var(--rb-acc); border: none; border-radius: 999px; padding: 11px 18px; cursor: pointer; }
         .rb-talk-msg { font-size: 12.5px; color: var(--rb-now); margin: 10px 0 0; }
 
         .rb-photocredit { font-size: 10.5px; font-weight: 300; color: rgba(242,240,234,.28);
           line-height: 1.8; margin: 40px 0 0; }
 
         /* ── Checklist：折疊 ── */
-        .rb-cl { margin-top: 72px; border-top: 1px solid var(--rb-line); }
+        .rb-cl { margin-top: 72px; background: rgba(255,255,255,.045); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.09); border-radius: 20px; padding: 4px 18px; }
         .rb-cl-summary { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .38em; color: var(--rb-dim); padding: 20px 0; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
         .rb-cl-summary::-webkit-details-marker { display: none; }
         .rb-cl[open] .rb-cl-summary span { transform: rotate(45deg); display: inline-block; }
@@ -220,7 +244,7 @@ export default async function TaiwanRoadbookPage() {
         .rb-cl-group { margin-bottom: 22px; }
         .rb-cl-sub { font-size: 13px; font-weight: 300; color: var(--rb-dim); margin: 0 0 4px; }
         .rb-cl-item { display: flex; align-items: center; gap: 13px; width: 100%; background: none; border: none; border-bottom: 1px solid rgba(255,255,255,.05); padding: 11px 0; cursor: pointer; text-align: left; }
-        .rb-cl-box { width: 17px; height: 17px; flex-shrink: 0; border: 1px solid var(--rb-dim); color: var(--rb-acc); font-family: var(--rb-mono); font-size: 11px; display: flex; align-items: center; justify-content: center; }
+        .rb-cl-box { width: 18px; height: 18px; flex-shrink: 0; border: 1px solid var(--rb-dim); border-radius: 6px; color: var(--rb-acc); font-family: var(--rb-mono); font-size: 11px; display: flex; align-items: center; justify-content: center; }
         .rb-cl-item[data-on="true"] .rb-cl-box { border-color: var(--rb-acc); }
         .rb-cl-txt { font-size: 15px; font-weight: 300; color: var(--rb-fg); }
         .rb-cl-item[data-on="true"] .rb-cl-txt { color: var(--rb-faint); }
@@ -245,6 +269,7 @@ export default async function TaiwanRoadbookPage() {
         .rb-rm-stop { fill: rgba(242,240,234,.14); transition: fill .4s; }
         .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
         .rb-rm-glow { fill: rgba(136,201,153,.14); animation: rbBreathe 2s ease-in-out infinite; }
+        .rb-rm-rider { transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1); }
         .rb-rm-line { fill: none; stroke: var(--rb-fg); stroke-width: 1.6; stroke-linecap: round; }
         .rb-rm-head { fill: var(--rb-now); stroke: none; }
         .rb-bgmap-cap { position: fixed; left: 22px; bottom: 18px; display: flex; flex-direction: column;
@@ -254,7 +279,7 @@ export default async function TaiwanRoadbookPage() {
         .rb-bgmap-spot { font-size: 13px; font-weight: 300; color: var(--rb-dim); }
 
         /* ── 站點照片：圖底漸層融進文字 ── */
-        .rb-stop-photo { position: relative; margin: 2px 0 14px; max-width: 460px; }
+        .rb-stop-photo { position: relative; margin: 2px 0 14px; max-width: 460px; border-radius: 18px; overflow: hidden; }
         .rb-stop-photo img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
           filter: saturate(.85) contrast(1.02); }
         .rb-stop-photo-fade { position: absolute; inset: 0;
@@ -269,7 +294,7 @@ export default async function TaiwanRoadbookPage() {
           color: var(--rb-acc); cursor: pointer; list-style: none; display: inline-flex; gap: 8px; padding: 4px 0; }
         .rb-intel-sum::-webkit-details-marker { display: none; }
         .rb-intel[open] .rb-intel-sum span { transform: rotate(45deg); display: inline-block; }
-        .rb-intel-body { padding: 10px 0 4px 14px; border-left: 1px solid var(--rb-line); }
+        .rb-intel-body { padding: 14px 16px 10px; margin-top: 8px; background: rgba(255,255,255,.045); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.09); border-radius: 16px; }
         .rb-intel-row { font-size: 14px; font-weight: 300; color: var(--rb-dim); line-height: 1.75;
           margin: 0 0 9px; max-width: 46ch; }
         .rb-intel-k { display: block; font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .3em;
@@ -288,7 +313,7 @@ export default async function TaiwanRoadbookPage() {
           color: var(--rb-dim); margin: 14px 0 0; }
 
         /* ── FILM LOG ── */
-        .rb-film-day { padding: 18px 0; border-bottom: 1px solid var(--rb-line); }
+        .rb-film-day { padding: 16px 18px; margin-bottom: 12px; background: rgba(255,255,255,.045); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.09); border-radius: 18px; }
         .rb-film-head { display: flex; align-items: baseline; gap: 14px; }
         .rb-film-d { font-family: var(--rb-mono); font-size: 13px; letter-spacing: .18em; color: var(--rb-fg); }
         .rb-film-date { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .2em; color: var(--rb-faint); }
@@ -298,7 +323,7 @@ export default async function TaiwanRoadbookPage() {
           scrollbar-width: none; scroll-snap-type: x mandatory; }
         .rb-film-strip::-webkit-scrollbar { display: none; }
         .rb-film-ph { height: 190px; width: auto; flex-shrink: 0; scroll-snap-align: start;
-          display: block; }
+          display: block; border-radius: 12px; }
         .rb-film-empty { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .22em;
           color: var(--rb-faint); margin: 10px 0 0; }
 
