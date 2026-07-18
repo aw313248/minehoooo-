@@ -157,7 +157,7 @@ function FieldIntel({ stop }: { stop: RoadbookStop }) {
 }
 
 /* ── 主畫面 ── */
-type View = "trip" | "log" | "talk";
+type View = "trip" | "map" | "log" | "talk";
 
 export interface WeatherInfo { temp: number; code: number; cityZh: string }
 
@@ -323,7 +323,7 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
 
       {/* ── 分頁切換（玻璃 segmented control）── */}
       <nav className="rb-views rb-glass" role="tablist" aria-label="頁面切換">
-        {([["trip", "行程"], ["log", "旅程紀錄"], ["talk", "留言板"]] as [View, string][]).map(([v, label]) => (
+        {([["trip", "行程"], ["map", "地圖"], ["log", "紀錄"], ["talk", "留言"]] as [View, string][]).map(([v, label]) => (
           <button key={v} role="tab" aria-selected={view === v} className="rb-view-tab"
             data-active={view === v} onClick={() => setView(v)}>
             {label}
@@ -442,6 +442,16 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
           </nav>
           </div>
         </div>
+      )}
+
+      {view === "map" && (
+        <>
+          <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={flipDay} />
+          <div className="rb-fullmap">
+            <RideMap stops={data.stops} activeDay={day} mode="full" />
+          </div>
+          <p className="rb-fullmap-hint">當日所有公開站點總覽・行程分頁會跟著你滑到的章節聚焦</p>
+        </>
       )}
 
       {view === "log" && (

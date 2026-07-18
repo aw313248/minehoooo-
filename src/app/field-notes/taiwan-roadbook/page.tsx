@@ -310,7 +310,7 @@ export default async function TaiwanRoadbookPage() {
         /* ── 地圖舞台面板 ── */
         .rb-mappanel { position: relative; overflow: hidden; height: 100%; }
         .rb-mappanel-svg { width: 100%; height: 100%; display: block; }
-        .rb-cam { transition: transform .9s cubic-bezier(0.65, 0, 0.35, 1); }
+        .rb-cam { transition: transform .65s cubic-bezier(0.65, 0, 0.35, 1); }
         .rb-rm-island { fill: rgba(255,255,255,.02); stroke: rgba(255,255,255,.16); stroke-width: 1; }
         .rb-rm-route { fill: none; stroke: rgba(242,240,234,.14); stroke-width: 1; stroke-dasharray: 3 4; }
         .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.6; stroke-linejoin: round;
@@ -319,6 +319,9 @@ export default async function TaiwanRoadbookPage() {
         .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
         .rb-rm-stop[data-active="true"] { fill: var(--rb-acc); filter: drop-shadow(0 0 5px rgba(227,198,107,.8)); }
         .rb-rm-stop[data-planb="true"] { fill: none; stroke: rgba(242,240,234,.35); stroke-dasharray: 2 2; }
+        .rb-rm-stop[data-dim="true"] { opacity: .35; }
+        .rb-fullmap { height: 72vh; }
+        .rb-fullmap-hint { font-size: 13px; font-weight: 300; color: var(--rb-faint); margin: 14px 0 0; text-align: center; }
         .rb-mappanel-cap { position: absolute; left: 16px; bottom: 13px; display: flex; flex-direction: column; gap: 3px; }
         .rb-rm-rider { transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
         .rb-rm-beam { animation: rbFlicker 2.6s ease-in-out infinite; }
@@ -441,10 +444,14 @@ export default async function TaiwanRoadbookPage() {
         }
         /* ── 手機：地圖固定上方，章節在下滑動 ── */
         @media (max-width: 899px) {
-          .rb-mapwrap { position: sticky; top: 10px; z-index: 15; height: 42vh; margin-bottom: 18px; }
-          .rb-views { position: fixed; top: auto; bottom: 14px; left: 16px; right: 16px; margin: 0; z-index: 50; }
-          .rb-body { padding-bottom: 110px; }
+          .rb-mapwrap { position: sticky; top: 8px; z-index: 15; height: 40vh; margin-bottom: 22px; }
+          .rb-mapwrap .rb-mappanel { background: rgba(10,10,11,.94); }
+          .rb-views { position: fixed; top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            left: 16px; right: 16px; margin: 0; z-index: 50; }
+          .rb-body { padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
+          .rb-stop { min-height: 52vh; align-content: center; }
           .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
+          .rb-fullmap { height: 64vh; }
         }
 
         /* ── 手機 ── */
