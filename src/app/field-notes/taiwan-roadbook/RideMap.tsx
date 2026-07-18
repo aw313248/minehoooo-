@@ -83,6 +83,34 @@ export default function RideMap({ stops, activeDay }: { stops: RoadbookStop[]; a
             />
           );
         })}
+        {/* 當日站點名稱：直接標在島上（同城市併成一組，機車騎到就知道那裡有什麼） */}
+        {(() => {
+          const groups: Record<string, { x: number; y: number; names: string[]; lit: boolean }> = {};
+          dayStops.forEach(w => {
+            const key = cityKeyOf(w.stop.name, w.stop.address) ?? "?";
+            const p = pointAt(ring, w.dist);
+            const g = (groups[key] ??= { x: p.x, y: p.y, names: [], lit: false });
+            if (g.names.length < 4) g.names.push(coarse(w.stop.name));
+            if (w.dist <= dNow + 0.5) g.lit = true;
+          });
+          return Object.entries(groups).map(([key, g]) => {
+            const west = g.x < TW.w * 0.55;
+            const tx = west ? g.x + 9 : g.x - 9;
+            return (
+              <g key={key} textAnchor={west ? "start" : "end"}>
+                <text x={tx} y={g.y - (g.names.length - 1) * 4 - 6} className="rb-rm-lblcity">
+                  {CITY_EN[key] ?? ""}
+                </text>
+                {g.names.map((n, j) => (
+                  <text key={n + j} x={tx} y={g.y - (g.names.length - 1) * 4 + j * 8 + 2}
+                    className="rb-rm-lbl" data-lit={g.lit}>
+                    {n}
+                  </text>
+                ))}
+              </g>
+            );
+          });
+        })()}
         {/* 騎士：翻頁時平滑騎到新位置 */}
         <g className="rb-rm-rider" style={{ transform: `translate(${rider.x}px, ${rider.y}px)` }}>
           <circle r={9} className="rb-rm-glow" />

@@ -344,7 +344,15 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
             <p className="rb-label">EQUIPMENT</p>
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">
-                <span className="rb-credit-k">CAMERA</span>
+                <span className="rb-credit-k">MAIN CAMERA</span>
+                <span className="rb-credit-v">INSTA360 ACE PRO 2</span>
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={EQUIP_IMAGES.main.src} alt="Insta360 Ace Pro 2" loading="lazy" className="rb-credit-img" />
+            </div>
+            <div className="rb-credit rb-glass">
+              <div className="rb-credit-txt">
+                <span className="rb-credit-k">ALSO CARRYING</span>
                 <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
