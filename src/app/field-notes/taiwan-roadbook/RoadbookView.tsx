@@ -21,6 +21,7 @@ const cityOf = (s: RoadbookStop) => {
   const k = cityKeyOf(s.name, s.address);
   return k ? CITY_EN[k] : undefined;
 };
+const cityZhOf = (s: RoadbookStop) => cityKeyOf(s.name, s.address)?.replace("臺", "台");
 
 function timeAgo(iso?: string): string {
   if (!iso) return "—";
@@ -246,50 +247,76 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
 
   return (
     <>
-      {/* ── 首屏：今天最重要的資訊 ── */}
+      {/* 頂部狀態膠囊 */}
+      <div className="rb-toppill rb-glass">
+        <span className="rb-livedot" aria-hidden />
+        <span className="rb-toppill-day">DAY {dayNum(day)}</span>
+        <span className="rb-toppill-route">{cities.map(c2 => {
+          const zh = Object.entries(CITY_EN).find(([, en]) => en === c2)?.[0]?.replace("臺", "台") ?? c2;
+          return zh;
+        }).join(" → ")}</span>
+      </div>
+
+      {/* ── 首屏 ── */}
       <section className="rb-hero">
-        <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> 旅途進行中</p>
+        <p className="rb-hero-label">TAIWAN ROADBOOK</p>
         <p className="rb-hero-day">DAY {dayNum(day)}</p>
+        <h2 className="rb-brand">
+          <span className="rb-brand-zh">台灣機車環島</span>
+          <span className="rb-brand-en">Roadbook</span>
+        </h2>
         {cities.length > 0 && <p className="rb-hero-route">{cities.join("  →  ")}</p>}
         <div className="rb-hero-title">
-          <span className="rb-hero-zh">台灣機車環島</span>
+          <span className="rb-hero-zh">七天六夜，用兩顆輪子繞台灣一圈
+            <em className="rb-en-sm">Seven days around Taiwan on two wheels</em>
+          </span>
           <span className="rb-hero-date">{dayDate(day)}</span>
         </div>
+        <p className="rb-script" aria-hidden>Ride Taiwan</p>
         <div className="rb-hero-bar rb-glass">
           {data.currentStop && (
             <div className="rb-bar-cell">
-              <span className="rb-bar-k">目前位置</span>
+              <span className="rb-bar-k">目前位置 <em>NOW</em></span>
               <span className="rb-bar-v rb-bar-now">{coarse(data.currentStop.name)}</span>
             </div>
           )}
           {nextStop && (
             <div className="rb-bar-cell">
-              <span className="rb-bar-k">下一站</span>
+              <span className="rb-bar-k">下一站 <em>NEXT</em></span>
               <span className="rb-bar-v rb-bar-next">{coarse(nextStop.name)}</span>
             </div>
           )}
           {weather && (
             <div className="rb-bar-cell">
-              <span className="rb-bar-k">{weather.cityZh}天氣</span>
+              <span className="rb-bar-k">{weather.cityZh}天氣 <em>WEATHER</em></span>
               <span className="rb-bar-v">{weather.temp}° {wLabel(weather.code)}</span>
             </div>
           )}
           <div className="rb-bar-cell">
-            <span className="rb-bar-k">最後更新</span>
+            <span className="rb-bar-k">最後更新 <em>UPDATED</em></span>
             <span className="rb-bar-v">{timeAgo(data.lastUpdated)}</span>
           </div>
           <SyncButton />
         </div>
         <div className="rb-cta-row">
           {nextStop?.mapsUrl && (
-            <a href={nextStop.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-cta">
-              開始導航到下一站 →
+            <a href={nextStop.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-navcard rb-glass">
+              <span className="rb-navcard-ico" aria-hidden>
+                <svg viewBox="0 0 24 24" width="21" height="21"><path d="M3 11.5 21 3l-8.5 18-2.2-7.3L3 11.5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round"/></svg>
+              </span>
+              <span className="rb-navcard-txt">
+                <span className="rb-navcard-k">導航到下一站 <em>NAVIGATE TO NEXT STOP</em></span>
+                <span className="rb-navcard-name">{coarse(nextStop.name)}
+                  {cityOf(nextStop) && <em>{cityOf(nextStop)}</em>}
+                </span>
+              </span>
+              <span className="rb-navcard-go" aria-hidden>→</span>
             </a>
           )}
           <button className="rb-cta-sub rb-glass" onClick={() => {
             document.querySelector(".rb-story")?.scrollIntoView({ behavior: "smooth", block: "start" });
           }}>
-            展開今天行程
+            展開今天行程 <em className="rb-en-sm">VIEW TODAY</em>
           </button>
         </div>
       </section>
@@ -329,27 +356,36 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
                     {i < main.length - 1 && <span className="rb-stop-line" />}
                   </div>
                   <div className="rb-stop-body">
-                    {(() => { const img = imageFor(s.name); return img ? (
-                      <div className="rb-stop-photo">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={img.src} alt={coarse(s.name)} loading="lazy" />
-                        <span className="rb-stop-photo-fade" aria-hidden />
-                        {img.isPlaceholder && <span className="rb-stop-photo-tag">示意圖</span>}
+                    <div className="rb-stop-card rb-glass">
+                      {(() => { const img = imageFor(s.name); return img ? (
+                        <div className="rb-stop-photo">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={img.src} alt={coarse(s.name)} loading="lazy" />
+                          {img.isPlaceholder && <span className="rb-stop-photo-tag">示意圖</span>}
+                        </div>
+                      ) : null; })()}
+                      <div className="rb-stop-info">
+                        <p className="rb-stop-cat">{s.category}
+                          {CAT_EN[s.category] && <em>{CAT_EN[s.category]}</em>}
+                          {s.isCurrent && <span className="rb-stop-here">● 在這裡</span>}
+                          {s.status === "候選" && <span className="rb-stop-tent">候選中</span>}
+                        </p>
+                        <h3 className="rb-stop-name">{coarse(s.name)}</h3>
+                        {cityZhOf(s) && (
+                          <p className="rb-stop-city">{cityZhOf(s)}
+                            {cityOf(s) && <em>{cityOf(s)}</em>}
+                          </p>
+                        )}
                       </div>
-                    ) : null; })()}
-                    <h3 className="rb-stop-name">
-                      {coarse(s.name)}
-                      {s.isCurrent && <span className="rb-stop-here">● 在這裡</span>}
-                      {s.status === "候選" && <span className="rb-stop-tent">候選中</span>}
-                    </h3>
-                    {en && <p className="rb-stop-en">{en}</p>}
+                      {s.mapsUrl && (
+                        <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer"
+                          className="rb-stop-pin" aria-label={`${coarse(s.name)} 打開地圖`}>
+                          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21c-4-4.5-6.5-7.7-6.5-10.7a6.5 6.5 0 1 1 13 0C18.5 13.3 16 16.5 12 21Z" fill="none" stroke="currentColor" strokeWidth="1.6"/><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.6"/></svg>
+                        </a>
+                      )}
+                    </div>
                     {s.note && <p className="rb-stop-note">{coarse(s.note)}</p>}
                     <FieldIntel stop={s} />
-                    {s.mapsUrl && (
-                      <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
-                        [ 打開地圖 ]
-                      </a>
-                    )}
                   </div>
                 </article>
               );
@@ -387,6 +423,14 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
 
           <TextRoute cities={cities} />
 
+          {/* 收尾 quote */}
+          <div className="rb-quote rb-glass">
+            <span className="rb-quote-mark" aria-hidden>“</span>
+            <p className="rb-quote-txt">最好的回憶，都在路上
+              <em className="rb-en-sm">The best memories are made on the road</em>
+            </p>
+          </div>
+
           {/* ── 翻頁：上一天／下一天 ── */}
           <nav className="rb-pager">
             <button className="rb-page-btn rb-glass" disabled={!prevDay} onClick={() => flipDay(prevDay)}>
@@ -420,10 +464,8 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">
                 <span className="rb-credit-k">隨行裝備</span>
-                <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
+                <span className="rb-credit-v">DJI OSMO 360 / DJI NEO 2</span>
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={EQUIP_IMAGES.camera.src} alt="Fujifilm X-Pro2" loading="lazy" className="rb-credit-img" />
             </div>
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">

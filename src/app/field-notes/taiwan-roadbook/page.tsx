@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/field-notes/taiwan-roadbook`,
     title: "台灣機車環島 Roadbook",
     description: "七天六夜逆時針機車環島 — 現場使用中的互動 Roadbook",
-    images: [{ url: "/field-notes/taiwan-roadbook/cover.jpg", width: 1200, height: 630 }],
+    images: [{ url: "/field-notes/taiwan-roadbook/og.jpg", width: 1200, height: 630 }],
     siteName: "MINEH4O 現場筆記",
   },
   twitter: { card: "summary_large_image" },
@@ -121,6 +121,31 @@ export default async function TaiwanRoadbookPage() {
           border: 1px solid rgba(255,255,255,.10); border-radius: 20px;
           box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); }
 
+        /* ── 通用：小英文註記 ── */
+        .rb-en-sm, .rb-bar-k em, .rb-navcard-k em, .rb-stop-cat em, .rb-stop-city em,
+        .rb-navcard-name em {
+          font-style: normal; font-family: var(--rb-mono); font-size: .6em;
+          letter-spacing: .16em; color: var(--rb-faint); margin-left: 7px; }
+        .rb-en-sm { display: block; margin: 5px 0 0; font-size: 11px; }
+
+        /* ── 頂部狀態膠囊 ── */
+        .rb-toppill { display: flex; align-items: center; gap: 12px; padding: 13px 18px;
+          margin: 4px 0 10px; border-radius: 999px; }
+        .rb-toppill-day { font-family: var(--rb-mono); font-size: 13px; letter-spacing: .18em; color: var(--rb-acc); }
+        .rb-toppill-route { font-size: 14.5px; font-weight: 300; color: var(--rb-dim);
+          white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* ── 品牌區（手機 hero）── */
+        .rb-hero-label { font-family: var(--rb-mono); font-size: 11px; letter-spacing: .42em;
+          color: var(--rb-acc); margin: 0 0 14px; }
+        .rb-brand { margin: 0; display: none; flex-direction: column; gap: 2px; }
+        .rb-brand-zh { font-size: clamp(34px, 9.6vw, 44px); font-weight: 600; letter-spacing: .06em; color: var(--rb-fg); }
+        .rb-brand-en { font-family: Georgia, "Times New Roman", serif; font-size: clamp(30px, 8.6vw, 40px);
+          background: linear-gradient(100deg, #E3C66B 10%, #f6e6ae 45%, #c9a84c 90%);
+          -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .rb-script { font-family: "Snell Roundhand", "Savoye LET", "Brush Script MT", cursive;
+          font-size: 25px; color: rgba(227,198,107,.75); margin: 20px 0 0; }
+
         /* ── 首屏：opening title ── */
         .rb-hero { min-height: 52vh; display: flex; flex-direction: column; justify-content: center; padding: 4vh 0 3vh; animation: rbFadeUp .9s ease both; }
         @keyframes rbFadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -188,7 +213,7 @@ export default async function TaiwanRoadbookPage() {
         .rb-stop[data-maybe="true"] .rb-stop-node { background: transparent; border: 1px solid var(--rb-dim); }
         .rb-stop[data-current="true"] .rb-stop-node { background: var(--rb-now); animation: rbBreathe 2s ease-in-out infinite; }
         .rb-stop-body { padding-bottom: 40px; min-width: 0; }
-        .rb-stop-name { font-size: 20px; font-weight: 500; letter-spacing: .02em; color: var(--rb-fg); margin: 0; line-height: 1.4; }
+        .rb-stop-name { font-size: 17.5px; font-weight: 600; letter-spacing: .02em; color: var(--rb-fg); margin: 0; line-height: 1.4; }
         .rb-stop-here { font-family: var(--rb-mono); font-size: 9px; letter-spacing: .26em; color: var(--rb-now); margin-left: 12px; vertical-align: 2px; }
         .rb-stop-tent { font-family: var(--rb-mono); font-size: 9px; letter-spacing: .26em; color: var(--rb-faint); margin-left: 12px; vertical-align: 2px; }
         .rb-stop-en { font-family: var(--rb-mono); font-size: 11.5px; letter-spacing: .3em; color: var(--rb-dim); margin: 7px 0 0; }
@@ -309,26 +334,43 @@ export default async function TaiwanRoadbookPage() {
         .rb-rm-lbl[data-lit="true"] { fill: rgba(227,198,107,.9); }
         .rb-rm-lbl[data-active="true"] { fill: #F2F0EA; }
 
-        /* ── 主 CTA ── */
-        .rb-cta-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
-        .rb-cta { flex: 2; min-width: 200px; text-align: center; font-size: 16.5px; font-weight: 600;
-          color: #0a0a0a; background: var(--rb-acc); border-radius: 999px; padding: 16px 22px;
-          text-decoration: none; box-shadow: 0 4px 22px rgba(227,198,107,.3); }
-        .rb-cta:active { transform: scale(.98); }
-        .rb-cta-sub { flex: 1; min-width: 130px; font-size: 15px; color: var(--rb-fg);
-          padding: 16px 18px; cursor: pointer; border-radius: 999px; }
+        /* ── 導航卡 ── */
+        .rb-cta-row { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+        .rb-navcard { display: flex; align-items: center; gap: 16px; padding: 18px 20px;
+          text-decoration: none; border-radius: 24px;
+          background: linear-gradient(120deg, rgba(227,198,107,.16), rgba(227,198,107,.05) 60%);
+          border: 1px solid rgba(227,198,107,.3);
+          box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); }
+        .rb-navcard:active { transform: scale(.985); }
+        .rb-navcard-ico { flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center;
+          justify-content: center; border-radius: 50%; border: 1.5px solid rgba(227,198,107,.55);
+          color: var(--rb-acc); }
+        .rb-navcard-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+        .rb-navcard-k { font-size: 12.5px; letter-spacing: .1em; color: var(--rb-dim); }
+        .rb-navcard-name { font-size: 20px; font-weight: 600; color: var(--rb-fg); line-height: 1.4; }
+        .rb-navcard-go { flex-shrink: 0; width: 48px; height: 48px; display: flex; align-items: center;
+          justify-content: center; border-radius: 50%; background: var(--rb-acc); color: #0a0a0a;
+          font-size: 20px; box-shadow: 0 3px 16px rgba(227,198,107,.4); }
+        .rb-cta-sub { font-size: 15px; color: var(--rb-fg); padding: 14px 18px; cursor: pointer; border-radius: 999px; }
         .rb-bgmap-city { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .34em; color: var(--rb-acc); }
         .rb-bgmap-spot { font-size: 15px; font-weight: 300; color: var(--rb-fg); }
 
-        /* ── 站點照片：圖底漸層融進文字 ── */
-        .rb-stop-photo { position: relative; margin: 2px 0 14px; max-width: 460px; border-radius: 18px; overflow: hidden; }
-        .rb-stop-photo img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+        /* ── 站點卡片：圖左資訊右＋圓形地圖釘 ── */
+        .rb-stop-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 22px; }
+        .rb-stop-photo { position: relative; flex-shrink: 0; width: 78px; height: 78px;
+          border-radius: 16px; overflow: hidden; }
+        .rb-stop-photo img { display: block; width: 100%; height: 100%; object-fit: cover;
           filter: saturate(.85) contrast(1.02); }
-        .rb-stop-photo-fade { position: absolute; inset: 0;
-          background: linear-gradient(180deg, rgba(5,5,5,.08) 0%, rgba(5,5,5,0) 30%, rgba(5,5,5,0) 55%, #050505 100%); }
-        .rb-stop-photo-tag { position: absolute; top: 8px; right: 8px; font-family: var(--rb-mono);
-          font-size: 8px; letter-spacing: .22em; color: rgba(242,240,234,.6);
-          background: rgba(5,5,5,.55); padding: 3px 7px; }
+        .rb-stop-photo-tag { position: absolute; bottom: 5px; right: 5px; font-family: var(--rb-mono);
+          font-size: 7.5px; letter-spacing: .18em; color: rgba(242,240,234,.65);
+          background: rgba(5,5,5,.6); padding: 2px 6px; border-radius: 5px; }
+        .rb-stop-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+        .rb-stop-cat { font-size: 12px; letter-spacing: .08em; color: var(--rb-acc); margin: 0; }
+        .rb-stop-city { font-size: 13px; font-weight: 300; color: var(--rb-dim); margin: 0; }
+        .rb-stop-pin { flex-shrink: 0; width: 44px; height: 44px; display: flex; align-items: center;
+          justify-content: center; border-radius: 50%; border: 1.5px solid rgba(227,198,107,.4);
+          color: var(--rb-acc); text-decoration: none; background: rgba(227,198,107,.06); }
+        .rb-stop-pin:active { transform: scale(.94); }
 
         /* ── FIELD INTEL ── */
         .rb-intel { margin-top: 12px; }
@@ -391,7 +433,9 @@ export default async function TaiwanRoadbookPage() {
           .rb-story { display: grid; grid-template-columns: 42% 56%; gap: 2%; align-items: start; }
           .rb-mapwrap { order: 2; position: sticky; top: 16px; height: 88vh; }
           .rb-chapters { order: 1; }
-          .rb-stop { min-height: 46vh; }
+          .rb-stop { min-height: 42vh; }
+          .rb-stop-photo { width: 108px; height: 108px; }
+          .rb-stop-name { font-size: 20px; }
           .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
           .rb-hero { min-height: 46vh; }
         }
@@ -412,10 +456,24 @@ export default async function TaiwanRoadbookPage() {
         }
         @media (max-width: 480px) {
           .rb-body { padding: 0 18px 64px; }
-          .rb-stop { grid-template-columns: 44px 15px 1fr; column-gap: 12px; }
+          .rb-stop { grid-template-columns: 40px 10px 1fr; column-gap: 8px; }
           .rb-planb { margin-left: 71px; }
           .rb-hero-bar { gap: 18px; }
           .rb-film-ph { height: 150px; }
+        }
+
+        .rb-quote { display: flex; gap: 14px; align-items: flex-start; padding: 20px 22px; margin-top: 40px; border-radius: 24px; }
+        .rb-quote-mark { font-family: Georgia, serif; font-size: 42px; line-height: .8; color: var(--rb-acc); }
+        .rb-quote-txt { font-size: 16px; font-weight: 300; color: var(--rb-fg); margin: 0; line-height: 1.7; }
+
+        @media (max-width: 899px) {
+          .rb-hero-day, .rb-hero-route { display: none; }
+          .rb-brand { display: flex; }
+          .rb-hero { min-height: 0; padding: 2vh 0 1vh; }
+        }
+        @media (min-width: 900px) {
+          .rb-toppill { display: none; }
+          .rb-script { display: none; }
         }
         /* ── 減少動態偏好 ── */
         @media (prefers-reduced-motion: reduce) {

@@ -92,7 +92,7 @@ export const fieldNotes: FieldNote[] = [
     categoryLabel: "TRAVEL · TAIWAN",
     tags:          ["機車環島", "台灣", "Roadbook", "旅行", "LIVE"],
     excerpt:       "七天六夜逆時針環島，行程、導航、目前位置與現場更新都集中在這裡——LIVE ROADBOOK，有更新就同步",
-    heroImage:     "/field-notes/taiwan-roadbook/cover.jpg",
+    heroImage:     "/field-notes/taiwan-roadbook/og.jpg",
     readingTime:   1,
     articleType:   "editorial-v2",
   },

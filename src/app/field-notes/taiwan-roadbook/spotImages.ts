@@ -27,7 +27,6 @@ export const spotImages: SpotImage[] = [
 
 export const EQUIP_IMAGES = {
   main: { src: `${S}/acepro.jpg`, credit: "TaurusEmerald · CC BY-SA 4.0" },
-  camera: { src: `${S}/xpro2.jpg`, credit: "Morio · CC BY-SA 4.0" },
   support: { src: `${S}/manfrotto.jpg`, credit: "Dmitry Makeev · CC BY-SA 4.0" },
 };
 
@@ -39,6 +38,5 @@ export function imageFor(name: string): SpotImage | undefined {
 export const photoCredits = [
   ...spotImages.filter(s => s.credit).map(s => `${s.match}：${s.credit}`),
   `Ace Pro：${EQUIP_IMAGES.main.credit}`,
-  `X-Pro2：${EQUIP_IMAGES.camera.credit}`,
   `腳架：${EQUIP_IMAGES.support.credit}`,
 ];
