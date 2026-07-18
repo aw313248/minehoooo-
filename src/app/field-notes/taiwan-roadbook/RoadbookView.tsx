@@ -25,11 +25,11 @@ const cityOf = (s: RoadbookStop) => {
 function timeAgo(iso?: string): string {
   if (!iso) return "—";
   const m = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
-  if (m < 1) return "JUST NOW";
-  if (m < 60) return `${m} MIN AGO`;
+  if (m < 1) return "剛剛";
+  if (m < 60) return `${m} 分鐘前`;
   const h = Math.floor(m / 60);
-  if (h < 24) return `${h} HR AGO`;
-  return `${Math.floor(h / 24)} D AGO`;
+  if (h < 24) return `${h} 小時前`;
+  return `${Math.floor(h / 24)} 天前`;
 }
 
 const dayNum = (d: string) => (d.match(/\d+/)?.[0] ?? "1").padStart(2, "0");
@@ -39,7 +39,7 @@ function TextRoute({ cities }: { cities: string[] }) {
   if (cities.length === 0) return null;
   return (
     <section className="rb-sec">
-      <p className="rb-label">ROUTE</p>
+      <p className="rb-label">今日路線</p>
       <div className="rb-txtroute">
         {cities.map((c, i) => (
           <span key={c}>
@@ -83,7 +83,7 @@ function Checklist() {
   );
   return (
     <details className="rb-cl">
-      <summary className="rb-cl-summary">PRE-RIDE CHECKLIST <span aria-hidden>+</span></summary>
+      <summary className="rb-cl-summary">出發前檢查 <span aria-hidden>+</span></summary>
       {group("行前一次", PRE_TRIP, "pre")}
       {group("每天出發前", DAILY, "day")}
       <p className="rb-cl-note">勾選只存在這台裝置，不會上傳</p>
@@ -100,7 +100,7 @@ function SyncButton() {
       disabled={busy}
       onClick={() => { setBusy(true); router.refresh(); setTimeout(() => setBusy(false), 1500); }}
     >
-      {busy ? "SYNCING…" : "SYNC ↻"}
+      {busy ? "更新中…" : "更新 ↻"}
     </button>
   );
 }
@@ -139,7 +139,7 @@ function FieldIntel({ stop }: { stop: RoadbookStop }) {
   return (
     <details className="rb-intel">
       <summary className="rb-intel-sum">
-        FIELD INTEL{story.rating ? ` · ${story.rating}` : ""} <span aria-hidden>+</span>
+        景點情報{story.rating ? ` · ${story.rating}` : ""} <span aria-hidden>+</span>
       </summary>
       <div className="rb-intel-body">
         <p className="rb-intel-row"><span className="rb-intel-k">網路公評</span>{story.crowd}</p>
@@ -190,7 +190,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
   if (!data.ok) {
     return (
       <div className="rb-err">
-        <p className="rb-label">SIGNAL LOST</p>
+        <p className="rb-label">連線中斷</p>
         <p className="rb-err-t">行程資料暫時連不上</p>
         <p className="rb-err-s">
           Roadbook 的資料住在 Notion，現在讀取不到 —
@@ -209,7 +209,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
 
       {/* ── 首屏（壓縮版 opening title，DAY = 目前翻到的那天）── */}
       <section className="rb-hero">
-        <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> LIVE FIELD NOTE</p>
+        <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> 旅途進行中</p>
         <p className="rb-hero-day">DAY {dayNum(day)}</p>
         {cities.length > 0 && <p className="rb-hero-route">{cities.join("  →  ")}</p>}
         <div className="rb-hero-title">
@@ -219,16 +219,16 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
         <div className="rb-hero-bar rb-glass">
           {data.currentStop && (
             <div className="rb-bar-cell">
-              <span className="rb-bar-k">CURRENTLY</span>
+              <span className="rb-bar-k">目前位置</span>
               <span className="rb-bar-v rb-bar-now">{coarse(data.currentStop.name)}</span>
             </div>
           )}
           <div className="rb-bar-cell">
-            <span className="rb-bar-k">LAST UPDATED</span>
+            <span className="rb-bar-k">最後更新</span>
             <span className="rb-bar-v">{timeAgo(data.lastUpdated)}</span>
           </div>
           <div className="rb-bar-cell">
-            <span className="rb-bar-k">PROGRESS</span>
+            <span className="rb-bar-k">進度</span>
             <span className="rb-bar-v">{data.completedCount} / {data.totalPlanned}</span>
           </div>
           <SyncButton />
@@ -273,15 +273,15 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                     ) : null; })()}
                     <h3 className="rb-stop-name">
                       {coarse(s.name)}
-                      {s.isCurrent && <span className="rb-stop-here">● HERE</span>}
-                      {s.status === "候選" && <span className="rb-stop-tent">TENTATIVE</span>}
+                      {s.isCurrent && <span className="rb-stop-here">● 在這裡</span>}
+                      {s.status === "候選" && <span className="rb-stop-tent">候選中</span>}
                     </h3>
                     {en && <p className="rb-stop-en">{en}</p>}
                     {s.note && <p className="rb-stop-note">{coarse(s.note)}</p>}
                     <FieldIntel stop={s} />
                     {s.mapsUrl && (
                       <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
-                        [ OPEN MAP ]
+                        [ 打開地圖 ]
                       </a>
                     )}
                   </div>
@@ -299,7 +299,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                     <FieldIntel stop={s} />
                     {s.mapsUrl && (
                       <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
-                        [ OPEN MAP ]
+                        [ 打開地圖 ]
                       </a>
                     )}
                   </div>
@@ -310,7 +310,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
 
           {segments.length > 0 && (
             <section className="rb-sec">
-              <p className="rb-label">NAVIGATION</p>
+              <p className="rb-label">分段導航</p>
               {segments.map(s => (
                 <a key={s.id} href={s.segmentNavUrl} target="_blank" rel="noopener noreferrer" className="rb-navlink">
                   {coarse(s.name)} 段導航 →
@@ -337,14 +337,14 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
         <>
           <section className="rb-sec"><Odometer /></section>
           <section className="rb-sec">
-            <p className="rb-label">FILM LOG — 每日現場</p>
+            <p className="rb-label">每日現場</p>
             <FilmLog />
           </section>
           <section className="rb-sec">
-            <p className="rb-label">EQUIPMENT</p>
+            <p className="rb-label">拍攝裝備</p>
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">
-                <span className="rb-credit-k">MAIN CAMERA</span>
+                <span className="rb-credit-k">主力相機</span>
                 <span className="rb-credit-v">INSTA360 ACE PRO 2</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -352,7 +352,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
             </div>
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">
-                <span className="rb-credit-k">ALSO CARRYING</span>
+                <span className="rb-credit-k">隨行裝備</span>
                 <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -360,7 +360,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
             </div>
             <div className="rb-credit rb-glass">
               <div className="rb-credit-txt">
-                <span className="rb-credit-k">SUPPORT</span>
+                <span className="rb-credit-k">腳架</span>
                 <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -375,7 +375,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
       {view === "talk" && (
         <>
           <section className="rb-sec">
-            <p className="rb-label">ROAD TALK — 各地的人說話</p>
+            <p className="rb-label">各地留言</p>
             <RegionTalk regions={regions} />
           </section>
           <section className="rb-sec">

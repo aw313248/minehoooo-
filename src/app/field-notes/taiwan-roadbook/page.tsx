@@ -62,7 +62,7 @@ export default async function TaiwanRoadbookPage() {
 
       <footer className="rb-foot">
         <span>© MINEH4O.ARW</span>
-        <span>NOTION-SYNCED · 60S</span>
+        <span>資料同步自 NOTION</span>
       </footer>
 
       {/* Roadbook 專用樣式（全部限定 .rb-root，不影響全站） */}
@@ -90,7 +90,7 @@ export default async function TaiwanRoadbookPage() {
         .rb-foot { max-width: 680px; margin: 0 auto; padding: 22px; display: flex; justify-content: space-between; border-top: 1px solid var(--rb-line); font-family: var(--rb-mono); font-size: 9px; letter-spacing: .24em; color: var(--rb-faint); }
 
         /* ── Apple glass 基底 ── */
-        .rb-glass { background: rgba(255,255,255,.055);
+        .rb-glass { background: rgba(255,255,255,.03);
           backdrop-filter: blur(22px) saturate(1.5); -webkit-backdrop-filter: blur(22px) saturate(1.5);
           border: 1px solid rgba(255,255,255,.10); border-radius: 20px;
           box-shadow: 0 8px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08); }
@@ -109,19 +109,19 @@ export default async function TaiwanRoadbookPage() {
         .rb-hero-title { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 3.5vh; }
         .rb-hero-zh { font-size: 21px; font-weight: 300; letter-spacing: .12em; color: var(--rb-fg); }
         .rb-hero-date { font-family: var(--rb-mono); font-size: 12.5px; letter-spacing: .22em; color: var(--rb-dim); }
-        .rb-hero-bar { display: flex; align-items: flex-end; gap: 26px; flex-wrap: wrap; margin-top: 4vh; padding: 18px 20px; }
+        .rb-hero-bar { display: flex; align-items: flex-end; gap: 30px; flex-wrap: wrap; margin-top: 4vh; padding: 24px 26px; }
         .rb-bar-cell { display: flex; flex-direction: column; gap: 5px; }
-        .rb-bar-k { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .34em; color: var(--rb-faint); }
-        .rb-bar-v { font-family: var(--rb-mono); font-size: 15px; letter-spacing: .1em; color: var(--rb-fg); }
+        .rb-bar-k { font-size: 12px; letter-spacing: .34em; color: var(--rb-faint); }
+        .rb-bar-v { font-family: var(--rb-mono); font-size: 17px; letter-spacing: .1em; color: var(--rb-fg); }
         .rb-bar-now { color: var(--rb-now); }
-        .rb-sync { margin-left: auto; font-family: var(--rb-mono); font-size: 10px; letter-spacing: .26em; color: var(--rb-dim); background: none; border: none; padding: 6px 0; cursor: pointer; }
+        .rb-sync { margin-left: auto; font-family: var(--rb-mono); font-size: 12px; letter-spacing: .26em; color: var(--rb-dim); background: none; border: none; padding: 6px 0; cursor: pointer; }
         .rb-sync:hover { color: var(--rb-acc); }
         .rb-sync:disabled { opacity: .5; }
 
         /* ── 分頁切換（segmented control）── */
         .rb-views { display: flex; gap: 4px; padding: 5px; margin: 26px 0 22px; position: sticky; top: 12px; z-index: 20; border-radius: 999px; }
-        .rb-view-tab { flex: 1; font-size: 15.5px; font-weight: 400; color: var(--rb-dim); background: none;
-          border: none; border-radius: 999px; padding: 11px 0; cursor: pointer;
+        .rb-view-tab { flex: 1; font-size: 16.5px; font-weight: 400; color: var(--rb-dim); background: none;
+          border: none; border-radius: 999px; padding: 13px 0; cursor: pointer;
           transition: background .35s cubic-bezier(0.65,0,0.35,1), color .35s; }
         .rb-view-tab[data-active="true"] { color: #0a0a0a; background: var(--rb-acc); font-weight: 600; }
 
@@ -270,6 +270,16 @@ export default async function TaiwanRoadbookPage() {
         .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
         .rb-rm-glow { fill: rgba(136,201,153,.14); animation: rbBreathe 2s ease-in-out infinite; }
         .rb-rm-rider { transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1); }
+        .rb-rm-beam { animation: rbFlicker 2.6s ease-in-out infinite; }
+        @keyframes rbFlicker { 0%,100% { opacity: .85; } 50% { opacity: .55; } }
+        .rb-rm-shadow { fill: rgba(0,0,0,.45); }
+        .rb-rm-smoke { fill: rgba(242,240,234,.55); animation: rbPuff 1.5s ease-out infinite; }
+        .rb-rm-smoke2 { animation-delay: .5s; }
+        .rb-rm-smoke3 { animation-delay: 1s; }
+        @keyframes rbPuff {
+          0%   { transform: translate(0, 0) scale(.5); opacity: .7; }
+          100% { transform: translate(-9px, -4px) scale(1.9); opacity: 0; }
+        }
         .rb-rm-lbl { font-family: var(--rb-mono); font-size: 7px; letter-spacing: .04em;
           fill: rgba(242,240,234,.55); }
         .rb-rm-lbl[data-lit="true"] { fill: rgba(227,198,107,.95); }

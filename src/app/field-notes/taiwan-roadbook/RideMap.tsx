@@ -111,17 +111,36 @@ export default function RideMap({ stops, activeDay }: { stops: RoadbookStop[]; a
             );
           });
         })()}
-        {/* 騎士：翻頁時平滑騎到新位置 */}
-        <g className="rb-rm-rider" style={{ transform: `translate(${rider.x}px, ${rider.y}px)` }}>
-          <circle r={9} className="rb-rm-glow" />
-          <g transform="translate(-7,-8) scale(0.62)">
-            <circle cx="5" cy="16" r="3.4" className="rb-rm-line" />
-            <circle cx="18" cy="16" r="3.4" className="rb-rm-line" />
-            <path d="M5 16 L9 10 L15 10 L18 16 M9 10 L7 6 M15 10 L16.5 5.5" className="rb-rm-line" />
-            <circle cx="11.5" cy="2.5" r="2.4" className="rb-rm-head" />
-            <path d="M11.5 5 L10 9.5" className="rb-rm-line" />
-          </g>
-        </g>
+        {/* 騎士猴：翻頁時平滑騎到新位置；頭燈朝行進方向、屁股後面冒小煙 */}
+        {(() => {
+          const ahead = pointAt(ring, dNow + 3);
+          const behind = pointAt(ring, dNow - 3);
+          const deg = (Math.atan2(ahead.y - behind.y, ahead.x - behind.x) * 180) / Math.PI;
+          const movingRight = ahead.x >= behind.x;
+          return (
+            <g className="rb-rm-rider" style={{ transform: `translate(${rider.x}px, ${rider.y}px)` }}>
+              <defs>
+                <linearGradient id="rbBeam" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="rgba(255,236,160,.85)" />
+                  <stop offset="100%" stopColor="rgba(255,236,160,0)" />
+                </linearGradient>
+              </defs>
+              {/* 燈與煙跟著路的方向轉 */}
+              <g style={{ transform: `rotate(${deg}deg)`, transition: "transform 1.4s cubic-bezier(0.65,0,0.35,1)" }}>
+                <path d="M5 0 L30 -7 L30 7 Z" fill="url(#rbBeam)" className="rb-rm-beam" />
+                <circle cx="-9" cy="1" r="1.7" className="rb-rm-smoke" />
+                <circle cx="-12" cy="-1" r="1.3" className="rb-rm-smoke rb-rm-smoke2" />
+                <circle cx="-15" cy="1.5" r="1" className="rb-rm-smoke rb-rm-smoke3" />
+              </g>
+              <ellipse cx="0" cy="3.5" rx="7.5" ry="1.8" className="rb-rm-shadow" />
+              <image
+                href="/field-notes/taiwan-roadbook/rider.png"
+                x="-10.5" y="-31.5" width="21" height="35.4"
+                style={{ transform: movingRight ? "scaleX(-1)" : undefined, transformOrigin: "0px -14px" }}
+              />
+            </g>
+          );
+        })()}
       </svg>
       <div className="rb-bgmap-cap" data-on={on}>
         <span className="rb-bgmap-city">{nearCity ? CITY_EN[nearCity] : ""}</span>

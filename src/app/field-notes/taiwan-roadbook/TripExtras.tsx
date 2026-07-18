@@ -38,7 +38,7 @@ export function Odometer() {
   const today = dailyLog[dailyLog.length - 1];
   return (
     <div className="rb-odo" ref={ref}>
-      <p className="rb-label">DISTANCE RIDDEN</p>
+      <p className="rb-label">總里程</p>
       <p className="rb-odo-num">
         <span className="odometer">{val.toLocaleString()}</span>
         <span className="rb-odo-unit">KM</span>
@@ -75,7 +75,7 @@ export function CheerButton() {
 
   return (
     <div className="rb-cheer">
-      <p className="rb-label">SEND FUEL</p>
+      <p className="rb-label">幫我加油</p>
       <button className={`like-btn rb-cheer-btn${pop ? " pop" : ""}${liked ? " liked" : ""}`} onClick={cheer} aria-label="為這趟旅程加油">
         <span className="rb-cheer-heartwrap">
           <svg viewBox="0 0 24 24" className="heart" width="26" height="26">
