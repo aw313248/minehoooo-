@@ -171,6 +171,46 @@ export default async function TaiwanRoadbookPage() {
         .rb-credit-k { font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .38em; color: var(--rb-faint); }
         .rb-credit-v { font-family: var(--rb-mono); font-size: 12.5px; letter-spacing: .14em; color: var(--rb-fg); line-height: 1.7; }
 
+        .rb-credit { flex-direction: row; align-items: center; justify-content: space-between; gap: 18px; }
+        .rb-credit-txt { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+        .rb-credit-img { width: 96px; height: 64px; object-fit: cover; flex-shrink: 0;
+          filter: saturate(.8); mask-image: linear-gradient(90deg, transparent 0%, #000 35%); }
+
+        /* ── ROAD TALK：分區留言 ── */
+        .rb-talk-regions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+        .rb-talk-region { font-family: var(--rb-mono); font-size: 12px; letter-spacing: .1em;
+          color: var(--rb-faint); background: none; border: 1px solid transparent; padding: 7px 10px; cursor: pointer; }
+        .rb-talk-region[data-active="true"] { color: var(--rb-acc); border-bottom: 1px solid var(--rb-acc); }
+        .rb-talk-layers { display: flex; gap: 22px; margin-bottom: 16px; }
+        .rb-talk-layer { font-size: 14px; font-weight: 300; color: var(--rb-faint); background: none;
+          border: none; padding: 4px 0; cursor: pointer; }
+        .rb-talk-layer[data-active="true"] { color: var(--rb-fg); border-bottom: 1px solid var(--rb-dim); }
+        .rb-talk-list { display: flex; flex-direction: column; }
+        .rb-talk-item { font-size: 14.5px; font-weight: 300; color: var(--rb-fg); line-height: 1.7;
+          margin: 0; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.05); }
+        .rb-talk-n { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .12em;
+          color: var(--rb-acc); margin-right: 10px; }
+        .rb-talk-n-route { color: var(--rb-now); }
+        .rb-talk-ago { font-family: var(--rb-mono); font-size: 9px; letter-spacing: .12em;
+          color: var(--rb-faint); margin-left: 10px; }
+        .rb-talk-empty { font-size: 13.5px; font-weight: 300; color: var(--rb-faint); padding: 14px 0; }
+        .rb-talk-hint { font-size: 13.5px; font-weight: 300; color: var(--rb-dim); margin: 0 0 12px; }
+        .rb-talk-form { display: flex; gap: 8px; margin-top: 14px; }
+        .rb-talk-form-col { flex-direction: column; margin-top: 0; margin-bottom: 8px; }
+        .rb-talk-row { display: flex; gap: 8px; }
+        .rb-talk-in { flex: 1; min-width: 0; background: rgba(255,255,255,.03);
+          border: 1px solid var(--rb-line); color: var(--rb-fg); font-size: 14px; font-weight: 300;
+          padding: 11px 13px; outline: none; }
+        .rb-talk-in:focus { border-color: rgba(227,198,107,.4); }
+        .rb-talk-in::placeholder { color: var(--rb-faint); }
+        .rb-talk-in-name { flex: 0 0 118px; }
+        .rb-talk-send { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .18em;
+          color: #0a0a0a; background: var(--rb-acc); border: none; padding: 11px 16px; cursor: pointer; }
+        .rb-talk-msg { font-size: 12.5px; color: var(--rb-now); margin: 10px 0 0; }
+
+        .rb-photocredit { font-size: 10.5px; font-weight: 300; color: rgba(242,240,234,.28);
+          line-height: 1.8; margin: 40px 0 0; }
+
         /* ── Checklist：折疊 ── */
         .rb-cl { margin-top: 72px; border-top: 1px solid var(--rb-line); }
         .rb-cl-summary { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .38em; color: var(--rb-dim); padding: 20px 0; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
@@ -192,25 +232,36 @@ export default async function TaiwanRoadbookPage() {
         .rb-err-s { font-size: 15px; font-weight: 300; color: var(--rb-dim); line-height: 1.9; margin: 0 0 22px; max-width: 42ch; }
         .rb-err .rb-sync { margin-left: 0; color: var(--rb-acc); }
 
-        /* ── 捲動跟隨小地圖（偽 3D）── */
-        .rb-ridemap { position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
-          z-index: 30; pointer-events: none; opacity: 0; transition: opacity .7s ease; }
-        .rb-ridemap[data-on="true"] { opacity: 1; }
-        .rb-ridemap-tilt { transform: perspective(700px) rotateX(9deg); }
-        .rb-ridemap-svg { width: 132px; height: auto; display: block;
-          filter: drop-shadow(0 18px 22px rgba(0,0,0,.5)); }
-        .rb-rm-island { fill: rgba(255,255,255,.02); stroke: rgba(255,255,255,.14); stroke-width: 1; }
-        .rb-rm-route { fill: none; stroke: rgba(242,240,234,.14); stroke-width: 1; stroke-dasharray: 3 4; }
-        .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.4; stroke-linejoin: round;
-          filter: drop-shadow(0 0 3px rgba(227,198,107,.55)); }
-        .rb-rm-stop { fill: rgba(242,240,234,.18); transition: fill .4s; }
+        /* ── 整頁背景地圖 ── */
+        .rb-bgmap { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+          display: flex; align-items: center; justify-content: flex-end; padding-right: 6vw;
+          opacity: .55; transition: opacity .8s ease; }
+        .rb-bgmap[data-on="true"] { opacity: 1; }
+        .rb-bgmap-svg { height: 92vh; width: auto; max-width: 60vw; }
+        .rb-rm-island { fill: rgba(255,255,255,.015); stroke: rgba(255,255,255,.10); stroke-width: .7; }
+        .rb-rm-route { fill: none; stroke: rgba(242,240,234,.10); stroke-width: .8; stroke-dasharray: 2.5 4; }
+        .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.2; stroke-linejoin: round;
+          opacity: .8; filter: drop-shadow(0 0 4px rgba(227,198,107,.5)); }
+        .rb-rm-stop { fill: rgba(242,240,234,.14); transition: fill .4s; }
         .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
-        .rb-rm-glow { fill: rgba(136,201,153,.16); animation: rbBreathe 2s ease-in-out infinite; }
+        .rb-rm-glow { fill: rgba(136,201,153,.14); animation: rbBreathe 2s ease-in-out infinite; }
         .rb-rm-line { fill: none; stroke: var(--rb-fg); stroke-width: 1.6; stroke-linecap: round; }
         .rb-rm-head { fill: var(--rb-now); stroke: none; }
-        .rb-ridemap-cap { margin-top: 10px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
-        .rb-ridemap-city { font-family: var(--rb-mono); font-size: 8px; letter-spacing: .34em; color: var(--rb-acc); }
-        .rb-ridemap-spot { font-size: 12px; font-weight: 300; color: var(--rb-dim); }
+        .rb-bgmap-cap { position: fixed; left: 22px; bottom: 18px; display: flex; flex-direction: column;
+          gap: 3px; opacity: 0; transition: opacity .6s ease; }
+        .rb-bgmap-cap[data-on="true"] { opacity: 1; }
+        .rb-bgmap-city { font-family: var(--rb-mono); font-size: 9px; letter-spacing: .34em; color: var(--rb-acc); }
+        .rb-bgmap-spot { font-size: 13px; font-weight: 300; color: var(--rb-dim); }
+
+        /* ── 站點照片：圖底漸層融進文字 ── */
+        .rb-stop-photo { position: relative; margin: 2px 0 14px; max-width: 460px; }
+        .rb-stop-photo img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover;
+          filter: saturate(.85) contrast(1.02); }
+        .rb-stop-photo-fade { position: absolute; inset: 0;
+          background: linear-gradient(180deg, rgba(5,5,5,.08) 0%, rgba(5,5,5,0) 30%, rgba(5,5,5,0) 55%, #050505 100%); }
+        .rb-stop-photo-tag { position: absolute; top: 8px; right: 8px; font-family: var(--rb-mono);
+          font-size: 8px; letter-spacing: .22em; color: rgba(242,240,234,.6);
+          background: rgba(5,5,5,.55); padding: 3px 7px; }
 
         /* ── FIELD INTEL ── */
         .rb-intel { margin-top: 12px; }
@@ -267,12 +318,31 @@ export default async function TaiwanRoadbookPage() {
         .rb-cheer-count { font-family: var(--rb-mono); font-size: 15px; color: #FF8A00; }
         .rb-cheer-sub { font-size: 12.5px; font-weight: 300; color: var(--rb-faint); margin: 8px 0 0; }
 
+        /* ── 桌機：行程橫式 call sheet ── */
+        @media (min-width: 900px) {
+          .rb-tl { display: flex; overflow-x: auto; gap: 34px; padding: 8px 4px 22px;
+            scroll-snap-type: x proximity; scrollbar-width: thin;
+            width: min(1200px, calc(100vw - 80px)); margin-left: 50%; transform: translateX(-50%); }
+          .rb-tl::-webkit-scrollbar { height: 4px; }
+          .rb-tl::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); }
+          .rb-stop { display: block; flex: 0 0 320px; scroll-snap-align: start;
+            border-top: 1px solid var(--rb-line); padding-top: 14px; }
+          .rb-stop-rail { display: none; }
+          .rb-stop-time { text-align: left; padding: 0 0 8px; }
+          .rb-stop-body { padding-bottom: 10px; }
+          .rb-stop-photo { max-width: none; }
+          .rb-planb { margin: 0; padding: 14px 0 0 16px; flex: 0 0 260px;
+            border-left: 1px solid rgba(201,135,82,.35); border-top: 1px solid transparent;
+            align-self: flex-start; }
+          .rb-tl-empty { flex: 1; }
+        }
+
         /* ── 手機 ── */
         @media (max-width: 720px) {
-          .rb-ridemap { right: 8px; top: auto; bottom: 16px; transform: none; }
-          .rb-ridemap-svg { width: 78px; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
-          .rb-ridemap-cap { margin-top: 6px; }
-          .rb-ridemap-spot { font-size: 10px; }
+          .rb-bgmap { justify-content: center; padding-right: 0; opacity: .38; }
+          .rb-bgmap[data-on="true"] { opacity: .8; }
+          .rb-bgmap-svg { height: 86vh; max-width: 96vw; }
+          .rb-bgmap-cap { left: 18px; bottom: 14px; }
         }
         @media (max-width: 480px) {
           .rb-body { padding: 0 18px 64px; }

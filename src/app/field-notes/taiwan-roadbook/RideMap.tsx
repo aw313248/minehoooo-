@@ -67,7 +67,7 @@ export default function RideMap({ stops }: { stops: RoadbookStop[] }) {
         const start = tl.offsetTop - window.innerHeight * 0.6;
         const end = document.documentElement.scrollHeight - window.innerHeight;
         const y = window.scrollY;
-        setVisible(y > start * 0.55 && waypoints.length > 0);
+        setVisible(y > Math.max(120, start * 0.4) && waypoints.length > 0);
         setF(end > start ? Math.max(0, Math.min(1, (y - start) / (end - start))) : 0);
       });
     };
@@ -101,9 +101,8 @@ export default function RideMap({ stops }: { stops: RoadbookStop[] }) {
   trail.push(`${rider.x},${rider.y}`);
 
   return (
-    <aside className="rb-ridemap" data-on={visible} aria-hidden>
-      <div className="rb-ridemap-tilt">
-        <svg viewBox={`0 0 ${TW.w} ${TW.h}`} className="rb-ridemap-svg">
+    <aside className="rb-bgmap" data-on={visible} aria-hidden>
+      <svg viewBox={`0 0 ${TW.w} ${TW.h}`} className="rb-bgmap-svg" preserveAspectRatio="xMidYMid meet">
           <path d={TAIWAN_PATH} className="rb-rm-island" />
           <polyline
             points={ring.pts.map(p => `${p.x},${p.y}`).join(" ")}
@@ -130,11 +129,10 @@ export default function RideMap({ stops }: { stops: RoadbookStop[] }) {
               <path d="M11.5 5 L10 9.5" className="rb-rm-line" />
             </g>
           </g>
-        </svg>
-        <div className="rb-ridemap-cap">
-          <span className="rb-ridemap-city">{nearCity ? CITY_EN[nearCity] : ""}</span>
-          <span className="rb-ridemap-spot">{nearest.stop.name}</span>
-        </div>
+      </svg>
+      <div className="rb-bgmap-cap" data-on={visible}>
+        <span className="rb-bgmap-city">{nearCity ? CITY_EN[nearCity] : ""}</span>
+        <span className="rb-bgmap-spot">{nearest.stop.name}</span>
       </div>
     </aside>
   );

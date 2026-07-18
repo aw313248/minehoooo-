@@ -11,7 +11,9 @@ import { useRouter } from "next/navigation";
 import type { RoadbookData, RoadbookStop } from "@/lib/roadbook";
 import { CITY_EN, CAT_EN, cityKeyOf } from "./geo";
 import { storyFor } from "./stories";
+import { imageFor, EQUIP_IMAGES, photoCredits } from "./spotImages";
 import RideMap from "./RideMap";
+import RegionTalk from "./RegionTalk";
 import { Odometer, CheerButton, FilmLog } from "./TripExtras";
 
 const cityOf = (s: RoadbookStop) => {
@@ -164,6 +166,14 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
     dayStops.forEach(s => { const c = cityOf(s); if (c && !seen.includes(c)) seen.push(c); });
     return seen;
   }, [dayStops]);
+  const regions = useMemo(() => {
+    const seen: string[] = [];
+    data.stops.forEach(s => {
+      const k = cityKeyOf(s.name, s.address)?.replace("臺", "台");
+      if (k && !seen.includes(k)) seen.push(k);
+    });
+    return seen;
+  }, [data.stops]);
 
   if (!data.ok) {
     return (
@@ -231,6 +241,14 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                 {i < main.length - 1 && <span className="rb-stop-line" />}
               </div>
               <div className="rb-stop-body">
+                {(() => { const img = imageFor(s.name); return img ? (
+                  <div className="rb-stop-photo">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.src} alt={s.name} loading="lazy" />
+                    <span className="rb-stop-photo-fade" aria-hidden />
+                    {img.isPlaceholder && <span className="rb-stop-photo-tag">示意圖</span>}
+                  </div>
+                ) : null; })()}
                 <h3 className="rb-stop-name">
                   {s.name}
                   {s.isCurrent && <span className="rb-stop-here">● HERE</span>}
@@ -299,19 +317,36 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
       <section className="rb-sec">
         <p className="rb-label">EQUIPMENT</p>
         <div className="rb-credit">
-          <span className="rb-credit-k">CAMERA</span>
-          <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
+          <div className="rb-credit-txt">
+            <span className="rb-credit-k">CAMERA</span>
+            <span className="rb-credit-v">FUJIFILM X-PRO2 / DJI POCKET 3 / DJI NEO</span>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={EQUIP_IMAGES.camera.src} alt="Fujifilm X-Pro2" loading="lazy" className="rb-credit-img" />
         </div>
         <div className="rb-credit">
-          <span className="rb-credit-k">SUPPORT</span>
-          <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
+          <div className="rb-credit-txt">
+            <span className="rb-credit-k">SUPPORT</span>
+            <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={EQUIP_IMAGES.support.src} alt="Manfrotto 腳架" loading="lazy" className="rb-credit-img" />
         </div>
+      </section>
+
+      {/* 分區留言 + 推薦我去哪 */}
+      <section className="rb-sec">
+        <p className="rb-label">ROAD TALK — 各地的人說話</p>
+        <RegionTalk regions={regions} />
       </section>
 
       {/* 加油 */}
       <section className="rb-sec">
         <CheerButton />
       </section>
+
+      {/* 示意圖致謝（CC 授權） */}
+      <p className="rb-photocredit">示意圖 · Wikimedia Commons — {photoCredits.join("；")}（Oscar 實拍上線後陸續替換）</p>
 
       <Checklist />
     </>
