@@ -158,9 +158,32 @@ function FieldIntel({ stop }: { stop: RoadbookStop }) {
 /* ── 主畫面 ── */
 type View = "trip" | "log" | "talk";
 
-export default function RoadbookView({ data }: { data: RoadbookData }) {
+export interface WeatherInfo { temp: number; code: number; cityZh: string }
+
+const wLabel = (c: number) => {
+  if (c === 0) return "晴 ☀️";
+  if (c <= 2) return "多雲時晴 ⛅";
+  if (c === 3) return "陰 ☁️";
+  if (c === 45 || c === 48) return "起霧 🌫";
+  if (c <= 57) return "毛毛雨 🌦";
+  if (c <= 67) return "下雨 🌧";
+  if (c <= 82) return "陣雨 🌧";
+  if (c >= 95) return "雷雨 ⛈";
+  return "";
+};
+
+const TRIP_START = new Date("2026-07-19T00:00:00+08:00");
+const dayDate = (d: string) => {
+  const n = Number(d.match(/\d+/)?.[0] ?? 1);
+  const t = new Date(TRIP_START.getTime() + (n - 1) * 86400000);
+  const wd = ["日", "一", "二", "三", "四", "五", "六"][t.getDay()];
+  return `${String(t.getMonth() + 1).padStart(2, "0")}.${String(t.getDate()).padStart(2, "0")}（${wd}）`;
+};
+
+export default function RoadbookView({ data, weather }: { data: RoadbookData; weather?: WeatherInfo | null }) {
   const [day, setDay] = useState(data.currentDay);
   const [view, setView] = useState<View>("trip");
+  const [activeIdx, setActiveIdx] = useState(0);
   const dayStops = useMemo(() => data.stops.filter(s => s.day === day), [data.stops, day]);
   const main = dayStops.filter(s => s.status !== "備案");
   const planB = dayStops.filter(s => s.status === "備案");
@@ -184,8 +207,27 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
   const flipDay = (d?: string) => {
     if (!d) return;
     setDay(d);
+    setActiveIdx(0);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+  const nextStop = useMemo(() =>
+    data.stops.filter(s => s.day === data.currentDay && s.status !== "備案")
+      .find(s => !(s.status === "已完成" || s.status === "已抵達")),
+  [data.stops, data.currentDay]);
+
+  /* 章節同步：滑到哪一站，地圖鏡頭跟到哪 */
+  useEffect(() => {
+    if (view !== "trip") return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".rb-stop[data-idx]"));
+    if (els.length === 0) return;
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting) setActiveIdx(Number((e.target as HTMLElement).dataset.idx));
+      });
+    }, { rootMargin: "-40% 0px -45% 0px", threshold: 0 });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, [view, day, main.length]);
 
   if (!data.ok) {
     return (
@@ -204,17 +246,14 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
 
   return (
     <>
-      {/* 整頁背景地圖：跟著翻頁的那一天 */}
-      <RideMap stops={data.stops} activeDay={day} />
-
-      {/* ── 首屏（壓縮版 opening title，DAY = 目前翻到的那天）── */}
+      {/* ── 首屏：今天最重要的資訊 ── */}
       <section className="rb-hero">
         <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> 旅途進行中</p>
         <p className="rb-hero-day">DAY {dayNum(day)}</p>
         {cities.length > 0 && <p className="rb-hero-route">{cities.join("  →  ")}</p>}
         <div className="rb-hero-title">
           <span className="rb-hero-zh">台灣機車環島</span>
-          <span className="rb-hero-date">07.19 — 07.25</span>
+          <span className="rb-hero-date">{dayDate(day)}</span>
         </div>
         <div className="rb-hero-bar rb-glass">
           {data.currentStop && (
@@ -223,15 +262,35 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
               <span className="rb-bar-v rb-bar-now">{coarse(data.currentStop.name)}</span>
             </div>
           )}
+          {nextStop && (
+            <div className="rb-bar-cell">
+              <span className="rb-bar-k">下一站</span>
+              <span className="rb-bar-v rb-bar-next">{coarse(nextStop.name)}</span>
+            </div>
+          )}
+          {weather && (
+            <div className="rb-bar-cell">
+              <span className="rb-bar-k">{weather.cityZh}天氣</span>
+              <span className="rb-bar-v">{weather.temp}° {wLabel(weather.code)}</span>
+            </div>
+          )}
           <div className="rb-bar-cell">
             <span className="rb-bar-k">最後更新</span>
             <span className="rb-bar-v">{timeAgo(data.lastUpdated)}</span>
           </div>
-          <div className="rb-bar-cell">
-            <span className="rb-bar-k">進度</span>
-            <span className="rb-bar-v">{data.completedCount} / {data.totalPlanned}</span>
-          </div>
           <SyncButton />
+        </div>
+        <div className="rb-cta-row">
+          {nextStop?.mapsUrl && (
+            <a href={nextStop.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-cta">
+              開始導航到下一站 →
+            </a>
+          )}
+          <button className="rb-cta-sub rb-glass" onClick={() => {
+            document.querySelector(".rb-story")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}>
+            展開今天行程
+          </button>
         </div>
       </section>
 
@@ -246,17 +305,24 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
       </nav>
 
       {view === "trip" && (
-        <>
+        <div className="rb-story">
+          {/* 地圖舞台：桌機右側 sticky、手機上方固定 */}
+          <div className="rb-mapwrap">
+            <RideMap stops={data.stops} activeDay={day} activeId={main[activeIdx]?.id} />
+          </div>
+
+          <div className="rb-chapters">
           <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={flipDay} />
 
-          {/* ── 當日行程（一天一頁）── */}
+          {/* ── 當日行程（章節）── */}
           <section className="rb-tl" key={day}>
             {main.length === 0 && <p className="rb-tl-empty">這一天還沒有公開行程</p>}
             {main.map((s, i) => {
               const done = !s.isCurrent && (s.status === "已完成" || s.status === "已抵達");
               const en = [cityOf(s), CAT_EN[s.category]].filter(Boolean).join(" · ");
               return (
-                <article key={s.id} className="rb-stop" data-done={done} data-maybe={s.status === "候選"} data-current={s.isCurrent}>
+                <article key={s.id} className="rb-stop" data-idx={i} data-active={i === activeIdx}
+                  data-done={done} data-maybe={s.status === "候選"} data-current={s.isCurrent}>
                   <div className="rb-stop-time">{s.time ?? ""}</div>
                   <div className="rb-stop-rail" aria-hidden>
                     <span className="rb-stop-node" />
@@ -330,7 +396,8 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
               {nextDay ? `DAY ${dayNum(nextDay)}` : "終點"} →
             </button>
           </nav>
-        </>
+          </div>
+        </div>
       )}
 
       {view === "log" && (

@@ -8,7 +8,26 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ScrollUnlock from "@/components/ScrollUnlock";
 import { getRoadbook } from "@/lib/roadbook";
+import { RING, cityKeyOf } from "./geo";
 import RoadbookView from "./RoadbookView";
+
+/* 天氣：Open-Meteo（開源免金鑰），30 分鐘快取；抓不到就不顯示，不擋頁面 */
+async function getWeather(cityKey: string) {
+  const node = RING.find(r => r[0] === cityKey) ?? RING[0];
+  try {
+    const r = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${node[1]}&longitude=${node[2]}&current=temperature_2m,weather_code&timezone=Asia%2FTaipei`,
+      { next: { revalidate: 1800 } },
+    );
+    if (!r.ok) return null;
+    const j = await r.json();
+    return {
+      temp: Math.round(j?.current?.temperature_2m ?? NaN),
+      code: Number(j?.current?.weather_code ?? -1),
+      cityZh: cityKey.replace("臺", "台"),
+    };
+  } catch { return null; }
+}
 
 export const revalidate = 60;
 
@@ -32,9 +51,13 @@ export const metadata: Metadata = {
 
 export default async function TaiwanRoadbookPage() {
   const data = await getRoadbook();
+  const cityKey = (data.ok && data.currentStop
+    ? cityKeyOf(data.currentStop.name, data.currentStop.address)
+    : undefined) ?? "台中";
+  const weather = await getWeather(cityKey);
 
   return (
-    <main className="min-h-screen relative rb-root" style={{ overflowY: "auto" }}>
+    <main className="min-h-screen relative rb-root">
       <ScrollUnlock />
 
       {/* 與 Field Notes 同款 grain（頁面自帶，不動全站） */}
@@ -57,7 +80,7 @@ export default async function TaiwanRoadbookPage() {
       </header>
 
       <div className="rb-body">
-        <RoadbookView data={data} />
+        <RoadbookView data={data} weather={weather} />
       </div>
 
       <footer className="rb-foot">
@@ -67,6 +90,9 @@ export default async function TaiwanRoadbookPage() {
 
       {/* Roadbook 專用樣式（全部限定 .rb-root，不影響全站） */}
       <style>{`
+        /* sticky 地圖需要：此頁掛載期間讓 html/body 不當捲動容器（不影響其他頁） */
+        body { overflow: visible !important; }
+
         .rb-root {
           background: #050505;
           color: #F2F0EA;
@@ -256,42 +282,43 @@ export default async function TaiwanRoadbookPage() {
         .rb-err-s { font-size: 15px; font-weight: 300; color: var(--rb-dim); line-height: 1.9; margin: 0 0 22px; max-width: 42ch; }
         .rb-err .rb-sync { margin-left: 0; color: var(--rb-acc); }
 
-        /* ── 整頁背景地圖 ── */
-        .rb-bgmap { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-          display: flex; align-items: center; justify-content: flex-end; padding-right: 6vw;
-          opacity: .55; transition: opacity .8s ease; }
-        .rb-bgmap[data-on="true"] { opacity: 1; }
-        .rb-bgmap-svg { height: 92vh; width: auto; max-width: 60vw; }
-        .rb-rm-island { fill: rgba(255,255,255,.015); stroke: rgba(255,255,255,.10); stroke-width: .7; }
-        .rb-rm-route { fill: none; stroke: rgba(242,240,234,.10); stroke-width: .8; stroke-dasharray: 2.5 4; }
-        .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.2; stroke-linejoin: round;
-          opacity: .8; filter: drop-shadow(0 0 4px rgba(227,198,107,.5)); }
-        .rb-rm-stop { fill: rgba(242,240,234,.14); transition: fill .4s; }
+        /* ── 地圖舞台面板 ── */
+        .rb-mappanel { position: relative; overflow: hidden; height: 100%; }
+        .rb-mappanel-svg { width: 100%; height: 100%; display: block; }
+        .rb-cam { transition: transform .9s cubic-bezier(0.65, 0, 0.35, 1); }
+        .rb-rm-island { fill: rgba(255,255,255,.02); stroke: rgba(255,255,255,.16); stroke-width: 1; }
+        .rb-rm-route { fill: none; stroke: rgba(242,240,234,.14); stroke-width: 1; stroke-dasharray: 3 4; }
+        .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.6; stroke-linejoin: round;
+          opacity: .9; filter: drop-shadow(0 0 4px rgba(227,198,107,.5)); }
+        .rb-rm-stop { fill: rgba(242,240,234,.2); transition: fill .4s, r .4s; }
         .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
-        .rb-rm-glow { fill: rgba(136,201,153,.14); animation: rbBreathe 2s ease-in-out infinite; }
-        .rb-rm-rider { transition: transform 1.4s cubic-bezier(0.65, 0, 0.35, 1); }
+        .rb-rm-stop[data-active="true"] { fill: var(--rb-acc); filter: drop-shadow(0 0 5px rgba(227,198,107,.8)); }
+        .rb-rm-stop[data-planb="true"] { fill: none; stroke: rgba(242,240,234,.35); stroke-dasharray: 2 2; }
+        .rb-mappanel-cap { position: absolute; left: 16px; bottom: 13px; display: flex; flex-direction: column; gap: 3px; }
+        .rb-rm-rider { transition: transform 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
         .rb-rm-beam { animation: rbFlicker 2.6s ease-in-out infinite; }
         @keyframes rbFlicker { 0%,100% { opacity: .85; } 50% { opacity: .55; } }
         .rb-rm-shadow { fill: rgba(0,0,0,.45); }
-        .rb-rm-smoke { fill: rgba(242,240,234,.55); animation: rbPuff 1.5s ease-out infinite; }
-        .rb-rm-smoke2 { animation-delay: .5s; }
-        .rb-rm-smoke3 { animation-delay: 1s; }
+        .rb-rm-smoke { fill: rgba(242,240,234,.5); animation: rbPuff 1.6s ease-out infinite; }
+        .rb-rm-smoke2 { animation-delay: .6s; }
         @keyframes rbPuff {
-          0%   { transform: translate(0, 0) scale(.5); opacity: .7; }
-          100% { transform: translate(-9px, -4px) scale(1.9); opacity: 0; }
+          0%   { transform: translate(0, 0) scale(.5); opacity: .65; }
+          100% { transform: translate(-9px, -4px) scale(1.8); opacity: 0; }
         }
-        .rb-rm-lbl { font-family: var(--rb-mono); font-size: 7px; letter-spacing: .04em;
-          fill: rgba(242,240,234,.55); }
-        .rb-rm-lbl[data-lit="true"] { fill: rgba(227,198,107,.95); }
-        .rb-rm-lblcity { font-family: var(--rb-mono); font-size: 5.5px; letter-spacing: .2em;
-          fill: rgba(242,240,234,.4); }
-        .rb-rm-line { fill: none; stroke: var(--rb-fg); stroke-width: 1.6; stroke-linecap: round; }
-        .rb-rm-head { fill: var(--rb-now); stroke: none; }
-        .rb-bgmap-cap { position: fixed; left: 22px; bottom: 18px; display: flex; flex-direction: column;
-          gap: 3px; opacity: 0; transition: opacity .6s ease; }
-        .rb-bgmap-cap[data-on="true"] { opacity: 1; }
+        .rb-rm-lbl { font-family: var(--rb-mono); letter-spacing: .04em; fill: rgba(242,240,234,.6); transition: fill .4s; }
+        .rb-rm-lbl[data-lit="true"] { fill: rgba(227,198,107,.9); }
+        .rb-rm-lbl[data-active="true"] { fill: #F2F0EA; }
+
+        /* ── 主 CTA ── */
+        .rb-cta-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+        .rb-cta { flex: 2; min-width: 200px; text-align: center; font-size: 16.5px; font-weight: 600;
+          color: #0a0a0a; background: var(--rb-acc); border-radius: 999px; padding: 16px 22px;
+          text-decoration: none; box-shadow: 0 4px 22px rgba(227,198,107,.3); }
+        .rb-cta:active { transform: scale(.98); }
+        .rb-cta-sub { flex: 1; min-width: 130px; font-size: 15px; color: var(--rb-fg);
+          padding: 16px 18px; cursor: pointer; border-radius: 999px; }
         .rb-bgmap-city { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .34em; color: var(--rb-acc); }
-        .rb-bgmap-spot { font-size: 15px; font-weight: 300; color: var(--rb-dim); }
+        .rb-bgmap-spot { font-size: 15px; font-weight: 300; color: var(--rb-fg); }
 
         /* ── 站點照片：圖底漸層融進文字 ── */
         .rb-stop-photo { position: relative; margin: 2px 0 14px; max-width: 460px; border-radius: 18px; overflow: hidden; }
@@ -358,23 +385,22 @@ export default async function TaiwanRoadbookPage() {
         .rb-cheer-count { font-family: var(--rb-mono); font-size: 15px; color: #FF8A00; }
         .rb-cheer-sub { font-size: 14px; font-weight: 300; color: var(--rb-faint); margin: 8px 0 0; }
 
-        /* ── 桌機：行程橫式 call sheet ── */
+        /* ── Story 佈局：桌機左章節右地圖 ── */
         @media (min-width: 900px) {
-          .rb-tl { display: flex; overflow-x: auto; gap: 34px; padding: 8px 4px 22px;
-            scroll-snap-type: x proximity; scrollbar-width: thin;
-            width: min(1200px, calc(100vw - 80px)); margin-left: 50%; transform: translateX(-50%); }
-          .rb-tl::-webkit-scrollbar { height: 4px; }
-          .rb-tl::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); }
-          .rb-stop { display: block; flex: 0 0 320px; scroll-snap-align: start;
-            border-top: 1px solid var(--rb-line); padding-top: 14px; }
-          .rb-stop-rail { display: none; }
-          .rb-stop-time { text-align: left; padding: 0 0 8px; }
-          .rb-stop-body { padding-bottom: 10px; }
-          .rb-stop-photo { max-width: none; }
-          .rb-planb { margin: 0; padding: 14px 0 0 16px; flex: 0 0 260px;
-            border-left: 1px solid rgba(201,135,82,.35); border-top: 1px solid transparent;
-            align-self: flex-start; }
-          .rb-tl-empty { flex: 1; }
+          .rb-body { max-width: 1180px; }
+          .rb-story { display: grid; grid-template-columns: 42% 56%; gap: 2%; align-items: start; }
+          .rb-mapwrap { order: 2; position: sticky; top: 16px; height: 88vh; }
+          .rb-chapters { order: 1; }
+          .rb-stop { min-height: 46vh; }
+          .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
+          .rb-hero { min-height: 46vh; }
+        }
+        /* ── 手機：地圖固定上方，章節在下滑動 ── */
+        @media (max-width: 899px) {
+          .rb-mapwrap { position: sticky; top: 10px; z-index: 15; height: 42vh; margin-bottom: 18px; }
+          .rb-views { position: fixed; top: auto; bottom: 14px; left: 16px; right: 16px; margin: 0; z-index: 50; }
+          .rb-body { padding-bottom: 110px; }
+          .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
         }
 
         /* ── 手機 ── */
@@ -390,6 +416,15 @@ export default async function TaiwanRoadbookPage() {
           .rb-planb { margin-left: 71px; }
           .rb-hero-bar { gap: 18px; }
           .rb-film-ph { height: 150px; }
+        }
+        /* ── 減少動態偏好 ── */
+        @media (prefers-reduced-motion: reduce) {
+          .rb-root *, .rb-cam, .rb-rm-rider, .rb-daypill {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+          }
         }
       `}</style>
     </main>

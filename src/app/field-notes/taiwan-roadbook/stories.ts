@@ -42,6 +42,23 @@ export const spotStories: SpotStory[] = [
     srcUrl: "https://www.tnam.museum/about_us/building",
   },
   {
+    match: "東門町",
+    crowd: "2025 年 6 月才開幕的嘉義新館，百年日治派出所改建，喜歡老建築的人一致好評",
+    why: "時間夠才進去——嘉義市唯一現存的日治警察建築，磚木洋小屋",
+    special: "派出所＋雙宿舍三館合院、雲型大理石台階；首展「文學東市場」用詩籤換創作",
+    srcLabel: "微笑台灣",
+    srcUrl: "https://smiletaiwan.cw.com.tw/article/8266",
+  },
+  {
+    match: "阿棠牛肉",
+    rating: "GOOGLE 4.4 ★",
+    crowd: "台南中西區的排隊人氣店，在地人跟觀光客都推，用餐時間內用外帶都要排",
+    why: "住宿附近走路就到，晚上第一站先補一碗熱的",
+    special: "蔬菜洋蔥蘋果熬的清甜湯頭配軟Q溫體牛；蒜頭牛肉湯是只有這家才有的隱藏版",
+    srcLabel: "周花花食記",
+    srcUrl: "https://tenjo.tw/atangbeef/",
+  },
+  {
     match: "河樂廣場",
     crowd: "舊中國城拆除後留下的親水廣場，入夜燈光亮起被評為台南最美的水岸",
     why: "白色殘構＋淺水池＋夜燈，是我想拍的「城市遺跡感」",
