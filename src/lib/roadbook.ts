@@ -59,7 +59,8 @@ function mapPage(page: any): RoadbookStop | null {
     category: p["分類"]?.select?.name ?? "景點",
     status: p["狀態"]?.select?.name ?? "已確定",
     time: text(p["預計時間"]),
-    address: text(p["地址"]),
+    // 地址只保留縣市（前 3 字），區級以下不離開 server
+    address: text(p["地址"])?.slice(0, 3),
     mapsUrl: p["Google Maps"]?.url ?? undefined,
     segmentNavUrl: p["整段導航"]?.url ?? undefined,
     order: typeof p["排序"]?.number === "number" ? p["排序"].number : 999,
