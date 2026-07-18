@@ -113,13 +113,15 @@ export default async function TaiwanRoadbookPage() {
         .rb-sync:disabled { opacity: .5; }
 
         /* ── Day 切換：數字＋細線 ── */
-        .rb-days { display: flex; gap: clamp(14px, 5vw, 34px); border-top: 1px solid var(--rb-line); border-bottom: 1px solid var(--rb-line); padding: 2px 0; margin-bottom: 52px; overflow-x: auto; scrollbar-width: none; }
+        .rb-days { position: relative; display: flex; gap: clamp(14px, 5vw, 34px); border-top: 1px solid var(--rb-line); border-bottom: 1px solid var(--rb-line); padding: 2px 0; margin-bottom: 52px; overflow-x: auto; scrollbar-width: none; }
         .rb-days::-webkit-scrollbar { display: none; }
         .rb-daynum { position: relative; font-family: var(--rb-mono); font-size: 14px; letter-spacing: .12em; color: var(--rb-faint); background: none; border: none; padding: 14px 2px; cursor: pointer; flex-shrink: 0; transition: color .25s; }
         .rb-daynum:hover { color: var(--rb-dim); }
         .rb-daynum[data-active="true"] { color: var(--rb-acc); }
-        .rb-daynum[data-active="true"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--rb-acc); }
         .rb-daynum-dot { position: absolute; top: 10px; right: -5px; width: 4px; height: 4px; border-radius: 50%; background: var(--rb-now); }
+        /* 滑動膠囊底線 — JS 依 active 鈕的 offsetLeft/offsetWidth 定位 */
+        .rb-daypill { position: absolute; bottom: -1px; height: 1px; background: var(--rb-acc);
+          transition: left 0.4s cubic-bezier(0.65, 0, 0.35, 1), width 0.4s cubic-bezier(0.65, 0, 0.35, 1); }
 
         /* ── 垂直路線 ── */
         .rb-tl { animation: rbFadeIn .5s ease both; }
@@ -158,14 +160,6 @@ export default async function TaiwanRoadbookPage() {
         .rb-navlink { display: block; font-size: 16px; font-weight: 300; color: var(--rb-fg); text-decoration: none; padding: 13px 0; border-bottom: 1px solid var(--rb-line); }
         .rb-navlink:hover { color: var(--rb-acc); }
 
-        /* ── 地圖：極簡 ── */
-        .rb-map { width: min(52vw, 220px); height: auto; display: block; }
-        .rb-map-island { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 1; }
-        .rb-map-line { fill: none; stroke: var(--rb-acc); stroke-width: 1; stroke-dasharray: 600; stroke-dashoffset: 600; animation: rbDraw 2.4s ease .3s forwards; opacity: .8; }
-        @keyframes rbDraw { to { stroke-dashoffset: 0; } }
-        .rb-map-pt { fill: var(--rb-acc); opacity: .55; }
-        .rb-map-pt[data-done="true"] { opacity: .95; }
-        .rb-map-now { fill: var(--rb-now); animation: rbBreathe 2s ease-in-out infinite; }
 
         /* ── 文字路線 ── */
         .rb-txtroute { display: flex; flex-direction: column; gap: 2px; }
@@ -198,13 +192,94 @@ export default async function TaiwanRoadbookPage() {
         .rb-err-s { font-size: 15px; font-weight: 300; color: var(--rb-dim); line-height: 1.9; margin: 0 0 22px; max-width: 42ch; }
         .rb-err .rb-sync { margin-left: 0; color: var(--rb-acc); }
 
+        /* ── 捲動跟隨小地圖（偽 3D）── */
+        .rb-ridemap { position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+          z-index: 30; pointer-events: none; opacity: 0; transition: opacity .7s ease; }
+        .rb-ridemap[data-on="true"] { opacity: 1; }
+        .rb-ridemap-tilt { transform: perspective(700px) rotateX(9deg); }
+        .rb-ridemap-svg { width: 132px; height: auto; display: block;
+          filter: drop-shadow(0 18px 22px rgba(0,0,0,.5)); }
+        .rb-rm-island { fill: rgba(255,255,255,.02); stroke: rgba(255,255,255,.14); stroke-width: 1; }
+        .rb-rm-route { fill: none; stroke: rgba(242,240,234,.14); stroke-width: 1; stroke-dasharray: 3 4; }
+        .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.4; stroke-linejoin: round;
+          filter: drop-shadow(0 0 3px rgba(227,198,107,.55)); }
+        .rb-rm-stop { fill: rgba(242,240,234,.18); transition: fill .4s; }
+        .rb-rm-stop[data-lit="true"] { fill: var(--rb-acc); }
+        .rb-rm-glow { fill: rgba(136,201,153,.16); animation: rbBreathe 2s ease-in-out infinite; }
+        .rb-rm-line { fill: none; stroke: var(--rb-fg); stroke-width: 1.6; stroke-linecap: round; }
+        .rb-rm-head { fill: var(--rb-now); stroke: none; }
+        .rb-ridemap-cap { margin-top: 10px; text-align: center; display: flex; flex-direction: column; gap: 3px; }
+        .rb-ridemap-city { font-family: var(--rb-mono); font-size: 8px; letter-spacing: .34em; color: var(--rb-acc); }
+        .rb-ridemap-spot { font-size: 12px; font-weight: 300; color: var(--rb-dim); }
+
+        /* ── FIELD INTEL ── */
+        .rb-intel { margin-top: 12px; }
+        .rb-intel-sum { font-family: var(--rb-mono); font-size: 9.5px; letter-spacing: .26em;
+          color: var(--rb-acc); cursor: pointer; list-style: none; display: inline-flex; gap: 8px; padding: 4px 0; }
+        .rb-intel-sum::-webkit-details-marker { display: none; }
+        .rb-intel[open] .rb-intel-sum span { transform: rotate(45deg); display: inline-block; }
+        .rb-intel-body { padding: 10px 0 4px 14px; border-left: 1px solid var(--rb-line); }
+        .rb-intel-row { font-size: 14px; font-weight: 300; color: var(--rb-dim); line-height: 1.75;
+          margin: 0 0 9px; max-width: 46ch; }
+        .rb-intel-k { display: block; font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .3em;
+          color: var(--rb-faint); margin-bottom: 3px; }
+        .rb-intel-src { font-family: var(--rb-mono); font-size: 8.5px; letter-spacing: .2em;
+          color: var(--rb-faint); text-decoration: none; }
+        .rb-intel-src:hover { color: var(--rb-acc); }
+
+        /* ── 里程表 ── */
+        .odometer { font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+        .rb-odo-num { display: flex; align-items: baseline; gap: 14px; margin: 0;
+          font-family: var(--font-bebas), sans-serif; font-size: clamp(64px, 16vw, 120px);
+          line-height: .9; color: var(--rb-fg); }
+        .rb-odo-unit { font-family: var(--rb-mono); font-size: 13px; letter-spacing: .34em; color: var(--rb-acc); }
+        .rb-odo-sub { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .2em;
+          color: var(--rb-dim); margin: 14px 0 0; }
+
+        /* ── FILM LOG ── */
+        .rb-film-day { padding: 18px 0; border-bottom: 1px solid var(--rb-line); }
+        .rb-film-head { display: flex; align-items: baseline; gap: 14px; }
+        .rb-film-d { font-family: var(--rb-mono); font-size: 13px; letter-spacing: .18em; color: var(--rb-fg); }
+        .rb-film-date { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .2em; color: var(--rb-faint); }
+        .rb-film-km { margin-left: auto; font-family: var(--rb-mono); font-size: 11px; color: var(--rb-acc); }
+        .rb-film-note { font-size: 14px; font-weight: 300; color: var(--rb-dim); margin: 8px 0 0; }
+        .rb-film-strip { display: flex; gap: 8px; overflow-x: auto; margin-top: 12px;
+          scrollbar-width: none; scroll-snap-type: x mandatory; }
+        .rb-film-strip::-webkit-scrollbar { display: none; }
+        .rb-film-ph { height: 190px; width: auto; flex-shrink: 0; scroll-snap-align: start;
+          display: block; }
+        .rb-film-empty { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .22em;
+          color: var(--rb-faint); margin: 10px 0 0; }
+
+        /* ── 加油鈕（heart + particles）── */
+        .rb-cheer-btn { display: flex; align-items: center; gap: 14px; background: none; border: none;
+          padding: 6px 0; cursor: pointer; color: var(--rb-dim); }
+        .rb-cheer-heartwrap { position: relative; display: inline-flex; }
+        .heart { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .like-btn.pop .heart { transform: scale(1.35); }
+        .like-btn.liked .heart { color: #FF8A00; }
+        .like-btn.liked .heart path { fill: #FF8A00; stroke: #FF8A00; }
+        .rb-cheer-parts { position: absolute; inset: 0; display: block; pointer-events: none; }
+        .particle { position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; border-radius: 50%;
+          background: #FF8A00; animation: fly 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fly { to { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+        .rb-cheer-txt { font-size: 16px; font-weight: 300; color: var(--rb-fg); }
+        .rb-cheer-count { font-family: var(--rb-mono); font-size: 15px; color: #FF8A00; }
+        .rb-cheer-sub { font-size: 12.5px; font-weight: 300; color: var(--rb-faint); margin: 8px 0 0; }
+
         /* ── 手機 ── */
+        @media (max-width: 720px) {
+          .rb-ridemap { right: 8px; top: auto; bottom: 16px; transform: none; }
+          .rb-ridemap-svg { width: 78px; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
+          .rb-ridemap-cap { margin-top: 6px; }
+          .rb-ridemap-spot { font-size: 10px; }
+        }
         @media (max-width: 480px) {
           .rb-body { padding: 0 18px 64px; }
           .rb-stop { grid-template-columns: 44px 15px 1fr; column-gap: 12px; }
           .rb-planb { margin-left: 71px; }
           .rb-hero-bar { gap: 18px; }
-          .rb-map { width: 62vw; margin: 0 auto; }
+          .rb-film-ph { height: 150px; }
         }
       `}</style>
     </main>

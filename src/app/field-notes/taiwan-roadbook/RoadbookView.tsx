@@ -6,33 +6,18 @@
  * 視覺規範：#050505 底、#F2F0EA 主文字、#E3C66B accent、#88C999 目前位置、#C98752 Plan B
  */
 
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { RoadbookData, RoadbookStop } from "@/lib/roadbook";
+import { CITY_EN, CAT_EN, cityKeyOf } from "./geo";
+import { storyFor } from "./stories";
+import RideMap from "./RideMap";
+import { Odometer, CheerButton, FilmLog } from "./TripExtras";
 
-/* ── 中文城市 → 英文路牌字 ── */
-const CITY_EN: Record<string, string> = {
-  "台中": "TAICHUNG", "臺中": "TAICHUNG",
-  "彰化": "CHANGHUA", "雲林": "YUNLIN", "嘉義": "CHIAYI",
-  "台南": "TAINAN", "臺南": "TAINAN",
-  "高雄": "KAOHSIUNG", "屏東": "PINGTUNG",
-  "台東": "TAITUNG", "臺東": "TAITUNG",
-  "花蓮": "HUALIEN", "宜蘭": "YILAN",
-  "台北": "TAIPEI", "臺北": "TAIPEI", "新北": "NEW TAIPEI",
-  "基隆": "KEELUNG", "桃園": "TAOYUAN", "新竹": "HSINCHU",
-  "苗栗": "MIAOLI", "南投": "NANTOU",
+const cityOf = (s: RoadbookStop) => {
+  const k = cityKeyOf(s.name, s.address);
+  return k ? CITY_EN[k] : undefined;
 };
-const CAT_EN: Record<string, string> = {
-  "出發": "DEPART", "早餐": "BREAKFAST", "午餐": "LUNCH", "晚餐": "DINNER",
-  "住宿": "STAY", "景點": "SPOT", "晚上散步": "NIGHT WALK",
-  "加油": "FUEL", "休息": "REST", "目前位置": "NOW",
-};
-
-function cityOf(s: RoadbookStop): string | undefined {
-  const src = `${s.address ?? ""}${s.name}`;
-  for (const zh of Object.keys(CITY_EN)) if (src.includes(zh)) return CITY_EN[zh];
-  return undefined;
-}
 
 function timeAgo(iso?: string): string {
   if (!iso) return "—";
@@ -45,40 +30,6 @@ function timeAgo(iso?: string): string {
 }
 
 const dayNum = (d: string) => (d.match(/\d+/)?.[0] ?? "1").padStart(2, "0");
-
-/* ── 極簡台灣地圖：只在有座標時出現；細灰輪廓＋暖黃路線＋綠色呼吸點 ── */
-const TW = { latMin: 21.85, latMax: 25.35, lngMin: 119.95, lngMax: 122.05, w: 240, h: 400 };
-const proj = (lat: number, lng: number) => ({
-  x: ((lng - TW.lngMin) / (TW.lngMax - TW.lngMin)) * TW.w,
-  y: ((TW.latMax - lat) / (TW.latMax - TW.latMin)) * TW.h,
-});
-const TAIWAN_PATH =
-  "M118 8 L138 14 L150 30 L160 52 L170 78 L180 110 L186 140 L188 172 L184 205 L176 238 L166 268 L152 298 L136 326 L118 352 L102 374 L88 388 L74 392 L62 380 L54 358 L48 330 L44 300 L42 268 L44 236 L48 204 L54 172 L62 140 L72 110 L84 80 L96 50 L106 26 Z";
-
-function TaiwanMap({ stops }: { stops: RoadbookStop[] }) {
-  const pts = stops
-    .filter(s => s.lat != null && s.lng != null)
-    .map(s => ({ s, ...proj(s.lat as number, s.lng as number) }));
-  if (pts.length === 0) return null;
-  const line = pts.map(p => `${p.x},${p.y}`).join(" ");
-  return (
-    <section className="rb-sec">
-      <p className="rb-label">ROUTE MAP</p>
-      <svg viewBox={`0 0 ${TW.w} ${TW.h}`} className="rb-map" role="img" aria-label="環島路線圖">
-        <path d={TAIWAN_PATH} className="rb-map-island" />
-        {pts.length > 1 && <polyline points={line} className="rb-map-line" />}
-        {pts.map(({ s, x, y }) => (
-          <circle
-            key={s.id} cx={x} cy={y}
-            r={s.isCurrent ? 4 : 2.5}
-            className={s.isCurrent ? "rb-map-now" : "rb-map-pt"}
-            data-done={s.status === "已完成" || s.status === "已抵達"}
-          />
-        ))}
-      </svg>
-    </section>
-  );
-}
 
 /* ── 座標不足時的文字路線 ── */
 function TextRoute({ cities }: { cities: string[] }) {
@@ -151,6 +102,56 @@ function SyncButton() {
   );
 }
 
+/* ── Day 切換：數字＋滑動膠囊底線 ── */
+function DayRail({ days, day, currentDay, onPick }: {
+  days: string[]; day: string; currentDay: string; onPick: (d: string) => void;
+}) {
+  const wrap = useRef<HTMLElement>(null);
+  const [pill, setPill] = useState({ left: 0, width: 0 });
+  useEffect(() => {
+    const el = wrap.current?.querySelector<HTMLButtonElement>('[data-active="true"]');
+    if (el) setPill({ left: el.offsetLeft, width: el.offsetWidth });
+  }, [day, days]);
+  return (
+    <nav className="rb-days" role="tablist" aria-label="選擇天數" ref={wrap}>
+      {days.map(d => (
+        <button
+          key={d} role="tab" aria-selected={d === day}
+          className="rb-daynum" data-active={d === day} data-current={d === currentDay}
+          onClick={() => onPick(d)}
+        >
+          {dayNum(d)}
+          {d === currentDay && <span className="rb-daynum-dot" aria-hidden />}
+        </button>
+      ))}
+      <span className="rb-daypill pill" style={{ left: pill.left, width: pill.width }} aria-hidden />
+    </nav>
+  );
+}
+
+/* ── FIELD INTEL：景點情報（評論查證＋去的理由）── */
+function FieldIntel({ stop }: { stop: RoadbookStop }) {
+  const story = storyFor(stop.name);
+  if (!story) return null;
+  return (
+    <details className="rb-intel">
+      <summary className="rb-intel-sum">
+        FIELD INTEL{story.rating ? ` · ${story.rating}` : ""} <span aria-hidden>+</span>
+      </summary>
+      <div className="rb-intel-body">
+        <p className="rb-intel-row"><span className="rb-intel-k">網路公評</span>{story.crowd}</p>
+        <p className="rb-intel-row"><span className="rb-intel-k">為什麼去</span>{story.why}</p>
+        <p className="rb-intel-row"><span className="rb-intel-k">特別之處</span>{story.special}</p>
+        {story.srcUrl && (
+          <a href={story.srcUrl} target="_blank" rel="noopener noreferrer" className="rb-intel-src">
+            SOURCE · {story.srcLabel} ↗
+          </a>
+        )}
+      </div>
+    </details>
+  );
+}
+
 /* ── 主畫面 ── */
 export default function RoadbookView({ data }: { data: RoadbookData }) {
   const [day, setDay] = useState(data.currentDay);
@@ -163,7 +164,6 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
     dayStops.forEach(s => { const c = cityOf(s); if (c && !seen.includes(c)) seen.push(c); });
     return seen;
   }, [dayStops]);
-  const hasCoords = data.stops.some(s => s.lat != null && s.lng != null);
 
   if (!data.ok) {
     return (
@@ -182,6 +182,9 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
 
   return (
     <>
+      {/* 捲動跟隨小地圖（fixed，不佔版面） */}
+      <RideMap stops={data.stops} />
+
       {/* ── 首屏：公路電影 opening title ── */}
       <section className="rb-hero">
         <p className="rb-hero-live"><span className="rb-livedot" aria-hidden /> LIVE FIELD NOTE</p>
@@ -212,19 +215,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
         </div>
       </section>
 
-      {/* ── Day 切換：數字＋細線 ── */}
-      <nav className="rb-days" role="tablist" aria-label="選擇天數">
-        {data.days.map(d => (
-          <button
-            key={d} role="tab" aria-selected={d === day}
-            className="rb-daynum" data-active={d === day} data-current={d === data.currentDay}
-            onClick={() => setDay(d)}
-          >
-            {dayNum(d)}
-            {d === data.currentDay && <span className="rb-daynum-dot" aria-hidden />}
-          </button>
-        ))}
-      </nav>
+      <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={setDay} />
 
       {/* ── 今日行程：垂直路線（key=day 觸發淡入）── */}
       <section className="rb-tl" key={day}>
@@ -247,6 +238,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                 </h3>
                 {en && <p className="rb-stop-en">{en}</p>}
                 {s.note && <p className="rb-stop-note">{s.note}</p>}
+                <FieldIntel stop={s} />
                 {s.mapsUrl && (
                   <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
                     [ OPEN MAP ]
@@ -265,6 +257,7 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
                 <p className="rb-planb-k">PLAN B / {String(i + 1).padStart(2, "0")}</p>
                 <p className="rb-planb-name">{s.name}</p>
                 {s.note && <p className="rb-planb-note">{s.note}</p>}
+                <FieldIntel stop={s} />
                 {s.mapsUrl && (
                   <a href={s.mapsUrl} target="_blank" rel="noopener noreferrer" className="rb-maplink">
                     [ OPEN MAP ]
@@ -288,8 +281,19 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
         </section>
       )}
 
-      {/* 地圖：有座標才畫；沒有就用文字路線 */}
-      {hasCoords ? <TaiwanMap stops={data.stops} /> : <TextRoute cities={cities} />}
+      {/* 里程表 */}
+      <section className="rb-sec">
+        <Odometer />
+      </section>
+
+      {/* 每日影像日誌 */}
+      <section className="rb-sec">
+        <p className="rb-label">FILM LOG — 每日現場</p>
+        <FilmLog />
+      </section>
+
+      {/* 文字路線（當日城市） */}
+      <TextRoute cities={cities} />
 
       {/* 裝備 — editorial credits */}
       <section className="rb-sec">
@@ -302,6 +306,11 @@ export default function RoadbookView({ data }: { data: RoadbookData }) {
           <span className="rb-credit-k">SUPPORT</span>
           <span className="rb-credit-v">MANFROTTO ELEMENT SL</span>
         </div>
+      </section>
+
+      {/* 加油 */}
+      <section className="rb-sec">
+        <CheerButton />
       </section>
 
       <Checklist />
