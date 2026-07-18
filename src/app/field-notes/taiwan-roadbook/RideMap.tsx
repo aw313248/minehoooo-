@@ -33,9 +33,9 @@ function pointAt(ring: ReturnType<typeof buildRing>, d: number) {
 
 const dayN = (d: string) => Number(d.match(/\d+/)?.[0] ?? 99);
 
-export default function RideMap({ stops, activeDay, activeId, mode = "journey", onPick }: {
+export default function RideMap({ stops, activeDay, activeId, mode = "journey", onPick, night = false }: {
   stops: RoadbookStop[]; activeDay: string; activeId?: string; mode?: "journey" | "full";
-  onPick?: (id: string) => void;
+  onPick?: (id: string) => void; night?: boolean;
 }) {
   const ring = useMemo(buildRing, []);
   const cityDist = useMemo(() => {
@@ -115,7 +115,7 @@ export default function RideMap({ stops, activeDay, activeId, mode = "journey", 
   const nearCity = focusStop ? cityKeyOf(focusStop.name, focusStop.address) : undefined;
 
   return (
-    <div className="rb-mappanel rb-glass" aria-hidden={mode === "journey" || undefined}>
+    <div className="rb-mappanel rb-glass" data-night={night} aria-hidden={mode === "journey" || undefined}>
       <svg viewBox={`0 0 ${TW.w} ${TW.h}`} className="rb-mappanel-svg" preserveAspectRatio="xMidYMid meet">
         <g className="rb-cam" style={{ transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${k})` }}>
           <path d={TAIWAN_PATH} className="rb-rm-island" vectorEffect="non-scaling-stroke" />

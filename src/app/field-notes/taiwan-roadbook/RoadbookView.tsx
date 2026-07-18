@@ -335,7 +335,13 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
         <div className="rb-story">
           {/* 地圖舞台：桌機右側 sticky、手機上方固定 */}
           <div className="rb-mapwrap">
-            <RideMap stops={data.stops} activeDay={day} activeId={main[activeIdx]?.id} />
+            <RideMap stops={data.stops} activeDay={day} activeId={main[activeIdx]?.id}
+              night={(() => {
+                const a = main[activeIdx];
+                if (!a) return false;
+                const h = Number(a.time?.match(/^(\d{1,2})/)?.[1] ?? NaN);
+                return (!Number.isNaN(h) && h >= 18) || a.category === "晚上散步" || a.category === "晚餐";
+              })()} />
           </div>
 
           <div className="rb-chapters">
@@ -347,6 +353,7 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
             {main.map((s, i) => {
               const done = !s.isCurrent && (s.status === "已完成" || s.status === "已抵達");
               const en = [cityOf(s), CAT_EN[s.category]].filter(Boolean).join(" · ");
+              const narration = storyFor(s.name)?.why;
               return (
                 <article key={s.id} className="rb-stop" data-idx={i} data-active={i === activeIdx}
                   data-done={done} data-maybe={s.status === "候選"} data-current={s.isCurrent}>
@@ -356,6 +363,7 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
                     {i < main.length - 1 && <span className="rb-stop-line" />}
                   </div>
                   <div className="rb-stop-body">
+                    <p className="rb-scene-slug">SCENE {String(i + 1).padStart(2, "0")}</p>
                     <div className="rb-stop-card rb-glass">
                       {(() => { const img = imageFor(s.name); return img ? (
                         <div className="rb-stop-photo">
@@ -384,6 +392,9 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
                         </a>
                       )}
                     </div>
+                    {i === activeIdx && narration && (
+                      <p className="rb-scene-line" key={"n" + s.id}>「{narration}」</p>
+                    )}
                     {s.note && <p className="rb-stop-note">{coarse(s.note)}</p>}
                     <FieldIntel stop={s} />
                   </div>

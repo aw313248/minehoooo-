@@ -309,8 +309,15 @@ export default async function TaiwanRoadbookPage() {
 
         /* ── 地圖舞台面板 ── */
         .rb-mappanel { position: relative; overflow: hidden; height: 100%; }
+        .rb-mappanel::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+          background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.42) 100%);
+          transition: background 1.2s ease; }
+        .rb-mappanel[data-night="true"]::after {
+          background: radial-gradient(120% 90% at 50% 42%, rgba(20,16,40,.12) 40%, rgba(5,4,16,.62) 100%); }
+        .rb-mappanel-svg { transition: filter 1.2s ease; }
+        .rb-mappanel[data-night="true"] .rb-mappanel-svg { filter: hue-rotate(-12deg) brightness(.88) saturate(1.15); }
         .rb-mappanel-svg { width: 100%; height: 100%; display: block; }
-        .rb-cam { transition: transform .65s cubic-bezier(0.65, 0, 0.35, 1); }
+        .rb-cam { transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1); }
         .rb-rm-island { fill: rgba(255,255,255,.02); stroke: rgba(255,255,255,.16); stroke-width: 1; }
         .rb-rm-route { fill: none; stroke: rgba(242,240,234,.14); stroke-width: 1; stroke-dasharray: 3 4; }
         .rb-rm-trail { fill: none; stroke: var(--rb-acc); stroke-width: 1.6; stroke-linejoin: round;
@@ -357,6 +364,20 @@ export default async function TaiwanRoadbookPage() {
         .rb-cta-sub { font-size: 15px; color: var(--rb-fg); padding: 14px 18px; cursor: pointer; border-radius: 999px; }
         .rb-bgmap-city { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .34em; color: var(--rb-acc); }
         .rb-bgmap-spot { font-size: 15px; font-weight: 300; color: var(--rb-fg); }
+
+        /* ── Scene 節奏：非當前章節退場，當前章節浮現 ── */
+        .rb-stop { transition: opacity .7s ease, transform .7s cubic-bezier(0.22, 1, 0.36, 1); }
+        .rb-stop[data-active="false"] { opacity: .3; transform: translateY(6px) scale(.985); }
+        .rb-stop[data-active="true"] { opacity: 1; transform: none; }
+        .rb-scene-slug { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .42em;
+          color: var(--rb-faint); margin: 0 0 10px 4px; }
+        .rb-stop[data-active="true"] .rb-scene-slug { color: var(--rb-acc); }
+        .rb-scene-line { font-size: 15.5px; font-weight: 300; font-style: italic;
+          color: rgba(227,198,107,.85); line-height: 1.8; margin: 14px 2px 0;
+          animation: rbSubtitle .8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        @keyframes rbSubtitle { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+        .rb-stop[data-active="true"] .rb-stop-photo img { animation: rbKen 9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        @keyframes rbKen { from { transform: scale(1.1); } to { transform: scale(1); } }
 
         /* ── 站點卡片：圖左資訊右＋圓形地圖釘 ── */
         .rb-stop-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 22px; }
@@ -436,7 +457,7 @@ export default async function TaiwanRoadbookPage() {
           .rb-story { display: grid; grid-template-columns: 42% 56%; gap: 2%; align-items: start; }
           .rb-mapwrap { order: 2; position: sticky; top: 16px; height: 88vh; }
           .rb-chapters { order: 1; }
-          .rb-stop { min-height: 42vh; }
+          .rb-stop { min-height: 54vh; }
           .rb-stop-photo { width: 108px; height: 108px; }
           .rb-stop-name { font-size: 20px; }
           .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
@@ -449,7 +470,7 @@ export default async function TaiwanRoadbookPage() {
           .rb-views { position: fixed; top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
             left: 16px; right: 16px; margin: 0; z-index: 50; }
           .rb-body { padding-bottom: calc(128px + env(safe-area-inset-bottom, 0px)); }
-          .rb-stop { min-height: 52vh; align-content: center; }
+          .rb-stop { min-height: 60vh; align-content: center; }
           .rb-stop[data-active="true"] .rb-stop-name { color: var(--rb-acc); }
           .rb-fullmap { height: 64vh; }
         }
@@ -484,6 +505,7 @@ export default async function TaiwanRoadbookPage() {
         }
         /* ── 減少動態偏好 ── */
         @media (prefers-reduced-motion: reduce) {
+          .rb-stop[data-active="false"] { opacity: 1; transform: none; }
           .rb-root *, .rb-cam, .rb-rm-rider, .rb-daypill {
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
