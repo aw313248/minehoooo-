@@ -33,8 +33,9 @@ function pointAt(ring: ReturnType<typeof buildRing>, d: number) {
 
 const dayN = (d: string) => Number(d.match(/\d+/)?.[0] ?? 99);
 
-export default function RideMap({ stops, activeDay, activeId, mode = "journey" }: {
+export default function RideMap({ stops, activeDay, activeId, mode = "journey", onPick }: {
   stops: RoadbookStop[]; activeDay: string; activeId?: string; mode?: "journey" | "full";
+  onPick?: (id: string) => void;
 }) {
   const ring = useMemo(buildRing, []);
   const cityDist = useMemo(() => {
@@ -114,7 +115,7 @@ export default function RideMap({ stops, activeDay, activeId, mode = "journey" }
   const nearCity = focusStop ? cityKeyOf(focusStop.name, focusStop.address) : undefined;
 
   return (
-    <div className="rb-mappanel rb-glass" aria-hidden>
+    <div className="rb-mappanel rb-glass" aria-hidden={mode === "journey" || undefined}>
       <svg viewBox={`0 0 ${TW.w} ${TW.h}`} className="rb-mappanel-svg" preserveAspectRatio="xMidYMid meet">
         <g className="rb-cam" style={{ transform: `translate(${cam.tx}px, ${cam.ty}px) scale(${k})` }}>
           <path d={TAIWAN_PATH} className="rb-rm-island" vectorEffect="non-scaling-stroke" />
@@ -139,6 +140,11 @@ export default function RideMap({ stops, activeDay, activeId, mode = "journey" }
                     <circle cx={p.x} cy={p.y} r={(active ? 4.2 : labeled ? 3 : 2.2) / k}
                       className="rb-rm-stop" data-lit={d <= dNow + 0.5} data-active={active}
                       data-dim={!labeled} data-planb={s.status === "備案"} />
+                  )}
+                  {mode === "full" && onPick && row === 0 && (
+                    <circle cx={p.x} cy={p.y} r={14 / k} fill="transparent"
+                      style={{ cursor: "pointer" }} onClick={() => onPick(s.id)}
+                      role="button" aria-label={`前往 ${coarse(s.name)} 章節`} />
                   )}
                   {labeled && (
                     <text x={west ? p.x + 9 / k : p.x - 9 / k} y={p.y + (3 + row * 11) / k}

@@ -448,9 +448,19 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
         <>
           <DayRail days={data.days} day={day} currentDay={data.currentDay} onPick={flipDay} />
           <div className="rb-fullmap">
-            <RideMap stops={data.stops} activeDay={day} mode="full" />
+            <RideMap stops={data.stops} activeDay={day} mode="full" onPick={id => {
+              const i = main.findIndex(s2 => s2.id === id);
+              setView("trip");
+              if (i >= 0) {
+                setActiveIdx(i);
+                setTimeout(() => {
+                  document.querySelector(`.rb-stop[data-idx="${i}"]`)
+                    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 80);
+              }
+            }} />
           </div>
-          <p className="rb-fullmap-hint">當日所有公開站點總覽・行程分頁會跟著你滑到的章節聚焦</p>
+          <p className="rb-fullmap-hint">當日所有公開站點總覽・點任一站直接跳到那個章節</p>
         </>
       )}
 
