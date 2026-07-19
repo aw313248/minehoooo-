@@ -365,6 +365,24 @@ export default async function TaiwanRoadbookPage() {
         .rb-bgmap-city { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .34em; color: var(--rb-acc); }
         .rb-bgmap-spot { font-size: 15px; font-weight: 300; color: var(--rb-fg); }
 
+        /* ── 旅程累積（Journey Progress）── */
+        .rb-jp { margin: 34px 0 4px; padding: 20px 2px 22px;
+          border-top: 1px solid var(--rb-line); border-bottom: 1px solid var(--rb-line); }
+        .rb-jp-k { font-family: var(--rb-mono); font-size: 10px; letter-spacing: .42em;
+          color: var(--rb-faint); margin: 0 0 12px; }
+        .rb-jp-day { font-family: var(--rb-mono); font-size: 19px; letter-spacing: .2em;
+          color: var(--rb-fg); margin: 0; }
+        .rb-jp-day em { font-style: normal; font-size: 13px; letter-spacing: .18em; color: var(--rb-faint); }
+        .rb-jp-bar { font-family: var(--rb-mono); font-size: 15px; letter-spacing: -.04em;
+          color: var(--rb-acc); margin: 12px 0 10px; white-space: nowrap; overflow: hidden; }
+        .rb-jp-km { font-family: var(--rb-mono); font-size: 13.5px; letter-spacing: .16em;
+          color: var(--rb-fg); margin: 0; }
+        .rb-jp-km em { font-style: normal; font-size: 11px; letter-spacing: .18em; color: var(--rb-faint); }
+        .rb-jp-done { color: var(--rb-now); }
+        .rb-jp-done em { color: var(--rb-now); opacity: .8; }
+        .rb-jp-meta { font-family: var(--rb-mono); font-size: 10.5px; letter-spacing: .18em;
+          color: var(--rb-faint); margin: 10px 0 0; }
+
         /* ── Scene 節奏：非當前章節退場，當前章節浮現 ── */
         .rb-stop { transition: opacity .7s ease, transform .7s cubic-bezier(0.22, 1, 0.36, 1); }
         .rb-stop[data-active="false"] { opacity: .3; transform: translateY(6px) scale(.985); }
@@ -378,6 +396,36 @@ export default async function TaiwanRoadbookPage() {
         @keyframes rbSubtitle { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
         .rb-stop[data-active="true"] .rb-stop-photo img { animation: rbKen 9s cubic-bezier(0.22, 1, 0.36, 1) both; }
         @keyframes rbKen { from { transform: scale(1.1); } to { transform: scale(1); } }
+
+        /* ── Scene 節奏：當前章節的元素依序呼吸出現 ── */
+        @keyframes rbStep { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+        .rb-stop[data-active="true"] .rb-scene-slug,
+        .rb-stop[data-active="true"] .rb-stop-card,
+        .rb-stop[data-active="true"] .rb-stop-cat,
+        .rb-stop[data-active="true"] .rb-stop-name,
+        .rb-stop[data-active="true"] .rb-stop-city,
+        .rb-stop[data-active="true"] .rb-stop-done,
+        .rb-stop[data-active="true"] .rb-stop-note,
+        .rb-stop[data-active="true"] .rb-intel {
+          animation: rbStep .62s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .rb-stop[data-active="true"] .rb-scene-slug { animation-delay: .05s; }
+        .rb-stop[data-active="true"] .rb-stop-card { animation-delay: .20s; }
+        .rb-stop[data-active="true"] .rb-stop-cat  { animation-delay: .34s; }
+        .rb-stop[data-active="true"] .rb-stop-name { animation-delay: .46s; }
+        .rb-stop[data-active="true"] .rb-stop-city { animation-delay: .58s; }
+        .rb-stop[data-active="true"] .rb-stop-done { animation-delay: .70s; }
+        .rb-stop[data-active="true"] .rb-scene-line { animation-delay: .84s; }
+        .rb-stop[data-active="true"] .rb-stop-note { animation-delay: .96s; }
+        .rb-stop[data-active="true"] .rb-intel     { animation-delay: 1.06s; }
+
+        /* ── Scene Completed：完成過的章節留下印記，不再只是變淡 ── */
+        .rb-stop[data-done="true"] .rb-stop-body,
+        .rb-stop[data-done="true"] .rb-stop-time { opacity: .62; }
+        .rb-stop[data-done="true"] .rb-scene-slug { color: var(--rb-now); }
+        .rb-scene-tick { color: var(--rb-now); }
+        .rb-stop-done { font-family: var(--rb-mono); font-size: 9.5px; letter-spacing: .26em;
+          color: var(--rb-now); margin: 2px 0 0; }
+        .rb-stop[data-done="true"] .rb-stop-card { border-color: rgba(136,201,153,.26); }
 
         /* ── 站點卡片：圖左資訊右＋圓形地圖釘 ── */
         .rb-stop-card { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 22px; }

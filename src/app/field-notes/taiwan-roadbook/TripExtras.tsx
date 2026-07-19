@@ -52,6 +52,47 @@ export function Odometer() {
   );
 }
 
+/* ── 旅程累積：Day X / 7、進度條、累積里程 ── */
+const TRIP_DAYS = 7;
+const TRIP_TOTAL_KM = 1328;
+
+export function JourneyProgress({ currentDay, stopsDone }: { currentDay: string; stopsDone: number }) {
+  const daysDone = dailyLog.filter(d => d.km != null).length;
+  const km = totalKm();
+  const finished = daysDone >= TRIP_DAYS;
+  // 顯示的天數：已完成天數 +1（正在騎的那天），封頂 7
+  const nowN = Math.min(
+    TRIP_DAYS,
+    Math.max(daysDone + (finished ? 0 : 1), Number(currentDay.match(/\d+/)?.[0] ?? 1)),
+  );
+  // 每天兩格：已完成 █、騎行中 ▓、未開始 ░
+  const bar = Array.from({ length: TRIP_DAYS }, (_, i) =>
+    i < daysDone ? "██" : !finished && i === nowN - 1 ? "▓▓" : "░░",
+  ).join("");
+
+  return (
+    <section className="rb-jp">
+      <p className="rb-jp-k">TAIWAN LOOP</p>
+      <p className="rb-jp-day">
+        DAY {String(nowN).padStart(2, "0")}<em> / {TRIP_DAYS}</em>
+      </p>
+      <p className="rb-jp-bar" aria-hidden>{bar}</p>
+      {finished ? (
+        <p className="rb-jp-km rb-jp-done">
+          <span className="odometer">{TRIP_TOTAL_KM.toLocaleString()}</span> KM<em> / TAIWAN COMPLETED</em>
+        </p>
+      ) : (
+        <p className="rb-jp-km">
+          <span className="odometer">{km.toLocaleString()}</span> KM RIDDEN<em> / {TRIP_TOTAL_KM.toLocaleString()} 目標</em>
+        </p>
+      )}
+      <p className="rb-jp-meta">
+        {daysDone} / {TRIP_DAYS} 天完成 · {stopsDone} 個停靠站已完成
+      </p>
+    </section>
+  );
+}
+
 /* ── 加油鈕 ── */
 export function CheerButton() {
   const [count, setCount] = useState<number | null>(null);

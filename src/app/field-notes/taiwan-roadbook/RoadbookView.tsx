@@ -15,7 +15,7 @@ import { storyFor } from "./stories";
 import { imageFor, EQUIP_IMAGES, photoCredits } from "./spotImages";
 import RideMap from "./RideMap";
 import RegionTalk from "./RegionTalk";
-import { Odometer, CheerButton, FilmLog } from "./TripExtras";
+import { Odometer, CheerButton, FilmLog, JourneyProgress } from "./TripExtras";
 
 const cityOf = (s: RoadbookStop) => {
   const k = cityKeyOf(s.name, s.address);
@@ -321,6 +321,9 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
         </div>
       </section>
 
+      {/* ── 旅程累積：每天完成後往前推進 ── */}
+      <JourneyProgress currentDay={data.currentDay} stopsDone={data.completedCount} />
+
       {/* ── 分頁切換（玻璃 segmented control）── */}
       <nav className="rb-views rb-glass" role="tablist" aria-label="頁面切換">
         {([["trip", "行程"], ["map", "地圖"], ["log", "紀錄"], ["talk", "留言"]] as [View, string][]).map(([v, label]) => (
@@ -363,7 +366,10 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
                     {i < main.length - 1 && <span className="rb-stop-line" />}
                   </div>
                   <div className="rb-stop-body">
-                    <p className="rb-scene-slug">SCENE {String(i + 1).padStart(2, "0")}</p>
+                    <p className="rb-scene-slug">
+                      {done && <span className="rb-scene-tick" aria-hidden>✓ </span>}
+                      SCENE {String(i + 1).padStart(2, "0")}
+                    </p>
                     <div className="rb-stop-card rb-glass">
                       {(() => { const img = imageFor(s.name); return img ? (
                         <div className="rb-stop-photo">
@@ -382,6 +388,11 @@ export default function RoadbookView({ data, weather }: { data: RoadbookData; we
                         {cityZhOf(s) && (
                           <p className="rb-stop-city">{cityZhOf(s)}
                             {cityOf(s) && <em>{cityOf(s)}</em>}
+                          </p>
+                        )}
+                        {done && (
+                          <p className="rb-stop-done">
+                            <span aria-hidden>✓</span> COMPLETED{s.time ? ` · ${s.time}` : ""}
                           </p>
                         )}
                       </div>
