@@ -23,6 +23,11 @@ export const spotImages: SpotImage[] = [
   { match: "國華街", src: `${S}/guohua.jpg`, isPlaceholder: true, credit: "Allervous · CC BY-SA 4.0" },
   { match: "海安路", src: `${S}/haian.jpg`, isPlaceholder: true, credit: "米田賢一 · CC BY 3.0" },
   { match: "美術館二館", src: `${S}/tnam2.jpg`, isPlaceholder: true, credit: "Chang tt · CC BY-SA 4.0" },
+  { match: "潮州日式", src: `${S}/chaozhou-jp.jpg`, isPlaceholder: true, credit: "Jonashtand · CC BY-SA 4.0" },
+  { match: "恆春古城", src: `${S}/hengchun-gate.jpg`, isPlaceholder: true, credit: "阿道 · CC BY-SA 4.0" },
+  { match: "最南點", src: `${S}/southpoint.jpg`, isPlaceholder: true, credit: "CEphoto, Uwe Aranas · CC BY-SA 3.0" },
+  { match: "船帆石", src: `${S}/sailrock.jpg`, isPlaceholder: true, credit: "Tze Chiang Hao · CC BY-SA 4.0" },
+  { match: "南迴", src: `${S}/nanhui.jpg`, isPlaceholder: true, credit: "Chi-Hung Lin · CC BY-SA 3.0" },
 ];
 
 export const EQUIP_IMAGES = {
