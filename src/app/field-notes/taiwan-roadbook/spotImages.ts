@@ -28,6 +28,9 @@ export const spotImages: SpotImage[] = [
   { match: "最南點", src: `${S}/southpoint.jpg`, isPlaceholder: true, credit: "CEphoto, Uwe Aranas · CC BY-SA 3.0" },
   { match: "船帆石", src: `${S}/sailrock.jpg`, isPlaceholder: true, credit: "Tze Chiang Hao · CC BY-SA 4.0" },
   { match: "南迴", src: `${S}/nanhui.jpg`, isPlaceholder: true, credit: "Chi-Hung Lin · CC BY-SA 3.0" },
+  { match: "池上飯包", src: `${S}/chishang-bento.jpg`, isPlaceholder: true, credit: "Sinchen.Lin · CC BY 2.0" },
+  { match: "伯朗大道", src: `${S}/brownave.jpg`, isPlaceholder: true, credit: "lumoplank · CC0" },
+  { match: "鹿野高台", src: `${S}/luye.jpg`, isPlaceholder: true, credit: "S099001 · CC BY 4.0" },
 ];
 
 export const EQUIP_IMAGES = {

@@ -21,7 +21,21 @@ export const dailyLog: DayLog[] = [
     date: "07.19",
     km: null,
     photos: [`${D}/day1-01.jpg`, `${D}/day1-02.jpg`, `${D}/day1-03.jpg`],
-    note: "出發日：前一晚把 Ace Pro 2、Neo 2 和一整桌家當塞進包裡，還手滑搶到一晚兩百八的台南床位——台中往嘉義、台南，騎行中",
+    note: "出發日：前一晚把 Ace Pro 2、Neo 2 和一整桌家當塞進包裡，還手滑搶到一晚兩百八的台南床位——台中往嘉義、台南",
+  },
+  {
+    day: "Day 2",
+    date: "07.20",
+    km: null,
+    photos: [`${D}/day2-01.jpg`, `${D}/day2-02.jpg`, `${D}/day2-03.jpg`],
+    note: "台南一路向南：潮州吃了燒冷冰，黃昏前穿過恆春西門去阿嘉的家——今天拍最多的素材叫「台灣人真好」",
+  },
+  {
+    day: "Day 3",
+    date: "07.21",
+    km: null,
+    photos: [],
+    note: "折返點：台灣最南點打卡，然後上南迴翻去台東——騎行中",
   },
 ];
 
