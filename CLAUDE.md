@@ -36,3 +36,9 @@ Oscar（賴明宏 / @minehoooo.arw）的個人網站。Next.js 15 App Router，p
 
 ### 驗收習慣
 改完先 `npx tsc --noEmit && npx next build`，push 後用 curl（帶 IG webview UA）打正式站確認，再抽查首頁與另一篇 Field Note 都是 200
+
+## 流量／頻寬鐵則（2026-07-29 Fast Data Transfer 爆量教訓）
+- `public/` 的檔案 Next.js 預設給 `max-age=0, must-revalidate`——影片會被瀏覽器與企業代理**每次重抓**。已在 `next.config.ts` 的 `headers()` 修正：影音 1 年 immutable、圖片 1 天＋30 天 stale-while-revalidate。**新增媒體類型（例如 .webm）要記得加進那個 regex**
+- 網頁影片一律先壓：直立短片 608px / ~1.3 Mbps、有聲主影片 720px / 1.5 Mbps + AAC 96k，用 `h264_videotoolbox`（本機沒有 libx264）＋ `-movflags +faststart`
+- 診斷順序：先看 `curl -sI` 的 cache-control，再看檔案大小。Vercel 警報裡的「300 MB」是**五分鐘累積傳輸量**，不是檔案大小——不要誤判成要再壓縮
+- 多支 `loop` 自動播放的影片＋不可快取 = 流量放大器。LazyVideo 用 IntersectionObserver 只在進畫面才設 src，這個行為不要改掉
