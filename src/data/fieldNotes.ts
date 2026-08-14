@@ -39,7 +39,7 @@ export const fieldNotes: FieldNote[] = [
     date:          "2026-08-14",
     category:      "TRAVEL",
     categoryLabel: "TRAVEL · SOLO",
-    tags:          ["一個人旅行", "旅行攝影", "自拍", "腳架", "M.FOTO", "構圖", "長焦"],
+    tags:          ["一個人旅行", "旅行攝影", "自拍", "腳架", "Manfrotto Element SL", "構圖", "長焦"],
     excerpt:       "從找平地、用手機抓鏡位、調整腳架，到長焦構圖與走進畫面，整理我一個人旅行時真正會用的拍攝方法，最重要的是：旅行不是工作，拍到六、七十分就可以收手",
     heroImage:     "/field-notes/solo-travel-ai/oscar-frame-first.jpg",
     readingTime:   5,

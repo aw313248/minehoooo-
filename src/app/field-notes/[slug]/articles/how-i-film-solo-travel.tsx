@@ -67,7 +67,7 @@ const blocks: Block[] = [
           以前在劇組的經驗是，腳架先架好，後面才發現高度不夠或角度要更低，就會一直搬、一直調。先用手機把鏡位抓出來，現場會快很多
         </p>
         <p>
-          這次旅行我帶的是 <strong>M.FOTO 腳架</strong>，需要低機位，或是臨時換高度、段數和角度時都能再調，不用一開始就把自己鎖死在同一個視角
+          這次旅行我帶的是 <strong>Manfrotto Element SL 青影輕量旅行攝影腳架</strong>，需要低機位，或是臨時換高度、段數和角度時都能再調，不用一開始就把自己鎖死在同一個視角
         </p>
       </>
     ),
@@ -96,6 +96,52 @@ const blocks: Block[] = [
     },
     leftLabel: "FRAME",
     rightLabel: "ENTER",
+  },
+  {
+    type: "headline",
+    id: "element-sl",
+    num: "GEAR",
+    text: "這次我帶的腳架",
+    sub: "Manfrotto Element SL 青影輕量旅行攝影腳架",
+  },
+  {
+    type: "text",
+    content: (
+      <>
+        <p>
+          它的官方規格是自重 900g、收納長度 41cm，最高可以到 150cm，安全承重 5kg。快裝板能轉成手機夾，也相容 Arca 規格；中軸拆下來後，還能直接拍貼近地面的超低角度
+        </p>
+        <p>
+          對我來說，真正有感的不是規格有多滿，而是騎車旅行時我願意把它帶在身上。拍攝前先用手機找畫面，需要時再換相機，想蹲低、拉高或突然換角度，都不需要為了器材在原地弄很久
+        </p>
+      </>
+    ),
+  },
+  {
+    type: "setup-cards",
+    items: [
+      { value: "900g", label: "WEIGHT" },
+      { value: "41cm", label: "CLOSED" },
+      { value: "150cm", label: "MAX HEIGHT" },
+      { value: "5kg", label: "PAYLOAD" },
+    ],
+    footer: "快裝板可轉手機夾，中軸可拆成超低角度模式，手機與相機都能使用",
+  },
+  {
+    type: "callout",
+    content: (
+      <>
+        <strong>合作歸合作，這句是真心的：</strong><br />
+        如果你也常一個人旅行，又會在手機和相機之間切換，我會推薦這支。它不是讓旅行變成工作，而是讓我想留下畫面時可以很快開始；拍到了，就能收起來繼續走
+      </>
+    ),
+  },
+  {
+    type: "cta",
+    message: "想看這次使用的 Manfrotto Element SL 青影旅行腳架",
+    sub: "型號 MKELESLTCBK-BH｜價格與活動以正成 CSEmart 官方頁面為準",
+    cta: "查看官方產品頁",
+    href: "https://www.csemart.com/SalePage/Index/12059566",
   },
 
   {
