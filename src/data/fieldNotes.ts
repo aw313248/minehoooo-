@@ -30,6 +30,24 @@ export interface FieldNote {
 }
 
 export const fieldNotes: FieldNote[] = [
+  // ── 一個人旅行拍攝方法（留言關鍵字：台灣好美）──────────────
+  {
+    slug:          "how-i-film-solo-travel",
+    title:         "一個人旅行，我怎麼把自己拍進風景裡",
+    issue:         "004",
+    subtitle:      "先感受，再找位置，拍到六、七十分就收手",
+    date:          "2026-08-14",
+    category:      "TRAVEL",
+    categoryLabel: "TRAVEL · SOLO",
+    tags:          ["一個人旅行", "旅行攝影", "自拍", "腳架", "M.FOTO", "構圖", "長焦"],
+    excerpt:       "從找平地、用手機抓鏡位、調整腳架，到長焦構圖與走進畫面，整理我一個人旅行時真正會用的拍攝方法，最重要的是：旅行不是工作，拍到六、七十分就可以收手",
+    heroImage:     "/field-notes/taiwan-roadbook/days/day2-01.jpg",
+    readingTime:   5,
+    articleType:   "editorial-v2",
+    triggerWord:   "台灣好美",
+    commentPrompt: "你最想把自己拍進哪一段旅行？",
+  },
+
   // ── AI 工具實作文章 ─────────────────────────────────────────────
   {
     slug:          "seedance-aerial",
