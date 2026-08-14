@@ -1611,7 +1611,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
           <div className="et-author">
             <span className="et-by">By</span>
             <span className="et-sig" style={{ fontFamily: "Snell Roundhand, Brush Script MT, cursive", fontStyle: "italic" }}>Oscar Lai</span>
-            <span className="et-role">Director · DP</span>
+            <span className="et-role">影像工作者</span>
             <span className="et-loc">Taichung · TW</span>
           </div>
         </div>
