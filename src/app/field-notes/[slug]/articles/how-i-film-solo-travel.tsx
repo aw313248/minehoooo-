@@ -14,9 +14,9 @@ const blocks: Block[] = [
     type: "image",
     frame: "wide",
     item: {
-      src: "/field-notes/taiwan-roadbook/days/day2-01.jpg",
-      alt: "Oscar 在台灣旅行途中，以低機位拍下自己與機車",
-      caption: "先決定自己要出現在畫面哪裡，再決定腳架要放哪裡",
+      src: "/field-notes/solo-travel-ai/oscar-frame-first.jpg",
+      alt: "可愛版 Oscar 蹲在低機位腳架旁，用手機確認旅行畫面",
+      caption: "AI 旅行手帳｜先決定自己要出現在畫面哪裡，再決定腳架要放哪裡",
     },
   },
   {
@@ -26,7 +26,7 @@ const blocks: Block[] = [
         num: "01",
         en: "FRAME",
         zh: "手機先抓鏡位",
-        thumb: "/field-notes/taiwan-roadbook/days/day1-01.jpg",
+        thumb: "/field-notes/solo-travel-ai/oscar-frame-first.jpg",
         thumbType: "image",
         anchor: "frame-first",
       },
@@ -34,7 +34,7 @@ const blocks: Block[] = [
         num: "02",
         en: "SET",
         zh: "再調整腳架",
-        thumb: "/field-notes/taiwan-roadbook/days/day2-02.jpg",
+        thumb: "/field-notes/solo-travel-ai/oscar-find-own-angle.jpg",
         thumbType: "image",
         anchor: "frame-first",
       },
@@ -42,7 +42,7 @@ const blocks: Block[] = [
         num: "03",
         en: "ENTER",
         zh: "最後走進畫面",
-        thumb: "/field-notes/taiwan-roadbook/days/day2-01.jpg",
+        thumb: "/field-notes/solo-travel-ai/oscar-walk-into-frame.jpg",
         thumbType: "image",
         anchor: "enter-frame",
       },
@@ -85,17 +85,17 @@ const blocks: Block[] = [
   {
     type: "image-pair",
     left: {
-      src: "/field-notes/taiwan-roadbook/days/day1-01.jpg",
-      alt: "旅行出發前整理手機、相機、腳架與隨身裝備",
-      caption: "行前：需要的器材帶到就好",
+      src: "/field-notes/solo-travel-ai/oscar-frame-first.jpg",
+      alt: "可愛版 Oscar 先用手機確認構圖，再調整旅行腳架",
+      caption: "先看手機裡的畫面，再決定腳架位置",
     },
     right: {
-      src: "/field-notes/taiwan-roadbook/days/day2-02.jpg",
-      alt: "Oscar 從低機位檢查旅行裝備",
-      caption: "現場：先看位置，再微調角度",
+      src: "/field-notes/solo-travel-ai/oscar-walk-into-frame.jpg",
+      alt: "可愛版 Oscar 在台灣山海與稻田間自然走進鏡頭",
+      caption: "架好之後，不用演，先自然走進畫面",
     },
-    leftLabel: "PACK",
-    rightLabel: "CHECK",
+    leftLabel: "FRAME",
+    rightLabel: "ENTER",
   },
 
   {
@@ -184,9 +184,9 @@ const blocks: Block[] = [
     type: "image",
     frame: "wide",
     item: {
-      src: "/field-notes/taiwan-roadbook/days/day2-03.jpg",
-      alt: "Oscar 在台灣旅行途中停在路邊，安全帽映著早晨街景",
-      caption: "有時候畫面已經在動，鏡頭只要好好待著",
+      src: "/field-notes/solo-travel-ai/oscar-telephoto-train.jpg",
+      alt: "可愛版 Oscar 走進臺東火車、田野與月台組成的長焦畫面",
+      caption: "AI 旅行手帳｜火車和人在動，長焦鏡頭只要好好待著",
     },
   },
 
@@ -212,6 +212,15 @@ const blocks: Block[] = [
         </p>
       </>
     ),
+  },
+  {
+    type: "image",
+    frame: "wide",
+    item: {
+      src: "/field-notes/solo-travel-ai/oscar-find-own-angle.jpg",
+      alt: "可愛版 Oscar 蹲在台灣巷弄的水窪旁尋找自己的低角度構圖",
+      caption: "AI 旅行手帳｜最佳角度，常常是你願意蹲下來才看見的那一個",
+    },
   },
 
   {

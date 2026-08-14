@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       : slug === "ai-crime-film"
       ? "/field-notes/ai-crime-film/og.jpg"
       : slug === "how-i-film-solo-travel"
-      ? "/field-notes/taiwan-roadbook/days/day2-01.jpg"
+      ? "/field-notes/solo-travel-ai/oscar-frame-first.jpg"
       : SOCIAL_COVER_DEFAULT;
   const socialTitle =
     slug === "seedance-aerial"
