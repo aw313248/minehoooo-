@@ -11,7 +11,6 @@ import QuickStart from "@/components/field-notes/QuickStart";
 import OriginalPrompt from "@/components/field-notes/OriginalPrompt";
 import MobileStickyBar from "@/components/field-notes/MobileStickyBar";
 import ToolBadge from "@/components/field-notes/ToolBadge";
-import ScrollUnlock from "@/components/ScrollUnlock";
 import BubbleComments from "@/components/field-notes/BubbleComments";
 import HiggsfieldRef from "@/components/HiggsfieldRef";
 import { fieldNotes, getFieldNote } from "@/data/fieldNotes";
@@ -105,6 +104,46 @@ const EDITORIAL_V2_BLOCKS: Record<string, any[]> = {
   "how-i-film-solo-travel": soloTravelBlocks,
 };
 
+function FieldNoteStructuredData({ note }: { note: (typeof fieldNotes)[number] }) {
+  const url = `${SITE_URL}/field-notes/${note.slug}`;
+  const image = new URL(note.heroImage, SITE_URL).toString();
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${url}#article`,
+        headline: note.title,
+        description: note.excerpt,
+        image,
+        datePublished: note.date,
+        dateModified: note.date,
+        inLanguage: "zh-TW",
+        author: { "@type": "Person", name: "Oscar Lai", url: SITE_URL },
+        publisher: { "@type": "Organization", name: "MINEH4O", url: SITE_URL },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+        keywords: note.tags.join(", "),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "MINEH4O", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Field Notes", item: `${SITE_URL}/field-notes` },
+          { "@type": "ListItem", position: 3, name: note.title, item: url },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <script
+      id="field-note-structured-data"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+    />
+  );
+}
+
 export default async function FieldNoteArticle({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const note = getFieldNote(slug);
@@ -115,21 +154,12 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
     const blocks = EDITORIAL_V2_BLOCKS[slug];
     if (!blocks) notFound();
     return (
-      <main className="min-h-screen bg-black text-white relative" style={{ overflowY: "auto" }}>
-        <ScrollUnlock />
-        <div
-          aria-hidden
-          className="pointer-events-none fixed inset-0 z-0"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-            backgroundSize: "200px 200px",
-            opacity: 0.04,
-            mixBlendMode: "screen",
-          }}
-        />
-        <EditorialTemplate note={note} blocks={blocks} />
-      </main>
+      <>
+        <FieldNoteStructuredData note={note} />
+        <main className="min-h-screen bg-black text-white relative">
+          <EditorialTemplate note={note} blocks={blocks} />
+        </main>
+      </>
     );
   }
 
@@ -138,22 +168,12 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
     const content = EDITORIAL_CONTENT[slug];
     if (!content) notFound();
     return (
-      <main className="min-h-screen bg-black text-white relative" style={{ overflowY: "auto" }}>
-        <ScrollUnlock />
-        {/* Grain texture */}
-        <div
-          aria-hidden
-          className="pointer-events-none fixed inset-0 z-0"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E\")",
-            backgroundSize: "200px 200px",
-            opacity: 0.04,
-            mixBlendMode: "screen",
-          }}
-        />
-        <NoteArticleTemplate note={note} content={content} />
-      </main>
+      <>
+        <FieldNoteStructuredData note={note} />
+        <main className="min-h-screen bg-black text-white relative">
+          <NoteArticleTemplate note={note} content={content} />
+        </main>
+      </>
     );
   }
 
@@ -183,11 +203,8 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
     : [];
 
   return (
-    <main
-      className="min-h-screen bg-black text-white relative"
-      style={{ overflowY: "auto" }}
-    >
-      <ScrollUnlock />
+    <main className="min-h-screen bg-black text-white relative">
+      <FieldNoteStructuredData note={note} />
       <BubbleComments slug={note.slug} />
 
       {/* Grain */}

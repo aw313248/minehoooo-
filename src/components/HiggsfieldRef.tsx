@@ -41,7 +41,7 @@ export default function HiggsfieldRef({ variant = "banner" }: { variant?: "banne
           .hfp-icon { width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0; }
           .hfp-text { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,0.78); margin: 0; }
           .hfp-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
-          .hfp-btn { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; border-radius: 6px; padding: 10px 16px; transition: opacity .15s, border-color .15s; }
+          .hfp-btn { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; border-radius: 6px; padding: 10px 16px; transition: opacity .15s, border-color .15s; }
           .hfp-btn-ghost { color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.2); }
           .hfp-btn-ghost:hover { border-color: rgba(255,255,255,0.45); }
           .hfp-btn-lime { color: #0a0a0a; background: rgb(200,255,60); font-weight: 700; border: 1px solid rgb(200,255,60); }

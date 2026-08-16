@@ -53,7 +53,7 @@ export type Block =
   // Autoplay video (hero background / placeholder)
   | { type: "video";         src?: string; placeholder?: string; frame?: "phone" | "wide" | "full"; caption?: string }
   // Lazy-load click-to-play video; sound: show an unmute toggle on autoplay videos
-  | { type: "video-lazy";    src: string; caption?: string; aspectRatio?: string; maxWidth?: string; autoPlay?: boolean; sound?: boolean }
+  | { type: "video-lazy";    src: string; poster?: string; caption?: string; aspectRatio?: string; maxWidth?: string; autoPlay?: boolean; sound?: boolean }
   // Travel gallery grid (auto-play muted, lazy)
   | { type: "travel-gallery"; items: GalleryVideo[] }
   // App recommendation card

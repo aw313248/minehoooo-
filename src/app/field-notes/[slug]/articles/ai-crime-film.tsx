@@ -14,6 +14,7 @@ const blocks: Block[] = [
   {
     type: "video-lazy",
     src: `${M}/hero-loop.mp4`,
+    poster: `${M}/posters/final-film.jpg`,
     caption: "8 秒精華循環 — 完整成片在第 11 章",
     aspectRatio: "16/9",
     autoPlay: true,
@@ -204,6 +205,7 @@ const blocks: Block[] = [
   {
     type: "video-lazy",
     src: `${M}/final-storyboard-version.mp4`,
+    poster: `${M}/posters/final-storyboard-version.jpg`,
     caption: "▶ Storyboard 驅動版 — 15 秒 sequence，模型自己補了運鏡和過場",
     aspectRatio: "16/9",
   },
@@ -245,6 +247,7 @@ const blocks: Block[] = [
   {
     type: "video-lazy",
     src: `${M}/fail-shot-01-generated.mp4`,
+    poster: `${M}/posters/shot-01-casino-door-generated.jpg`,
     caption: "▶ 失敗版 Shot 01 — 12.6 秒走位壓成 5 秒：模型跳過走路，人直接出現在門口",
     aspectRatio: "16/9",
   },
@@ -455,6 +458,7 @@ const blocks: Block[] = [
   {
     type: "video-lazy",
     src: `${M}/final-film.mp4`,
+    poster: `${M}/posters/final-film.jpg`,
     caption: "▶ 調光後完整版 — 29.6 秒，有聲音，點擊播放",
     aspectRatio: "16/9",
   },

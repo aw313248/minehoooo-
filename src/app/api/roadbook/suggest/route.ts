@@ -1,9 +1,10 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 
 /**
  * 「我還可以去哪」推薦 — Redis list per region + 全域 list（每晚 digest 用）
  * GET  ?region=嘉義        → { suggestions: [...] }（最新 30）
- * GET  ?region=all&key=... → 全部（digest 用，需 ROADBOOK_DIGEST_KEY；未設則開放讀取）
+ * GET  ?region=all&key=... → 全部（digest 用，需 ROADBOOK_DIGEST_KEY）
  * POST { region, place, why?, name? } → 新增（每 IP 20 秒一則）
  */
 
@@ -27,9 +28,22 @@ async function redis(cmd: (string | number)[]): Promise<unknown> {
 const parse = (raw: string[]) =>
   raw.map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
 
+function validDigestKey(provided: string | null, expected: string): boolean {
+  if (!provided || !expected) return false;
+  const providedHash = createHash("sha256").update(provided).digest();
+  const expectedHash = createHash("sha256").update(expected).digest();
+  return timingSafeEqual(providedHash, expectedHash);
+}
+
 export async function GET(req: NextRequest) {
-  if (!URL_ || !TOKEN) return NextResponse.json({ suggestions: null });
   const region = req.nextUrl.searchParams.get("region") ?? "";
+  if (region === "all") {
+    const digestKey = process.env.ROADBOOK_DIGEST_KEY ?? "";
+    if (!digestKey) return NextResponse.json({ error: "Service unavailable" }, { status: 503 });
+    if (!validDigestKey(req.nextUrl.searchParams.get("key"), digestKey))
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!URL_ || !TOKEN) return NextResponse.json({ suggestions: null });
   try {
     if (region === "all") {
       const raw = (await redis(["LRANGE", "rb:suggest:all", 0, 199])) as string[];

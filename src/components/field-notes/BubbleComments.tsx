@@ -107,7 +107,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
       {enabled && mobileOn && !open && comments.length > 0 && (
         <div key={`m-${mIdx}`} aria-hidden="true" className="md:hidden"
           style={{
-            position: "fixed", right: 16, bottom: 78, zIndex: 44,
+            position: "fixed", right: "max(16px, env(safe-area-inset-right))", bottom: "calc(78px + env(safe-area-inset-bottom))", zIndex: 44,
             maxWidth: "72vw", pointerEvents: "none",
             animation: "bubbleToast 6s ease both",
           }}>
@@ -122,7 +122,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
       )}
 
       {/* ── 進場邀請 / 常駐膠囊 / 輸入框 — 右下角，可關 ── */}
-      <div style={{ position: "fixed", right: 16, bottom: 16, zIndex: 45, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
+      <div style={{ position: "fixed", right: "max(16px, env(safe-area-inset-right))", bottom: "max(16px, env(safe-area-inset-bottom))", zIndex: 45, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
         {open && (
           <div style={{
             background: "rgba(12,12,15,0.92)", border: "1px solid rgba(255,225,140,0.3)",
@@ -130,7 +130,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
           }}>
             <p style={{ margin: "0 0 8px", fontSize: 12, color: "rgba(255,255,255,0.85)" }}>{prompt ?? "留一句話，它會變成這頁的泡泡 ✦"}</p>
             <input value={name} onChange={e => setName(e.target.value)} placeholder="暱稱（選填）" maxLength={16}
-              style={{ width: "100%", boxSizing: "border-box", marginBottom: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, padding: "7px 10px", fontSize: 12, color: "#fff", outline: "none" }} />
+              style={{ width: "100%", minHeight: 44, boxSizing: "border-box", marginBottom: 6, background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, padding: "7px 10px", fontSize: 12, color: "#fff", outline: "none" }} />
             <textarea value={text} onChange={e => setText(e.target.value)} placeholder="最多 60 字" maxLength={60} rows={2}
               style={{ width: "100%", boxSizing: "border-box", resize: "none", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 8, padding: "7px 10px", fontSize: 12, color: "#fff", outline: "none" }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
@@ -138,7 +138,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
                 {state === "done" ? "上牆了 ✓" : state !== "idle" && state !== "busy" ? state : ""}
               </span>
               <button onClick={submit} disabled={state === "busy"}
-                style={{ background: "rgba(255,217,100,0.9)", color: "#000", border: "none", borderRadius: 999, padding: "6px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
+                style={{ minHeight: 44, background: "rgba(255,217,100,0.9)", color: "#000", border: "none", borderRadius: 999, padding: "6px 16px", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>
                 {state === "busy" ? "…" : "送出"}
               </button>
             </div>
@@ -152,11 +152,11 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
             borderRadius: 999, padding: "8px 8px 8px 14px", backdropFilter: "blur(12px)",
           }}>
             <button onClick={() => { setOpen(true); dismissInvite(); }}
-              style={{ background: "none", border: "none", color: "rgba(255,255,255,0.9)", fontSize: 12, cursor: "pointer", padding: 0 }}>
+              style={{ minHeight: 44, background: "none", border: "none", color: "rgba(255,255,255,0.9)", fontSize: 12, cursor: "pointer", padding: 0 }}>
               💬 看完想說什麼？留一句話
             </button>
             <button onClick={dismissInvite} aria-label="關閉留言邀請"
-              style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", width: 20, height: 20, color: "rgba(255,255,255,0.6)", fontSize: 11, cursor: "pointer", lineHeight: 1 }}>✕</button>
+              style={{ background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "50%", width: 44, height: 44, color: "rgba(255,255,255,0.6)", fontSize: 11, cursor: "pointer", lineHeight: 1 }}>✕</button>
           </div>
         )}
 
@@ -170,7 +170,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
                   color: mobileOn ? "rgba(255,225,140,0.9)" : "rgba(255,255,255,0.45)",
                   background: "rgba(12,12,15,0.85)", backdropFilter: "blur(10px)",
                   border: `1px solid ${mobileOn ? "rgba(255,225,140,0.35)" : "rgba(255,255,255,0.15)"}`,
-                  borderRadius: 999, padding: "7px 11px", cursor: "pointer",
+                  minHeight: 44, borderRadius: 999, padding: "7px 11px", cursor: "pointer",
                 }}>
                 彈幕 {mobileOn ? "開" : "關"}
               </button>
@@ -185,7 +185,7 @@ export default function BubbleComments({ slug, prompt }: { slug: string; prompt?
         )}
         {open && (
           <button onClick={() => setOpen(false)} aria-label="收合留言"
-            style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 10, cursor: "pointer", letterSpacing: "0.2em" }}>收合 ✕</button>
+            style={{ minHeight: 44, background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: 10, cursor: "pointer", letterSpacing: "0.2em" }}>收合 ✕</button>
         )}
       </div>
 

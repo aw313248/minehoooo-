@@ -59,10 +59,14 @@
 
 html {
   background: var(--bg);
-  /* prevent iOS bounce that fights with PageScroll */
-  overflow: hidden;
-  height: 100%;
-  height: 100dvh; /* iOS Safari dynamic viewport */
+  min-height: 100%;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
 }
 
 body {
@@ -70,9 +74,8 @@ body {
   color: var(--text);
   font-family: var(--font-geist-sans), system-ui, -apple-system,
     "PingFang TC", "Noto Sans TC", sans-serif;
-  height: 100%;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: clip;
   /* smooth fonts on retina */
   -webkit-font-smoothing: antialiased;
 }
@@ -106,35 +109,14 @@ body {
   display: none;
 }
 
-/* ── Custom cursor on mouse devices ── */
+/* ── Custom cursor is a homepage-only experience ── */
 @media (pointer: fine) {
-  *, *::before, *::after { cursor: none !important; }
-}
-
-/* ── GRAIN TEXTURE ── */
-/* Layer 1: Fine film grain */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 140px 140px;
-  opacity: 0.18;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: screen;
-}
-/* Layer 2: Coarse paper grain */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n2)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  opacity: 0.1;
-  pointer-events: none;
-  z-index: 9998;
-  mix-blend-mode: overlay;
+  .home-experience,
+  .home-experience *,
+  .home-experience *::before,
+  .home-experience *::after {
+    cursor: none !important;
+  }
 }
 
 /* ── FONT UTILITIES ── */

@@ -18,6 +18,7 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
   const [active, setActive] = useState(headlines[0]?.id ?? "");
 
   useEffect(() => {
+    if (window.matchMedia("(max-width: 1023px)").matches) return;
     const obs: IntersectionObserver[] = [];
     headlines.forEach((h) => {
       const el = document.getElementById(h.id);
@@ -42,7 +43,10 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
           key={h.id}
           className="et-toc-item"
           data-active={active === h.id}
-          onClick={() => document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+          onClick={() => {
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            document.getElementById(h.id)?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+          }}
         >
           {h.text}
         </button>
@@ -50,7 +54,7 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
       <style>{`
         .et-toc { position: sticky; top: 120px; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.07); }
         .et-toc-title { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin: 0 0 14px; text-align: right; }
-        .et-toc-item { display: block; width: 100%; background: none; border: none; cursor: pointer; text-align: right; padding: 6px 0; font-family: var(--font-readex),sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.35; transition: color 0.15s; }
+        .et-toc-item { display: block; width: 100%; min-height: 44px; background: none; border: none; cursor: pointer; text-align: right; padding: 8px 0; font-family: var(--font-readex),sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.35; transition: color 0.15s; }
         .et-toc-item[data-active="true"] { color: rgba(255,255,255,0.92); }
         .et-toc-item:hover { color: rgba(255,255,255,0.78); }
       `}</style>
@@ -58,19 +62,68 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
   );
 }
 
+function MobileChapterMenu({ blocks }: { blocks: Block[] }) {
+  const headlines = blocks.filter((b): b is Extract<Block, { type: "headline" }> => b.type === "headline");
+  if (headlines.length === 0) return null;
+
+  return (
+    <details className="et-mobile-toc">
+      <summary>
+        <span>CHAPTER INDEX</span>
+        <b>{String(headlines.length).padStart(2, "0")} 章</b>
+      </summary>
+      <nav aria-label="文章章節">
+        {headlines.map((headline, index) => (
+          <a key={headline.id} href={`#${headline.id}`}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {headline.text}
+          </a>
+        ))}
+      </nav>
+      <style>{`
+        .et-mobile-toc { display: none; }
+        @media (max-width: 1023px) {
+          .et-mobile-toc { display: block; max-width: 760px; margin: 0 auto; padding: 18px max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); }
+          .et-mobile-toc summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 14px; cursor: pointer; list-style: none; color: rgba(255,255,255,.74); border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.025); font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: .25em; }
+          .et-mobile-toc summary::-webkit-details-marker { display: none; }
+          .et-mobile-toc summary b { color: rgba(255,225,140,.82); font-weight: 400; }
+          .et-mobile-toc nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 8px 0 4px; border-bottom: 1px solid rgba(255,255,255,.08); }
+          .et-mobile-toc a { display: flex; align-items: center; min-height: 48px; padding: 8px 12px; color: rgba(255,255,255,.7); text-decoration: none; font-family: var(--font-readex),sans-serif; font-size: 12px; line-height: 1.4; }
+          .et-mobile-toc a span { flex: 0 0 28px; font-family: var(--font-space-mono),monospace; font-size: 8px; color: rgba(255,225,140,.7); }
+          .et-mobile-toc a:focus-visible, .et-mobile-toc summary:focus-visible { outline: 2px solid rgba(255,225,140,.9); outline-offset: 2px; }
+        }
+        @media (max-width: 420px) {
+          .et-mobile-toc nav { grid-template-columns: 1fr; }
+        }
+      `}</style>
+    </details>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────
    Lazy video — IntersectionObserver, click-to-play
    ───────────────────────────────────────────────────────────────── */
-function LazyVideo({ src, autoPlay = false, loop = true, muted = true, soundToggle = false, className = "", style = {} }: {
-  src: string; autoPlay?: boolean; loop?: boolean; muted?: boolean; soundToggle?: boolean; className?: string; style?: React.CSSProperties;
+function LazyVideo({ src, poster, autoPlay = false, loop = true, muted = true, soundToggle = false, className = "", style = {} }: {
+  src: string; poster?: string; autoPlay?: boolean; loop?: boolean; muted?: boolean; soundToggle?: boolean; className?: string; style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [soundOn, setSoundOn] = useState(false);
+  const [activated, setActivated] = useState(false);
+  const [allowAutoPlay, setAllowAutoPlay] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const mobile = window.matchMedia("(max-width: 680px)").matches;
+    setAllowAutoPlay(autoPlay && !mobile && !reducedMotion && !connection?.saveData);
+  }, [autoPlay]);
+
   useEffect(() => {
     const video = ref.current;
-    if (!video || !autoPlay) return;
+    if (!video || !allowAutoPlay) return;
     const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) {
+      if (e.isIntersecting && !isPaused) {
         if (!video.src) { video.src = src; video.load(); }
         video.play().catch(() => {});
       } else {
@@ -79,12 +132,32 @@ function LazyVideo({ src, autoPlay = false, loop = true, muted = true, soundTogg
     }, { rootMargin: "100px" });
     obs.observe(video);
     return () => obs.disconnect();
-  }, [src, autoPlay]);
+  }, [src, allowAutoPlay, isPaused]);
 
-  if (autoPlay) {
+  useEffect(() => {
+    if (!activated) return;
+    ref.current?.play().catch(() => undefined);
+  }, [activated]);
+
+  if (allowAutoPlay) {
     return (
       <>
-        <video ref={ref} muted loop playsInline className={className} style={style} />
+        <video ref={ref} muted loop playsInline poster={poster} preload="none" className={className} style={style} />
+        <button
+          type="button"
+          className="et-video-pause"
+          aria-label={isPaused ? "繼續播放影片" : "暫停影片"}
+          onClick={() => {
+            const video = ref.current;
+            if (!video) return;
+            if (isPaused) video.play().catch(() => undefined);
+            else video.pause();
+            setIsPaused((value) => !value);
+          }}
+        >
+          <span aria-hidden>{isPaused ? "▶" : "Ⅱ"}</span>
+          {isPaused ? "PLAY" : "PAUSE"}
+        </button>
         {soundToggle && (
           <div style={{
             position: "absolute", right: 10, bottom: 10, zIndex: 3,
@@ -134,7 +207,58 @@ function LazyVideo({ src, autoPlay = false, loop = true, muted = true, soundTogg
       </>
     );
   }
-  return <video src={src} muted={muted} loop={loop} playsInline controls preload="metadata" className={className} style={style} />;
+  return (
+    <>
+      <video
+        ref={ref}
+        src={activated ? src : undefined}
+        poster={poster}
+        muted={muted}
+        loop={loop}
+        playsInline
+        controls={activated}
+        preload={activated ? "metadata" : "none"}
+        className={className}
+        style={style}
+      />
+      {!activated ? (
+        <button
+          type="button"
+          className="et-video-activate"
+          aria-label="載入並播放影片"
+          onClick={() => setActivated(true)}
+        >
+          <span aria-hidden>▶</span>
+          PLAY FILM
+        </button>
+      ) : null}
+      <style>{`
+        .et-video-activate {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          z-index: 4;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          min-height: 48px;
+          padding: 0 18px;
+          transform: translate(-50%, -50%);
+          cursor: pointer;
+          color: rgba(255,255,255,.94);
+          border: 1px solid rgba(255,255,255,.3);
+          border-radius: 999px;
+          background: rgba(0,0,0,.66);
+          backdrop-filter: blur(12px);
+          font-family: var(--font-space-mono), monospace;
+          font-size: 9px;
+          letter-spacing: .24em;
+        }
+        .et-video-activate:focus-visible { outline: 2px solid rgba(255,225,140,.95); outline-offset: 3px; }
+      `}</style>
+    </>
+  );
 }
 
 /* ─────────────────────────────────────────────────────────────────
@@ -147,19 +271,19 @@ function EditorialAmbience() {
   return (
     <>
       {/* Graded base — warm corner + cool corner over near-black */}
-      <div aria-hidden="true" style={{
+      <div aria-hidden="true" className="et-ambience-base" style={{
         position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none",
         background: "radial-gradient(ellipse 90% 60% at 80% -12%, rgba(255,205,110,0.05), transparent 60%), radial-gradient(ellipse 85% 55% at 10% 110%, rgba(90,120,190,0.045), transparent 62%), #050506",
       }} />
       {/* Breathing glow — slow drift, barely there */}
-      <div aria-hidden="true" style={{
+      <div aria-hidden="true" className="et-ambience-motion" style={{
         position: "fixed", inset: "-20%", zIndex: -1, pointerEvents: "none",
         background: "radial-gradient(circle at 32% 38%, rgba(255,220,140,0.04), transparent 46%)",
         animation: "etGlowDrift 26s ease-in-out infinite alternate",
         willChange: "transform",
       }} />
       {/* Film grain — transform 版動畫，只動合成層不重繪 */}
-      <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
+      <div aria-hidden="true" className="et-ambience-grain" style={{ position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
         <div style={{
           position: "absolute", inset: "-30%",
           backgroundImage: GRAIN_URI, backgroundSize: "140px 140px",
@@ -173,6 +297,10 @@ function EditorialAmbience() {
           0%   { transform: translate(0%, 0%) scale(1); }
           100% { transform: translate(6%, 4%) scale(1.12); }
         }
+        @media (max-width: 680px), (prefers-reduced-motion: reduce) {
+          .et-ambience-motion { display: none; }
+          .et-ambience-grain > div { animation: none !important; will-change: auto !important; }
+        }
       `}</style>
     </>
   );
@@ -182,11 +310,17 @@ function EditorialAmbience() {
    Vertical clips side-by-side read as phone frames — fitting for an iPhone guide */
 function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const [allowMotion, setAllowMotion] = useState(false);
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    setAllowMotion(!reduced && !connection?.saveData);
+  }, []);
   // 捲出畫面就暫停三支影片 — 但絕不干擾初始 autoplay：
   // 只有「曾經確認在畫面內」之後的離場才暫停；IO 異常時完全退回原生 autoplay 行為
   useEffect(() => {
     const el = wrapRef.current;
-    if (!el) return;
+    if (!el || !allowMotion) return;
     const vids = () => Array.from(el.querySelectorAll("video"));
     let seen = false;
     const io = new IntersectionObserver(([e]) => {
@@ -199,10 +333,10 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
     }, { rootMargin: "60px" });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [allowMotion]);
   useEffect(() => {
     const el = wrapRef.current;
-    if (!el) return;
+    if (!el || !allowMotion) return;
     let raf = 0;
     const onScroll = () => {
       if (raf) return;
@@ -216,7 +350,7 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => { window.removeEventListener("scroll", onScroll); if (raf) cancelAnimationFrame(raf); };
-  }, []);
+  }, [allowMotion]);
   return (
     <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
       <div ref={wrapRef} style={{
@@ -225,15 +359,16 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
       }}>
         {videos.map((v, i) => (
           <div key={v.src} style={{ flex: 1, minWidth: 0, position: "relative", overflow: "hidden" }}>
-            <video
-              src={v.src}
-              autoPlay muted loop playsInline preload="metadata"
-              style={{
-                position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
-                // 暗度改由下方遮罩處理 — 播放中影片套 CSS filter 是持續的 GPU 成本
-                transform: i === 1 ? "scale(1.06)" : "none",
-              }}
-            />
+            {allowMotion ? (
+              <video
+                src={v.src}
+                autoPlay muted loop playsInline preload="metadata"
+                style={{
+                  position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover",
+                  transform: i === 1 ? "scale(1.06)" : "none",
+                }}
+              />
+            ) : null}
             {v.label && (
               <span style={{
                 position: "absolute", left: 14, top: 74, zIndex: 2,
@@ -263,14 +398,15 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
 
 /* Reading progress — thin gold line across the very top */
 function ScrollProgress() {
-  const [p, setP] = useState(0);
+  const barRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let raf = 0;
     const onScroll = () => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         const h = document.documentElement;
-        setP(h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight));
+        const progress = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+        if (barRef.current) barRef.current.style.transform = `scaleX(${progress})`;
         raf = 0;
       });
     };
@@ -280,9 +416,9 @@ function ScrollProgress() {
   }, []);
   return (
     <div aria-hidden="true" style={{ position: "fixed", top: 0, left: 0, right: 0, height: 2, zIndex: 50, pointerEvents: "none" }}>
-      <div style={{
+      <div ref={barRef} style={{
         width: "100%", height: "100%",
-        transform: `scaleX(${p})`, transformOrigin: "left",
+        transform: "scaleX(0)", transformOrigin: "left",
         background: "linear-gradient(to right, rgba(255,225,140,0.9), rgba(255,225,140,0.35))",
       }} />
     </div>
@@ -293,10 +429,13 @@ function ScrollProgress() {
 function Reveal({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
+  const [enhanced, setEnhanced] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (!("IntersectionObserver" in window)) { setInView(true); return; }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) { setInView(true); return; }
+    setEnhanced(true);
     const o = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setInView(true); o.disconnect(); }
     }, { threshold: 0.06, rootMargin: "0px 0px -8% 0px" });
@@ -304,11 +443,14 @@ function Reveal({ children }: { children: React.ReactNode }) {
     return () => o.disconnect();
   }, []);
   return (
-    <div ref={ref} className="et-reveal" data-in={inView}>
+    <div ref={ref} className="et-reveal" data-enhanced={enhanced} data-in={inView}>
       {children}
       <style>{`
-        .et-reveal { opacity: 0; transform: perspective(1100px) translateY(26px) rotateX(7deg) scale(0.985); transform-origin: 50% 100%; transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-        .et-reveal[data-in="true"] { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) scale(1); }
+        .et-reveal { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: no-preference) {
+          .et-reveal[data-enhanced="true"] { opacity: 0; transform: perspective(1100px) translateY(20px) rotateX(4deg) scale(0.99); transform-origin: 50% 100%; transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1); }
+          .et-reveal[data-enhanced="true"][data-in="true"] { opacity: 1; transform: perspective(1100px) translateY(0) rotateX(0deg) scale(1); }
+        }
       `}</style>
     </div>
   );
@@ -326,7 +468,7 @@ function HeadlineBlock({ id, text, sub, num }: Extract<Block, { type: "headline"
       <h2 className="eb-headline-text">{text}</h2>
       {sub && <p className="eb-headline-sub">{sub}</p>}
       <style>{`
-        .eb-headline { position: relative; padding-top: 64px; margin-bottom: 22px; }
+        .eb-headline { position: relative; scroll-margin-top: 76px; padding-top: 64px; margin-bottom: 22px; }
         .eb-headline-ghost { position: absolute; right: 0; top: 18px; font-family: var(--font-space-mono),monospace; font-size: clamp(56px,9vw,92px); font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.09); pointer-events: none; user-select: none; }
         .eb-headline-rule { width: 32px; height: 1px; background: rgba(255,225,140,0.4); margin-bottom: 14px; }
         .et-reveal .eb-headline-rule { transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.16,1,.3,1) .3s; }
@@ -649,14 +791,14 @@ function VideoBlock({ src, placeholder, frame, caption }: Extract<Block, { type:
 }
 
 /* Lazy click-to-play video */
-function VideoLazyBlock({ src, caption, aspectRatio = "16/9", maxWidth, autoPlay = false, sound = false }: Extract<Block, { type: "video-lazy" }>) {
+function VideoLazyBlock({ src, poster, caption, aspectRatio = "16/9", maxWidth, autoPlay = false, sound = false }: Extract<Block, { type: "video-lazy" }>) {
   const isVertical = maxWidth != null;
   return (
     <div className="eb-vlazy" style={{ margin: "24px 0" }}>
       <div style={{ display: isVertical ? "flex" : undefined, justifyContent: isVertical ? "center" : undefined }}>
         <div style={{ width: "100%", maxWidth: maxWidth ?? "100%" }}>
           <div className="eb-vlazy-wrap" style={{ aspectRatio }}>
-            <LazyVideo src={src} autoPlay={autoPlay} muted={autoPlay} loop soundToggle={autoPlay && sound} className="eb-vlazy-vid" />
+            <LazyVideo src={src} poster={poster} autoPlay={autoPlay} muted={autoPlay} loop soundToggle={autoPlay && sound} className="eb-vlazy-vid" />
           </div>
           {caption && !isVertical && <p className="eb-img-cap">{caption}</p>}
         </div>
@@ -761,8 +903,17 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
             role={s.anchor ? "link" : undefined}
             tabIndex={s.anchor ? 0 : undefined}
             aria-label={s.anchor ? `跳到章節：${s.zh}` : undefined}
-            onClick={() => { if (s.anchor) document.getElementById(s.anchor)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
-            onKeyDown={e => { if (s.anchor && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); document.getElementById(s.anchor)?.scrollIntoView({ behavior: "smooth", block: "start" }); } }}
+            onClick={() => {
+              if (!s.anchor) return;
+              const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              document.getElementById(s.anchor)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+            }}
+            onKeyDown={e => {
+              if (!s.anchor || (e.key !== "Enter" && e.key !== " ")) return;
+              e.preventDefault();
+              const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+              document.getElementById(s.anchor)?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
+            }}
           >
             <div className="eb-flow-thumb">
               {s.thumbType === "video" ? (
@@ -874,8 +1025,8 @@ function OscarNotesBlock({ content }: Extract<Block, { type: "oscar-notes" }>) {
   return (
     <div className="eb-oscar">
       <div className="eb-oscar-head">
-        <span className="eb-oscar-sig" style={{ fontFamily: "Snell Roundhand, Brush Script MT, cursive", fontStyle: "italic" }}>
-          Oscar&apos;s Notes
+        <span className="eb-oscar-sig">
+          OSCAR LAI / DIRECTOR&apos;S NOTES
         </span>
         <span className="eb-oscar-rule" aria-hidden />
       </div>
@@ -883,7 +1034,7 @@ function OscarNotesBlock({ content }: Extract<Block, { type: "oscar-notes" }>) {
       <style>{`
         .eb-oscar { margin-top: 52px; padding: 24px 24px 28px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; }
         .eb-oscar-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-        .eb-oscar-sig { font-size: 22px; color: rgba(255,225,140,0.85); line-height: 1; flex-shrink: 0; }
+        .eb-oscar-sig { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: .22em; color: rgba(255,225,140,0.85); line-height: 1.4; flex-shrink: 0; }
         .eb-oscar-rule { flex: 1; height: 1px; background: rgba(255,255,255,0.07); }
         .eb-oscar-body { font-family: var(--font-readex),sans-serif; font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.65); font-weight: 300; }
         .eb-oscar-body p { margin: 0 0 0.9em; }
@@ -929,7 +1080,7 @@ function PromptCopyBlock({ text, label }: Extract<Block, { type: "prompt-copy" }
         .eb-pc { margin: 20px 0; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; }
         .eb-pc-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.03); }
         .eb-pc-label { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.36em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
-        .eb-pc-btn { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; background: none; border: 1px solid rgba(255,225,140,0.28); border-radius: 3px; color: rgba(255,225,140,0.85); padding: 5px 12px; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
+        .eb-pc-btn { display: inline-flex; align-items: center; min-height: 48px; font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; background: none; border: 1px solid rgba(255,225,140,0.28); border-radius: 3px; color: rgba(255,225,140,0.85); padding: 5px 12px; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
         .eb-pc-btn:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.6); background: rgba(255,225,140,0.06); }
         .eb-pc-text { margin: 0; padding: 18px 16px; font-family: var(--font-space-mono),monospace; font-size: 12px; line-height: 1.85; color: rgba(255,255,255,0.72); white-space: pre-wrap; word-break: break-word; overflow-x: auto; max-height: 520px; overflow-y: auto; }
       `}</style>
@@ -1580,6 +1731,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
             <span>Field Notes</span>
           </Link>
           <div className="et-breadcrumb" aria-hidden>{note.categoryLabel}</div>
+          <span className="et-mobile-issue">ISSUE #{note.issue ?? "—"}</span>
           <a href="https://www.instagram.com/minehoooo.arw/" target="_blank" rel="noopener noreferrer" className="et-ig">
             @minehoooo.arw
           </a>
@@ -1597,6 +1749,9 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
               <span className="et-issue-no">ISSUE #{note.issue}</span>
             </p>
           )}
+          {note.slug === "ai-crime-film" ? (
+            <p className="et-premise">4 ACTIONS SHOT AT HOME / 1 CRIME FILM</p>
+          ) : null}
           <div className="et-meta">
             <span className="et-cat">{note.categoryLabel}</span>
             <span className="et-dot" aria-hidden>·</span>
@@ -1609,13 +1764,15 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
           <h1 className="et-title">{note.title}</h1>
           {note.subtitle && <p className="et-subtitle">{note.subtitle}</p>}
           <div className="et-author">
-            <span className="et-by">By</span>
-            <span className="et-sig" style={{ fontFamily: "Snell Roundhand, Brush Script MT, cursive", fontStyle: "italic" }}>Oscar Lai</span>
-            <span className="et-role">影像工作者</span>
+            <span className="et-by">BY</span>
+            <span className="et-sig">OSCAR LAI</span>
+            <span className="et-role">DIRECTOR · DP</span>
             <span className="et-loc">Taichung · TW</span>
           </div>
         </div>
       </div>
+
+      <MobileChapterMenu blocks={blocks} />
 
       {/* Body grid */}
       <div className="et-body">
@@ -1636,12 +1793,15 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       </div>
 
       <style>{`
-        .et-nav { position: sticky; top: 0; z-index: 40; background: rgba(10,10,12,0.84); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .et-nav-inner { max-width: 1160px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; gap: 14px; }
-        .et-back { display: flex; align-items: center; gap: 7px; text-decoration: none; color: rgba(255,255,255,0.6); font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; transition: color .15s; flex-shrink: 0; }
+        .et-nav { position: sticky; top: 0; z-index: 40; background: rgba(10,10,12,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .et-video-pause { position: absolute; left: 10px; bottom: 10px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 12px; cursor: pointer; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(0,0,0,.62); backdrop-filter: blur(10px); font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .2em; }
+        .et-video-pause:focus-visible { outline: 2px solid rgba(255,225,140,.95); outline-offset: 3px; }
+        .et-nav-inner { max-width: 1160px; min-height: calc(58px + env(safe-area-inset-top)); margin: 0 auto; padding: env(safe-area-inset-top) max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); display: flex; align-items: center; gap: 14px; }
+        .et-back { display: flex; align-items: center; min-height: 44px; gap: 7px; text-decoration: none; color: rgba(255,255,255,0.6); font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; transition: color .15s; flex-shrink: 0; }
         .et-back:hover { color: rgba(255,255,255,.95); }
         .et-breadcrumb { flex: 1; font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-        .et-ig { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,225,140,0.75); text-decoration: none; border: 1px solid rgba(255,225,140,0.22); border-radius: 3px; padding: 5px 10px; transition: color .15s, border-color .15s; flex-shrink: 0; }
+        .et-mobile-issue { display: none; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .18em; color: rgba(255,255,255,.36); }
+        .et-ig { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,225,140,0.75); text-decoration: none; border: 1px solid rgba(255,225,140,0.22); border-radius: 3px; padding: 0 12px; transition: color .15s, border-color .15s; flex-shrink: 0; }
         .et-ig:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.5); }
 
         .et-hero { border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -1653,6 +1813,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-issue-label { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
         .et-issue-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.18), transparent); }
         .et-issue-no { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.3em; color: rgba(255,225,140,0.85); }
+        .et-premise { display: inline-flex; min-height: 30px; align-items: center; margin: -10px 0 22px; padding: 0 10px; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .22em; color: rgba(255,225,140,.9); border-left: 2px solid rgba(255,225,140,.7); background: rgba(255,225,140,.05); }
         .et-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
         .et-cat { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(255,225,140,0.88); border-bottom: 1px solid rgba(255,225,140,0.38); padding-bottom: 1px; }
         .et-dot { color: rgba(255,255,255,.22); font-size: 12px; }
@@ -1661,7 +1822,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-subtitle { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.48); margin: 0 0 28px; line-height: 1.5; }
         .et-author { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
         .et-by { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.2em; color: rgba(255,255,255,0.28); }
-        .et-sig { font-size: 18px; color: rgba(255,225,140,.85); line-height: 1; }
+        .et-sig { font-family: var(--font-space-mono),monospace; font-size: 10px; font-weight: 700; letter-spacing: .2em; color: rgba(255,225,140,.85); line-height: 1; }
         .et-role { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
         .et-loc { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
 
@@ -1669,11 +1830,25 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-article { min-width: 0; padding-top: 8px; }
         .et-toc-col { padding-top: 64px; }
         .et-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 64px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
-        .et-footer a { color: rgba(255,225,140,0.6); text-decoration: none; transition: color .15s; }
+        .et-footer a { display: inline-flex; align-items: center; min-height: 44px; color: rgba(255,225,140,0.6); text-decoration: none; transition: color .15s; }
         .et-footer a:hover { color: rgba(255,225,140,1); }
 
         @media (max-width: 1023px) { .et-body { grid-template-columns: minmax(0,700px); max-width: 760px; } .et-toc-col { display: none; } }
-        @media (max-width: 680px) { .et-body { padding: 0 16px 72px; } .et-hero-inner { padding: 36px 16px 28px; } .et-nav-inner { padding: 12px 16px; } }
+        @media (max-width: 680px) {
+          .et-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+          .et-nav-inner { min-height: calc(54px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); }
+          .et-breadcrumb { display: none; }
+          .et-mobile-issue { display: inline; margin-left: auto; }
+          .et-ig { margin-left: auto; border-color: transparent; padding-right: 0; }
+          .et-body { padding: 0 max(16px, env(safe-area-inset-right)) calc(72px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+          .et-hero-inner { padding: 38px max(16px, env(safe-area-inset-right)) 30px max(16px, env(safe-area-inset-left)); }
+          .et-hero-video .et-hero-inner { padding: 112px max(16px, env(safe-area-inset-right)) 50px max(16px, env(safe-area-inset-left)); }
+          .et-title { font-size: clamp(32px, 9vw, 44px); line-height: 1.16; }
+          .et-subtitle { font-size: 14px; line-height: 1.65; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .et-nav *, .et-footer * { transition: none !important; }
+        }
       `}</style>
     </>
   );
