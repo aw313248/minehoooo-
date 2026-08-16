@@ -6,7 +6,6 @@ import Link from "next/link";
 import type { FieldNote } from "@/data/fieldNotes";
 import { getRelatedNotes } from "@/data/fieldNotes";
 import type { Block, NextStopCity } from "./types";
-import NoteViews from "@/components/field-notes/NoteViews";
 import BubbleComments from "@/components/field-notes/BubbleComments";
 import HiggsfieldRef from "@/components/HiggsfieldRef";
 
@@ -53,8 +52,8 @@ function EditorialTOC({ blocks }: { blocks: Block[] }) {
       ))}
       <style>{`
         .et-toc { position: sticky; top: 120px; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.07); }
-        .et-toc-title { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin: 0 0 14px; text-align: right; }
-        .et-toc-item { display: block; width: 100%; min-height: 44px; background: none; border: none; cursor: pointer; text-align: right; padding: 8px 0; font-family: var(--font-readex),sans-serif; font-size: 11.5px; color: rgba(255,255,255,0.38); line-height: 1.35; transition: color 0.15s; }
+        .et-toc-title { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.32); margin: 0 0 14px; text-align: right; }
+        .et-toc-item { display: block; width: 100%; min-height: 44px; background: none; border: none; cursor: pointer; text-align: right; padding: 8px 0; font-family: var(--font-readex),sans-serif; font-size: 14px; color: rgba(255,255,255,.52); line-height: 1.4; transition: color 0.15s; }
         .et-toc-item[data-active="true"] { color: rgba(255,255,255,0.92); }
         .et-toc-item:hover { color: rgba(255,255,255,0.78); }
       `}</style>
@@ -84,12 +83,12 @@ function MobileChapterMenu({ blocks }: { blocks: Block[] }) {
         .et-mobile-toc { display: none; }
         @media (max-width: 1023px) {
           .et-mobile-toc { display: block; max-width: 760px; margin: 0 auto; padding: 18px max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); }
-          .et-mobile-toc summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 14px; cursor: pointer; list-style: none; color: rgba(255,255,255,.74); border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.025); font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: .25em; }
+          .et-mobile-toc summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 16px; cursor: pointer; list-style: none; color: rgba(255,255,255,.74); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; background: rgba(14,14,16,.74); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .1em; }
           .et-mobile-toc summary::-webkit-details-marker { display: none; }
           .et-mobile-toc summary b { color: rgba(255,225,140,.82); font-weight: 400; }
           .et-mobile-toc nav { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 8px 0 4px; border-bottom: 1px solid rgba(255,255,255,.08); }
-          .et-mobile-toc a { display: flex; align-items: center; min-height: 48px; padding: 8px 12px; color: rgba(255,255,255,.7); text-decoration: none; font-family: var(--font-readex),sans-serif; font-size: 12px; line-height: 1.4; }
-          .et-mobile-toc a span { flex: 0 0 28px; font-family: var(--font-space-mono),monospace; font-size: 8px; color: rgba(255,225,140,.7); }
+          .et-mobile-toc a { display: flex; align-items: center; min-height: 52px; padding: 9px 12px; color: rgba(255,255,255,.72); text-decoration: none; font-family: var(--font-readex),sans-serif; font-size: 15px; line-height: 1.45; }
+          .et-mobile-toc a span { flex: 0 0 32px; font-family: var(--font-space-mono),monospace; font-size: 11px; color: rgba(255,225,140,.72); }
           .et-mobile-toc a:focus-visible, .et-mobile-toc summary:focus-visible { outline: 2px solid rgba(255,225,140,.9); outline-offset: 2px; }
         }
         @media (max-width: 420px) {
@@ -261,48 +260,13 @@ function LazyVideo({ src, poster, autoPlay = false, loop = true, muted = true, s
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   Ambience — graded base + breathing glow + film grain.
-   Gives the pure-black page a "floor" without competing with content
-   ───────────────────────────────────────────────────────────────── */
-const GRAIN_URI = "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E\")";
-
 function EditorialAmbience() {
   return (
-    <>
-      {/* Graded base — warm corner + cool corner over near-black */}
-      <div aria-hidden="true" className="et-ambience-base" style={{
-        position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none",
-        background: "radial-gradient(ellipse 90% 60% at 80% -12%, rgba(255,205,110,0.05), transparent 60%), radial-gradient(ellipse 85% 55% at 10% 110%, rgba(90,120,190,0.045), transparent 62%), #050506",
-      }} />
-      {/* Breathing glow — slow drift, barely there */}
-      <div aria-hidden="true" className="et-ambience-motion" style={{
-        position: "fixed", inset: "-20%", zIndex: -1, pointerEvents: "none",
-        background: "radial-gradient(circle at 32% 38%, rgba(255,220,140,0.04), transparent 46%)",
-        animation: "etGlowDrift 26s ease-in-out infinite alternate",
-        willChange: "transform",
-      }} />
-      {/* Film grain — transform 版動畫，只動合成層不重繪 */}
-      <div aria-hidden="true" className="et-ambience-grain" style={{ position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
-        <div style={{
-          position: "absolute", inset: "-30%",
-          backgroundImage: GRAIN_URI, backgroundSize: "140px 140px",
-          opacity: 0.045, mixBlendMode: "overlay",
-          animation: "grainShiftT 1.2s steps(10) infinite",
-          willChange: "transform",
-        }} />
-      </div>
-      <style>{`
-        @keyframes etGlowDrift {
-          0%   { transform: translate(0%, 0%) scale(1); }
-          100% { transform: translate(6%, 4%) scale(1.12); }
-        }
-        @media (max-width: 680px), (prefers-reduced-motion: reduce) {
-          .et-ambience-motion { display: none; }
-          .et-ambience-grain > div { animation: none !important; will-change: auto !important; }
-        }
-      `}</style>
-    </>
+    <div
+      aria-hidden="true"
+      className="et-ambience-base"
+      style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: "#000" }}
+    />
   );
 }
 
@@ -485,7 +449,7 @@ function TextBlock({ content }: Extract<Block, { type: "text" }>) {
     <div className="eb-text">
       {content}
       <style>{`
-        .eb-text { font-family: var(--font-readex),sans-serif; font-size: 16px; line-height: 1.85; color: rgba(255,255,255,0.72); font-weight: 300; margin-bottom: 4px; }
+        .eb-text { font-family: var(--font-readex),sans-serif; font-size: 18px; line-height: 1.78; color: rgba(255,255,255,.72); font-weight: 300; margin-bottom: 4px; }
         .eb-text p { margin: 0 0 1em; }
         .eb-text p:last-child { margin-bottom: 0; }
         .eb-text strong { color: rgba(255,255,255,0.96); font-weight: 500; }
@@ -500,7 +464,7 @@ function CalloutBlock({ content }: Extract<Block, { type: "callout" }>) {
     <div className="eb-callout">
       <div key="callout-content">{content}</div>
       <style key="callout-style">{`
-        .eb-callout { background: rgba(255,225,140,0.06); border: 1px solid rgba(255,225,140,0.18); border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-family: var(--font-readex),sans-serif; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,0.82); font-weight: 300; }
+        .eb-callout { background: rgba(255,225,140,.055); border: 1px solid rgba(255,225,140,.18); border-radius: 14px; padding: 18px 20px; margin: 22px 0; font-family: var(--font-readex),sans-serif; font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.82); font-weight: 300; }
         .eb-callout strong { color: rgba(255,225,140,0.95); font-weight: 500; }
       `}</style>
     </div>
@@ -930,7 +894,6 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
           </div>
         ))}
       </div>
-      <p className="eb-flow-hint">↑ 這就是整篇的流程 — 點卡片直接跳到那一章</p>
       <style>{`
         .eb-flow { margin: 28px 0; perspective: 1200px; }
         .eb-flow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -944,7 +907,6 @@ function FlowStepsBlock({ steps }: Extract<Block, { type: "flow-steps" }>) {
         .eb-flow-zh { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.42); margin: 2px 0 0; }
         .eb-flow-jump { position: absolute; right: 8px; bottom: 8px; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: rgba(255,225,140,0.9); background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,225,140,0.3); border-radius: 50%; opacity: 0; transition: opacity .25s; }
         .eb-flow-card:hover .eb-flow-jump { opacity: 1; }
-        .eb-flow-hint { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-align: center; margin: 14px 0 0; }
         @media (max-width: 600px) { .eb-flow-grid { grid-template-columns: repeat(2, 1fr); } }
       `}</style>
     </div>
@@ -1105,10 +1067,10 @@ function FAQBlock({ items }: Extract<Block, { type: "faq" }>) {
       <style>{`
         .eb-faq-row { border-bottom: 1px solid rgba(255,255,255,0.06); }
         .eb-faq-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
-        .eb-faq-q { width: 100%; background: none; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 16px 0; font-family: var(--font-readex),sans-serif; font-size: 14.5px; color: rgba(255,255,255,0.85); text-align: left; }
+        .eb-faq-q { width: 100%; background: none; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 18px 0; font-family: var(--font-readex),sans-serif; font-size: 16px; color: rgba(255,255,255,.85); text-align: left; }
         .eb-faq-icon { color: rgba(255,255,255,0.32); font-size: 18px; flex-shrink: 0; }
         .eb-faq-a { padding: 0 0 18px; }
-        .eb-faq-a p { font-family: var(--font-readex),sans-serif; font-size: 14px; line-height: 1.75; color: rgba(255,255,255,0.55); font-weight: 300; margin: 0; }
+        .eb-faq-a p { font-family: var(--font-readex),sans-serif; font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.72); font-weight: 300; margin: 0; }
       `}</style>
     </div>
   );
@@ -1140,8 +1102,8 @@ function RelatedBlock({ slugs }: Extract<Block, { type: "related" }>) {
         .eb-related-card:hover { border-color: rgba(255,255,255,0.15); }
         .eb-related-img { position: relative; width: 100%; aspect-ratio: 16/9; background: #111; }
         .eb-related-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 5px; }
-        .eb-related-cat { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,225,140,0.75); }
-        .eb-related-title { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.88); line-height: 1.4; margin: 0; }
+        .eb-related-cat { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,225,140,.75); }
+        .eb-related-title { font-family: var(--font-readex),sans-serif; font-size: 16px; font-weight: 400; color: rgba(255,255,255,.88); line-height: 1.45; margin: 0; }
       `}</style>
     </div>
   );
@@ -1583,20 +1545,20 @@ function ShotBreakdownBlock({ shot }: Extract<Block, { type: "shot-breakdown" }>
         .eb-sb-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
         .eb-sb-id { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: 0.3em; color: rgba(255,225,140,0.95); }
         .eb-sb-title { font-family: var(--font-readex),sans-serif; font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.96); margin: 0; }
-        .eb-sb-method { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.24em; color: rgba(140,190,255,0.85); border: 1px solid rgba(140,190,255,0.3); border-radius: 3px; padding: 3px 7px; }
-        .eb-sb-func { font-family: var(--font-readex),sans-serif; font-size: 13.5px; font-weight: 300; color: rgba(255,255,255,0.6); margin: 8px 0 0; line-height: 1.7; }
+        .eb-sb-method { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .08em; color: rgba(140,190,255,.85); border: 1px solid rgba(140,190,255,.3); border-radius: 8px; padding: 5px 8px; }
+        .eb-sb-func { font-family: var(--font-readex),sans-serif; font-size: 16px; font-weight: 300; color: rgba(255,255,255,.72); margin: 10px 0 0; line-height: 1.7; }
         .eb-sb-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .eb-sb-chip { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.18em; color: rgba(255,255,255,0.65); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 4px 10px; }
+        .eb-sb-chip { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.72); background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 999px; padding: 6px 10px; }
         .eb-sb-chip-cam { color: rgba(255,225,140,0.8); border-color: rgba(255,225,140,0.25); }
-        .eb-sb-prompt { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.62); background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px 14px; margin: 4px 0 0; line-height: 1.75; }
-        .eb-sb-plabel { display: inline-block; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: 0.28em; color: rgba(255,225,140,0.8); margin-right: 10px; }
+        .eb-sb-prompt { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.72); background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 14px 16px; margin: 6px 0 0; line-height: 1.75; }
+        .eb-sb-plabel { display: inline-block; font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .08em; color: rgba(255,225,140,.8); margin-right: 10px; }
         .eb-sb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
-        .eb-sb-col-t { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.28em; margin: 0 0 6px; }
+        .eb-sb-col-t { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .08em; margin: 0 0 8px; }
         .eb-sb-col-t[data-c="ok"] { color: rgba(140,220,160,0.9); }
         .eb-sb-col-t[data-c="bad"] { color: rgba(255,150,130,0.9); }
         .eb-sb-col-t[data-c="fix"] { color: rgba(255,225,140,0.9); }
-        .eb-sb-col-i { font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.6); margin: 0 0 4px; line-height: 1.65; }
-        .eb-sb-inputs { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); margin: 14px 0 0; }
+        .eb-sb-col-i { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.72); margin: 0 0 6px; line-height: 1.7; }
+        .eb-sb-inputs { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.52); margin: 16px 0 0; line-height: 1.6; }
       `}</style>
     </article>
   );
@@ -1626,14 +1588,20 @@ function WorkflowComparisonBlock({ data }: Extract<Block, { type: "workflow-comp
         .eb-wc-head-b { border-left: 1px solid rgba(255,255,255,0.07); }
         .eb-wc-name { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,225,140,0.95); margin: 0; }
         .eb-wc-head-b .eb-wc-name { color: rgba(140,190,255,0.95); }
-        .eb-wc-sub { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.24em; color: rgba(255,255,255,0.4); margin: 4px 0 0; }
-        .eb-wc-tone { font-family: var(--font-readex),sans-serif; font-size: 11.5px; font-weight: 300; color: rgba(255,255,255,0.55); margin: 8px 0 0; line-height: 1.5; }
+        .eb-wc-sub { font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .06em; color: rgba(255,255,255,.52); margin: 5px 0 0; }
+        .eb-wc-tone { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 300; color: rgba(255,255,255,.72); margin: 8px 0 0; line-height: 1.55; }
         .eb-wc-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .eb-wc-row:last-child { border-bottom: none; }
-        .eb-wc-label { padding: 12px 12px; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.14em; color: rgba(255,255,255,0.4); display: flex; align-items: center; }
-        .eb-wc-cell { padding: 12px 14px; font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; color: rgba(255,255,255,0.72); line-height: 1.6; }
+        .eb-wc-label { padding: 14px 12px; font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.52); display: flex; align-items: center; }
+        .eb-wc-cell { padding: 14px; font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.72); line-height: 1.65; }
         .eb-wc-cell-b { border-left: 1px solid rgba(255,255,255,0.05); }
-        @media (max-width: 560px) { .eb-wc-heads, .eb-wc-row { grid-template-columns: 72px 1fr 1fr; } .eb-wc-cell { font-size: 11px; padding: 10px 8px; } }
+        @media (max-width: 560px) {
+          .eb-wc-heads { grid-template-columns: 1fr 1fr; }
+          .eb-wc-heads > span { display: none; }
+          .eb-wc-row { grid-template-columns: 1fr 1fr; }
+          .eb-wc-label { grid-column: 1 / -1; padding: 12px 14px 7px; color: rgba(255,225,140,.8); }
+          .eb-wc-cell { min-width: 0; padding: 10px 14px 16px; font-size: 15px; }
+        }
       `}</style>
     </div>
   );
@@ -1731,7 +1699,6 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
             <span>Field Notes</span>
           </Link>
           <div className="et-breadcrumb" aria-hidden>{note.categoryLabel}</div>
-          <span className="et-mobile-issue">ISSUE #{note.issue ?? "—"}</span>
           <a href="https://www.instagram.com/minehoooo.arw/" target="_blank" rel="noopener noreferrer" className="et-ig">
             @minehoooo.arw
           </a>
@@ -1742,33 +1709,14 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       <div className={note.heroVideos?.length ? "et-hero et-hero-video" : "et-hero"} style={{ position: "relative" }}>
         {note.heroVideos && note.heroVideos.length > 0 && <HeroVideoWall videos={note.heroVideos} />}
         <div className="et-hero-inner" style={{ position: "relative" }}>
-          {note.issue && (
-            <p className="et-issue" aria-hidden>
-              <span className="et-issue-label">Field Notes</span>
-              <span className="et-issue-rule" />
-              <span className="et-issue-no">ISSUE #{note.issue}</span>
-            </p>
-          )}
-          {note.slug === "ai-crime-film" ? (
-            <p className="et-premise">4 ACTIONS SHOT AT HOME / 1 CRIME FILM</p>
-          ) : null}
-          <div className="et-meta">
-            <span className="et-cat">{note.categoryLabel}</span>
-            <span className="et-dot" aria-hidden>·</span>
-            <span className="et-date">{note.date.slice(0, 7)}</span>
-            <span className="et-dot" aria-hidden>·</span>
-            <span className="et-time">{note.readingTime} min</span>
-            <span className="et-dot" aria-hidden>·</span>
-            <NoteViews slug={note.slug} increment />
-          </div>
+          <p className="et-kicker">
+            {note.slug === "ai-crime-film"
+              ? "4 個在家拍的動作，1 支犯罪電影"
+              : `${note.categoryLabel}${note.issue ? ` · ISSUE #${note.issue}` : ""}`}
+          </p>
           <h1 className="et-title">{note.title}</h1>
           {note.subtitle && <p className="et-subtitle">{note.subtitle}</p>}
-          <div className="et-author">
-            <span className="et-by">BY</span>
-            <span className="et-sig">OSCAR LAI</span>
-            <span className="et-role">DIRECTOR · DP</span>
-            <span className="et-loc">Taichung · TW</span>
-          </div>
+          <p className="et-byline">OSCAR LAI <span aria-hidden>·</span> {note.readingTime} 分鐘閱讀</p>
         </div>
       </div>
 
@@ -1793,15 +1741,14 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       </div>
 
       <style>{`
-        .et-nav { position: sticky; top: 0; z-index: 40; background: rgba(10,10,12,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .et-nav { position: sticky; top: 0; z-index: 40; background: rgba(0,0,0,.72); backdrop-filter: blur(24px) saturate(120%); -webkit-backdrop-filter: blur(24px) saturate(120%); border-bottom: 1px solid rgba(255,255,255,.08); }
         .et-video-pause { position: absolute; left: 10px; bottom: 10px; z-index: 5; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 12px; cursor: pointer; color: rgba(255,255,255,.9); border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(0,0,0,.62); backdrop-filter: blur(10px); font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .2em; }
         .et-video-pause:focus-visible { outline: 2px solid rgba(255,225,140,.95); outline-offset: 3px; }
         .et-nav-inner { max-width: 1160px; min-height: calc(58px + env(safe-area-inset-top)); margin: 0 auto; padding: env(safe-area-inset-top) max(24px, env(safe-area-inset-right)) 0 max(24px, env(safe-area-inset-left)); display: flex; align-items: center; gap: 14px; }
-        .et-back { display: flex; align-items: center; min-height: 44px; gap: 7px; text-decoration: none; color: rgba(255,255,255,0.6); font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; transition: color .15s; flex-shrink: 0; }
+        .et-back { display: flex; align-items: center; min-height: 44px; gap: 7px; text-decoration: none; color: rgba(255,255,255,.72); font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; transition: color .15s; flex-shrink: 0; }
         .et-back:hover { color: rgba(255,255,255,.95); }
-        .et-breadcrumb { flex: 1; font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-        .et-mobile-issue { display: none; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .18em; color: rgba(255,255,255,.36); }
-        .et-ig { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,225,140,0.75); text-decoration: none; border: 1px solid rgba(255,225,140,0.22); border-radius: 3px; padding: 0 12px; transition: color .15s, border-color .15s; flex-shrink: 0; }
+        .et-breadcrumb { flex: 1; font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.32); }
+        .et-ig { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,225,140,.75); text-decoration: none; border: 1px solid rgba(255,225,140,.22); border-radius: 12px; padding: 0 14px; transition: color .15s, border-color .15s; flex-shrink: 0; }
         .et-ig:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.5); }
 
         .et-hero { border-bottom: 1px solid rgba(255,255,255,0.05); }
@@ -1809,27 +1756,32 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-hero-video { overflow: hidden; }
         .et-hero-video .et-hero-inner { padding: clamp(120px, 22vh, 220px) 24px 64px; }
         .et-hero-video .et-title { font-size: clamp(34px, 7vw, 62px); text-shadow: 0 2px 30px rgba(0,0,0,0.6); }
-        .et-issue { display: flex; align-items: center; gap: 14px; margin: 0 0 26px; }
-        .et-issue-label { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.5em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
-        .et-issue-rule { flex: 1; height: 1px; background: linear-gradient(to right, rgba(255,255,255,0.18), transparent); }
-        .et-issue-no { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.3em; color: rgba(255,225,140,0.85); }
-        .et-premise { display: inline-flex; min-height: 30px; align-items: center; margin: -10px 0 22px; padding: 0 10px; font-family: var(--font-space-mono),monospace; font-size: 8px; letter-spacing: .22em; color: rgba(255,225,140,.9); border-left: 2px solid rgba(255,225,140,.7); background: rgba(255,225,140,.05); }
-        .et-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
-        .et-cat { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: rgba(255,225,140,0.88); border-bottom: 1px solid rgba(255,225,140,0.38); padding-bottom: 1px; }
-        .et-dot { color: rgba(255,255,255,.22); font-size: 12px; }
-        .et-date, .et-time { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; color: rgba(255,255,255,0.35); }
+        .et-kicker { margin: 0 0 24px; font-family: var(--font-readex),sans-serif; font-size: 16px; line-height: 1.5; color: rgba(255,225,140,.9); }
         .et-title { font-family: var(--font-readex),sans-serif; font-size: clamp(30px,6.2vw,54px); font-weight: 600; letter-spacing: -0.025em; color: rgba(255,255,255,.97); margin: 0 0 12px; line-height: 1.14; text-wrap: balance; }
-        .et-subtitle { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; color: rgba(255,255,255,.48); margin: 0 0 28px; line-height: 1.5; }
-        .et-author { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-        .et-by { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.2em; color: rgba(255,255,255,0.28); }
-        .et-sig { font-family: var(--font-space-mono),monospace; font-size: 10px; font-weight: 700; letter-spacing: .2em; color: rgba(255,225,140,.85); line-height: 1; }
-        .et-role { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
-        .et-loc { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+        .et-subtitle { font-family: var(--font-readex),sans-serif; font-size: 18px; font-weight: 300; color: rgba(255,255,255,.72); margin: 0 0 28px; line-height: 1.65; }
+        .et-byline { margin: 0; font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .08em; color: rgba(255,255,255,.52); }
+        .et-byline span { margin: 0 6px; color: rgba(255,225,140,.72); }
+
+        .eb-img-cap, .eb-pair-cap, .eb-uicrop-cap, .eb-uicp-cap, .eb-phone-cap {
+          font-size: 12px; line-height: 1.6; letter-spacing: .06em; color: rgba(255,255,255,.52);
+        }
+        .eb-flow-en { font-size: 11px; letter-spacing: .08em; }
+        .eb-flow-zh { font-size: 15px; color: rgba(255,255,255,.72); }
+        .eb-oscar-sig { font-size: 12px; letter-spacing: .08em; }
+        .eb-oscar-body { font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.72); }
+        .eb-pc-label, .eb-pc-btn { font-size: 11px; letter-spacing: .08em; }
+        .eb-pc-btn { border-radius: 12px; }
+        .eb-pc-text { font-size: 14px; line-height: 1.75; }
+        .eb-ss-title { font-size: 12px; letter-spacing: .08em; color: rgba(255,255,255,.52); }
+        .eb-ss-badge { font-size: 11px; letter-spacing: .08em; border-radius: 10px; padding: 6px 10px; }
+        .eb-ss-note { font-size: 15px; color: rgba(255,255,255,.72); }
+        .eb-ss-thumb-lbl { font-size: 13px; color: rgba(255,255,255,.72); }
+        .et-video-pause { font-size: 11px; letter-spacing: .08em; }
 
         .et-body { max-width: 980px; margin: 0 auto; padding: 0 24px 96px; display: grid; grid-template-columns: minmax(0,700px) minmax(160px,200px); gap: 0 48px; align-items: start; }
         .et-article { min-width: 0; padding-top: 8px; }
         .et-toc-col { padding-top: 64px; }
-        .et-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 64px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.07); font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
+        .et-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 64px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.07); font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.52); }
         .et-footer a { display: inline-flex; align-items: center; min-height: 44px; color: rgba(255,225,140,0.6); text-decoration: none; transition: color .15s; }
         .et-footer a:hover { color: rgba(255,225,140,1); }
 
@@ -1838,13 +1790,13 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
           .et-nav { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
           .et-nav-inner { min-height: calc(54px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); }
           .et-breadcrumb { display: none; }
-          .et-mobile-issue { display: inline; margin-left: auto; }
           .et-ig { margin-left: auto; border-color: transparent; padding-right: 0; }
           .et-body { padding: 0 max(16px, env(safe-area-inset-right)) calc(72px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
           .et-hero-inner { padding: 38px max(16px, env(safe-area-inset-right)) 30px max(16px, env(safe-area-inset-left)); }
           .et-hero-video .et-hero-inner { padding: 112px max(16px, env(safe-area-inset-right)) 50px max(16px, env(safe-area-inset-left)); }
           .et-title { font-size: clamp(32px, 9vw, 44px); line-height: 1.16; }
-          .et-subtitle { font-size: 14px; line-height: 1.65; }
+          .et-kicker { margin-bottom: 20px; font-size: 15px; }
+          .et-subtitle { font-size: 17px; line-height: 1.7; }
         }
         @media (prefers-reduced-motion: reduce) {
           .et-nav *, .et-footer * { transition: none !important; }

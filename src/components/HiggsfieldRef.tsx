@@ -35,18 +35,18 @@ export default function HiggsfieldRef({ variant = "banner" }: { variant?: "banne
         </div>
         <style>{`
           .hfp { margin: 30px 0; }
-          .hfp-card { background: #0d0d10; border: 1px solid rgba(200,255,60,0.22); border-radius: 14px; padding: 20px 22px; }
-          .hfp-tag { display: inline-block; font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(200,255,60,0.9); border: 1px solid rgba(200,255,60,0.35); border-radius: 3px; padding: 3px 8px; margin-bottom: 14px; }
+          .hfp-card { background: rgba(14,14,16,.74); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(200,255,60,.22); border-radius: 18px; padding: 22px 24px; }
+          .hfp-tag { display: inline-block; font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(200,255,60,.9); border: 1px solid rgba(200,255,60,.35); border-radius: 999px; padding: 5px 10px; margin-bottom: 14px; }
           .hfp-row { display: flex; gap: 14px; align-items: flex-start; }
           .hfp-icon { width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0; }
-          .hfp-text { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,0.78); margin: 0; }
+          .hfp-text { font-family: var(--font-readex),sans-serif; font-size: 16px; font-weight: 300; line-height: 1.75; color: rgba(255,255,255,.78); margin: 0; }
           .hfp-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
-          .hfp-btn { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; border-radius: 6px; padding: 10px 16px; transition: opacity .15s, border-color .15s; }
+          .hfp-btn { display: inline-flex; align-items: center; min-height: 46px; font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; border-radius: 12px; padding: 10px 16px; transition: opacity .15s, border-color .15s; }
           .hfp-btn-ghost { color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.2); }
           .hfp-btn-ghost:hover { border-color: rgba(255,255,255,0.45); }
           .hfp-btn-lime { color: #0a0a0a; background: rgb(200,255,60); font-weight: 700; border: 1px solid rgb(200,255,60); }
           .hfp-btn-lime:hover { opacity: 0.88; }
-          .hfp-note { font-family: var(--font-readex),sans-serif; font-size: 11.5px; font-weight: 300; color: rgba(255,255,255,0.4); margin: 12px 0 0; }
+          .hfp-note { font-family: var(--font-readex),sans-serif; font-size: 13px; line-height: 1.6; font-weight: 300; color: rgba(255,255,255,.52); margin: 12px 0 0; }
         `}</style>
       </aside>
     );
@@ -66,14 +66,14 @@ export default function HiggsfieldRef({ variant = "banner" }: { variant?: "banne
       <p className="hfb-note">邀請連結揭露：你不會多花一毛錢，Oscar 會獲得創作額度</p>
       <style>{`
         .hfb { margin: 26px 0; }
-        .hfb-card { display: flex; align-items: center; gap: 16px; text-decoration: none; background: linear-gradient(120deg, rgba(200,255,60,0.09), rgba(200,255,60,0.03) 55%, transparent), #0c0d0a; border: 1px solid rgba(200,255,60,0.35); border-radius: 14px; padding: 16px 20px; transition: border-color .2s, transform .2s; }
+        .hfb-card { display: flex; align-items: center; gap: 16px; text-decoration: none; background: rgba(14,16,12,.76); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(200,255,60,.35); border-radius: 18px; padding: 18px 20px; transition: border-color .2s, transform .2s; }
         .hfb-card:hover { border-color: rgba(200,255,60,0.7); transform: translateY(-2px); }
         .hfb-icon { width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0; box-shadow: 0 6px 22px rgba(200,255,60,0.22); }
         .hfb-mid { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
-        .hfb-title { font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: 0.3em; color: rgb(210,255,90); }
-        .hfb-sub { font-family: var(--font-readex),sans-serif; font-size: 12.5px; font-weight: 300; line-height: 1.6; color: rgba(255,255,255,0.72); }
-        .hfb-cta { flex-shrink: 0; font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; background: rgb(200,255,60); border-radius: 6px; padding: 11px 16px; font-weight: 700; }
-        .hfb-note { font-family: var(--font-readex),sans-serif; font-size: 10.5px; font-weight: 300; color: rgba(255,255,255,0.35); margin: 8px 0 0 2px; }
+        .hfb-title { font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .08em; color: rgb(210,255,90); }
+        .hfb-sub { font-family: var(--font-readex),sans-serif; font-size: 15px; font-weight: 300; line-height: 1.65; color: rgba(255,255,255,.72); }
+        .hfb-cta { flex-shrink: 0; font-family: var(--font-space-mono),monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #0a0a0a; background: rgb(200,255,60); border-radius: 12px; padding: 12px 16px; font-weight: 700; }
+        .hfb-note { font-family: var(--font-readex),sans-serif; font-size: 12px; line-height: 1.55; font-weight: 300; color: rgba(255,255,255,.52); margin: 9px 0 0 2px; }
         @media (max-width: 620px) { .hfb-card { flex-wrap: wrap; } .hfb-cta { width: 100%; text-align: center; } }
       `}</style>
     </aside>
