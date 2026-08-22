@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { haptic } from "@/lib/haptic";
@@ -259,6 +260,222 @@ function AwardOverlay({ text, onClose }: { text: string | null; onClose: () => v
         </button>
       </div>
     </div>
+  );
+}
+
+const MONCHHICHI_CUTS = [
+  { label: "CUT A", duration: "01:10", fileId: "1A9i0Ly4qgTFYU-j8S8c-E6Yt7KYrEv0a" },
+  { label: "CUT B", duration: "00:55", fileId: "1miSospsOIX1TZkzkMBJx-we4iw4gcpBn" },
+];
+
+function MonchhichiCampaign() {
+  const [activeCut, setActiveCut] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [open]);
+
+  const watchCut = (index: number) => {
+    setActiveCut(index);
+    setOpen(true);
+    haptic.bump();
+  };
+
+  return (
+    <>
+      <section
+        aria-labelledby="monchhichi-title"
+        className="relative overflow-hidden border-b px-4 py-16 md:px-14 md:py-24"
+        style={{
+          borderColor: "var(--border)",
+          background: "linear-gradient(135deg, #160907 0%, #080605 45%, #030304 100%)",
+        }}
+      >
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: "linear-gradient(rgba(226,73,47,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(226,73,47,.08) 1px, transparent 1px)",
+          backgroundSize: "38px 38px",
+          maskImage: "linear-gradient(to right, black, transparent 76%)",
+        }} />
+        <div aria-hidden="true" className="absolute -right-24 top-8 font-display leading-none select-none" style={{
+          color: "rgba(226,73,47,.08)", fontSize: "clamp(8rem, 24vw, 24rem)", transform: "rotate(-8deg)",
+        }}>77</div>
+
+        <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 md:grid-cols-[minmax(260px,0.72fr)_1.28fr] md:gap-20">
+          <button
+            type="button"
+            onClick={() => watchCut(1)}
+            aria-label="播放 Monchhichi Taiwan Pop-up 影片"
+            className="group relative mx-auto block w-full max-w-[350px] text-left"
+            style={{ cursor: "pointer" }}
+          >
+            <span aria-hidden="true" className="absolute -inset-3 md:-inset-5" style={{
+              border: "1px solid rgba(226,73,47,.38)", transform: "rotate(3deg)", transition: "transform .45s cubic-bezier(.16,1,.3,1)",
+            }} />
+            <div className="relative overflow-hidden" style={{ aspectRatio: "9/16", background: "#1a0e0a", boxShadow: "0 28px 90px rgba(0,0,0,.55)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/works/monchhichi-social-poster.jpg"
+                alt="Monchhichi Taiwan Pop-up 社群影片畫面"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-[1.035]"
+              />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(29,7,3,.76), transparent 42%)" }} />
+              <div className="absolute left-4 top-4 flex items-center gap-2">
+                <span className="font-mono-label text-[8px] tracking-[.28em]" style={{ color: "#fff5df" }}>SOCIAL COMMERCIAL</span>
+                <span style={{ width: 22, height: 1, background: "#e2492f" }} />
+                <span className="font-mono-label text-[8px] tracking-[.2em]" style={{ color: "rgba(255,245,223,.7)" }}>2026</span>
+              </div>
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+                <div>
+                  <p className="font-mono-label text-[8px] tracking-[.25em]" style={{ color: "rgba(255,245,223,.72)" }}>PRIMARY CUT · 00:55</p>
+                  <p className="mt-1 text-[13px] font-medium" style={{ color: "#fff5df" }}>SUMMER VIBE IN TAIWAN</p>
+                </div>
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110" style={{ background: "#e2492f", color: "#fff5df" }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </div>
+            </div>
+          </button>
+
+          <div>
+            <div className="mb-6 flex flex-wrap items-center gap-3">
+              <span className="font-mono-label text-[8px] tracking-[.34em]" style={{ color: "#e96a53" }}>COMMERCIAL · SOCIAL VIDEO</span>
+              <span style={{ width: 36, height: 1, background: "rgba(233,106,83,.55)" }} />
+              <span className="font-mono-label text-[8px] tracking-[.24em]" style={{ color: "var(--text-3)" }}>TWO-CUT CAMPAIGN</span>
+            </div>
+            <p className="font-mono-label text-[9px] tracking-[.32em]" style={{ color: "rgba(255,245,223,.56)" }}>SEKIGUCHI PRESENTS</p>
+            <h2 id="monchhichi-title" className="font-display mt-3 leading-[.88]" style={{
+              color: "#fff5df", fontSize: "clamp(3.2rem, 8vw, 8.5rem)", letterSpacing: "-.025em",
+            }}>
+              MONCHHICHI<br /><span style={{ color: "#e2492f" }}>TAIWAN POP-UP</span>
+            </h2>
+            <p className="mt-7 max-w-[610px] text-[14px] leading-7 md:text-[16px]" style={{ color: "rgba(255,245,223,.68)" }}>
+              台北快閃店的兩支直式社群影片。一支保留現場紀錄的清楚節奏，另一支用撕紙、照片框與拼貼轉場，把品牌角色變成一段可以滑著看的夏日記憶。
+            </p>
+
+            <div className="mt-8 grid max-w-[520px] grid-cols-2 gap-3">
+              {MONCHHICHI_CUTS.map((cut, index) => (
+                <button
+                  key={cut.label}
+                  type="button"
+                  onClick={() => watchCut(index)}
+                  className="group flex min-h-14 items-center justify-between px-4 text-left active:scale-[.98]"
+                  style={{
+                    border: "1px solid rgba(255,245,223,.18)",
+                    background: index === 1 ? "rgba(226,73,47,.16)" : "rgba(255,245,223,.04)",
+                    cursor: "pointer",
+                    transition: "background .25s ease, border-color .25s ease, transform .15s ease",
+                  }}
+                >
+                  <span>
+                    <span className="block font-mono-label text-[9px] tracking-[.28em]" style={{ color: "#fff5df" }}>{cut.label}</span>
+                    <span className="mt-1 block font-mono-label text-[7px] tracking-[.18em]" style={{ color: "rgba(255,245,223,.5)" }}>{cut.duration}</span>
+                  </span>
+                  <span aria-hidden className="text-lg transition-transform duration-200 group-hover:translate-x-1" style={{ color: "#e96a53" }}>↗</span>
+                </button>
+              ))}
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-2">
+              {["VERTICAL VIDEO", "POP-UP CAMPAIGN", "2 CUTS"].map(tag => (
+                <span key={tag} className="font-mono-label px-2.5 py-1 text-[7px] tracking-[.2em]" style={{ border: "1px solid rgba(255,245,223,.12)", color: "rgba(255,245,223,.46)" }}>{tag}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {open && (
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Monchhichi Taiwan Pop-up 影片播放器"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: .22 }}
+            className="fixed inset-0 z-[300] flex items-center justify-center p-3 md:p-8"
+            style={{ background: "rgba(0,0,0,.92)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)" }}
+            onClick={() => setOpen(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: .985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 12, scale: .99 }}
+              transition={{ duration: .35, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex h-[94dvh] w-full max-w-[1080px] flex-col overflow-hidden md:h-[90vh] md:flex-row"
+              style={{ background: "#0b0908", border: "1px solid rgba(255,245,223,.16)", boxShadow: "0 40px 120px rgba(0,0,0,.7)" }}
+              onClick={event => event.stopPropagation()}
+            >
+              <div className="relative min-h-0 flex-1 bg-black">
+                <iframe
+                  key={MONCHHICHI_CUTS[activeCut].fileId}
+                  src={`https://drive.google.com/file/d/${MONCHHICHI_CUTS[activeCut].fileId}/preview`}
+                  title={`Monchhichi Taiwan Pop-up ${MONCHHICHI_CUTS[activeCut].label}`}
+                  className="h-full w-full border-0"
+                  allow="autoplay; fullscreen"
+                  allowFullScreen
+                />
+              </div>
+
+              <aside className="flex shrink-0 flex-col justify-between border-t p-5 md:w-[310px] md:border-l md:border-t-0 md:p-7" style={{ borderColor: "rgba(255,245,223,.12)" }}>
+                <div>
+                  <div className="mb-5 flex items-center justify-between">
+                    <span className="font-mono-label text-[8px] tracking-[.28em]" style={{ color: "#e96a53" }}>NOW PLAYING</span>
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      aria-label="關閉播放器"
+                      className="flex h-11 w-11 items-center justify-center rounded-full"
+                      style={{ border: "1px solid rgba(255,245,223,.18)", color: "#fff5df", cursor: "pointer" }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                    </button>
+                  </div>
+                  <h3 className="font-display text-[2rem] leading-none" style={{ color: "#fff5df" }}>MONCHHICHI<br />TAIWAN POP-UP</h3>
+                  <p className="font-mono-label mt-3 text-[8px] tracking-[.2em]" style={{ color: "rgba(255,245,223,.5)" }}>SOCIAL COMMERCIAL · 2026</p>
+                </div>
+
+                <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-1">
+                  {MONCHHICHI_CUTS.map((cut, index) => (
+                    <button
+                      key={cut.label}
+                      type="button"
+                      onClick={() => setActiveCut(index)}
+                      aria-pressed={activeCut === index}
+                      className="flex min-h-12 items-center justify-between px-4 text-left"
+                      style={{
+                        background: activeCut === index ? "#e2492f" : "rgba(255,245,223,.04)",
+                        border: `1px solid ${activeCut === index ? "#e2492f" : "rgba(255,245,223,.14)"}`,
+                        color: "#fff5df", cursor: "pointer", transition: "all .2s ease",
+                      }}
+                    >
+                      <span className="font-mono-label text-[8px] tracking-[.24em]">{cut.label}</span>
+                      <span className="font-mono-label text-[7px] tracking-[.12em]" style={{ opacity: .65 }}>{cut.duration}</span>
+                    </button>
+                  ))}
+                </div>
+              </aside>
+            </motion.div>
+          </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </>
   );
 }
 
@@ -1316,6 +1533,8 @@ export default function WorkVideo() {
       </div>
 
       <ScreeningDeck cards={DECK_CARDS} />
+
+      <MonchhichiCampaign />
 
       {/* ══ 完整片尾 — 其餘場次 × END CREDITS 合併成自動捲動的電影片尾 ══ */}
       <div ref={ecRef} className="border-b" style={{ borderColor: "var(--border)", background: "#030304" }}>
