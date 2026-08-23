@@ -6,7 +6,7 @@
  * 設計決策（2026-07 與 Oscar 問卷確認）：
  * - 卡片構圖：陳卓式滿版橫幅 — 劇照鋪滿、大片名在左下、資訊在右下
  * - 獎項：海報式置頂加冕（金色月桂，影展海報規格）
- * - 轉場：推疊（下一卡上推覆蓋、上一卡縮小沉黑）＋失焦手掃過前景（左右交替）
+ * - 轉場：捲動驅動的鏡頭推近＋分層文字揭露，讓作品本身接管節奏
  * - 內容完整性：正片進疊卡；支援角色進片尾字幕（END CREDITS）；短內容進散場後
  *
  * 捲動機制：deck 高度 = N × 100vh，卡片 position:sticky 疊在容器頂，
@@ -58,33 +58,6 @@ function Laurel({ title, org }: { title: string; org: string }) {
   );
 }
 
-/* ─── Film changeover — an out-of-focus 35mm strip sweeps the foreground
-   between cards (換本), with a cue dot in the corner right before the cut.
-   Blurred foreground occlusion keeps the depth-compression feel. ─── */
-function FilmStripOcclusion() {
-  const sprockets: React.CSSProperties = {
-    width: "9%",
-    backgroundImage: "repeating-linear-gradient(to bottom, transparent 0 14px, rgba(255,248,230,0.55) 14px 34px, transparent 34px 48px)",
-    backgroundColor: "#040405",
-  };
-  return (
-    <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <div style={sprockets} />
-      <div style={{
-        flex: 1,
-        background: "#050507",
-        backgroundImage: [
-          /* frame gaps */
-          "repeating-linear-gradient(to bottom, transparent 0 23%, rgba(255,248,230,0.16) 23% 24%, transparent 24% 25%)",
-          /* faint light-leak inside frames */
-          "radial-gradient(ellipse 90% 22% at 50% 38%, rgba(255,190,90,0.10), transparent 70%)",
-        ].join(","),
-      }} />
-      <div style={sprockets} />
-    </div>
-  );
-}
-
 const clamp = (v: number, a: number, b: number) => Math.min(Math.max(v, a), b);
 const smooth = (v: number) => { v = clamp(v, 0, 1); return v * v * (3 - 2 * v); };
 
@@ -104,14 +77,15 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
       style={{
         position: "sticky", top: 0, height: "100vh",
         overflow: "hidden", background: "#000",
-        transformOrigin: "50% 0%",
         borderTop: "1px solid rgba(255,255,255,0.07)",
         zIndex: index + 1,
-        willChange: "transform, filter",
       }}>
 
       {/* backdrop(s) */}
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: multi ? "column" : "row", gap: multi ? 2 : 0 }}>
+      <div className="sd-media" style={{
+        position: "absolute", inset: 0, display: "flex", flexDirection: multi ? "column" : "row", gap: multi ? 2 : 0,
+        transformOrigin: "50% 50%", willChange: "transform",
+      }}>
         {card.works.map(w => (
           <a key={w.id} href={`https://www.youtube.com/watch?v=${w.id}`} target="_blank" rel="noopener noreferrer"
             className="group relative block"
@@ -138,7 +112,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
               <>
                 {/* 右側黑漸層 — 讓描述可讀 */}
                 <div aria-hidden="true" className="absolute inset-y-0 right-0 pointer-events-none" style={{ width: "52%", background: "linear-gradient(to left, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, transparent 100%)" }} />
-                <div className="absolute left-4 md:left-8 bottom-3 md:bottom-4 right-4 md:right-8 z-[2] flex items-end justify-between gap-4">
+                <div className="sd-copy absolute left-4 md:left-8 bottom-3 md:bottom-4 right-4 md:right-8 z-[2] flex items-end justify-between gap-4" data-reveal="2">
                   <div>
                     <p className="text-[14px] md:text-[18px] font-medium leading-tight" style={{ color: "var(--text)", textShadow: "0 1px 10px rgba(0,0,0,0.7)" }}>{w.title}</p>
                     <p className="font-mono-label text-[8px] md:text-[9px] tracking-[0.2em] mt-1" style={{ color: "var(--white-soft)" }}>
@@ -171,7 +145,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
       }} />
 
       {/* act marker — top left */}
-      <div className="absolute top-14 md:top-16 left-4 md:left-14 z-[3] pointer-events-none">
+      <div className="sd-copy absolute top-14 md:top-16 left-4 md:left-14 z-[3] pointer-events-none" data-reveal="0">
         <p className="font-mono-label text-[9px] tracking-[0.4em]" style={{ color: "var(--white-soft)" }}>
           ACT {card.act} — {card.actLabel}
         </p>
@@ -179,7 +153,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
 
       {/* laurel crown — top center (poster grammar) */}
       {crowned && (
-        <div className="absolute left-0 right-0 z-[3] flex justify-center gap-5 md:gap-9 flex-wrap px-4 pointer-events-none"
+        <div className="sd-copy absolute left-0 right-0 z-[3] flex justify-center gap-5 md:gap-9 flex-wrap px-4 pointer-events-none" data-reveal="1"
           style={{ top: "clamp(84px, 13vh, 130px)" }}>
           {lead.awards!.map(a => <Laurel key={a.title + a.org} title={a.title} org={a.org} />)}
         </div>
@@ -187,7 +161,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
 
       {/* chip — top right */}
       {lead.chip && !multi && (
-        <div className="absolute top-14 md:top-16 right-4 md:right-14 z-[3] pointer-events-none">
+        <div className="sd-copy absolute top-14 md:top-16 right-4 md:right-14 z-[3] pointer-events-none" data-reveal="1">
           <span className="font-mono-label text-[8px] tracking-[0.26em] px-3 py-1.5"
             style={{ border: "1px solid rgba(143,180,255,0.35)", borderRadius: 999, color: "rgba(143,180,255,0.85)", background: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)" }}>
             {lead.chip}
@@ -197,7 +171,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
 
       {/* title block — bottom left / info — bottom right (陳卓式滿版橫幅) */}
       {!multi ? (
-        <div className="absolute left-4 right-4 md:left-14 md:right-14 bottom-8 md:bottom-12 z-[3] flex flex-col md:flex-row md:items-end gap-4 md:gap-10 pointer-events-none">
+        <div className="sd-copy absolute left-4 right-4 md:left-14 md:right-14 bottom-8 md:bottom-12 z-[3] flex flex-col md:flex-row md:items-end gap-4 md:gap-10 pointer-events-none" data-reveal="2">
           <div className="flex-1 min-w-0">
             <p className="font-mono-label text-[9px] tracking-[0.34em] mb-2" style={{ color: "rgba(255,225,140,0.75)" }}>
               {lead.hot && (
@@ -222,7 +196,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
           </div>
         </div>
       ) : (
-        <div className="absolute left-4 md:left-14 bottom-8 md:bottom-12 right-4 md:right-14 z-[3] pointer-events-none">
+        <div className="sd-copy absolute left-4 md:left-14 bottom-8 md:bottom-12 right-4 md:right-14 z-[3] pointer-events-none" data-reveal="2">
           <p className="font-mono-label text-[9px] tracking-[0.34em] mb-2" style={{ color: "rgba(255,225,140,0.75)" }}>
             SERIES {String(index + 1).padStart(2, "0")}
           </p>
@@ -241,18 +215,10 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
 /* ─── The deck ─── */
 export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
   const deckRef = useRef<HTMLDivElement>(null);
-  const handRef = useRef<HTMLDivElement>(null);
-  const cueRef = useRef<HTMLDivElement>(null);
-  const washRef = useRef<HTMLDivElement>(null);   // colour-grade wipe (ACT Ⅲ/Ⅳ)
-  const flashRef = useRef<HTMLDivElement>(null);  // dip/flash overlay (ACT Ⅱ/Ⅴ/Ⅵ/Ⅶ)
+  const hudRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
   const [activeAct, setActiveAct] = useState(0);
   const reduceMotion = useRef(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia) {
-      reduceMotion.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }
-  }, []);
 
   /* act list for the programme HUD */
   const acts: { act: string; label: string; firstIdx: number }[] = [];
@@ -260,79 +226,40 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
     if (!acts.length || acts[acts.length - 1].act !== c.act) acts.push({ act: c.act, label: c.actLabel, firstIdx: i });
   });
 
-  const onScroll = useCallback(() => {
+  const renderScroll = useCallback(() => {
     const deck = deckRef.current;
     if (!deck) return;
-    const scroller = deck.closest("[style*='overflow']") as HTMLElement | null;
     const vh = window.innerHeight;
     const rect = deck.getBoundingClientRect();
     // progress through the deck: 0 at deck top hitting viewport top, +1 per viewport
     const t = clamp(-rect.top / vh, 0, cards.length - 1.0001);
-    const k = Math.floor(t), p = t - k;
 
     const els = deck.querySelectorAll<HTMLElement>(".sd-card");
     els.forEach((el, i) => {
-      const covered = i === k ? p : i < k ? 1 : 0;
-      if (reduceMotion.current) { el.style.transform = ""; el.style.filter = ""; return; }
-      el.style.transform = `scale(${1 - covered * 0.07})`;
-      el.style.filter = `brightness(${1 - covered * 0.62})`;
+      const arrival = smooth(t - i + 1);
+      const exit = smooth(t - i);
+      const media = el.querySelector<HTMLElement>(".sd-media");
+      const copy = el.querySelectorAll<HTMLElement>(".sd-copy");
+
+      if (media) {
+        media.style.transform = reduceMotion.current
+          ? "none"
+          : `translate3d(0, ${(1 - arrival) * 3}%, 0) scale(${0.9 + arrival * 0.1 + exit * 0.08})`;
+      }
+
+      copy.forEach(node => {
+        const step = Number(node.dataset.reveal ?? 0);
+        const delay = step * 0.1;
+        const reveal = smooth((arrival - delay) / (1 - delay));
+        node.style.opacity = String(reveal);
+        node.style.transform = reduceMotion.current
+          ? "none"
+          : `translate3d(0, ${(1 - reveal) * 28}px, 0)`;
+      });
     });
 
-    /* pin the overlay layer (hand + HUD) to the viewport while inside the deck */
-    const hand = handRef.current;
-    if (hand?.parentElement) {
-      hand.parentElement.style.transform = `translateY(${clamp(-rect.top, 0, deck.offsetHeight - vh)}px)`;
-    }
-
-    /* per-act transition — 每一幕有自己的換場語言（沒收之後不再重複膠片）
-       Ⅰ film strip ／ Ⅱ·Ⅵ dip-to-black ／ Ⅲ·Ⅳ colour-grade wash ／ Ⅴ·Ⅶ flash cut */
-    const nextAct = cards[Math.min(k + 1, cards.length - 1)].act;
-    const mode = nextAct === "Ⅰ" ? "strip" : nextAct === "Ⅱ" || nextAct === "Ⅵ" ? "dip"
-      : nextAct === "Ⅲ" || nextAct === "Ⅳ" ? "wash" : nextAct === "Ⅴ" ? "blinds" : "glitch";
-    const mid = smooth(1 - Math.abs(p - 0.5) * 2);   // 0→1→0 peak at the cut
-
-    if (hand) {
-      if (reduceMotion.current || mode !== "strip") { hand.style.opacity = "0"; }
-      else {
-        const dir = k % 2 === 0 ? 1 : -1;
-        const sweep = smooth((p - 0.06) / 0.82);
-        const x = (-260 + sweep * 520) * dir;
-        hand.style.transform = `translate(-50%,-50%) translateX(${x}%) translateY(${(sweep - 0.5) * -18}%) rotate(${5 * dir}deg)`;
-        hand.style.opacity = p < 0.05 || p > 0.95 ? "0" : "0.95";
-      }
-    }
-    if (washRef.current) {
-      const w = washRef.current;
-      if (reduceMotion.current || mode !== "wash") { w.style.opacity = "0"; }
-      else {
-        const dir = k % 2 === 0 ? 1 : -1;
-        const sweep = smooth((p - 0.08) / 0.8);
-        w.style.transform = `translateX(${(-120 + sweep * 240) * dir}%) skewX(${-9 * dir}deg)`;
-        w.style.opacity = p < 0.06 || p > 0.94 ? "0" : "0.85";
-      }
-    }
-    if (flashRef.current) {
-      const f = flashRef.current;
-      if (reduceMotion.current) { f.style.opacity = "0"; }
-      else if (mode === "dip") { f.style.background = "#000"; f.style.opacity = String(mid * 0.92); }
-      else if (mode === "blinds") {
-        /* venetian shutter — vertical bars sweep across (檔案快門) */
-        f.style.background = "repeating-linear-gradient(90deg, #000 0 6vw, transparent 6vw 12vw)";
-        f.style.backgroundPositionX = `${p * 24}vw`;
-        f.style.opacity = String(mid * 0.9);
-      } else if (mode === "glitch") {
-        /* RGB split pulse — AIGC 的訊號感 */
-        f.style.background = "linear-gradient(90deg, rgba(255,0,80,0.5), transparent 30%, transparent 70%, rgba(0,220,255,0.5))";
-        f.style.mixBlendMode = "screen";
-        const blink = (p > 0.42 && p < 0.48) || (p > 0.52 && p < 0.6) ? mid * 0.8 : 0;
-        f.style.opacity = String(blink);
-        f.style.transform = blink ? `translateX(${(p * 977 % 7) - 3}px)` : "none";
-      } else { f.style.opacity = "0"; }
-    }
-    /* cue dot — strip & flash modes only */
-    if (cueRef.current) {
-      cueRef.current.style.opacity =
-        !reduceMotion.current && (mode === "strip" || mode === "blinds") && p > 0.06 && p < 0.17 ? "1" : "0";
+    if (hudRef.current) {
+      hudRef.current.style.transform = `translate3d(0, ${clamp(-rect.top, 0, deck.offsetHeight - vh)}px, 0)`;
     }
 
     /* active act for HUD */
@@ -340,18 +267,41 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
     let a = 0;
     acts.forEach((ac, i) => { if (cur >= ac.firstIdx) a = i; });
     if (a !== activeAct) setActiveAct(a);
-
-    void scroller;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cards.length, activeAct]);
+
+  const onScroll = useCallback(() => {
+    if (rafRef.current !== null) return;
+    rafRef.current = window.requestAnimationFrame(() => {
+      rafRef.current = null;
+      renderScroll();
+    });
+  }, [renderScroll]);
+
+  useEffect(() => {
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncMotionPreference = () => {
+      reduceMotion.current = motionPreference.matches;
+      onScroll();
+    };
+
+    syncMotionPreference();
+    motionPreference.addEventListener("change", syncMotionPreference);
+    return () => motionPreference.removeEventListener("change", syncMotionPreference);
+  }, [onScroll]);
 
   useEffect(() => {
     const deck = deckRef.current;
     if (!deck) return;
     const scroller = deck.closest("[style*='overflow']") ?? window;
     scroller.addEventListener("scroll", onScroll as EventListener, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
-    return () => scroller.removeEventListener("scroll", onScroll as EventListener);
+    return () => {
+      scroller.removeEventListener("scroll", onScroll as EventListener);
+      window.removeEventListener("resize", onScroll);
+      if (rafRef.current !== null) window.cancelAnimationFrame(rafRef.current);
+    };
   }, [onScroll]);
 
   const jumpTo = (cardIdx: number) => {
@@ -360,37 +310,15 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
     const scroller = deck.closest("[style*='overflow']") as HTMLElement | null;
     if (!scroller) return;
     const top = deck.offsetTop + cardIdx * window.innerHeight;
-    scroller.scrollTo({ top, behavior: "smooth" });
+    scroller.scrollTo({ top, behavior: reduceMotion.current ? "auto" : "smooth" });
   };
 
   return (
     <div ref={deckRef} style={{ position: "relative", height: `${cards.length * 100}vh` }}>
       {cards.map((c, i) => <Card key={c.works[0].id} card={c} index={i} />)}
 
-      {/* pinned overlay layer — hand + programme HUD, manually pinned via transform */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100vh", zIndex: 60, pointerEvents: "none", overflow: "hidden" }}>
-        <div ref={handRef} aria-hidden="true" style={{
-          position: "absolute", top: "50%", left: "50%", width: "min(46vw, 520px)", height: "130vh",
-          filter: "blur(7px) drop-shadow(0 0 60px rgba(0,0,0,0.6))",
-          opacity: 0, willChange: "transform, opacity",
-        }}>
-          <FilmStripOcclusion />
-        </div>
-        {/* colour-grade wash — gold→teal gradient blade (ACT Ⅲ/Ⅳ) */}
-        <div ref={washRef} aria-hidden="true" style={{
-          position: "absolute", inset: "-10% -30%", opacity: 0, willChange: "transform, opacity",
-          background: "linear-gradient(100deg, transparent 18%, rgba(255,217,100,0.34) 38%, rgba(120,200,210,0.30) 62%, transparent 82%)",
-          filter: "blur(26px)",
-        }} />
-        {/* dip / flash overlay (ACT Ⅱ/Ⅴ/Ⅵ/Ⅶ) */}
-        <div ref={flashRef} aria-hidden="true" style={{ position: "absolute", inset: 0, opacity: 0, willChange: "opacity" }} />
-        {/* changeover cue dot — top-right, flashes right before the cut */}
-        <div ref={cueRef} aria-hidden="true" style={{
-          position: "absolute", top: 24, right: 26, width: 13, height: 13, borderRadius: "50%",
-          background: "rgba(255,250,235,0.9)", boxShadow: "0 0 10px rgba(255,250,235,0.5)",
-          filter: "blur(0.6px)", opacity: 0, transition: "opacity .12s linear",
-        }} />
-
+      {/* pinned programme HUD — the work stays visually quiet while the copy reveals */}
+      <div ref={hudRef} style={{ position: "absolute", top: 0, left: 0, right: 0, height: "100vh", zIndex: 60, pointerEvents: "none", overflow: "hidden", willChange: "transform" }}>
         {/* programme HUD — acts, vertical-centered on the left edge, desktop only */}
         <div className="hidden md:flex" style={{
           position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)",
@@ -402,14 +330,15 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
               style={{ background: "none", border: "none", cursor: "pointer", pointerEvents: "auto", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap", padding: 0 }}
               aria-label={`跳到 ACT ${a.act} ${a.label}`}>
               <span style={{
-                width: i === activeAct ? 18 : 5, height: 2, borderRadius: 1,
+                width: 18, height: 2, borderRadius: 1,
                 background: i === activeAct ? "rgba(255,225,140,0.9)" : "rgba(255,255,255,0.22)",
-                transition: "all .4s cubic-bezier(.16,1,.3,1)",
+                transform: `scaleX(${i === activeAct ? 1 : 0.28})`, transformOrigin: "right center",
+                transition: "transform 250ms cubic-bezier(0.77,0,0.175,1), background-color 180ms cubic-bezier(0.23,1,0.32,1)",
               }} />
               <span className="font-mono-label" style={{
                 fontSize: 8, letterSpacing: "0.26em",
                 color: i === activeAct ? "rgba(255,225,140,0.9)" : "rgba(255,255,255,0.28)",
-                transition: "color .3s",
+                transition: "color 180ms cubic-bezier(0.23,1,0.32,1)",
               }}>
                 {a.act} {i === activeAct ? `· ${a.label}` : ""}
               </span>

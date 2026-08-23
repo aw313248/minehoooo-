@@ -222,6 +222,40 @@ body::before {
   50%       { opacity: 0.8; }
 }
 
+/* ── VIDEO SCROLL STORY ── */
+.sd-media {
+  transform: translate3d(0, 3%, 0) scale(0.9);
+}
+.sd-copy {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  will-change: transform, opacity;
+}
+.sd-card:first-child .sd-media,
+.sd-card:first-child .sd-copy {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mc-poster-image {
+    transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .group:hover .mc-poster-image {
+    transform: scale(1.035);
+  }
+  .mc-play-button,
+  .mc-cut-arrow {
+    transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .group:hover .mc-play-button {
+    transform: scale(1.08);
+  }
+  .group:hover .mc-cut-arrow {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
 /* ── ACCESSIBILITY ── */
 :focus-visible {
   outline: 2px solid rgba(255,255,255,0.55);
@@ -233,6 +267,14 @@ body::before {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .sd-media,
+  .sd-copy,
+  .mc-poster-image,
+  .mc-play-button,
+  .mc-cut-arrow {
+    transform: none !important;
+    will-change: auto;
   }
 }
 

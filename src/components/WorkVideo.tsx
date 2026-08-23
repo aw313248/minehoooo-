@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { haptic } from "@/lib/haptic";
 import ScreeningDeck, { type DeckCard } from "@/components/ScreeningDeck";
@@ -268,9 +268,75 @@ const MONCHHICHI_CUTS = [
   { label: "CUT B", duration: "00:55", fileId: "1miSospsOIX1TZkzkMBJx-we4iw4gcpBn" },
 ];
 
+const clampUnit = (value: number) => Math.min(Math.max(value, 0), 1);
+const smoothStep = (value: number) => {
+  const t = clampUnit(value);
+  return t * t * (3 - 2 * t);
+};
+
 function MonchhichiCampaign() {
   const [activeCut, setActiveCut] = useState(0);
   const [open, setOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const stageRef = useRef<HTMLElement>(null);
+  const posterRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const poster = posterRef.current;
+    if (!stage || !poster) return;
+
+    const scroller = stage.closest("[style*='overflow']") ?? window;
+    const reveals = stage.querySelectorAll<HTMLElement>("[data-mc-reveal]");
+    const mark = stage.querySelector<HTMLElement>("[data-mc-mark]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let raf: number | null = null;
+
+    const render = () => {
+      raf = null;
+      const rect = stage.getBoundingClientRect();
+      const travel = Math.max(stage.offsetHeight - window.innerHeight, 1);
+      const progress = clampUnit(-rect.top / travel);
+
+      poster.style.transform = reduceMotion.matches
+        ? "none"
+        : `translate3d(0, ${(0.5 - progress) * 18}px, 0) scale(${0.82 + progress * 0.22})`;
+
+      if (mark) {
+        mark.style.transform = reduceMotion.matches
+          ? "rotate(-8deg)"
+          : `translate3d(${progress * -6}vw, ${progress * 5}vh, 0) rotate(${-8 + progress * 5}deg) scale(${1 + progress * 0.14})`;
+      }
+
+      reveals.forEach(node => {
+        const step = Number(node.dataset.mcReveal ?? 0);
+        const start = 0.04 + step * 0.1;
+        const reveal = smoothStep((progress - start) / 0.24);
+        node.style.opacity = String(reveal);
+        node.style.transform = reduceMotion.matches
+          ? "none"
+          : `translate3d(0, ${(1 - reveal) * 28}px, 0)`;
+        node.style.pointerEvents = reveal > 0.72 ? "auto" : "none";
+      });
+    };
+
+    const schedule = () => {
+      if (raf !== null) return;
+      raf = window.requestAnimationFrame(render);
+    };
+
+    scroller.addEventListener("scroll", schedule as EventListener, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    reduceMotion.addEventListener("change", schedule);
+    schedule();
+
+    return () => {
+      scroller.removeEventListener("scroll", schedule as EventListener);
+      window.removeEventListener("resize", schedule);
+      reduceMotion.removeEventListener("change", schedule);
+      if (raf !== null) window.cancelAnimationFrame(raf);
+    };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -295,32 +361,36 @@ function MonchhichiCampaign() {
   return (
     <>
       <section
+        ref={stageRef}
         aria-labelledby="monchhichi-title"
-        className="relative overflow-hidden border-b px-4 py-16 md:px-14 md:py-24"
+        className="relative border-b"
         style={{
+          height: "185dvh",
           borderColor: "var(--border)",
           background: "linear-gradient(135deg, #160907 0%, #080605 45%, #030304 100%)",
         }}
       >
-        <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: "linear-gradient(rgba(226,73,47,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(226,73,47,.08) 1px, transparent 1px)",
-          backgroundSize: "38px 38px",
-          maskImage: "linear-gradient(to right, black, transparent 76%)",
-        }} />
-        <div aria-hidden="true" className="absolute -right-24 top-8 font-display leading-none select-none" style={{
-          color: "rgba(226,73,47,.08)", fontSize: "clamp(8rem, 24vw, 24rem)", transform: "rotate(-8deg)",
-        }}>77</div>
+        <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden px-4 py-7 md:px-14 md:py-12">
+          <div aria-hidden="true" className="absolute inset-0 pointer-events-none" style={{
+            backgroundImage: "linear-gradient(rgba(226,73,47,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(226,73,47,.08) 1px, transparent 1px)",
+            backgroundSize: "38px 38px",
+            maskImage: "linear-gradient(to right, black, transparent 76%)",
+          }} />
+          <div data-mc-mark aria-hidden="true" className="absolute -right-24 top-8 font-display leading-none select-none" style={{
+            color: "rgba(226,73,47,.08)", fontSize: "clamp(8rem, 24vw, 24rem)", transform: "rotate(-8deg)", willChange: "transform",
+          }}>77</div>
 
-        <div className="relative mx-auto grid max-w-[1180px] items-center gap-12 md:grid-cols-[minmax(260px,0.72fr)_1.28fr] md:gap-20">
+          <div className="relative mx-auto grid w-full max-w-[1180px] items-center gap-5 md:grid-cols-[minmax(260px,0.72fr)_1.28fr] md:gap-20">
           <button
+            ref={posterRef}
             type="button"
             onClick={() => watchCut(1)}
             aria-label="播放 Monchhichi Taiwan Pop-up 影片"
-            className="group relative mx-auto block w-full max-w-[350px] text-left"
-            style={{ cursor: "pointer" }}
+            className="group relative mx-auto block w-[42vw] max-w-[190px] text-left md:w-full md:max-w-[350px]"
+            style={{ cursor: "pointer", transform: "translate3d(0, 9px, 0) scale(.82)", transformOrigin: "50% 50%", willChange: "transform" }}
           >
             <span aria-hidden="true" className="absolute -inset-3 md:-inset-5" style={{
-              border: "1px solid rgba(226,73,47,.38)", transform: "rotate(3deg)", transition: "transform .45s cubic-bezier(.16,1,.3,1)",
+              border: "1px solid rgba(226,73,47,.38)", transform: "rotate(3deg)",
             }} />
             <div className="relative overflow-hidden" style={{ aspectRatio: "9/16", background: "#1a0e0a", boxShadow: "0 28px 90px rgba(0,0,0,.55)" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -328,7 +398,7 @@ function MonchhichiCampaign() {
                 src="/works/monchhichi-social-poster.jpg"
                 alt="Monchhichi Taiwan Pop-up 社群影片畫面"
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-[1.035]"
+                className="mc-poster-image absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(29,7,3,.76), transparent 42%)" }} />
               <div className="absolute left-4 top-4 flex items-center gap-2">
@@ -341,36 +411,38 @@ function MonchhichiCampaign() {
                   <p className="font-mono-label text-[8px] tracking-[.25em]" style={{ color: "rgba(255,245,223,.72)" }}>PRIMARY CUT · 00:55</p>
                   <p className="mt-1 text-[13px] font-medium" style={{ color: "#fff5df" }}>SUMMER VIBE IN TAIWAN</p>
                 </div>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110" style={{ background: "#e2492f", color: "#fff5df" }}>
+                <span className="mc-play-button flex h-12 w-12 shrink-0 items-center justify-center rounded-full" style={{ background: "#e2492f", color: "#fff5df" }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
                 </span>
               </div>
             </div>
           </button>
 
-          <div>
-            <div className="mb-6 flex flex-wrap items-center gap-3">
+          <div className="min-w-0">
+            <div data-mc-reveal="0" className="mb-3 flex flex-wrap items-center gap-3 md:mb-6" style={{ opacity: 0, transform: "translate3d(0, 28px, 0)", willChange: "transform, opacity" }}>
               <span className="font-mono-label text-[8px] tracking-[.34em]" style={{ color: "#e96a53" }}>COMMERCIAL · SOCIAL VIDEO</span>
               <span style={{ width: 36, height: 1, background: "rgba(233,106,83,.55)" }} />
               <span className="font-mono-label text-[8px] tracking-[.24em]" style={{ color: "var(--text-3)" }}>TWO-CUT CAMPAIGN</span>
             </div>
-            <p className="font-mono-label text-[9px] tracking-[.32em]" style={{ color: "rgba(255,245,223,.56)" }}>SEKIGUCHI PRESENTS</p>
-            <h2 id="monchhichi-title" className="font-display mt-3 leading-[.88]" style={{
-              color: "#fff5df", fontSize: "clamp(3.2rem, 8vw, 8.5rem)", letterSpacing: "-.025em",
-            }}>
-              MONCHHICHI<br /><span style={{ color: "#e2492f" }}>TAIWAN POP-UP</span>
-            </h2>
-            <p className="mt-7 max-w-[610px] text-[14px] leading-7 md:text-[16px]" style={{ color: "rgba(255,245,223,.68)" }}>
+            <div data-mc-reveal="1" style={{ opacity: 0, transform: "translate3d(0, 28px, 0)", willChange: "transform, opacity" }}>
+              <p className="font-mono-label text-[8px] tracking-[.32em] md:text-[9px]" style={{ color: "rgba(255,245,223,.56)" }}>SEKIGUCHI PRESENTS</p>
+              <h2 id="monchhichi-title" className="font-display mt-2 leading-[.88] md:mt-3" style={{
+                color: "#fff5df", fontSize: "clamp(2.35rem, 8vw, 8.5rem)", letterSpacing: "-.025em",
+              }}>
+                MONCHHICHI<br /><span style={{ color: "#e2492f" }}>TAIWAN POP-UP</span>
+              </h2>
+            </div>
+            <p data-mc-reveal="2" className="mt-4 max-w-[610px] text-[13px] leading-6 md:mt-7 md:text-[16px] md:leading-7" style={{ color: "rgba(255,245,223,.68)", opacity: 0, transform: "translate3d(0, 28px, 0)", willChange: "transform, opacity" }}>
               台北快閃店的兩支直式社群影片。一支保留現場紀錄的清楚節奏，另一支用撕紙、照片框與拼貼轉場，把品牌角色變成一段可以滑著看的夏日記憶。
             </p>
 
-            <div className="mt-8 grid max-w-[520px] grid-cols-2 gap-3">
+            <div data-mc-reveal="3" className="mt-5 grid max-w-[520px] grid-cols-2 gap-2 md:mt-8 md:gap-3" style={{ opacity: 0, transform: "translate3d(0, 28px, 0)", willChange: "transform, opacity" }}>
               {MONCHHICHI_CUTS.map((cut, index) => (
                 <button
                   key={cut.label}
                   type="button"
                   onClick={() => watchCut(index)}
-                  className="group flex min-h-14 items-center justify-between px-4 text-left active:scale-[.98]"
+                  className="group flex min-h-12 items-center justify-between px-3 text-left active:scale-[.98] md:min-h-14 md:px-4"
                   style={{
                     border: "1px solid rgba(255,245,223,.18)",
                     background: index === 1 ? "rgba(226,73,47,.16)" : "rgba(255,245,223,.04)",
@@ -382,16 +454,17 @@ function MonchhichiCampaign() {
                     <span className="block font-mono-label text-[9px] tracking-[.28em]" style={{ color: "#fff5df" }}>{cut.label}</span>
                     <span className="mt-1 block font-mono-label text-[7px] tracking-[.18em]" style={{ color: "rgba(255,245,223,.5)" }}>{cut.duration}</span>
                   </span>
-                  <span aria-hidden className="text-lg transition-transform duration-200 group-hover:translate-x-1" style={{ color: "#e96a53" }}>↗</span>
+                  <span aria-hidden className="mc-cut-arrow text-lg" style={{ color: "#e96a53" }}>↗</span>
                 </button>
               ))}
             </div>
 
-            <div className="mt-7 flex flex-wrap gap-2">
+            <div data-mc-reveal="4" className="mt-4 flex flex-wrap gap-2 md:mt-7" style={{ opacity: 0, transform: "translate3d(0, 28px, 0)", willChange: "transform, opacity" }}>
               {["VERTICAL VIDEO", "POP-UP CAMPAIGN", "2 CUTS"].map(tag => (
                 <span key={tag} className="font-mono-label px-2.5 py-1 text-[7px] tracking-[.2em]" style={{ border: "1px solid rgba(255,245,223,.12)", color: "rgba(255,245,223,.46)" }}>{tag}</span>
               ))}
             </div>
+          </div>
           </div>
         </div>
       </section>
@@ -406,16 +479,16 @@ function MonchhichiCampaign() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: .22 }}
+            transition={{ duration: prefersReducedMotion ? .15 : .22 }}
             className="fixed inset-0 z-[300] flex items-center justify-center p-3 md:p-8"
             style={{ background: "rgba(0,0,0,.92)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)" }}
             onClick={() => setOpen(false)}
           >
             <motion.div
-              initial={{ opacity: 0, y: 24, scale: .985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: .99 }}
-              transition={{ duration: .35, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, transform: prefersReducedMotion ? "none" : "translate3d(0,24px,0) scale(.985)" }}
+              animate={{ opacity: 1, transform: "none" }}
+              exit={{ opacity: 0, transform: prefersReducedMotion ? "none" : "translate3d(0,12px,0) scale(.99)" }}
+              transition={{ duration: prefersReducedMotion ? .15 : .35, ease: [0.16, 1, 0.3, 1] }}
               className="relative flex h-[94dvh] w-full max-w-[1080px] flex-col overflow-hidden md:h-[90vh] md:flex-row"
               style={{ background: "#0b0908", border: "1px solid rgba(255,245,223,.16)", boxShadow: "0 40px 120px rgba(0,0,0,.7)" }}
               onClick={event => event.stopPropagation()}
@@ -460,7 +533,8 @@ function MonchhichiCampaign() {
                       style={{
                         background: activeCut === index ? "#e2492f" : "rgba(255,245,223,.04)",
                         border: `1px solid ${activeCut === index ? "#e2492f" : "rgba(255,245,223,.14)"}`,
-                        color: "#fff5df", cursor: "pointer", transition: "all .2s ease",
+                        color: "#fff5df", cursor: "pointer",
+                        transition: "background-color 200ms cubic-bezier(0.23,1,0.32,1), border-color 200ms cubic-bezier(0.23,1,0.32,1)",
                       }}
                     >
                       <span className="font-mono-label text-[8px] tracking-[.24em]">{cut.label}</span>
