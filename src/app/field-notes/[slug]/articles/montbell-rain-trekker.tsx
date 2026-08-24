@@ -74,6 +74,49 @@ const score = [
   { label: "外型", value: 5, note: "對，這很重要" },
 ];
 
+const compareProducts = [
+  {
+    brand: "DECATHLON",
+    model: "Quechua MH150",
+    image: "/field-notes/montbell-rain-trekker/decathlon-mh150-official.jpg",
+    imageAlt: "Decathlon Quechua MH150 深藍色防水外套官方產品照",
+    price: "NT$1,749",
+    priceLabel: "台灣官方價",
+    weight: "約 490g",
+    weightLabel: "我當時比較的款式資料",
+    advantage: "口袋多｜透氣孔多｜預算最低",
+    tradeoff: "我穿去爬山時｜毛毛雨還行｜雨一大會濕到裡面",
+    href: DECATHLON_URL,
+  },
+  {
+    brand: "PATAGONIA",
+    model: "Torrentshell 3L",
+    image: "/field-notes/montbell-rain-trekker/patagonia-torrentshell-official.jpg",
+    imageAlt: "Patagonia Torrentshell 3L 灰色防水外套官方產品照",
+    price: "NT$7,560",
+    priceLabel: "台灣正式代理售價",
+    weight: "400g",
+    weightLabel: "品牌現行男款資料",
+    advantage: "三層結構｜有腋下拉鍊｜配置紮實",
+    tradeoff: "同價帶的強對手｜但它多出的通風配置不是我的優先項目",
+    href: PRO_OUTDOOR_URL,
+  },
+  {
+    brand: "MONT-BELL",
+    model: "Rain Trekker GTX",
+    image: "/field-notes/montbell-rain-trekker/rain-trekker-official.jpg",
+    imageAlt: "Mont-bell Rain Trekker GTX 深綠色防水外套官方產品照",
+    price: "NT$6,500",
+    priceLabel: "我在大遠百的活動實付",
+    weight: "301g",
+    weightLabel: "品牌現行男款資料",
+    advantage: "最輕｜收得最小｜也是我覺得最好看",
+    tradeoff: "不是單項規格碾壓｜而是最接近我的使用平衡",
+    href: MONTBELL_URL,
+    winner: true,
+  },
+];
+
 function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={`${styles.reveal} ${className}`} data-reveal>{children}</div>;
 }
@@ -133,8 +176,8 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
 
       <header className={styles.hero}>
         <Image
-          src="/field-notes/montbell-rain-trekker/rain-trekker-official.jpg"
-          alt="Mont-bell Rain Trekker 深綠色防水外套"
+          src="/field-notes/montbell-rain-trekker/video-hero.jpg"
+          alt="Oscar 穿著 Mont-bell Rain Trekker 走在臺中大雨中"
           fill
           priority
           sizes="100vw"
@@ -295,16 +338,15 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         </section>
 
         <section className={styles.productStage}>
-          <div className={styles.productSticky}>
-            <Reveal className={styles.productCopy}>
+          <div className={styles.productSpotlight}>
+            <div className={styles.productCopy}>
               <p className={styles.kicker}>THE ONE I BOUGHT</p>
               <h2>夠輕<br />收得小<br /><i>而且帥</i></h2>
               <p>
                 <LineText text="腋下拉鍊對我沒有那麼重要｜我真正每天會感受到的｜是它背在包裡的重量｜脫下來佔多少空間｜還有穿上去時我喜不喜歡自己" />
               </p>
-            </Reveal>
+            </div>
             <div className={styles.productVisual}>
-              <div className={styles.productHalo} aria-hidden="true" />
               <Image
                 src="/field-notes/montbell-rain-trekker/rain-trekker-official.jpg"
                 alt="Mont-bell Rain Trekker GTX 男款雨衣官方產品照"
@@ -312,7 +354,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
                 height={480}
                 className={styles.productImage}
               />
-              <span className={styles.productStamp}>PACKABLE<br />SHELL</span>
+              <span className={styles.productStamp}>301g<br />8 × 8 × 17cm</span>
               <a href={MONTBELL_URL} target="_blank" rel="noreferrer" className={styles.imageCredit}>
                 產品圖／Mont-bell Taiwan 官方
               </a>
@@ -331,9 +373,24 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
             </div>
           </Reveal>
           <div className={styles.factGrid}>
-            <Reveal className={styles.factCard}><strong>301<small>g</small></strong><span>平均重量</span></Reveal>
-            <Reveal className={styles.factCard}><strong>8×8×17<small>cm</small></strong><span>官方收納尺寸</span></Reveal>
-            <Reveal className={styles.factCard}><strong>3<small>L</small></strong><span>GORE-TEX／50D Nylon</span></Reveal>
+            <Reveal className={styles.factCard}>
+              <span className={styles.factLabel}>重量</span>
+              <strong>301<small>g</small></strong>
+              <h3>拿起來<br />大約一瓶 300mL 水的重量</h3>
+              <p>不是完全沒重量<br />但不像再塞一件厚外套進包包</p>
+            </Reveal>
+            <Reveal className={styles.factCard}>
+              <span className={styles.factLabel}>收納</span>
+              <strong>8×8×17<small>cm</small></strong>
+              <h3>收起來<br />約一個 500mL 保溫杯占的空間</h3>
+              <p>不穿時可以塞回包裡<br />不用一路拿在手上</p>
+            </Reveal>
+            <Reveal className={styles.factCard}>
+              <span className={styles.factLabel}>結構</span>
+              <strong>3<small>L</small></strong>
+              <h3>不是三件衣服<br />是像三明治的三層結構</h3>
+              <p>外層面對摩擦<br />中間防水透濕<br />內層保護薄膜</p>
+            </Reveal>
           </div>
           <Reveal>
             <p className={styles.factNote}>
@@ -347,46 +404,33 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
             <div className={styles.sectionHead}>
               <span>04</span>
               <div>
-                <p>先講我真的穿過什麼</p>
-                <h2>口袋多<br />透氣孔多<br />但我買它是為了防雨</h2>
+                <p>三件外套放在同一條尺上</p>
+                <h2>差異最大的不是品牌<br />是預算 重量與取捨</h2>
               </div>
             </div>
           </Reveal>
-          <Reveal className={styles.rainTestGraphic}>
-            <div className={styles.rainTestIntro}>
-              <span>DECATHLON｜MY FIELD TEST</span>
-              <h3>MH150 我穿去爬過幾次山</h3>
-              <p><LineText text="它不是完全沒優點｜口袋很多｜透氣孔也比較多｜但防水外套最先要完成的任務就是防雨" /></p>
-            </div>
-            <div className={styles.rainTestState} data-state="ok">
-              <span>毛毛雨</span>
-              <strong>還可以</strong>
-              <p>短時間小雨能用</p>
-            </div>
-            <div className={styles.rainTestState} data-state="fail">
-              <span>雨一大</span>
-              <strong>濕到裡面</strong>
-              <p>對我來說就是沒有完成任務</p>
-            </div>
-          </Reveal>
-          <div className={styles.candidateList}>
-            <Reveal className={styles.candidateRow}>
-              <div><span>DECATHLON</span><h3>Quechua MH150</h3></div>
-              <p><LineText text="我穿它爬過幾次山｜毛毛雨還行｜雨一大裡面就會濕｜口袋與透氣孔是優點｜但它沒有守住我最在意的防雨底線" /></p>
-              <strong>小雨可用<br />大雨不行</strong>
-            </Reveal>
-            <Reveal className={`${styles.candidateRow} ${styles.candidateFocus}`}>
-              <div><span>PATAGONIA</span><h3>Torrentshell 3L</h3></div>
-              <p><LineText text="這才是同一輪該看的對手｜同樣是三層防水外殼｜定位接近日常登山與長期使用｜售價獨立放在前面的價格卡" /></p>
-              <strong>同級比較<br />400g</strong>
-            </Reveal>
-            <Reveal className={`${styles.candidateRow} ${styles.candidateWinner}`}>
-              <div><span>MONT-BELL</span><h3>Rain Trekker</h3></div>
-              <p><LineText text="沒有一個單項規格誇張到碾壓｜但在重量 收納 活動性 價格與外型之間｜它最接近我要的平衡" /></p>
-              <strong>我最後買的<br />301g</strong>
-            </Reveal>
+          <div className={styles.productCompareGrid}>
+            {compareProducts.map((product) => (
+              <Reveal className={`${styles.compareProduct} ${product.winner ? styles.compareWinner : ""}`} key={product.model}>
+                <a href={product.href} target="_blank" rel="noreferrer" className={styles.compareImage}>
+                  <Image src={product.image} alt={product.imageAlt} fill sizes="(max-width: 820px) 100vw, 33vw" />
+                </a>
+                <div className={styles.compareProductCopy}>
+                  <span>{product.brand}</span>
+                  <h3>{product.model}</h3>
+                  <small>{product.priceLabel}</small>
+                  <strong>{product.price}</strong>
+                  <div className={styles.weightLine}>
+                    <b>{product.weight}</b>
+                    <small>{product.weightLabel}</small>
+                  </div>
+                  <p className={styles.productAdvantage}><LineText text={product.advantage} /></p>
+                  <p className={styles.productTradeoff}><LineText text={product.tradeoff} /></p>
+                </div>
+              </Reveal>
+            ))}
           </div>
-          <p className={styles.historyNote}><LineText text="MH150 的大雨表現是我的個人實穿紀錄｜不代表實驗室測試或每一件產品都會得到相同結果｜官方售價與型號已獨立放在前面的價格卡" /></p>
+          <p className={styles.historyNote}><LineText text="產品圖皆來自各品牌或台灣正式代理商品頁｜MH150 的大雨表現是我的個人實穿紀錄｜不代表每一件產品都會得到相同結果" /></p>
         </section>
 
         <section className={styles.compareSection}>
@@ -399,27 +443,23 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               </div>
             </div>
           </Reveal>
-          <Reveal className={styles.tableWrap}>
-            <div className={styles.compareTable} role="table" aria-label="Rain Trekker 與 Torrentshell 3L 官方規格比較">
-              <div className={styles.tableHeader} role="row">
-                <span role="columnheader">目前官方資料</span>
-                <strong role="columnheader">RAIN TREKKER GTX</strong>
-                <strong role="columnheader">TORRENTSHELL 3L</strong>
-              </div>
-              {[
-                ["重量", "301g", "400g"],
-                ["結構", "GORE-TEX 3L／50D", "H2No 3L／50D"],
-                ["收納", "附收納袋／8×8×17cm", "收進左側口袋"],
-                ["腋下拉鍊", "官方特色未列", "有"],
-                ["今天頁面價", "官方 NT$7,680", "臺灣通路 NT$7,560"],
-              ].map(([label, a, b]) => (
-                <div className={styles.tableRow} role="row" key={label}>
-                  <span role="cell">{label}</span><b role="cell">{a}</b><b role="cell">{b}</b>
-                </div>
-              ))}
-            </div>
-            <p><LineText text="兩邊都用 2026 年 8 月 24 日臺灣可查頁面｜尺寸與庫存仍要回商品頁確認｜這裡不把海外價格混進來製造假便宜" /></p>
-          </Reveal>
+          <div className={styles.differenceList}>
+            <Reveal className={styles.differenceRow}>
+              <span>01｜預算門檻</span>
+              <h3>不到兩千<br />或六到七千</h3>
+              <p><strong>MH150 是入門價位</strong><br />Rain Trekker 和 Torrentshell 才是同價帶對手</p>
+            </Reveal>
+            <Reveal className={styles.differenceRow}>
+              <span>02｜每天背著走</span>
+              <h3>301g<br />比 400g 少 99g</h3>
+              <p><strong>Mont-bell 的差異最直接</strong><br />不是一個漂亮數字<br />是它比較容易一直留在包裡</p>
+            </Reveal>
+            <Reveal className={styles.differenceRow}>
+              <span>03｜功能取捨</span>
+              <h3>口袋<br />通風<br />還是輕與好收</h3>
+              <p><strong>Decathlon 給我更多口袋</strong><br />Patagonia 給我腋下拉鍊<br />Mont-bell 給我最在乎的輕 好收 還有帥</p>
+            </Reveal>
+          </div>
           <Reveal className={styles.verdict}>
             <span>MY VERDICT</span>
             <p>
@@ -461,11 +501,17 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               </div>
             </div>
           </Reveal>
-          <div className={styles.layerStack}>
+          <div className={styles.systemLayout}>
+            <Reveal className={styles.systemPhoto}>
+              <Image src="/field-notes/montbell-rain-trekker/video-detail.jpg" alt="Oscar 穿著 Mont-bell Rain Trekker 的外套細節" fill sizes="(max-width: 820px) 100vw, 42vw" />
+              <span>實際穿著畫面<br />Shell 只負責防雨與擋風</span>
+            </Reveal>
+            <div className={styles.layerStack}>
             <Reveal className={styles.layer}><span>01</span><b>BASE</b><strong>Merino 190g/m²</strong><p>保暖、排濕、抗臭</p></Reveal>
             <Reveal className={styles.layer}><span>02</span><b>WIND</b><strong>Decathlon MH500</strong><p>防風、防曬，約 150g 等級</p></Reveal>
             <Reveal className={`${styles.layer} ${styles.shellLayer}`}><span>03</span><b>SHELL</b><strong>Mont-bell Rain Trekker</strong><p>防水、防風</p></Reveal>
             <Reveal className={styles.layer}><span>04</span><b>WARMTH</b><strong>Down Insulation</strong><p>保暖、可壓縮；目前仍在補</p></Reveal>
+            </div>
           </div>
           <Reveal className={styles.systemQuote}>
             <LineText text="Rain Trekker 不需要保暖｜羽絨不需要負責下雨｜美麗諾不需要擋風｜每一層把一件事做好｜組起來反而比一件又厚又重的萬能外套更好用" />
