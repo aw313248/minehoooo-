@@ -114,7 +114,12 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
   if (!note) notFound();
 
   if (slug === "montbell-rain-trekker") {
-    return <MontbellRainTrekkerArticle note={note} />;
+    return (
+      <>
+        <ScrollUnlock />
+        <MontbellRainTrekkerArticle note={note} />
+      </>
+    );
   }
 
   // Route editorial-v2 articles to the magazine-style block template
