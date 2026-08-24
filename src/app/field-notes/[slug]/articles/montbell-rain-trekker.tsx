@@ -9,8 +9,7 @@ import styles from "./montbell-rain-trekker.module.css";
 const MONTBELL_URL = "https://www.montbell.com.tw/products/rain-trekker-gtx%E7%94%B7%E6%AC%BE%E9%9B%A8%E4%B8%AD%E8%88%9E%E8%80%85%E9%9B%A8%E8%A1%A31128729";
 const PCHOME_URL = "https://24h.pchome.com.tw/prod/DEBLEN-A900IT5KX";
 const MOMO_URL = "https://www.momoshop.com.tw/search/%E9%98%B2%E6%B0%B4%E5%A4%96%E5%A5%97";
-const DECATHLON_URL = "https://shopee.tw/%E3%80%90%E8%BF%AA%E5%8D%A1%E5%84%82%E3%80%91%E7%94%B7%E6%AC%BE%E5%88%9D%E9%9A%8E%E7%99%BB%E5%B1%B1%E9%98%B2%E6%B0%B4%E5%A4%96%E5%A5%97-15000mm-MH-150%EF%BD%9CDecathlon-i.453283526.40311582314";
-const TNF_URL = "https://www.thenorthface.com.tw/SalePage/Index/11510553";
+const DECATHLON_URL = "https://www.decathlon.tw/p/%E7%94%B7%E6%AC%BE%E7%99%BB%E5%B1%B1-15000mm%E9%98%B2%E6%B0%B4%E5%A4%96%E5%A5%97-mh150-%E8%97%8D%E8%89%B2-quechua-8540225.html";
 const PRO_OUTDOOR_URL = "https://www.prooutdoor.com.tw/collections/water-proof/products/patagonia%C2%AE%E7%94%B7%E6%AC%BE-torrentshell-3l-rain-jacket-%E5%89%AF%E6%9C%AC";
 const PATAGONIA_URL = "https://www.patagonia.com/product/mens-torrentshell-3-layer-rain-jacket/85241.html";
 
@@ -18,8 +17,9 @@ const channelCards = [
   {
     channel: "PCHOME 24H",
     lead: "Mont-bell Rain Trekker",
+    priceLabel: "頁面價",
     price: "NT$6,910",
-    detail: "頁面原價 NT$7,680｜廠商出貨｜不是 24h 到貨",
+    detail: "廠商出貨｜不是 24h 到貨",
     brands: ["mont-bell", "The North Face", "Columbia", "MAMMUT", "AIGLE", "ATUNAS", "CHUMS", "Mountain Hardwear", "TRAVELER", "Hilltop", "JORDON"],
     href: PCHOME_URL,
     linkLabel: "查看 PChome 頁面",
@@ -27,6 +27,7 @@ const channelCards = [
   {
     channel: "MOMO",
     lead: "今天不硬填同款價格",
+    priceLabel: "即時價",
     price: "未取得即時價",
     detail: "搜尋得到舊促銷快取｜不能拿 7 月價格假裝今天",
     brands: ["mont-bell", "The North Face", "ATUNAS", "AIGLE", "Patagonia", "Mountain Hardwear", "TRAVELER", "Hilltop", "JORDON"],
@@ -36,20 +37,32 @@ const channelCards = [
   {
     channel: "品牌直售",
     lead: "Mont-bell 官方",
+    priceLabel: "台灣官方定價",
     price: "NT$7,680",
     detail: "Rain Trekker 男款 #1128729｜可直接核對型號與規格",
-    brands: ["mont-bell NT$7,680", "The North Face 活動價 NT$5,904"],
+    brands: ["mont-bell", "The North Face"],
     href: MONTBELL_URL,
     linkLabel: "查看 Mont-bell 官方",
   },
   {
-    channel: "官方旗艦／授權通路",
-    lead: "不同價位一起看",
-    price: "NT$1,709 起",
-    detail: "Decathlon MH150 為券後價｜Patagonia Torrentshell 通路價 NT$7,560",
-    brands: ["Decathlon 官方蝦皮", "Patagonia Pro Outdoor"],
+    channel: "品牌直售",
+    lead: "Decathlon Quechua MH150",
+    priceLabel: "台灣官方價",
+    price: "NT$1,749",
+    detail: "男款 #8540225｜官方頁面顯示非活動價",
+    brands: ["Decathlon", "Quechua"],
+    href: DECATHLON_URL,
+    linkLabel: "查看 Decathlon 官方",
+  },
+  {
+    channel: "台灣正式代理",
+    lead: "Patagonia Torrentshell 3L",
+    priceLabel: "正式代理售價",
+    price: "NT$7,560",
+    detail: "男款 #85241｜Pro Outdoor 正式代理商品頁",
+    brands: ["Patagonia", "Pro Outdoor"],
     href: PRO_OUTDOOR_URL,
-    linkLabel: "查看 Patagonia 台灣通路",
+    linkLabel: "查看 Patagonia 台灣代理",
   },
 ];
 
@@ -156,16 +169,33 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               </div>
             </div>
             <p className={styles.marketIntro}>
-              <LineText text="同一件 Rain Trekker｜PChome 頁面比品牌定價少 NT$770｜但 momo 今天的同款即時價無法證實｜所以我不拿舊促銷數字來補空格" />
+              <LineText text="同一件外套在不同通路不一定同時上架｜我只列今天能核對型號與來源的頁面價格｜momo 的同款即時價無法證實｜所以我不拿舊促銷數字補空格" />
             </p>
+          </Reveal>
+          <Reveal className={styles.purchasePrice}>
+            <div className={styles.purchaseIntro}>
+              <span>MY ACTUAL PURCHASE</span>
+              <h3>台中大遠百<br />門市活動成交</h3>
+              <p>這是我當時真正付出去的價格<br />不是現在的品牌牌價</p>
+            </div>
+            <div className={styles.purchaseNumber}>
+              <span>我的實付</span>
+              <strong>NT$6,500</strong>
+            </div>
+            <div className={styles.purchaseOfficial}>
+              <span>目前官方定價</span>
+              <strong>NT$7,680</strong>
+              <small>兩個價格分開記錄<br />避免把歷史活動價當成官方現價</small>
+            </div>
           </Reveal>
           <div className={styles.swipeLabel}>左右滑動看通路 →</div>
           <div className={styles.marketRail} aria-label="2026 年 8 月 24 日防水外套通路比較">
             {channelCards.map((card) => (
-              <Reveal className={styles.marketCard} key={card.channel}>
+              <Reveal className={styles.marketCard} key={`${card.channel}-${card.lead}`}>
                 <span className={styles.marketChannel}>{card.channel}</span>
                 <div>
                   <h3>{card.lead}</h3>
+                  <span className={styles.priceLabel}>{card.priceLabel}</span>
                   <strong>{card.price}</strong>
                   <p>{card.detail}</p>
                 </div>
@@ -345,14 +375,9 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               <p><LineText text="我穿它爬過幾次山｜毛毛雨還行｜雨一大裡面就會濕｜口袋與透氣孔是優點｜但它沒有守住我最在意的防雨底線" /></p>
               <strong>小雨可用<br />大雨不行</strong>
             </Reveal>
-            <Reveal className={styles.candidateRow}>
-              <div><span>THE NORTH FACE</span><h3>DryVent Shell</h3></div>
-              <p><LineText text="臺灣官網同用途款今天有活動價 NT$5,904｜價格開始接近專業外殼｜但該頁沒有列重量與收納｜我不替它補不存在的數字" /></p>
-              <strong>品牌官網<br />今天有活動</strong>
-            </Reveal>
             <Reveal className={`${styles.candidateRow} ${styles.candidateFocus}`}>
               <div><span>PATAGONIA</span><h3>Torrentshell 3L</h3></div>
-              <p><LineText text="這才是同一輪該看的對手｜同樣是三層防水外殼｜台灣授權通路今天頁面價 NT$7,560｜定位接近日常登山與長期使用" /></p>
+              <p><LineText text="這才是同一輪該看的對手｜同樣是三層防水外殼｜定位接近日常登山與長期使用｜售價獨立放在前面的價格卡" /></p>
               <strong>同級比較<br />400g</strong>
             </Reveal>
             <Reveal className={`${styles.candidateRow} ${styles.candidateWinner}`}>
@@ -361,7 +386,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               <strong>我最後買的<br />301g</strong>
             </Reveal>
           </div>
-          <p className={styles.historyNote}><LineText text="MH150 的大雨表現是我的個人實穿紀錄｜不代表實驗室測試或每一件產品都會得到相同結果｜今天可查到的官方蝦皮頁面為券後 NT$1,709｜不是裸價" /></p>
+          <p className={styles.historyNote}><LineText text="MH150 的大雨表現是我的個人實穿紀錄｜不代表實驗室測試或每一件產品都會得到相同結果｜官方售價與型號已獨立放在前面的價格卡" /></p>
         </section>
 
         <section className={styles.compareSection}>
@@ -412,7 +437,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
                 <h2>價差不大時<br />我買的是確定性</h2>
               </div>
             </div>
-            <p><LineText text="網拍有便宜｜但沒有便宜到值得我承擔尺寸 版型 色差與退換貨的風險｜這件會跟著我拍攝 旅行 登山｜我要先知道肩膀能不能動｜裡面加衣服會不會卡｜背上器材後還舒不舒服" /></p>
+            <p><LineText text="我最後是在台中大遠百現場買｜當時剛好遇到門市活動｜網拍沒有便宜到值得我承擔尺寸 版型 色差與退換貨的風險｜這件會跟著我拍攝 旅行 登山｜我要先知道背上器材後還舒不舒服" /></p>
           </Reveal>
           <div className={styles.storeGrid}>
             {[
@@ -496,8 +521,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
           <a href={MONTBELL_URL} target="_blank" rel="noreferrer">Mont-bell Taiwan｜Rain Trekker GTX 男款 #1128729 ↗</a>
           <a href={PCHOME_URL} target="_blank" rel="noreferrer">PChome 24h｜Rain Trekker 當日頁面 ↗</a>
           <a href={MOMO_URL} target="_blank" rel="noreferrer">momo｜防水外套搜尋頁 ↗</a>
-          <a href={TNF_URL} target="_blank" rel="noreferrer">The North Face Taiwan｜男款 DryVent 防水外套 ↗</a>
-          <a href={DECATHLON_URL} target="_blank" rel="noreferrer">Decathlon 官方蝦皮｜MH150 男款防水外套 ↗</a>
+          <a href={DECATHLON_URL} target="_blank" rel="noreferrer">Decathlon Taiwan｜MH150 男款 #8540225 ↗</a>
           <a href={PRO_OUTDOOR_URL} target="_blank" rel="noreferrer">Pro Outdoor｜Patagonia Torrentshell 3L 臺灣授權通路 ↗</a>
           <a href={PATAGONIA_URL} target="_blank" rel="noreferrer">Patagonia｜Men&apos;s Torrentshell 3L Rain Jacket #85241 ↗</a>
           <small><LineText text="本文中的主觀評分與購買理由為 Oscar 的個人使用紀錄｜通路價格是 2026 年 8 月 24 日可查頁面快照｜活動 庫存與尺寸可能調整｜購買前請重新查看商品頁" /></small>
