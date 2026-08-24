@@ -30,6 +30,23 @@ export interface FieldNote {
 }
 
 export const fieldNotes: FieldNote[] = [
+  // ── 臺中人的輕量雨殼選擇 ──────────────────────────────────────
+  {
+    slug:          "montbell-rain-trekker",
+    title:         "我沒有買最便宜的雨衣，因為這件比較帥",
+    issue:         "005",
+    subtitle:      "Mont-bell Rain Trekker：輕、收得小，而且我真的會穿",
+    date:          "2026-08-24",
+    category:      "GEAR",
+    categoryLabel: "GEAR · RAIN SHELL",
+    tags:          ["Mont-bell", "Rain Trekker", "Patagonia", "Torrentshell 3L", "迪卡儂", "防水外套", "臺中", "戶外裝備"],
+    excerpt:       "從迪卡儂、Patagonia 比到 Mont-bell，我最後不是選規格最誇張的，而是選一件夠輕、收得夠小、穿起來也真的喜歡的防水外殼",
+    heroImage:     "/field-notes/montbell-rain-trekker/taichung-rain.jpg",
+    readingTime:   7,
+    articleType:   "editorial-v2",
+    commentPrompt: "你買外套時，機能、價格跟帥，哪一個最重要？",
+  },
+
   // ── 一個人旅行拍攝方法（留言關鍵字：台灣好美）──────────────
   {
     slug:          "how-i-film-solo-travel",

@@ -31,6 +31,7 @@ import viennaBlocks from "./articles/vienna-griechenbeisl";
 import guruwalkBlocks from "./articles/guruwalk";
 import aiCrimeFilmBlocks from "./articles/ai-crime-film";
 import soloTravelBlocks from "./articles/how-i-film-solo-travel";
+import MontbellRainTrekkerArticle from "./articles/montbell-rain-trekker";
 
 const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
@@ -47,7 +48,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const canonical = `${SITE_URL}/field-notes/${slug}`;
   const ogImage =
-    slug === "seedance-aerial"
+    slug === "montbell-rain-trekker"
+      ? "/field-notes/montbell-rain-trekker/taichung-rain.jpg"
+      : slug === "seedance-aerial"
       ? "/field-notes/seedance-map-route/social-cover.jpg"
       : slug === "vienna-griechenbeisl"
       ? "/field-notes/griechenbeisl/og.jpg"
@@ -109,6 +112,10 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
   const { slug } = await params;
   const note = getFieldNote(slug);
   if (!note) notFound();
+
+  if (slug === "montbell-rain-trekker") {
+    return <MontbellRainTrekkerArticle note={note} />;
+  }
 
   // Route editorial-v2 articles to the magazine-style block template
   if (note.articleType === "editorial-v2") {
