@@ -7,8 +7,51 @@ import type { FieldNote } from "@/data/fieldNotes";
 import styles from "./montbell-rain-trekker.module.css";
 
 const MONTBELL_URL = "https://www.montbell.com.tw/products/rain-trekker-gtx%E7%94%B7%E6%AC%BE%E9%9B%A8%E4%B8%AD%E8%88%9E%E8%80%85%E9%9B%A8%E8%A1%A31128729";
+const PCHOME_URL = "https://24h.pchome.com.tw/prod/DEBLEN-A900IT5KX";
+const MOMO_URL = "https://www.momoshop.com.tw/search/%E9%98%B2%E6%B0%B4%E5%A4%96%E5%A5%97";
+const DECATHLON_URL = "https://shopee.tw/%E3%80%90%E8%BF%AA%E5%8D%A1%E5%84%82%E3%80%91%E7%94%B7%E6%AC%BE%E5%88%9D%E9%9A%8E%E7%99%BB%E5%B1%B1%E9%98%B2%E6%B0%B4%E5%A4%96%E5%A5%97-15000mm-MH-150%EF%BD%9CDecathlon-i.453283526.40311582314";
+const TNF_URL = "https://www.thenorthface.com.tw/SalePage/Index/11510553";
+const PRO_OUTDOOR_URL = "https://www.prooutdoor.com.tw/collections/water-proof/products/patagonia%C2%AE%E7%94%B7%E6%AC%BE-torrentshell-3l-rain-jacket-%E5%89%AF%E6%9C%AC";
 const PATAGONIA_URL = "https://www.patagonia.com/product/mens-torrentshell-3-layer-rain-jacket/85241.html";
-const COMMONS_URL = "https://commons.wikimedia.org/wiki/File:Geya_Bus_FAE-780_at_Cheng_Ching_Hospital_Station_20170708.jpg";
+
+const channelCards = [
+  {
+    channel: "PCHOME 24H",
+    lead: "Mont-bell Rain Trekker",
+    price: "NT$6,910",
+    detail: "頁面原價 NT$7,680｜廠商出貨｜不是 24h 到貨",
+    brands: ["mont-bell", "The North Face", "Columbia", "MAMMUT", "AIGLE", "ATUNAS", "CHUMS", "Mountain Hardwear", "TRAVELER", "Hilltop", "JORDON"],
+    href: PCHOME_URL,
+    linkLabel: "查看 PChome 頁面",
+  },
+  {
+    channel: "MOMO",
+    lead: "今天不硬填同款價格",
+    price: "未取得即時價",
+    detail: "搜尋得到舊促銷快取｜不能拿 7 月價格假裝今天",
+    brands: ["mont-bell", "The North Face", "ATUNAS", "AIGLE", "Patagonia", "Mountain Hardwear", "TRAVELER", "Hilltop", "JORDON"],
+    href: MOMO_URL,
+    linkLabel: "查看 momo 搜尋頁",
+  },
+  {
+    channel: "品牌直售",
+    lead: "Mont-bell 官方",
+    price: "NT$7,680",
+    detail: "Rain Trekker 男款 #1128729｜可直接核對型號與規格",
+    brands: ["mont-bell NT$7,680", "The North Face 活動價 NT$5,904"],
+    href: MONTBELL_URL,
+    linkLabel: "查看 Mont-bell 官方",
+  },
+  {
+    channel: "官方旗艦／授權通路",
+    lead: "不同價位一起看",
+    price: "NT$1,709 起",
+    detail: "Decathlon MH150 為券後價｜Patagonia Torrentshell 通路價 NT$7,560",
+    brands: ["Decathlon 官方蝦皮", "Patagonia Pro Outdoor"],
+    href: PRO_OUTDOOR_URL,
+    linkLabel: "查看 Patagonia 台灣通路",
+  },
+];
 
 const score = [
   { label: "機能", value: 4, note: "夠用，不追極端規格" },
@@ -20,6 +63,10 @@ const score = [
 
 function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return <div className={`${styles.reveal} ${className}`} data-reveal>{children}</div>;
+}
+
+function LineText({ text }: { text: string }) {
+  return <>{text.split("｜").map((line) => <span className={styles.copyLine} key={line}>{line}</span>)}</>;
 }
 
 export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }) {
@@ -99,27 +146,63 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
       </header>
 
       <article className={styles.article}>
+        <section className={styles.marketSection} id="today-market">
+          <Reveal>
+            <div className={styles.sectionHead}>
+              <span>01</span>
+              <div>
+                <p>2026 08 24｜今天買得到什麼</p>
+                <h2>先看通路<br />再談我最後買哪件</h2>
+              </div>
+            </div>
+            <p className={styles.marketIntro}>
+              <LineText text="同一件 Rain Trekker｜PChome 頁面比品牌定價少 NT$770｜但 momo 今天的同款即時價無法證實｜所以我不拿舊促銷數字來補空格" />
+            </p>
+          </Reveal>
+          <div className={styles.swipeLabel}>左右滑動看通路 →</div>
+          <div className={styles.marketRail} aria-label="2026 年 8 月 24 日防水外套通路比較">
+            {channelCards.map((card) => (
+              <Reveal className={styles.marketCard} key={card.channel}>
+                <span className={styles.marketChannel}>{card.channel}</span>
+                <div>
+                  <h3>{card.lead}</h3>
+                  <strong>{card.price}</strong>
+                  <p>{card.detail}</p>
+                </div>
+                <small>這次查到的相關品牌</small>
+                <div className={styles.brandCloud} aria-label={`${card.channel} 本次查到的相關品牌`}>
+                  {card.brands.map((brand) => <span key={brand}>{brand}</span>)}
+                </div>
+                <a href={card.href} target="_blank" rel="noreferrer">{card.linkLabel} ↗</a>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className={styles.marketNote}>
+            <LineText text="這不是四個平台都有同一款的假完整比價｜是我今天真的查得到的頁面快照｜價格與尺寸可能隨時變動｜下單前還是要回商品頁確認" />
+          </Reveal>
+        </section>
+
         <section className={styles.quickAnswer}>
           <Reveal>
             <p className={styles.kicker}>THE ANSWER I PROMISED IN THE VIDEO</p>
-            <h2>先講答案：<br />我穿的是 Mont-bell Rain Trekker。</h2>
+            <h2>先講答案<br />我穿的是 Mont-bell Rain Trekker</h2>
           </Reveal>
           <div className={styles.answerGrid}>
             <Reveal className={styles.answerCard}>
               <span>它是什麼？</span>
               <p>
-                一件<strong>防水透濕的外層 Shell</strong>。它不負責把你穿暖，主要工作就是把雨和風擋在外面；冷的時候，再靠裡面的美麗諾或羽絨保暖。
+                <LineText text="一件防水透濕的外層 Shell｜它不負責把你穿暖｜主要工作就是把雨和風擋在外面｜冷的時候再靠裡面的美麗諾或羽絨保暖" />
               </p>
             </Reveal>
             <Reveal className={`${styles.answerCard} ${styles.answerMain}`}>
               <span>我為什麼買？</span>
               <p>
-                因為它<strong>夠輕、收得小、活動不卡</strong>，而且同級外套都看過一輪後，我最喜歡它穿起來的樣子。
+                <LineText text="因為它夠輕｜收得小｜活動不卡｜同級外套都看過一輪後｜我最喜歡它穿起來的樣子" />
               </p>
             </Reveal>
           </div>
           <Reveal className={styles.notSponsored}>
-            影片裡說的是真的：這次不是業配。只是如果 Mont-bell 看到，我沒有拒絕業配。
+            <LineText text="影片裡說的是真的｜這次不是業配｜只是如果 Mont-bell 看到｜我沒有拒絕業配" />
           </Reveal>
           <div className={styles.reelStrip}>
             {[
@@ -138,29 +221,44 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <Reveal className={styles.opening}>
           <p className={styles.kicker}>THE REAL BRIEF</p>
           <p className={styles.lead}>
-            我不是在找一件規格最強的雨衣。我在找一件旅行、登山、外景拍攝都能用，
-            <strong>不下雨時也願意一直放在包包裡</strong>的外殼。
+            <LineText text="我不是在找規格最強的雨衣｜我要的是旅行 登山 外景拍攝都能用｜不下雨時也願意一直放在包包裡的外殼" />
           </p>
           <blockquote>
-            一件規格很強、但你不想穿的外套，CP 值其實很低。
+            <LineText text="一件規格很強｜但你不想穿的外套｜CP 值其實很低" />
           </blockquote>
         </Reveal>
 
-        <section className={styles.needSection} id="decision">
+        <section className={styles.gateSection} id="decision">
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>01</span>
+              <span>02</span>
               <div>
-                <p>我的需求</p>
-                <h2>雨來了要能穿，雨停了要能消失。</h2>
+                <p>挑衝鋒衣先過三關</p>
+                <h2>不是只看防水數字<br />是先問它能不能完成任務</h2>
               </div>
             </div>
           </Reveal>
-          <div className={styles.needGrid}>
-            {["旅行遇雨", "登山", "外景拍攝", "背攝影器材", "肩膀能活動", "收進背包"].map((item, index) => (
-              <Reveal key={item} className={styles.needCard}>
-                <span>0{index + 1}</span>
-                <strong>{item}</strong>
+          <Reveal className={styles.gateVisual}>
+            <Image
+              src="/field-notes/montbell-rain-trekker/shell-three-gates.jpg"
+              alt="概念圖以三個畫面呈現大雨防水 透氣活動與輕量收納"
+              width={1536}
+              height={1024}
+              sizes="(max-width: 820px) 100vw, 1120px"
+            />
+            <span>ChatGPT 概念圖｜不是品牌規格或實穿證據</span>
+          </Reveal>
+          <div className={styles.swipeLabel}>左右滑動看三個門檻 →</div>
+          <div className={styles.gateRail} aria-label="選擇防水外殼的三個門檻">
+            {[
+              ["01", "大雨扛不扛得住", "先看防水膜 全壓膠 拉鍊 帽兜與袖口｜毛毛雨沒事不代表連續大雨也守得住"],
+              ["02", "穿久會不會悶卡", "透氣孔很有用｜肩膀與手臂也要能動｜但這些不能交換掉防水底線"],
+              ["03", "雨停還會不會帶", "重量與收納體積決定它會不會一直留在包裡｜帥則是最後讓我真的想穿的決勝點"],
+            ].map(([num, title, body]) => (
+              <Reveal key={num} className={styles.gateCard}>
+                <span>{num}</span>
+                <h3>{title}</h3>
+                <p><LineText text={body} /></p>
               </Reveal>
             ))}
           </div>
@@ -170,10 +268,9 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
           <div className={styles.productSticky}>
             <Reveal className={styles.productCopy}>
               <p className={styles.kicker}>THE ONE I BOUGHT</p>
-              <h2>夠輕。<br />收得小。<br /><i>而且帥。</i></h2>
+              <h2>夠輕<br />收得小<br /><i>而且帥</i></h2>
               <p>
-                腋下拉鍊對我沒有那麼重要。我真正每天會感受到的，是它背在包裡的重量、
-                脫下來之後佔多少空間，還有穿上去時我喜不喜歡自己。
+                <LineText text="腋下拉鍊對我沒有那麼重要｜我真正每天會感受到的｜是它背在包裡的重量｜脫下來佔多少空間｜還有穿上去時我喜不喜歡自己" />
               </p>
             </Reveal>
             <div className={styles.productVisual}>
@@ -196,10 +293,10 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.factSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>02</span>
+              <span>03</span>
               <div>
                 <p>目前官方男款 #1128729</p>
-                <h2>規格不是主角，但它要過基本門檻。</h2>
+                <h2>規格不是主角<br />但它要先過基本門檻</h2>
               </div>
             </div>
           </Reveal>
@@ -210,7 +307,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
           </div>
           <Reveal>
             <p className={styles.factNote}>
-              這裡列的是 2026 年 8 月 24 日臺灣官網上的現行男款資料。Rain Trekker 不同年份、性別與型號的重量和材質可能不同；你的實際版本仍以衣服內標與型號為準。
+              <LineText text="這裡列的是 2026 年 8 月 24 日臺灣官網現行男款資料｜不同年份 性別與型號的重量和材質可能不同｜實際版本仍以衣服內標與型號為準" />
             </p>
           </Reveal>
         </section>
@@ -218,45 +315,62 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.candidates}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>03</span>
+              <span>04</span>
               <div>
-                <p>我當時比過的選項</p>
-                <h2>便宜沒有錯，只是每一件要補的缺口不同。</h2>
+                <p>先講我真的穿過什麼</p>
+                <h2>口袋多<br />透氣孔多<br />但我買它是為了防雨</h2>
               </div>
+            </div>
+          </Reveal>
+          <Reveal className={styles.rainTestGraphic}>
+            <div className={styles.rainTestIntro}>
+              <span>DECATHLON｜MY FIELD TEST</span>
+              <h3>MH150 我穿去爬過幾次山</h3>
+              <p><LineText text="它不是完全沒優點｜口袋很多｜透氣孔也比較多｜但防水外套最先要完成的任務就是防雨" /></p>
+            </div>
+            <div className={styles.rainTestState} data-state="ok">
+              <span>毛毛雨</span>
+              <strong>還可以</strong>
+              <p>短時間小雨能用</p>
+            </div>
+            <div className={styles.rainTestState} data-state="fail">
+              <span>雨一大</span>
+              <strong>濕到裡面</strong>
+              <p>對我來說就是沒有完成任務</p>
             </div>
           </Reveal>
           <div className={styles.candidateList}>
             <Reveal className={styles.candidateRow}>
               <div><span>DECATHLON</span><h3>Quechua MH150</h3></div>
-              <p>當時看到約 NT$1,749。不到兩千元就有完整防水機能，如果只是城市旅行、偶爾下雨或預算有限，我到現在還是覺得合理。</p>
-              <strong>最便宜、夠用</strong>
+              <p><LineText text="我穿它爬過幾次山｜毛毛雨還行｜雨一大裡面就會濕｜口袋與透氣孔是優點｜但它沒有守住我最在意的防雨底線" /></p>
+              <strong>小雨可用<br />大雨不行</strong>
             </Reveal>
             <Reveal className={styles.candidateRow}>
-              <div><span>DECATHLON</span><h3>城市機能防水外套</h3></div>
-              <p>當時看到約 NT$1,649，外型也不錯。但功能跟我原本的外套重疊，便宜不代表真的補上裝備缺口。</p>
-              <strong>功能重疊</strong>
+              <div><span>THE NORTH FACE</span><h3>DryVent Shell</h3></div>
+              <p><LineText text="臺灣官網同用途款今天有活動價 NT$5,904｜價格開始接近專業外殼｜但該頁沒有列重量與收納｜我不替它補不存在的數字" /></p>
+              <strong>品牌官網<br />今天有活動</strong>
             </Reveal>
             <Reveal className={`${styles.candidateRow} ${styles.candidateFocus}`}>
               <div><span>PATAGONIA</span><h3>Torrentshell 3L</h3></div>
-              <p>這才是應該放進同一輪看的對手：同樣是三層防水外殼、可以收納，定位更接近日常登山與長期使用。</p>
-              <strong>同級比較</strong>
+              <p><LineText text="這才是同一輪該看的對手｜同樣是三層防水外殼｜台灣授權通路今天頁面價 NT$7,560｜定位接近日常登山與長期使用" /></p>
+              <strong>同級比較<br />400g</strong>
             </Reveal>
             <Reveal className={`${styles.candidateRow} ${styles.candidateWinner}`}>
               <div><span>MONT-BELL</span><h3>Rain Trekker</h3></div>
-              <p>沒有一個單項規格誇張到碾壓，但在重量、收納、活動性、價格和外型之間，最接近我要的平衡。</p>
-              <strong>我最後買的</strong>
+              <p><LineText text="沒有一個單項規格誇張到碾壓｜但在重量 收納 活動性 價格與外型之間｜它最接近我要的平衡" /></p>
+              <strong>我最後買的<br />301g</strong>
             </Reveal>
           </div>
-          <p className={styles.historyNote}>迪卡儂價格與規格是我的當時購買紀錄，不代表目前售價；精確舊型號確認後再補，不用假裝每個數字都還有效。</p>
+          <p className={styles.historyNote}><LineText text="MH150 的大雨表現是我的個人實穿紀錄｜不代表實驗室測試或每一件產品都會得到相同結果｜今天可查到的官方蝦皮頁面為券後 NT$1,709｜不是裸價" /></p>
         </section>
 
         <section className={styles.compareSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>04</span>
+              <span>05</span>
               <div>
                 <p>Mont-bell vs Patagonia</p>
-                <h2>同樣能擋雨，差別是你想把重量花在哪裡。</h2>
+                <h2>同樣能擋雨<br />差別是你想把重量花在哪裡</h2>
               </div>
             </div>
           </Reveal>
@@ -272,20 +386,19 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
                 ["結構", "GORE-TEX 3L／50D", "H2No 3L／50D"],
                 ["收納", "附收納袋／8×8×17cm", "收進左側口袋"],
                 ["腋下拉鍊", "官方特色未列", "有"],
-                ["官方標價", "臺灣 NT$7,680", "美國 US$189"],
+                ["今天頁面價", "官方 NT$7,680", "臺灣通路 NT$7,560"],
               ].map(([label, a, b]) => (
                 <div className={styles.tableRow} role="row" key={label}>
                   <span role="cell">{label}</span><b role="cell">{a}</b><b role="cell">{b}</b>
                 </div>
               ))}
             </div>
-            <p>價格來自不同市場，只用來辨識產品定位，不能直接當臺灣到手價比較。真正比價應該在同一天、同一地區、同尺寸下完成。</p>
+            <p><LineText text="兩邊都用 2026 年 8 月 24 日臺灣可查頁面｜尺寸與庫存仍要回商品頁確認｜這裡不把海外價格混進來製造假便宜" /></p>
           </Reveal>
           <Reveal className={styles.verdict}>
             <span>MY VERDICT</span>
             <p>
-              Patagonia 沒有不好。只是對我來說，Pit Zip 的價值沒有大到能抵過每天背著的重量；
-              <strong>Rain Trekker 已經夠防水、比較輕、能收得小，而且我更喜歡它穿起來的樣子。</strong>
+              <LineText text="Patagonia 沒有不好｜只是對我來說 Pit Zip 的價值｜沒有大到能抵過每天背著的重量｜Rain Trekker 已經夠防水｜比較輕｜能收得小｜而且我更喜歡它穿起來的樣子" />
             </p>
           </Reveal>
         </section>
@@ -293,13 +406,13 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.storeSection}>
           <Reveal className={styles.storeCopy}>
             <div className={styles.sectionHead}>
-              <span>05</span>
+              <span>06</span>
               <div>
                 <p>為什麼最後現場買</p>
-                <h2>價差不大時，我買的是確定性。</h2>
+                <h2>價差不大時<br />我買的是確定性</h2>
               </div>
             </div>
-            <p>網拍有便宜，但沒有便宜到值得我承擔尺寸、版型、色差和退換貨的風險。這件會跟著我拍攝、旅行、登山，我需要先知道肩膀能不能動、裡面加衣服會不會卡，背上器材後還舒不舒服。</p>
+            <p><LineText text="網拍有便宜｜但沒有便宜到值得我承擔尺寸 版型 色差與退換貨的風險｜這件會跟著我拍攝 旅行 登山｜我要先知道肩膀能不能動｜裡面加衣服會不會卡｜背上器材後還舒不舒服" /></p>
           </Reveal>
           <div className={styles.storeGrid}>
             {[
@@ -316,10 +429,10 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.systemSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>06</span>
+              <span>07</span>
               <div>
                 <p>後來我才懂的事</p>
-                <h2>不是找一件萬能外套，是讓每一層只做好一件事。</h2>
+                <h2>不是找一件萬能外套<br />是讓每一層只做好一件事</h2>
               </div>
             </div>
           </Reveal>
@@ -330,17 +443,17 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
             <Reveal className={styles.layer}><span>04</span><b>WARMTH</b><strong>Down Insulation</strong><p>保暖、可壓縮；目前仍在補</p></Reveal>
           </div>
           <Reveal className={styles.systemQuote}>
-            Rain Trekker 不需要保暖。羽絨不需要負責下雨。美麗諾不需要擋風。每一層把一件事做好，組起來反而比一件又厚又重的萬能外套更好用。
+            <LineText text="Rain Trekker 不需要保暖｜羽絨不需要負責下雨｜美麗諾不需要擋風｜每一層把一件事做好｜組起來反而比一件又厚又重的萬能外套更好用" />
           </Reveal>
         </section>
 
         <section className={styles.scoreSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>07</span>
+              <span>08</span>
               <div>
                 <p>OSCAR GEAR SCORE</p>
-                <h2>我以後評裝備，就看這五件事。</h2>
+                <h2>我以後評裝備<br />就看這五件事</h2>
               </div>
             </div>
           </Reveal>
@@ -363,27 +476,31 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
           </Reveal>
           <div className={styles.recommendGrid}>
             <Reveal className={styles.recommendCard}>
-              <span>NT$2,000 以下</span><h3>先買迪卡儂</h3><p>只是需要一件可靠雨衣、偶爾旅行或預算有限，不用硬上 Mont-bell。</p>
+              <span>通勤／毛毛雨</span><h3>迪卡儂可以看</h3><p><LineText text="價格低｜口袋多｜透氣孔多｜但我不會再把它當登山大雨的主力防水" /></p>
             </Reveal>
             <Reveal className={styles.recommendCard}>
-              <span>旅行＋偶爾登山</span><h3>開始值得看 Mont-bell</h3><p>重量、收納和活動性會開始有價值，尤其你真的會一直把它放在包裡。</p>
+              <span>旅行＋偶爾登山</span><h3>開始值得看專業外殼</h3><p><LineText text="Mont-bell Patagonia TNF 都該一起試｜不要只看平台上誰折最多" /></p>
             </Reveal>
             <Reveal className={`${styles.recommendCard} ${styles.recommendMain}`}>
-              <span>常旅行／戶外工作</span><h3>我會把預算放在 Rain Trekker</h3><p>一年穿很多次時，重量和穿著體驗每天都會重新計算一次。</p>
+              <span>常旅行／戶外工作</span><h3>我會把預算放在 Rain Trekker</h3><p><LineText text="一年穿很多次｜重量 收納與穿著體驗｜每天都會重新計算一次" /></p>
             </Reveal>
           </div>
           <Reveal className={styles.finalLine}>
-            <p>我最後選的不是最便宜，也不是規格最滿。</p>
-            <strong>是我真的會一直帶出門的那一件。</strong>
+            <p>我最後選的不是最便宜<br />也不是規格最滿</p>
+            <strong>是我真的會一直帶出門的那一件</strong>
           </Reveal>
         </section>
 
         <section className={styles.sources}>
           <p>資料與圖片來源 · 查核日 2026.08.24</p>
           <a href={MONTBELL_URL} target="_blank" rel="noreferrer">Mont-bell Taiwan｜Rain Trekker GTX 男款 #1128729 ↗</a>
+          <a href={PCHOME_URL} target="_blank" rel="noreferrer">PChome 24h｜Rain Trekker 當日頁面 ↗</a>
+          <a href={MOMO_URL} target="_blank" rel="noreferrer">momo｜防水外套搜尋頁 ↗</a>
+          <a href={TNF_URL} target="_blank" rel="noreferrer">The North Face Taiwan｜男款 DryVent 防水外套 ↗</a>
+          <a href={DECATHLON_URL} target="_blank" rel="noreferrer">Decathlon 官方蝦皮｜MH150 男款防水外套 ↗</a>
+          <a href={PRO_OUTDOOR_URL} target="_blank" rel="noreferrer">Pro Outdoor｜Patagonia Torrentshell 3L 臺灣授權通路 ↗</a>
           <a href={PATAGONIA_URL} target="_blank" rel="noreferrer">Patagonia｜Men&apos;s Torrentshell 3L Rain Jacket #85241 ↗</a>
-          <a href={COMMONS_URL} target="_blank" rel="noreferrer">臺中雨景｜Cheng-en Cheng，CC BY-SA 2.0 ↗</a>
-          <small>本文中的主觀評分、購買理由與當時價格為 Oscar 的個人使用紀錄；商品規格與價格可能調整，購買前請重新查看官方頁面。</small>
+          <small><LineText text="本文中的主觀評分與購買理由為 Oscar 的個人使用紀錄｜通路價格是 2026 年 8 月 24 日可查頁面快照｜活動 庫存與尺寸可能調整｜購買前請重新查看商品頁" /></small>
         </section>
 
         <footer className={styles.footer}>
