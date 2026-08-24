@@ -73,8 +73,8 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
 
       <header className={styles.hero}>
         <Image
-          src="/field-notes/montbell-rain-trekker/taichung-rain.jpg"
-          alt="雨中的臺中公車站，一位行人撐傘等車"
+          src="/field-notes/montbell-rain-trekker/rain-trekker-official.jpg"
+          alt="Mont-bell Rain Trekker 深綠色防水外套"
           fill
           priority
           sizes="100vw"

@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const canonical = `${SITE_URL}/field-notes/${slug}`;
   const ogImage =
     slug === "montbell-rain-trekker"
-      ? "/field-notes/montbell-rain-trekker/taichung-rain.jpg"
+      ? "/field-notes/montbell-rain-trekker/rain-trekker-official.jpg"
       : slug === "seedance-aerial"
       ? "/field-notes/seedance-map-route/social-cover.jpg"
       : slug === "vienna-griechenbeisl"
