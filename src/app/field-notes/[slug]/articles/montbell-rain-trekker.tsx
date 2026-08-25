@@ -82,11 +82,10 @@ const compareProducts = [
     image: "/field-notes/montbell-rain-trekker/decathlon-mh150-official.jpg",
     imageAlt: "Decathlon Quechua MH150 深藍色防水外套官方產品照",
     price: "NT$1,749",
-    priceLabel: "台灣官方價",
+    priceShort: "官方價",
     weight: "約 490g",
-    weightLabel: "我當時比較的款式資料",
-    advantage: "口袋多｜透氣孔多｜預算最低",
-    tradeoff: "我穿去爬山時｜毛毛雨還行｜雨一大會濕到裡面",
+    weightShort: "我比較的舊款",
+    takeaway: "多口袋｜但我的大雨實穿不夠",
     href: DECATHLON_URL,
   },
   {
@@ -96,11 +95,10 @@ const compareProducts = [
     image: "/field-notes/montbell-rain-trekker/patagonia-torrentshell-official.jpg",
     imageAlt: "Patagonia Torrentshell 3L 灰色防水外套官方產品照",
     price: "NT$7,560",
-    priceLabel: "台灣正式代理售價",
+    priceShort: "台灣代理價",
     weight: "400g",
-    weightLabel: "品牌現行男款資料",
-    advantage: "三層結構｜有腋下拉鍊｜配置紮實",
-    tradeoff: "同價帶的強對手｜但它多出的通風配置不是我的優先項目",
+    weightShort: "現行男款",
+    takeaway: "Pit Zip｜配置完整",
     href: PRO_OUTDOOR_URL,
   },
   {
@@ -110,11 +108,10 @@ const compareProducts = [
     image: "/field-notes/montbell-rain-trekker/rain-trekker-official.jpg",
     imageAlt: "Mont-bell Rain Trekker GTX 深綠色防水外套官方產品照",
     price: "NT$6,500",
-    priceLabel: "我在大遠百的活動實付",
+    priceShort: "大遠百活動實付",
     weight: "301g",
-    weightLabel: "品牌現行男款資料",
-    advantage: "最輕｜收得最小｜也是我覺得最好看",
-    tradeoff: "不是單項規格碾壓｜而是最接近我的使用平衡",
+    weightShort: "現行男款",
+    takeaway: "輕＋好收｜而且帥",
     href: MONTBELL_URL,
     winner: true,
   },
@@ -432,7 +429,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
                 {compareProducts.map((product) => (
                   <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-price`}>
                     <strong>{product.price}</strong>
-                    <small>{product.priceLabel}</small>
+                    <small>{product.priceShort}</small>
                   </div>
                 ))}
               </div>
@@ -444,7 +441,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
                 {compareProducts.map((product) => (
                   <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-weight`}>
                     <strong>{product.weight}</strong>
-                    <small>{product.weightLabel}</small>
+                    <small>{product.weightShort}</small>
                   </div>
                 ))}
               </div>
@@ -455,8 +452,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
               <div className={styles.metricGrid}>
                 {compareProducts.map((product) => (
                   <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-reason`}>
-                    <strong><LineText text={product.advantage} /></strong>
-                    <small><LineText text={product.tradeoff} /></small>
+                    <strong><LineText text={product.takeaway} /></strong>
                   </div>
                 ))}
               </div>

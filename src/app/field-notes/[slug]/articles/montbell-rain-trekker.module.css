@@ -142,7 +142,7 @@
 .metricGrid > div { min-height: 150px; padding: 20px 16px; display: flex; flex-direction: column; }
 .metricGrid strong { display: block; font-size: clamp(23px, 3.2vw, 40px); line-height: 1.06; letter-spacing: -.045em; font-weight: 540; }
 .metricGrid small { display: block; margin-top: auto; padding-top: 18px; color: var(--muted); font-size: 12px; line-height: 1.55; }
-.compareMetric:last-child .metricGrid > div { min-height: 230px; }
+.compareMetric:last-child .metricGrid > div { min-height: 160px; }
 .compareMetric:last-child .metricGrid strong { font-size: clamp(18px, 2.1vw, 27px); line-height: 1.35; letter-spacing: -.02em; }
 .finalChoice { margin-top: 18px; padding: clamp(28px, 5vw, 56px); background: var(--signal); color: #101310; }
 .finalChoice > span { font: 700 10px/1 var(--font-space-mono), monospace; letter-spacing: .2em; }
@@ -299,7 +299,7 @@
   .metricGrid > div { min-height: 126px; padding: 16px 8px; }
   .metricGrid strong { font-size: clamp(20px, 5.8vw, 24px); line-height: 1.08; }
   .metricGrid small { padding-top: 14px; font-size: 11px; line-height: 1.45; }
-  .compareMetric:last-child .metricGrid > div { min-height: 242px; }
+  .compareMetric:last-child .metricGrid > div { min-height: 150px; }
   .compareMetric:last-child .metricGrid strong { font-size: 15px; line-height: 1.38; }
   .finalChoice { padding: 26px 18px; }
   .finalChoice > strong { margin-top: 30px; font-size: clamp(56px, 18vw, 72px); }
