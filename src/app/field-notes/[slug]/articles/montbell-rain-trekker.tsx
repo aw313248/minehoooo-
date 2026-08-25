@@ -78,6 +78,7 @@ const compareProducts = [
   {
     brand: "DECATHLON",
     model: "Quechua MH150",
+    role: "便宜入門",
     image: "/field-notes/montbell-rain-trekker/decathlon-mh150-official.jpg",
     imageAlt: "Decathlon Quechua MH150 深藍色防水外套官方產品照",
     price: "NT$1,749",
@@ -91,6 +92,7 @@ const compareProducts = [
   {
     brand: "PATAGONIA",
     model: "Torrentshell 3L",
+    role: "完整通風",
     image: "/field-notes/montbell-rain-trekker/patagonia-torrentshell-official.jpg",
     imageAlt: "Patagonia Torrentshell 3L 灰色防水外套官方產品照",
     price: "NT$7,560",
@@ -104,6 +106,7 @@ const compareProducts = [
   {
     brand: "MONT-BELL",
     model: "Rain Trekker GTX",
+    role: "輕量好收",
     image: "/field-notes/montbell-rain-trekker/rain-trekker-official.jpg",
     imageAlt: "Mont-bell Rain Trekker GTX 深綠色防水外套官方產品照",
     price: "NT$6,500",
@@ -404,74 +407,74 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
             <div className={styles.sectionHead}>
               <span>04</span>
               <div>
-                <p>三件外套放在同一條尺上</p>
-                <h2>差異最大的不是品牌<br />是預算 重量與取捨</h2>
+                <p>三件外套只看三件事</p>
+                <h2>價錢<br />重量<br />你真正得到什麼</h2>
               </div>
             </div>
           </Reveal>
-          <div className={styles.productCompareGrid}>
-            {compareProducts.map((product) => (
-              <Reveal className={`${styles.compareProduct} ${product.winner ? styles.compareWinner : ""}`} key={product.model}>
-                <a href={product.href} target="_blank" rel="noreferrer" className={styles.compareImage}>
-                  <Image src={product.image} alt={product.imageAlt} fill sizes="(max-width: 820px) 100vw, 33vw" />
-                </a>
-                <div className={styles.compareProductCopy}>
+          <div className={styles.compareMatrix}>
+            <div className={styles.brandRow}>
+              {compareProducts.map((product) => (
+                <Reveal className={product.winner ? styles.winnerCell : ""} key={product.model}>
+                  <a href={product.href} target="_blank" rel="noreferrer" className={styles.brandImage}>
+                    <Image src={product.image} alt={product.imageAlt} fill sizes="(max-width: 820px) 33vw, 360px" />
+                  </a>
                   <span>{product.brand}</span>
-                  <h3>{product.model}</h3>
-                  <small>{product.priceLabel}</small>
-                  <strong>{product.price}</strong>
-                  <div className={styles.weightLine}>
-                    <b>{product.weight}</b>
+                  <strong>{product.model}</strong>
+                  <b>{product.role}</b>
+                </Reveal>
+              ))}
+            </div>
+
+            <div className={styles.compareMetric}>
+              <span>01｜買下去多少</span>
+              <div className={styles.metricGrid}>
+                {compareProducts.map((product) => (
+                  <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-price`}>
+                    <strong>{product.price}</strong>
+                    <small>{product.priceLabel}</small>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.compareMetric}>
+              <span>02｜每天背多重</span>
+              <div className={styles.metricGrid}>
+                {compareProducts.map((product) => (
+                  <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-weight`}>
+                    <strong>{product.weight}</strong>
                     <small>{product.weightLabel}</small>
                   </div>
-                  <p className={styles.productAdvantage}><LineText text={product.advantage} /></p>
-                  <p className={styles.productTradeoff}><LineText text={product.tradeoff} /></p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p className={styles.historyNote}><LineText text="產品圖皆來自各品牌或台灣正式代理商品頁｜MH150 的大雨表現是我的個人實穿紀錄｜不代表每一件產品都會得到相同結果" /></p>
-        </section>
-
-        <section className={styles.compareSection}>
-          <Reveal>
-            <div className={styles.sectionHead}>
-              <span>05</span>
-              <div>
-                <p>Mont-bell vs Patagonia</p>
-                <h2>同樣能擋雨<br />差別是你想把重量花在哪裡</h2>
+                ))}
               </div>
             </div>
-          </Reveal>
-          <div className={styles.differenceList}>
-            <Reveal className={styles.differenceRow}>
-              <span>01｜預算門檻</span>
-              <h3>不到兩千<br />或六到七千</h3>
-              <p><strong>MH150 是入門價位</strong><br />Rain Trekker 和 Torrentshell 才是同價帶對手</p>
-            </Reveal>
-            <Reveal className={styles.differenceRow}>
-              <span>02｜每天背著走</span>
-              <h3>301g<br />比 400g 少 99g</h3>
-              <p><strong>Mont-bell 的差異最直接</strong><br />不是一個漂亮數字<br />是它比較容易一直留在包裡</p>
-            </Reveal>
-            <Reveal className={styles.differenceRow}>
-              <span>03｜功能取捨</span>
-              <h3>口袋<br />通風<br />還是輕與好收</h3>
-              <p><strong>Decathlon 給我更多口袋</strong><br />Patagonia 給我腋下拉鍊<br />Mont-bell 給我最在乎的輕 好收 還有帥</p>
-            </Reveal>
+
+            <div className={styles.compareMetric}>
+              <span>03｜這個重量換到什麼</span>
+              <div className={styles.metricGrid}>
+                {compareProducts.map((product) => (
+                  <div className={product.winner ? styles.winnerCell : ""} key={`${product.model}-reason`}>
+                    <strong><LineText text={product.advantage} /></strong>
+                    <small><LineText text={product.tradeoff} /></small>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <Reveal className={styles.verdict}>
-            <span>MY VERDICT</span>
-            <p>
-              <LineText text="Patagonia 沒有不好｜只是對我來說 Pit Zip 的價值｜沒有大到能抵過每天背著的重量｜Rain Trekker 已經夠防水｜比較輕｜能收得小｜而且我更喜歡它穿起來的樣子" />
-            </p>
+
+          <Reveal className={styles.finalChoice}>
+            <span>MY CHOICE</span>
+            <strong>Mont-bell</strong>
+            <p><LineText text="我不是選規格最多的｜我選最輕 最好收｜而且我最想穿出門的" /></p>
           </Reveal>
+          <p className={styles.historyNote}><LineText text="產品圖皆來自各品牌或台灣正式代理商品頁｜MH150 的大雨表現是我的個人實穿紀錄｜不代表每一件產品都會得到相同結果" /></p>
         </section>
 
         <section className={styles.storeSection}>
           <Reveal className={styles.storeCopy}>
             <div className={styles.sectionHead}>
-              <span>06</span>
+              <span>05</span>
               <div>
                 <p>為什麼最後現場買</p>
                 <h2>價差不大時<br />我買的是確定性</h2>
@@ -494,7 +497,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.systemSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>07</span>
+              <span>06</span>
               <div>
                 <p>後來我才懂的事</p>
                 <h2>不是找一件萬能外套<br />是讓每一層只做好一件事</h2>
@@ -521,7 +524,7 @@ export default function MontbellRainTrekkerArticle({ note }: { note: FieldNote }
         <section className={styles.scoreSection}>
           <Reveal>
             <div className={styles.sectionHead}>
-              <span>08</span>
+              <span>07</span>
               <div>
                 <p>OSCAR GEAR SCORE</p>
                 <h2>我以後評裝備<br />就看這五件事</h2>
