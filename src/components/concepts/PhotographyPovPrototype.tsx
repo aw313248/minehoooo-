@@ -35,6 +35,7 @@ export default function PhotographyPovPrototype() {
   const cameraProgress = clamp((progress - REVEAL_END) / (CAMERA_END - REVEAL_END));
   const selectorProgress = clamp((progress - SELECTOR_START) / 0.14);
   const isExpanded = progress > SELECTOR_END;
+  const flashOpacity = clamp(1 - Math.abs(progress - CAMERA_END) / 0.025) * 0.88;
 
   const updateProgress = useCallback(() => {
     const root = scrollRootRef.current;
@@ -118,18 +119,22 @@ export default function PhotographyPovPrototype() {
             />
           </div>
 
-          <div className={styles.worldShade} aria-hidden="true" />
+          <div
+            className={styles.worldShade}
+            aria-hidden="true"
+            style={{ opacity: 1 - revealProgress * 0.5 }}
+          />
           <div
             className={styles.curtainLeft}
             aria-hidden="true"
-            style={{ transform: `translateX(${-52 * revealProgress}%)` }}
+            style={{ transform: `translateX(${-110 * revealProgress}%)` }}
           />
           <div
             className={styles.curtainRight}
             aria-hidden="true"
-            style={{ transform: `translateX(${52 * revealProgress}%)` }}
+            style={{ transform: `translateX(${110 * revealProgress}%)` }}
           />
-          <div className={styles.flash} aria-hidden="true" style={{ opacity: cameraProgress * 0.28 }} />
+          <div className={styles.flash} aria-hidden="true" style={{ opacity: flashOpacity }} />
 
           <div className={styles.contentSafe}>
             <p className={styles.eyebrow}>PHOTOGRAPHY POV</p>
@@ -143,6 +148,10 @@ export default function PhotographyPovPrototype() {
               style={{
                 "--camera-progress": cameraProgress,
                 "--selector-progress": selectorProgress,
+                "--portal-left": `${63 - selectorProgress * 13}%`,
+                "--portal-top": `${58 - selectorProgress * 13}%`,
+                "--portal-width": `min(${31 + selectorProgress * 37}vw, 390px)`,
+                opacity: cameraProgress,
               } as React.CSSProperties}
             >
               <div className={styles.cameraFrame}>

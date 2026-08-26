@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 const QUOTES = [
   { lines: ["人一定是", "在作品之前"], attr: null, duration: 3400 },
@@ -9,6 +10,8 @@ const QUOTES = [
 ];
 
 export default function IntroScreen() {
+  const pathname = usePathname();
+  const isConceptRoute = pathname.startsWith("/concepts/");
   const [phase, setPhase] = useState<"idle" | "open" | "in" | "hold" | "out" | "done">("idle");
   const [quoteIdx, setQuoteIdx] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -22,6 +25,11 @@ export default function IntroScreen() {
   };
 
   useEffect(() => {
+    if (isConceptRoute) {
+      setPhase("done");
+      return;
+    }
+
     if (typeof sessionStorage !== "undefined" && sessionStorage.getItem("intro-v2")) {
       setPhase("done");
       return;
@@ -40,9 +48,9 @@ export default function IntroScreen() {
     ];
     timers.current = scheduled;
     return () => scheduled.forEach(clearTimeout);
-  }, []);
+  }, [isConceptRoute]);
 
-  if (phase === "done") return null;
+  if (isConceptRoute || phase === "done") return null;
 
   const isOpen = phase === "open" || phase === "in" || phase === "hold";
   const isIn = phase === "in" || phase === "hold";

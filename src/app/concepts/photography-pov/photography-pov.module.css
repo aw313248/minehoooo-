@@ -46,6 +46,7 @@
 .worldShade {
   z-index: -2;
   background: linear-gradient(180deg, rgba(5, 5, 5, 0.28), rgba(5, 5, 5, 0.74) 80%);
+  transition: opacity 240ms linear;
 }
 
 .curtainLeft,
@@ -90,7 +91,7 @@
   align-self: start;
   margin: 0;
   color: rgba(255, 245, 244, 0.58);
-  font-size: 9px;
+  font-size: 11px;
 }
 
 .instruction {
@@ -99,18 +100,19 @@
   left: 20px;
   margin: 0;
   color: rgba(255, 245, 244, 0.82);
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .cameraPortal {
   position: absolute;
-  top: calc(50% - 70px);
-  left: 50%;
-  width: min(58vw, 230px);
+  top: var(--portal-top);
+  left: var(--portal-left);
+  width: var(--portal-width);
   aspect-ratio: 1.35;
   transform: translate(-50%, -50%) scale(calc(0.64 + var(--camera-progress) * 0.36));
   transform-origin: center;
-  transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1), width 450ms cubic-bezier(0.16, 1, 0.3, 1), top 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  transition: opacity 180ms linear, transform 450ms cubic-bezier(0.16, 1, 0.3, 1), width 450ms cubic-bezier(0.16, 1, 0.3, 1), top 450ms cubic-bezier(0.16, 1, 0.3, 1), left 450ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cameraPortal[data-expanded="true"] {
@@ -187,14 +189,14 @@
 .meta {
   margin: 0;
   color: rgba(255, 245, 244, 0.62);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .copy h1 {
   max-width: 15ch;
   margin: 8px 0 6px;
   color: #fff8f8;
-  font-size: clamp(28px, 8vw, 42px);
+  font-size: clamp(32px, 8.8vw, 44px);
   font-weight: 400;
   letter-spacing: -0.05em;
   line-height: 1.08;
@@ -206,7 +208,7 @@
   margin-top: 10px;
   padding: 13px 0;
   color: #f5c6ce;
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: none;
 }
 
@@ -237,7 +239,7 @@
   border: 1px solid rgba(255, 245, 244, 0.22);
   background: rgba(6, 5, 5, 0.52);
   color: rgba(255, 245, 244, 0.56);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .selectorButton[data-active="true"] {
