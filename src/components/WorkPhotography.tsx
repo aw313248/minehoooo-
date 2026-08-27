@@ -439,6 +439,7 @@ export default function WorkPhotography() {
             MINEH4O · {cat.en.toUpperCase()}
           </p>
         </div>
+      </section>
 
       {/* ══ 平面設計 — WorkDesign（專輯封面 + petit/Probeer/PARK2/婚攝）══ */}
       <WorkDesign />
@@ -487,7 +488,6 @@ export default function WorkPhotography() {
         `}</style>
       </div>
 
-      </section>
     </>
   );
 }

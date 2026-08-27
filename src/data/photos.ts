@@ -8,6 +8,29 @@ export interface PhotoCategory {
 
 export const photoCategories: PhotoCategory[] = [
   {
+    id:   "sharpa-party",
+    en:   "我的蝦趴派對",
+    zh:   "我的蝦趴派對",
+    desc: "《我的蝦趴派對》· 朝陽科技大學傳播藝術系第 30 屆畢業製作 · 劇照師 MINEH4O · 2026",
+    files: [
+      "sharpa-01.jpg",
+      "sharpa-02.jpg",
+      "sharpa-03.jpg",
+      "sharpa-04.jpg",
+      "sharpa-05.jpg",
+      "sharpa-06.jpg",
+      "sharpa-07.jpg",
+      "sharpa-08.jpg",
+      "sharpa-09.jpg",
+      "sharpa-10.jpg",
+      "sharpa-11.jpg",
+      "sharpa-12.jpg",
+      "sharpa-13.jpg",
+      "sharpa-14.jpg",
+      "sharpa-15.jpg",
+    ],
+  },
+  {
     id:   "event",
     en:   "Special Session",
     zh:   "活動專場",
