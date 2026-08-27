@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { haptic } from "@/lib/haptic";
@@ -1482,8 +1483,9 @@ export default function WorkVideo() {
                 </p>
               )}
 
-              {/* PLAY FULL button — bigger touch target on mobile */}
-              <button onClick={() => setPlaying(true)}
+              <div className="flex flex-col items-center gap-3">
+                {/* PLAY FULL button — bigger touch target on mobile */}
+                <button onClick={() => setPlaying(true)}
                 className="group flex items-center gap-3 active:scale-[0.97]"
                 style={{
                   background: "rgba(255,255,255,0.1)",
@@ -1508,7 +1510,13 @@ export default function WorkVideo() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z" /></svg>
                 <span className="font-mono-label" style={{ fontSize: 11, letterSpacing: "0.32em", color: "var(--white-primary)" }}>PLAY FULL</span>
                 <span style={{ color: "var(--white-soft)", fontSize: 15 }}>↗</span>
-              </button>
+                </button>
+                <Link href="/works"
+                  className="font-mono-label inline-flex min-h-11 items-center justify-center px-4 text-[10px] tracking-[0.18em] underline-offset-4 hover:underline"
+                  style={{ color: "rgba(255,255,255,0.78)", textDecorationColor: "rgba(255,255,255,0.35)" }}>
+                  瀏覽完整動態作品集 ↗
+                </Link>
+              </div>
             </motion.div>
           </AnimatePresence>
         )}

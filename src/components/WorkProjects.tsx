@@ -145,7 +145,7 @@ export default function WorkProjects() {
       <div className="flex-1 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 px-4 md:px-12 py-6 md:py-8 z-10 max-w-7xl mx-auto w-full">
 
         {/* LEFT — text column */}
-        <div className="flex-1 flex flex-col items-start text-left max-w-xl">
+        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left max-w-xl w-full">
 
           {/* Status badge */}
           {active.status && (
@@ -185,7 +185,7 @@ export default function WorkProjects() {
           </p>
 
           {/* Tagline (quote-like) */}
-          <p className="mb-5"
+          <p className="mb-5 self-stretch text-left"
             style={{
               fontSize: "clamp(1rem, 1.4vw, 1.2rem)",
               lineHeight: 1.4,
@@ -200,7 +200,7 @@ export default function WorkProjects() {
           </p>
 
           {/* Description */}
-          <p className="leading-relaxed mb-6"
+          <p className="leading-relaxed mb-6 self-stretch text-left"
             style={{
               fontSize: 13.5, lineHeight: 1.75,
               color: "var(--white-secondary)",
@@ -230,7 +230,7 @@ export default function WorkProjects() {
           </div>
 
           {/* CTA — primary Chinese action */}
-          <div className="flex flex-col items-start gap-2"
+          <div className="flex flex-col items-center md:items-start gap-2"
             style={{
               opacity: inView ? 1 : 0,
               transform: inView ? "translateY(0)" : "translateY(14px)",

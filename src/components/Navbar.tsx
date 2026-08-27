@@ -22,14 +22,18 @@ const desktopLinks: NavItem[] = [
 ];
 
 const mobileLinks: NavItem[] = [
-  { label: "HOME",        labelZh: "首頁",   page: 0 },
-  { label: "PHOTOGRAPHY", labelZh: "攝影",   page: 2 },
-  { label: "VIDEO",       labelZh: "影像",   page: 3 },
-  { label: "AIGC",        labelZh: "AIGC",   page: 4 },
-  { label: "NOTES",       labelZh: "筆記",   href: "/field-notes" },
-  { label: "PROJECTS",    labelZh: "專案",   page: 5 },
-  { label: "ABOUT",       labelZh: "關於",   page: 1 },
-  { label: "CONTACT",     labelZh: "聯絡",   page: 6 },
+  { label: "PHOTOGRAPHY", labelZh: "攝影作品", page: 2 },
+  { label: "VIDEO",       labelZh: "動態影像", page: 3 },
+  { label: "AIGC",        labelZh: "AIGC 作品", page: 4 },
+  { label: "ALL WORKS",   labelZh: "完整動態作品", href: "/works" },
+];
+
+const mobileSecondaryLinks: NavItem[] = [
+  { label: "HOME",     labelZh: "首頁", page: 0 },
+  { label: "PROJECTS", labelZh: "專案", page: 5 },
+  { label: "NOTES",    labelZh: "現場筆記", href: "/field-notes" },
+  { label: "ABOUT",    labelZh: "關於", page: 1 },
+  { label: "CONTACT",  labelZh: "聯絡", page: 6 },
 ];
 
 function goto(page: number) {
@@ -187,9 +191,11 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-[5px] py-1"
+          className="md:hidden relative z-[2] flex h-11 w-11 flex-col items-center justify-center gap-[5px] rounded-full"
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+          aria-label={menuOpen ? "關閉作品分類" : "開啟作品分類"}
+          aria-expanded={menuOpen}
+          style={{ background: "rgba(12,12,12,0.72)", backdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)" }}
         >
           <span className="block w-5 h-px bg-[#f5f5f7] transition-all duration-300"
             style={{ transform: menuOpen ? "rotate(45deg) translateY(6px)" : "none" }} />
@@ -202,53 +208,82 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden px-6 py-6 border-t" style={{ background: "rgba(0,0,0,0.95)", borderColor: "rgba(255,255,255,0.07)" }}>
-          <ul className="flex flex-col gap-5">
+        <div className="md:hidden fixed inset-0 overflow-y-auto px-5 pb-8 pt-24"
+          style={{ background: "rgba(5,5,5,0.98)", backdropFilter: "blur(24px)" }}>
+          <div className="mx-auto flex min-h-full w-full max-w-md flex-col items-center justify-center text-center">
+            <p className="font-mono-label mb-3 text-[9px] tracking-[0.36em]" style={{ color: "var(--white-soft)" }}>
+              {lang === "zh" ? "直接選你想看的" : "CHOOSE WHAT TO VIEW"}
+            </p>
+            <h2 className="font-display mb-8 text-[2.1rem] leading-none" style={{ color: "var(--text)" }}>
+              {lang === "zh" ? "作品分類" : "WORK INDEX"}
+            </h2>
+
+            <ul className="grid w-full grid-cols-1 gap-2">
             {mobileLinks.map((l, i) => {
               const active = typeof l.page === "number" && activePage === l.page;
               const label = lang === "zh" ? l.labelZh : l.label;
-              const innerRow = (
-                <>
-                  <div style={{
-                    width: 4, height: 4, borderRadius: "50%",
-                    background: active ? "var(--white-primary)" : "var(--white-dim)",
-                    transition: "background .3s",
-                  }} />
-                  <span className="font-mono-label text-xs tracking-[0.3em]"
-                    style={{ color: active ? "#f5f5f7" : "var(--white-soft)" }}>
-                    {label}
-                  </span>
-                </>
-              );
+              const itemStyle: React.CSSProperties = {
+                minHeight: 56,
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "0 18px",
+                borderRadius: 14,
+                border: `1px solid ${active ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.09)"}`,
+                background: active ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.035)",
+                color: active ? "#fff" : "rgba(255,255,255,0.78)",
+                textDecoration: "none",
+              };
+              const innerRow = <>
+                <span className="font-mono-label text-[11px] tracking-[0.16em]">{label}</span>
+                <span aria-hidden style={{ color: "var(--white-soft)" }}>↗</span>
+              </>;
               return (
                 <li key={`${l.label}-${i}`}>
                   {l.href ? (
                     <Link
                       href={l.href}
                       onClick={() => setMenuOpen(false)}
-                      className="flex items-center gap-3"
-                      style={{ textDecoration: "none" }}>
+                      style={itemStyle}>
                       {innerRow}
                     </Link>
                   ) : (
                     <button
                       onClick={() => { goto(l.page!); setMenuOpen(false); }}
-                      className="flex items-center gap-3"
-                      style={{ background: "none", border: "none", cursor: "pointer" }}>
+                      style={{ ...itemStyle, cursor: "pointer" }}>
                       {innerRow}
                     </button>
                   )}
                 </li>
               );
             })}
-            <li style={{ borderTop: "1px solid var(--white-ghost)", paddingTop: 16 }}>
+            </ul>
+
+            <ul className="mt-7 flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-4">
+              {mobileSecondaryLinks.map((l, i) => {
+                const label = lang === "zh" ? l.labelZh : l.label;
+                const className = "font-mono-label inline-flex min-h-11 items-center justify-center text-[10px] tracking-[0.18em]";
+                const style = { color: "var(--white-soft)", textDecoration: "none" };
+                return <li key={`${l.label}-${i}`}>
+                  {l.href ? (
+                    <Link href={l.href} onClick={() => setMenuOpen(false)} className={className} style={style}>{label}</Link>
+                  ) : (
+                    <button onClick={() => { goto(l.page!); setMenuOpen(false); }} className={className}
+                      style={{ ...style, background: "none", border: "none", cursor: "pointer" }}>{label}</button>
+                  )}
+                </li>;
+              })}
+            </ul>
+
+            <div className="mt-5 border-t pt-5" style={{ borderColor: "var(--white-ghost)" }}>
               <button onClick={toggle}
-                className="font-mono-label text-xs tracking-[0.3em]"
+                className="font-mono-label min-h-11 text-[10px] tracking-[0.2em]"
                 style={{ background: "none", border: "none", cursor: "pointer", color: "var(--white-soft)" }}>
                 {lang === "zh" ? "SWITCH TO EN" : "切換中文"}
               </button>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       )}
     </header>

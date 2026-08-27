@@ -25,16 +25,16 @@ export default function NotesPage() {
 
   return (
     <section ref={ref} className="min-h-screen flex flex-col justify-center px-4 md:px-14 py-20" style={{ background: "var(--bg-dark, #0a0a0b)" }}>
-      <div style={{ opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
-        <p className="font-mono-label text-[9px] tracking-[0.42em] mb-2" style={{ color: "var(--white-soft)" }}>08 — FIELD NOTES</p>
-        <h2 className="font-display leading-none mb-3" style={{ fontSize: "clamp(2rem, 5vw, 4.4rem)", color: "var(--text)" }}>
+      <div className="mx-auto w-full max-w-[1100px]" style={{ opacity: inView ? 1 : 0, transition: "opacity .8s ease" }}>
+        <p className="font-mono-label text-center md:text-left text-[9px] tracking-[0.42em] mb-2" style={{ color: "var(--white-soft)" }}>08 — FIELD NOTES</p>
+        <h2 className="font-display text-center md:text-left leading-none mb-3" style={{ fontSize: "clamp(2rem, 5vw, 4.4rem)", color: "var(--text)" }}>
           現場筆記
         </h2>
-        <p className="text-[13px] mb-10" style={{ color: "var(--text-2)", maxWidth: 480 }}>
+        <p className="mx-auto md:mx-0 text-center md:text-left text-[13px] mb-10" style={{ color: "var(--text-2)", maxWidth: 480 }}>
           拍攝設定、AI 工具、旅行拍片的完整過程 — 全部免費公開，瀏覽數即時
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 max-w-[1100px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {sorted.map((n, i) => (
             <Link key={n.slug} href={`/field-notes/${n.slug}`}
               className="group relative block overflow-hidden"
@@ -73,11 +73,13 @@ export default function NotesPage() {
           ))}
         </div>
 
-        <Link href="/field-notes"
-          className="inline-block mt-10 font-mono-label text-[10px] tracking-[0.28em] uppercase px-6 py-3 transition-colors"
+        <div className="flex justify-center md:justify-start">
+          <Link href="/field-notes"
+          className="inline-flex min-h-11 items-center mt-10 font-mono-label text-[10px] tracking-[0.28em] uppercase px-6 py-3 transition-colors"
           style={{ border: "1px solid rgba(255,255,255,0.2)", borderRadius: 999, color: "var(--text-2)" }}>
           進入筆記首頁 →
-        </Link>
+          </Link>
+        </div>
       </div>
     </section>
   );
