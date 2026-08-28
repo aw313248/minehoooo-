@@ -35,9 +35,7 @@ export default function MobileNav() {
       style={{
         transform: visible ? "translateY(0)" : "translateY(100%)",
         opacity: visible ? 1 : 0,
-        background: "rgba(0,0,0,0.85)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
+        background: "rgba(0,0,0,0.96)",
         borderTop: "1px solid rgba(255,255,255,0.07)",
         padding: "8px 12px calc(8px + env(safe-area-inset-bottom))",
       }}>

@@ -84,7 +84,7 @@ function Card({ card, index }: { card: DeckCard; index: number }) {
       {/* backdrop(s) */}
       <div className="sd-media" style={{
         position: "absolute", inset: 0, display: "flex", flexDirection: multi ? "column" : "row", gap: multi ? 2 : 0,
-        transformOrigin: "50% 50%", willChange: "transform",
+        transformOrigin: "50% 50%",
       }}>
         {card.works.map(w => (
           <a key={w.id} href={`https://www.youtube.com/watch?v=${w.id}`} target="_blank" rel="noopener noreferrer"
@@ -236,9 +236,13 @@ export default function ScreeningDeck({ cards }: { cards: DeckCard[] }) {
 
     const els = deck.querySelectorAll<HTMLElement>(".sd-card");
     els.forEach((el, i) => {
+      const nearby = Math.abs(i - t) <= 1.5;
+      const media = el.querySelector<HTMLElement>(".sd-media");
+      if (media) media.style.willChange = nearby && !reduceMotion.current ? "transform" : "auto";
+      if (!nearby) return;
+
       const arrival = smooth(t - i + 1);
       const exit = smooth(t - i);
-      const media = el.querySelector<HTMLElement>(".sd-media");
       const copy = el.querySelectorAll<HTMLElement>(".sd-copy");
 
       if (media) {

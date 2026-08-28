@@ -60,7 +60,7 @@ export default function Navbar() {
   // Securify-style floating pill navbar — always transparent header, pills do the visual lift
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50"
+      className="fixed top-0 left-0 right-0 z-[200] pointer-events-auto"
       style={{
         background: "transparent",
         fontFamily: "var(--font-readex), 'Readex Pro', system-ui, sans-serif",

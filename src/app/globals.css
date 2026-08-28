@@ -81,6 +81,17 @@ body {
 @media (max-width: 767px) {
   .font-display { letter-spacing: 0.01em; }
 
+  /* Mobile keeps the cinematic dip without compositing a full page scale */
+  .page-scroll-panel {
+    transform: none !important;
+    transition: opacity 360ms cubic-bezier(0.22,1,0.36,1) !important;
+  }
+
+  /* Static body grain remains, so this duplicate moving layer is unnecessary */
+  .site-animated-grain {
+    display: none;
+  }
+
   /* PageScroll navigation: move to bottom-center on mobile */
   .page-nav {
     top: auto !important;
@@ -229,7 +240,6 @@ body::before {
 .sd-copy {
   opacity: 0;
   transform: translate3d(0, 28px, 0);
-  will-change: transform, opacity;
 }
 .sd-card:first-child .sd-media,
 .sd-card:first-child .sd-copy {

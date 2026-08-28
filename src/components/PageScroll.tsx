@@ -21,58 +21,80 @@ interface Props {
 // Single site-wide cut grammar — dip-through-black dissolve.
 // One film, one edit: exiting page drifts forward into black, entering page
 // surfaces from black. The black dip overlay (rendered below) masks the seam.
-const CUT_EASE = "cubic-bezier(0.45,0,0.25,1)";
-const CUT_MS   = 950;
+const CUT_EASE = "cubic-bezier(0.22,1,0.36,1)";
+const CUT_MS   = 560;
 
-function getStyle(offset: number): React.CSSProperties {
+function getStyle(offset: number, isExiting = false): React.CSSProperties {
   const base: React.CSSProperties = {
     position: "absolute",
     inset: 0,
     overflowY: "auto",
     overflowX: "hidden",
-    willChange: "transform, opacity",
+    overscrollBehaviorY: "contain",
+    touchAction: "pan-y",
     backfaceVisibility: "hidden",
     WebkitBackfaceVisibility: "hidden",
     transformOrigin: "50% 50%",
     transition: `transform ${CUT_MS}ms ${CUT_EASE}, opacity ${CUT_MS}ms ${CUT_EASE}`,
   };
 
-  // Pages not adjacent — fully hidden
-  if (Math.abs(offset) > 1) {
-    return { ...base, opacity: 0, zIndex: 1, pointerEvents: "none", transition: "none" };
-  }
-
   // Active page — surfaces from black
   if (offset === 0) {
-    return { ...base, transform: "scale(1)", opacity: 1, zIndex: 20, pointerEvents: "auto" };
+    return { ...base, transform: "scale(1)", opacity: 1, zIndex: 20, pointerEvents: "auto", willChange: "transform, opacity" };
   }
 
-  // Exited — camera keeps pushing in as the frame sinks into black
-  if (offset < 0) {
-    return { ...base, transform: "scale(1.035)", opacity: 0, zIndex: 10, pointerEvents: "none" };
+  // Keep only the page that is actively leaving during the short cut
+  if (isExiting) {
+    return {
+      ...base,
+      transform: offset < 0 ? "scale(1.018)" : "scale(0.982)",
+      opacity: 0,
+      zIndex: 10,
+      pointerEvents: "none",
+      willChange: "transform, opacity",
+    };
   }
 
-  // Waiting — slightly pulled back, dark, ready to surface
-  return { ...base, transform: "scale(0.965)", opacity: 0, zIndex: 15, pointerEvents: "none" };
+  return { ...base, opacity: 0, zIndex: 1, pointerEvents: "none", visibility: "hidden", transition: "none" };
 }
 
 export default function PageScroll({ children }: Props) {
   const pages = Children.toArray(children);
   const [page, setPage]               = useState(0);
+  const [previousPage, setPreviousPage] = useState<number | null>(null);
   const [transitioning, setTrans]     = useState(false);
   const refs = useRef<(HTMLDivElement | null)[]>([]);
+  const pageRef = useRef(0);
+  const transitioningRef = useRef(false);
+  const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const total = pages.length;
 
-  const navigate = useCallback((dir: 1 | -1) => {
-    setPage(p => {
-      const next = p + dir;
-      if (next < 0 || next >= total) return p;
-      setTrans(true);
-      haptic.bump();   // page-flip haptic feedback
-      setTimeout(() => setTrans(false), 950);
-      return next;
-    });
+  const goTo = useCallback((target: number) => {
+    if (target < 0 || target >= total || target === pageRef.current) return;
+
+    if (transitionTimer.current) clearTimeout(transitionTimer.current);
+    transitioningRef.current = true;
+    setTrans(true);
+    setPreviousPage(pageRef.current);
+    pageRef.current = target;
+    setPage(target);
+    haptic.bump();
+    transitionTimer.current = setTimeout(() => {
+      transitioningRef.current = false;
+      setTrans(false);
+      setPreviousPage(null);
+      transitionTimer.current = null;
+    }, CUT_MS);
   }, [total]);
+
+  const navigate = useCallback((dir: 1 | -1) => {
+    if (transitioningRef.current) return;
+    goTo(pageRef.current + dir);
+  }, [goTo]);
+
+  useEffect(() => () => {
+    if (transitionTimer.current) clearTimeout(transitionTimer.current);
+  }, []);
 
   // Wheel handler — internal scroll first, snap to next page at boundary
   // Why: full page-flip skips content in long sections (Video / Photo). Restore safe behavior
@@ -90,16 +112,16 @@ export default function PageScroll({ children }: Props) {
 
       if (e.deltaY > 0 && atBottom) {
         e.preventDefault();
-        if (!transitioning && now - last > 950) { last = now; navigate(1); }
+        if (!transitioningRef.current && now - last > CUT_MS) { last = now; navigate(1); }
       } else if (e.deltaY < 0 && atTop) {
         e.preventDefault();
-        if (!transitioning && now - last > 950) { last = now; navigate(-1); }
+        if (!transitioningRef.current && now - last > CUT_MS) { last = now; navigate(-1); }
       }
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [page, navigate, transitioning]);
+  }, [page, navigate]);
 
   // Touch swipe
   useEffect(() => {
@@ -141,14 +163,11 @@ export default function PageScroll({ children }: Props) {
   useEffect(() => {
     const handler = (e: Event) => {
       const idx = (e as CustomEvent<number>).detail;
-      if (idx < 0 || idx >= total || transitioning) return;
-      setTrans(true);
-      setTimeout(() => setTrans(false), 950);
-      setPage(idx);
+      goTo(idx);
     };
     window.addEventListener("navto", handler);
     return () => window.removeEventListener("navto", handler);
-  }, [total, transitioning]);
+  }, [goTo]);
 
   // Reset inner scroll when switching pages
   useEffect(() => {
@@ -177,6 +196,7 @@ export default function PageScroll({ children }: Props) {
     };
     const target = map[section.toLowerCase()];
     if (typeof target === "number" && target >= 0 && target < total) {
+      pageRef.current = target;
       setPage(target);
       // Strip the query so it doesn't override later in-app nav
       try {
@@ -197,18 +217,20 @@ export default function PageScroll({ children }: Props) {
         <div
           key={i}
           ref={el => { refs.current[i] = el; }}
-          style={getStyle(i - page)}
+          className="page-scroll-panel"
+          aria-hidden={i === page ? undefined : true}
+          style={getStyle(i - page, i === previousPage)}
         >
-          {child}
+          {i === page || i === previousPage ? child : null}
         </div>
       ))}
 
       {/* ── Black dip — masks the crossfade seam, replays per navigation ── */}
       {transitioning && (
-        <div key={page} aria-hidden="true" style={{
+        <div key={page} className="page-dip" aria-hidden="true" style={{
           position: "fixed", inset: 0, zIndex: 50,
           background: "#000", pointerEvents: "none", opacity: 0,
-          animation: "pageDip 0.95s cubic-bezier(0.45,0,0.25,1)",
+          animation: `pageDip ${CUT_MS}ms ${CUT_EASE}`,
         }} />
       )}
 
@@ -220,13 +242,7 @@ export default function PageScroll({ children }: Props) {
         {LABELS.slice(0, total).map((lbl, i) => (
           <button
             key={i}
-            onClick={() => {
-              if (!transitioning) {
-                setTrans(true);
-                setTimeout(() => setTrans(false), 950);
-                setPage(i);
-              }
-            }}
+            onClick={() => goTo(i)}
             aria-label={`Go to ${lbl}`}
             aria-current={i === page ? "page" : undefined}
             style={{

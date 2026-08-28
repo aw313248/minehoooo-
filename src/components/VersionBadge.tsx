@@ -12,11 +12,12 @@ export default function VersionBadge() {
   return (
     <div
       aria-label={`Build ${commit}`}
+      className="hidden md:block"
       style={{
         position: "fixed",
         left: 10,
         bottom: 10,
-        zIndex: 200,
+        zIndex: 30,
         padding: "4px 10px",
         borderRadius: 999,
         background: "rgba(0,0,0,0.55)",

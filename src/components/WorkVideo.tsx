@@ -1684,7 +1684,7 @@ export default function WorkVideo() {
           </div>
         </div>
         <style>{`
-          .credits-roll { animation: creditsRoll 60s linear infinite; }
+          .credits-roll { animation: creditsRoll 60s linear infinite; animation-play-state: ${ecIn ? "running" : "paused"}; }
           .credits-window:hover .credits-roll { animation-play-state: paused; }
           @keyframes creditsRoll { from { transform: translateY(0); } to { transform: translateY(-50%); } }
           @media (prefers-reduced-motion: reduce) { .credits-roll { animation: none; } }
@@ -1721,7 +1721,7 @@ export default function WorkVideo() {
           </div>
         </div>
         <style>{`
-          .shorts-track { animation: shortsRoll 36s linear infinite; }
+          .shorts-track { animation: shortsRoll 36s linear infinite; animation-play-state: ${sIn ? "running" : "paused"}; }
           .shorts-marquee:hover .shorts-track { animation-play-state: paused; }
           @keyframes shortsRoll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         `}</style>
