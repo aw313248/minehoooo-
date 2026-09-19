@@ -30,6 +30,22 @@ export interface FieldNote {
 }
 
 export const fieldNotes: FieldNote[] = [
+  // ── AI 長相測驗 ───────────────────────────────────────────────
+  {
+    slug:          "ai-knows-your-face",
+    title:         "你在 AI 眼中，到底長什麼樣子？",
+    issue:         "006",
+    subtitle:      "我請它誠實一點，結果它真的沒有在客氣",
+    date:          "2026-09-19",
+    category:      "TRAVEL",
+    categoryLabel: "TRAVEL · AI TEST",
+    tags:          ["AI", "Prompt", "人臉辨識", "旅行", "惡作劇"],
+    excerpt:       "我只是想知道 AI 到底有多了解我。答案很短，也很傷人。",
+    heroImage:     "/field-notes/ai-knows-your-face/cover-v2.png",
+    readingTime:   1,
+    articleType:   "editorial-v2",
+  },
+
   // ── 臺中人的輕量雨殼選擇 ──────────────────────────────────────
   {
     slug:          "montbell-rain-trekker",

@@ -32,6 +32,7 @@ import guruwalkBlocks from "./articles/guruwalk";
 import aiCrimeFilmBlocks from "./articles/ai-crime-film";
 import soloTravelBlocks from "./articles/how-i-film-solo-travel";
 import MontbellRainTrekkerArticle from "./articles/montbell-rain-trekker";
+import AiKnowsYourFaceArticle from "./articles/ai-knows-your-face";
 
 const SITE_URL = "https://minehoooo.xyz";
 const SOCIAL_COVER_DEFAULT = "/field-notes/social-cover.jpg";
@@ -48,7 +49,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const canonical = `${SITE_URL}/field-notes/${slug}`;
   const ogImage =
-    slug === "montbell-rain-trekker"
+    slug === "ai-knows-your-face"
+      ? "/field-notes/ai-knows-your-face/cover-v2.png"
+      : slug === "montbell-rain-trekker"
       ? "/field-notes/montbell-rain-trekker/rain-trekker-official.jpg"
       : slug === "seedance-aerial"
       ? "/field-notes/seedance-map-route/social-cover.jpg"
@@ -118,6 +121,15 @@ export default async function FieldNoteArticle({ params }: { params: Promise<{ s
       <>
         <ScrollUnlock />
         <MontbellRainTrekkerArticle note={note} />
+      </>
+    );
+  }
+
+  if (slug === "ai-knows-your-face") {
+    return (
+      <>
+        <ScrollUnlock />
+        <AiKnowsYourFaceArticle />
       </>
     );
   }

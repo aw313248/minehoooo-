@@ -1,0 +1,333 @@
+.page {
+  --paper: #eee9df;
+  --ink: #0a0a09;
+  --red: #e33024;
+  position: relative;
+  min-height: 100svh;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-readex), "PingFang TC", sans-serif;
+  isolation: isolate;
+}
+
+.page::before,
+.page::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page::before {
+  width: min(46vw, 680px);
+  aspect-ratio: 1;
+  right: -10vw;
+  top: 50%;
+  translate: 0 -50%;
+  border: 1px solid rgba(10,10,9,.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 8vw rgba(10,10,9,.025), 0 0 0 16vw rgba(10,10,9,.018);
+}
+
+.page::after {
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 49.95%, rgba(10,10,9,.08) 50%, transparent 50.05%),
+    linear-gradient(transparent 49.95%, rgba(10,10,9,.08) 50%, transparent 50.05%);
+}
+
+.texture {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .18;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.nav {
+  position: absolute;
+  z-index: 3;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: clamp(20px, 3vw, 42px) clamp(20px, 4vw, 64px);
+  font: 600 9px/1 var(--font-space-mono), monospace;
+  letter-spacing: .24em;
+}
+
+.nav a { color: inherit; text-decoration: none; }
+.nav span { color: rgba(10,10,9,.45); }
+
+.result {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(120px, .42fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  padding: clamp(92px, 10vh, 130px) clamp(24px, 6vw, 92px) clamp(64px, 8vh, 92px);
+}
+
+.status {
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: start;
+  margin: 0;
+  color: var(--red);
+  font: 700 10px/1 var(--font-space-mono), monospace;
+  letter-spacing: .24em;
+  writing-mode: vertical-rl;
+  rotate: 180deg;
+}
+
+.result h1 {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .08em;
+  width: 100%;
+  margin: 0;
+  font-size: clamp(112px, 22vw, 360px);
+  font-weight: 820;
+  line-height: .78;
+  letter-spacing: -.12em;
+  white-space: nowrap;
+}
+
+.result h1 span:nth-child(2) { color: var(--red); }
+
+.resultFoot {
+  grid-column: 2;
+  grid-row: 3;
+  justify-self: end;
+  text-align: right;
+}
+
+.note {
+  margin: 0;
+  font-size: clamp(11px, 1.15vw, 16px);
+  font-weight: 400;
+  letter-spacing: .08em;
+  color: rgba(10,10,9,.52);
+}
+
+.disclaimer {
+  margin: 8px 0 0;
+  font: 500 8px/1.7 var(--font-space-mono), monospace;
+  letter-spacing: .1em;
+  color: rgba(10,10,9,.35);
+}
+
+.promptSection {
+  position: relative;
+  z-index: 2;
+  padding: clamp(96px, 12vw, 180px) clamp(20px, 5vw, 72px) clamp(88px, 10vw, 140px);
+  background: #090909;
+  color: #f1ece2;
+}
+
+.promptIntro {
+  display: grid;
+  grid-template-columns: minmax(150px, .42fr) minmax(0, 1fr);
+  gap: 16px 40px;
+  max-width: 1280px;
+  margin: 0 auto clamp(58px, 8vw, 108px);
+}
+
+.promptIntro > p {
+  margin: 8px 0 0;
+  color: var(--red);
+  font: 600 10px/1.4 var(--font-space-mono), monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.promptIntro h2 {
+  margin: 0;
+  font-size: clamp(38px, 6vw, 88px);
+  font-weight: 650;
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+
+.promptIntro span {
+  grid-column: 2;
+  color: rgba(241,236,226,.5);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.promptGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.promptCard {
+  min-width: 0;
+  border: 1px solid rgba(241,236,226,.17);
+  background: linear-gradient(145deg, rgba(255,255,255,.035), transparent 52%);
+  padding: clamp(22px, 3vw, 38px);
+}
+
+.promptCard:nth-child(2) { border-color: rgba(227,48,36,.6); }
+
+.promptHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(241,236,226,.12);
+}
+
+.promptHead p {
+  margin: 0;
+  color: rgba(241,236,226,.45);
+  font: 500 9px/1.5 var(--font-space-mono), monospace;
+  letter-spacing: .12em;
+}
+
+.promptHead button {
+  flex: 0 0 auto;
+  border: 1px solid rgba(241,236,226,.28);
+  background: transparent;
+  color: #f1ece2;
+  padding: 9px 12px;
+  font: 600 9px/1 var(--font-space-mono), monospace;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+.promptHead button:hover { border-color: var(--red); color: var(--red); }
+
+.promptCard h3 {
+  margin: clamp(34px, 5vw, 62px) 0 28px;
+  max-width: 560px;
+  font-size: clamp(25px, 3.2vw, 44px);
+  line-height: 1.16;
+  letter-spacing: -.04em;
+  font-weight: 540;
+}
+
+.promptCard pre {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: rgba(241,236,226,.72);
+  font: 400 13px/1.9 var(--font-readex), "PingFang TC", sans-serif;
+}
+
+.footerNote {
+  max-width: 1280px;
+  margin: 38px auto 0;
+  color: rgba(241,236,226,.32);
+  font: 500 9px/1.6 var(--font-space-mono), monospace;
+  letter-spacing: .12em;
+  text-align: right;
+}
+
+@media (max-width: 680px) {
+  .page::before {
+    width: 92vw;
+    right: -46vw;
+    top: 30%;
+  }
+
+  .nav { align-items: flex-start; }
+  .nav span { max-width: 132px; text-align: right; line-height: 1.5; }
+
+  .result {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    padding: 100px 22px 74px;
+  }
+
+  .status {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    grid-column: auto;
+    grid-row: auto;
+    translate: 0 -50%;
+  }
+
+  .result h1 {
+    grid-column: 1;
+    grid-row: 1;
+    flex-direction: column;
+    justify-content: center;
+    justify-self: center;
+    width: auto;
+    gap: 0;
+    font-size: clamp(118px, 37vw, 180px);
+    line-height: .76;
+    letter-spacing: -.1em;
+  }
+
+  .result h1 span:nth-child(2) { translate: .18em 0; }
+  .result h1 span:nth-child(3) { translate: -.08em 0; }
+
+  .resultFoot {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: center;
+    text-align: center;
+  }
+
+  .note {
+    font-size: 11px;
+  }
+
+  .disclaimer {
+    font-size: 7px;
+  }
+
+  .promptSection { padding: 84px 18px 76px; }
+
+  .promptIntro {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 52px;
+  }
+
+  .promptIntro > p { margin: 0; }
+  .promptIntro h2 { font-size: clamp(38px, 12.5vw, 54px); }
+  .promptIntro span { grid-column: 1; }
+
+  .promptGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .promptCard { padding: 22px 18px 28px; }
+  .promptHead { align-items: flex-start; }
+  .promptHead p { max-width: 52%; }
+  .promptCard h3 { margin-top: 38px; font-size: 27px; }
+  .promptCard pre { font-size: 12px; line-height: 1.85; }
+  .footerNote { margin-top: 26px; text-align: left; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .result h1 span { animation: arrive .6s cubic-bezier(.16,1,.3,1) both; }
+  .result h1 span:nth-child(2) { animation-delay: .08s; }
+  .result h1 span:nth-child(3) { animation-delay: .16s; }
+  .note { animation: fade .7s .48s ease both; }
+}
+
+@keyframes arrive {
+  from { opacity: 0; filter: blur(14px); transform: scale(.86); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
