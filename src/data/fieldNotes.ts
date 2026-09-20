@@ -41,7 +41,7 @@ export const fieldNotes: FieldNote[] = [
     categoryLabel: "TRAVEL · SALZBURG",
     tags:          ["莫札特", "薩爾茲堡", "Mozarts Geburtshaus", "奧地利", "旅行攻略"],
     excerpt:       "先給地址，再把出生地裡面到底有什麼、現在票價、無障礙資訊與藍銀莫札特巧克力一次講清楚。",
-    heroImage:     "/field-notes/mozart-birthplace/building.jpg",
+    heroImage:     "/field-notes/mozart-birthplace/facade-official.jpg",
     readingTime:   7,
     articleType:   "editorial-v2",
     triggerWord:   "我也要莫札特",

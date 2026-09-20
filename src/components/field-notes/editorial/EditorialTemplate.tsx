@@ -392,11 +392,12 @@ function SetupCardsBlock({ items, footer }: Extract<Block, { type: "setup-cards"
         .eb-sc-card { background: #0d0d10; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px 28px; }
         .eb-sc-badge { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.44em; text-transform: uppercase; color: rgba(255,255,255,0.32); margin: 0 0 16px; }
         .eb-sc-rule { height: 1px; background: rgba(255,255,255,0.06); margin: 16px 0; }
-        .eb-sc-row { display: flex; gap: 28px; flex-wrap: wrap; }
-        .eb-sc-item { display: flex; flex-direction: column; gap: 5px; }
+        .eb-sc-row { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+        .eb-sc-item { min-width: 0; min-height: 116px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; padding: 16px; background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.1); border-radius: 9px; }
         .eb-sc-val { font-family: var(--font-readex),sans-serif; font-size: clamp(22px,4vw,32px); font-weight: 600; letter-spacing: -0.02em; color: rgba(255,255,255,0.97); line-height: 1; }
-        .eb-sc-lbl { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
-        .eb-sc-foot { font-family: var(--font-readex),sans-serif; font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 300; margin: 0; }
+        .eb-sc-lbl { font-family: var(--font-readex),sans-serif; font-size: 13px; line-height: 1.55; letter-spacing: 0; color: rgba(255,255,255,0.78); }
+        .eb-sc-foot { font-family: var(--font-readex),sans-serif; font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.78); font-weight: 400; margin: 0; }
+        @media(max-width:680px){ .eb-sc-card{padding:20px 16px;} .eb-sc-row{grid-template-columns:1fr 1fr; gap:8px;} .eb-sc-item{min-height:108px; padding:14px;} }
       `}</style>
     </div>
   );
@@ -565,13 +566,60 @@ function ImagePairBlock({ left, right, leftLabel, rightLabel }: Extract<Block, {
       ))}
       <style>{`
         .eb-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
-        .eb-pair-fig { margin: 0; }
+        .eb-pair-fig { margin: 0; display: grid; grid-template-rows: auto 1fr; align-content: start; }
         .eb-pair-img { position: relative; width: 100%; aspect-ratio: 3/2; border-radius: 8px; overflow: hidden; background: #111; border: 1px solid rgba(255,255,255,0.07); }
         .eb-pair-cap { font-family: var(--font-space-mono),monospace; font-size: 9.5px; letter-spacing: 0.22em; color: rgba(255,255,255,0.35); margin: 8px 0 0; }
-        .eb-pair-cap-r { text-align: right; }
-        @media (max-width: 480px) { .eb-pair { grid-template-columns: 1fr; } .eb-pair-cap-r { text-align: left; } }
+        .eb-pair-cap-r { text-align: left; }
+        @media (max-width: 480px) { .eb-pair { grid-template-columns: 1fr 1fr; gap: 8px; } }
       `}</style>
     </div>
+  );
+}
+
+function PlaceSwitcherBlock({ places }: Extract<Block, { type: "place-switcher" }>) {
+  const [active, setActive] = useState(0);
+  const place = places[active];
+  return (
+    <section className="eb-places" aria-label="莫札特相關地點地圖">
+      <div className="eb-place-tabs" role="tablist" aria-label="選擇地點">
+        {places.map((p, index) => (
+          <button key={p.name} type="button" role="tab" aria-selected={active === index} className="eb-place-tab" onClick={() => setActive(index)}>
+            <span>{index + 1}</span>{p.name}
+          </button>
+        ))}
+      </div>
+      <div className="eb-place-card">
+        <div className="eb-place-photo"><Image src={place.image} alt={place.name} fill className="object-cover" sizes="(max-width: 720px) 100vw, 360px" /></div>
+        <div className="eb-place-copy">
+          <p className="eb-place-city">{place.city}</p>
+          <h3>{place.name}</h3>
+          <p className="eb-place-address">{place.address}</p>
+          <p className="eb-place-desc">{place.desc}</p>
+          <div className="eb-place-links"><a href={place.mapHref} target="_blank" rel="noopener noreferrer">Google Maps ↗</a><a href={place.officialHref} target="_blank" rel="noopener noreferrer">官方網站 ↗</a></div>
+        </div>
+      </div>
+      <div className="eb-place-map"><iframe key={place.mapSrc} src={place.mapSrc} title={`${place.name} 地圖`} loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade" /></div>
+      <style>{`
+        .eb-places { margin: 24px 0 34px; }
+        .eb-place-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-bottom: 10px; }
+        .eb-place-tab { min-height: 54px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.055); color: rgba(255,255,255,.72); font: 500 14px/1.35 var(--font-readex),sans-serif; text-align: left; cursor: pointer; }
+        .eb-place-tab span { display: block; color: #ffd96a; font: 700 11px/1 var(--font-space-mono),monospace; margin-bottom: 5px; }
+        .eb-place-tab[aria-selected="true"] { background: #f3d46e; color: #15130c; border-color: #f3d46e; }
+        .eb-place-tab[aria-selected="true"] span { color: #15130c; }
+        .eb-place-card { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); min-height: 270px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 14px 14px 0 0; background: #121216; }
+        .eb-place-photo { position: relative; min-height: 270px; }
+        .eb-place-copy { padding: 26px; display: flex; flex-direction: column; justify-content: center; }
+        .eb-place-city { margin: 0 0 8px; color: #f3d46e; font: 700 11px/1.2 var(--font-space-mono),monospace; letter-spacing: .18em; text-transform: uppercase; }
+        .eb-place-copy h3 { margin: 0; color: #fff; font: 650 clamp(22px,4vw,31px)/1.15 var(--font-readex),sans-serif; }
+        .eb-place-address { margin: 8px 0 14px; color: rgba(255,255,255,.88); font: 500 15px/1.5 var(--font-readex),sans-serif; }
+        .eb-place-desc { margin: 0; color: rgba(255,255,255,.72); font: 400 15px/1.7 var(--font-readex),sans-serif; }
+        .eb-place-links { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+        .eb-place-links a { color: #f3d46e; font: 600 12px/1.2 var(--font-readex),sans-serif; text-decoration: none; }
+        .eb-place-map { height: 260px; border: 1px solid rgba(255,255,255,.14); border-top: 0; border-radius: 0 0 14px 14px; overflow: hidden; }
+        .eb-place-map iframe { width: 100%; height: 100%; border: 0; }
+        @media(max-width:640px){ .eb-place-tabs{grid-template-columns:1fr;} .eb-place-tab{min-height:48px;} .eb-place-card{grid-template-columns:1fr;} .eb-place-photo{min-height:220px;} .eb-place-copy{padding:22px 20px;} .eb-place-map{height:230px;} }
+      `}</style>
+    </section>
   );
 }
 
@@ -1214,18 +1262,19 @@ function InfoCardBlock({ name, sub, rows, links, footnote }: Extract<Block, { ty
       </div>
       <style>{`
         .eb-ic { margin: 24px 0; }
-        .eb-ic-card { background: #0d0d10; border: 1px solid rgba(255,225,140,0.16); border-radius: 12px; padding: 24px 26px; }
-        .eb-ic-badge { font-family: var(--font-space-mono),monospace; font-size: 9px; letter-spacing: 0.44em; text-transform: uppercase; color: rgba(255,225,140,0.6); margin: 0 0 12px; }
+        .eb-ic-card { background: linear-gradient(145deg,#1b1b20,#111115); border: 1px solid rgba(255,225,140,0.32); border-radius: 14px; padding: 28px; }
+        .eb-ic-badge { font-family: var(--font-space-mono),monospace; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,225,140,0.9); margin: 0 0 12px; }
         .eb-ic-name { font-family: var(--font-readex),sans-serif; font-size: clamp(22px,4vw,30px); font-weight: 600; letter-spacing: -0.01em; color: rgba(255,255,255,0.97); margin: 0; line-height: 1.15; }
-        .eb-ic-sub { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5); margin: 6px 0 0; }
+        .eb-ic-sub { font-family: var(--font-readex),sans-serif; font-size: clamp(20px,3vw,24px); font-weight: 650; color: #f6d970; margin: 9px 0 0; line-height: 1.35; }
         .eb-ic-rule { height: 1px; background: rgba(255,255,255,0.07); margin: 16px 0; }
         .eb-ic-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin: 0; }
-        .eb-ic-row dt { font-family: var(--font-space-mono),monospace; font-size: 8.5px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(255,255,255,0.34); margin-bottom: 4px; }
-        .eb-ic-row dd { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.85); margin: 0; line-height: 1.5; }
+        .eb-ic-row { min-height: 72px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+        .eb-ic-row dt { font-family: var(--font-readex),sans-serif; font-size: 13px; font-weight: 650; color: #f3d46e; margin-bottom: 6px; }
+        .eb-ic-row dd { font-family: var(--font-readex),sans-serif; font-size: 16px; font-weight: 450; color: rgba(255,255,255,0.94); margin: 0; line-height: 1.55; }
         .eb-ic-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
         .eb-ic-btn { font-family: var(--font-space-mono),monospace; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,225,140,0.9); text-decoration: none; border: 1px solid rgba(255,225,140,0.3); border-radius: 3px; padding: 9px 14px; transition: color .15s, border-color .15s, background .15s; }
         .eb-ic-btn:hover { color: rgba(255,225,140,1); border-color: rgba(255,225,140,0.6); background: rgba(255,225,140,0.06); }
-        .eb-ic-foot { font-family: var(--font-readex),sans-serif; font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.4); margin: 14px 0 0; line-height: 1.6; }
+        .eb-ic-foot { font-family: var(--font-readex),sans-serif; font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.72); margin: 16px 0 0; line-height: 1.7; }
         @media (max-width: 520px) { .eb-ic-rows { grid-template-columns: 1fr; } }
       `}</style>
     </div>
@@ -1546,6 +1595,7 @@ function RenderBlock({ block }: { block: Block }) {
     case "timeline":      return block.epic ? <EpicTimelineBlock {...block} /> : <TimelineBlock {...block} />;
     case "info-card":     return <InfoCardBlock {...block} />;
     case "map-embed":     return <MapEmbedBlock {...block} />;
+    case "place-switcher":return <PlaceSwitcherBlock {...block} />;
     case "comment-cta":   return <CommentCTABlock {...block} />;
     case "youtube":       return <YouTubeBlock {...block} />;
     case "higgsfield":    return <HiggsfieldRef variant={block.variant} />;
