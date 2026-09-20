@@ -261,6 +261,27 @@ function HeroVideoWall({ videos }: { videos: { src: string; label?: string }[] }
   );
 }
 
+function HeroImageWall({ images }: { images: { src: string; alt: string; objectPosition?: string }[] }) {
+  return (
+    <div className="et-cover-wall" aria-hidden="true">
+      <div className="et-cover-strip">
+        {images.map((item) => (
+          <div className="et-cover-tile" key={item.src}>
+            <Image
+              src={item.src}
+              alt=""
+              fill
+              sizes="(max-width: 680px) 50vw, 25vw"
+              style={{ objectFit: "cover", objectPosition: item.objectPosition ?? "50% 50%" }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="et-cover-wash" />
+    </div>
+  );
+}
+
 /* Reading progress — thin gold line across the very top */
 function ScrollProgress() {
   const [p, setP] = useState(0);
@@ -589,7 +610,7 @@ function PlaceSwitcherBlock({ places }: Extract<Block, { type: "place-switcher" 
         ))}
       </div>
       <div className="eb-place-card">
-        <div className="eb-place-photo"><Image src={place.image} alt={place.name} fill className="object-cover" sizes="(max-width: 720px) 100vw, 360px" /></div>
+        <div className="eb-place-photo"><Image src={place.image} alt={place.name} fill sizes="(max-width: 720px) 100vw, 360px" style={{ objectFit: "contain" }} /></div>
         <div className="eb-place-copy">
           <p className="eb-place-city">{place.city}</p>
           <h3>{place.name}</h3>
@@ -607,7 +628,7 @@ function PlaceSwitcherBlock({ places }: Extract<Block, { type: "place-switcher" 
         .eb-place-tab[aria-selected="true"] { background: #f3d46e; color: #15130c; border-color: #f3d46e; }
         .eb-place-tab[aria-selected="true"] span { color: #15130c; }
         .eb-place-card { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr); min-height: 270px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 14px 14px 0 0; background: #121216; }
-        .eb-place-photo { position: relative; min-height: 270px; }
+        .eb-place-photo { position: relative; min-height: 270px; background: #09090b; }
         .eb-place-copy { padding: 26px; display: flex; flex-direction: column; justify-content: center; }
         .eb-place-city { margin: 0 0 8px; color: #f3d46e; font: 700 11px/1.2 var(--font-space-mono),monospace; letter-spacing: .18em; text-transform: uppercase; }
         .eb-place-copy h3 { margin: 0; color: #fff; font: 650 clamp(22px,4vw,31px)/1.15 var(--font-readex),sans-serif; }
@@ -1637,8 +1658,9 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
       </header>
 
       {/* Hero */}
-      <div className={note.heroVideos?.length ? "et-hero et-hero-video" : "et-hero"} style={{ position: "relative" }}>
+      <div className={note.heroVideos?.length || note.heroImages?.length ? "et-hero et-hero-video" : "et-hero"} style={{ position: "relative" }}>
         {note.heroVideos && note.heroVideos.length > 0 && <HeroVideoWall videos={note.heroVideos} />}
+        {(!note.heroVideos || note.heroVideos.length === 0) && note.heroImages && note.heroImages.length > 0 && <HeroImageWall images={note.heroImages} />}
         <div className="et-hero-inner" style={{ position: "relative" }}>
           {note.issue && (
             <p className="et-issue" aria-hidden>
@@ -1697,6 +1719,10 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-hero { border-bottom: 1px solid rgba(255,255,255,0.05); }
         .et-hero-inner { max-width: 760px; margin: 0 auto; padding: 52px 24px 36px; }
         .et-hero-video { overflow: hidden; }
+        .et-cover-wall { position: absolute; inset: 0; overflow: hidden; }
+        .et-cover-strip { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 2px; }
+        .et-cover-tile { position: relative; min-width: 0; overflow: hidden; }
+        .et-cover-wash { position: absolute; inset: 0; background: linear-gradient(90deg,rgba(5,5,6,.9) 0%,rgba(5,5,6,.63) 46%,rgba(5,5,6,.76) 100%),linear-gradient(0deg,rgba(5,5,6,.96) 0%,rgba(5,5,6,.15) 68%,rgba(5,5,6,.56) 100%); }
         .et-hero-video .et-hero-inner { padding: clamp(120px, 22vh, 220px) 24px 64px; }
         .et-hero-video .et-title { font-size: clamp(34px, 7vw, 62px); text-shadow: 0 2px 30px rgba(0,0,0,0.6); }
         .et-issue { display: flex; align-items: center; gap: 14px; margin: 0 0 26px; }
@@ -1723,7 +1749,7 @@ export default function EditorialTemplate({ note, blocks }: EditorialTemplatePro
         .et-footer a:hover { color: rgba(255,225,140,1); }
 
         @media (max-width: 1023px) { .et-body { grid-template-columns: minmax(0,700px); max-width: 760px; } .et-toc-col { display: none; } }
-        @media (max-width: 680px) { .et-body { padding: 0 16px 72px; } .et-hero-inner { padding: 36px 16px 28px; } .et-nav-inner { padding: 12px 16px; } }
+        @media (max-width: 680px) { .et-body { padding: 0 16px 72px; } .et-hero-inner { padding: 36px 16px 28px; } .et-nav-inner { padding: 12px 16px; } .et-cover-strip { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); } }
       `}</style>
     </>
   );

@@ -22,6 +22,7 @@ export interface FieldNote {
   excerpt:       string;
   heroImage:     string;        // path under /public
   heroVideos?:   { src: string; label?: string }[];  // looping hero backdrop; 3 vertical clips render as a video wall, label = city name
+  heroImages?:   { src: string; alt: string; objectPosition?: string }[]; // editorial cover strip
   readingTime:   number;        // in minutes
   articleType:   ArticleType;
   tool?:         string;        // only for "tool" articles
@@ -42,6 +43,12 @@ export const fieldNotes: FieldNote[] = [
     tags:          ["莫札特", "薩爾茲堡", "Mozarts Geburtshaus", "奧地利", "旅行攻略"],
     excerpt:       "先給地址，再把出生地裡面到底有什麼、現在票價、無障礙資訊與藍銀莫札特巧克力一次講清楚。",
     heroImage:     "/field-notes/mozart-birthplace/facade-official.jpg",
+    heroImages: [
+      { src: "/field-notes/mozart-birthplace/facade-official.jpg", alt: "莫札特出生地黃色外牆", objectPosition: "50% 38%" },
+      { src: "/field-notes/mozart-birthplace/residence-salzburg.jpg", alt: "薩爾茲堡莫札特故居", objectPosition: "50% 45%" },
+      { src: "/field-notes/mozart-birthplace/mozarthaus-vienna.jpg", alt: "維也納莫札特之家", objectPosition: "50% 38%" },
+      { src: "/field-notes/mozart-birthplace/childhood-violin-official.jpg", alt: "莫札特童年小提琴", objectPosition: "50% 50%" },
+    ],
     readingTime:   7,
     articleType:   "editorial-v2",
     triggerWord:   "我也要莫札特",

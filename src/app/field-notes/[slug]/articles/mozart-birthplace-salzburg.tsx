@@ -42,7 +42,7 @@ const blocks: Block[] = [
       alt: "薩爾茲堡 Getreidegasse 9 的莫札特出生地黃色外牆",
       caption: "Getreidegasse 9 的莫札特出生地。｜International Mozarteum Foundation 官方照片",
     },
-    frame: "wide",
+    frame: "banner",
   },
   { type: "headline", id: "practical", text: "先把現場真的會用到的講完", sub: "BEFORE YOU GO · 01", num: "01" },
   {
