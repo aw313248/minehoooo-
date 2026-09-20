@@ -33,7 +33,7 @@ const blocks: Block[] = [
     ],
     footnote: "這棟亮黃色建築就在糧食胡同裡。地址先截圖，免得到了薩爾茲堡只顧著看巧克力。",
   },
-  { type: "map-embed", src: BIRTH_EMBED, title: "莫札特出生地位置", aspect: "16/10" },
+  { type: "map-embed", src: BIRTH_EMBED, title: "莫札特出生地位置", aspect: "16/10", eager: true },
   {
     type: "image",
     item: { src: `${M}/building.jpg`, alt: "薩爾茲堡莫札特出生地黃色外牆", caption: "黃色這棟就是。不是附近每一棟黃色房子都算。｜Oscar 現場影片截圖" },
@@ -55,6 +55,15 @@ const blocks: Block[] = [
     left: { src: `${M}/kitchen.jpg`, alt: "莫札特出生地館內廚房展示", caption: "生活空間展示" },
     right: { src: `${M}/family.jpg`, alt: "莫札特家族資料展示", caption: "家族資料與關係" },
     leftLabel: "家裡長怎樣", rightLabel: "他們家到底有誰",
+  },
+  {
+    type: "image",
+    item: {
+      src: `${M}/family-portrait.jpg`,
+      alt: "約 1780 年的莫札特家族畫像",
+      caption: "約 1780 年的莫札特家族畫像：左側是 Wolfgang 與姊姊 Nannerl，右側拿小提琴的是父親 Leopold，牆上是已過世的母親 Anna Maria。｜Johann Nepomuk della Croce，Wikimedia Commons，公共領域",
+    },
+    frame: "wide",
   },
   {
     type: "headline", id: "violin", text: "我六歲還在吃鼻涕，他六歲已經拿這把提琴", sub: "THE REAL THING · 02", num: "02",
@@ -79,6 +88,15 @@ const blocks: Block[] = [
   },
   {
     type: "headline", id: "window", text: "我最喜歡的，其實是窗戶", sub: "THE SAME VIEW · 03", num: "03",
+  },
+  {
+    type: "image",
+    item: {
+      src: `${M}/portrait-lange.jpg`,
+      alt: "Joseph Lange 所畫的莫札特未完成肖像",
+      caption: "Joseph Lange 約 1782–1785 年畫的未完成肖像。這不是後人把莫札特美化成古典樂偶像的版本，而是最接近他同時代樣貌的畫像之一。｜Wikimedia Commons，公共領域",
+    },
+    frame: "phone",
   },
   {
     type: "image",
@@ -189,6 +207,15 @@ const blocks: Block[] = [
     </>,
   },
   {
+    type: "image",
+    item: {
+      src: `${M}/furst-blue-silver.jpg`,
+      alt: "Fürst 藍銀包裝 Original Salzburger Mozartkugel",
+      caption: "要找的是這個藍銀包裝。紅色不是假貨，只是不是 Fürst 的原創版本。｜Cafe Konditorei Fürst 官方商品照",
+    },
+    frame: "wide",
+  },
+  {
     type: "info-card",
     name: "Cafe Konditorei Fürst · Stammhaus",
     sub: "原創莫札特球本店",
@@ -210,6 +237,9 @@ const blocks: Block[] = [
       { label: "Mozarthaus Vienna", href: VIENNA, note: "維也納唯一保存住所" },
       { label: "Cafe Konditorei Fürst｜Our history", href: "https://www.original-mozartkugel.com/en/about-us/our-history", note: "1890 年發明、1905 年獲獎與製法" },
       { label: "Cafe Konditorei Fürst｜Locations", href: FURST_SHOPS, note: "原創藍銀莫札特球販售地點" },
+      { label: "Wikimedia Commons｜Mozart family portrait", href: "https://commons.wikimedia.org/wiki/File:Croce_MozartFamilyPortrait.jpg", note: "約 1780 年家族畫像，公共領域" },
+      { label: "Wikimedia Commons｜Joseph Lange portrait", href: "https://commons.wikimedia.org/wiki/File:Mozart_(unfinished)_by_Lange_1782.jpg", note: "莫札特未完成肖像，公共領域" },
+      { label: "Cafe Konditorei Fürst｜Official product image", href: "https://www.original-mozartkugel.com/en/original-salzburger-mozartkugel-gift-box-25-pieces-sw10009", note: "藍銀包裝辨識照" },
     ],
   },
   {
